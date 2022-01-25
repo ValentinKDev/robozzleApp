@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.InGameCompose
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon

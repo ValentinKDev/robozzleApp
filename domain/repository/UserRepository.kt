@@ -17,8 +17,8 @@ import kotlinx.coroutines.withContext
 @InternalCoroutinesApi
 class UserRepository(private val userDao: UserDao) {
 
-    suspend fun getUser(id: Int): User? {
-        var user: User?
+    fun getUser(): User? {
+        val user: User?
         user = userDao.getAUser(1)
         Log.v("UserRepository", "getUser()")
         Log.v("UserRepository", "---> name : ${user?.name}")

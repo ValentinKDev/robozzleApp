@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.InGameCompose
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import android.content.Context
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
@@ -32,7 +32,7 @@ class ScreenConfig(localContext: Context, level: RobuzzleLevel) {
 //    val mapBoxSizePx: Float = mapPx.toFloat() / (numberCaseRow)
     val mapBoxSizePx: Float = widhtPx.toFloat() / (numberColumns)
     val mapBoxSize: Float = mapBoxSizePx / density
-    val mapBoxPaddingPx: Float = mapBoxSizePx.toFloat() / (25)
+    val mapBoxPaddingPx: Float = mapBoxSizePx / (25)
 //    val mapBoxPaddingPx: Float = mapBoxSizePx.toFloat() / (5)
     val mapBoxPadding: Float = mapBoxPaddingPx / density
 

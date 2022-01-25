@@ -1,13 +1,9 @@
-package com.mobilegame.robozzle.presentation.ui.InGameCompose
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +14,9 @@ import com.mobilegame.robozzle.domain.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.ui.ColorsList
 import com.mobilegame.robozzle.presentation.ui.RecognizeColor
+import kotlinx.coroutines.DelicateCoroutinesApi
 
+@DelicateCoroutinesApi
 @Composable
 fun DisplayGameScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     Column(modifier = Modifier
@@ -50,9 +48,8 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewM
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        var instructionColor: Color
         level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
-            instructionColor = RecognizeColor(instructions.colors, false)
+//            val instructionCol: Color = RecognizeColor(instructions.colors, false)
             Row(
                 modifier = Modifier
 //                    .fillMaxWidth()
@@ -77,7 +74,7 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewM
                                 level.breadcrumb.CreateNewBeadcrumb(0, level.funInstructionsList)
 //                                level.guideline.CreateNewGuideline(0, level.funInstructionsList)
 //                                Log.i("ON CLICK actionList", "${level.guideline.actionList}")
-                                Log.i("ON CLICK actionList", "${level.breadcrumb.actionList}")
+                                Log.i("ON CLICK actionList", level.breadcrumb.actionList)
                                 gameDataViewModel.ChangeInstructionMenuState()
                             }
 //                            .size(screenConfig.instructionMenuCase.dp)

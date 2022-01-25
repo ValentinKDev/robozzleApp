@@ -89,7 +89,7 @@ class testViewModel(): ViewModel() {
 //    val userTest = User( id = -1, name = "admin", password = "123", )
 
     init {
-        userService = UserService.create(userTest.name, userTest.password)
+        userService = UserService.create()
     }
 
     fun post() {
@@ -146,7 +146,7 @@ class testViewModel(): ViewModel() {
 //        /*
         install(Auth) {
             lateinit var tokenInfo: TokenInfo
-            var refreshTokenInfo: TokenInfo
+//            var refreshTokenInfo: TokenInfo
 
             bearer {
                 loadTokens {

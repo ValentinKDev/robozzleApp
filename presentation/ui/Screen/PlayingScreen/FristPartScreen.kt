@@ -1,7 +1,6 @@
-package com.mobilegame.robozzle.presentation.ui.InGameCompose
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
@@ -18,12 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.gradientBackground
 import com.mobilegame.robozzle.Extensions.isDirection
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -34,7 +30,7 @@ import com.mobilegame.robozzle.presentation.ui.*
 fun MapLayout(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     val mapVM: MutableList<String> by gameDataViewModel.map.collectAsState()
 
-    val animationIsPlaying: Boolean by gameDataViewModel.animationIsPlaying.observeAsState(false)
+//    val animationIsPlaying: Boolean by gameDataViewModel.animationIsPlaying.observeAsState(false)
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -102,9 +98,9 @@ fun MapBox(rowIndex: Int, columnIndex: Int, lvl: RobuzzleLevel, gameDataViewMode
         .padding(screenConfig.mapBoxPadding.dp)
     )
     {
-        MapCase(charColor , screenConfig, gameDataViewModel)
+        MapCase(charColor , gameDataViewModel)
 //        Star(lvl, gameDataViewModel, rowIndex, columnIndex, if (animationRunningInBackground) {animatedStarsList} else {lvl.starsList})
-        Star(lvl, gameDataViewModel, rowIndex, columnIndex, if (animationRunningInBackground) {animatedStarsMap} else {lvl.starsList})
+        Star(rowIndex, columnIndex, if (animationRunningInBackground) {animatedStarsMap} else {lvl.starsList})
         if (playerDir.isDirection()) {
             PlayerDirectionIcon(playerDir, screenConfig.directionIconSize)
         }
@@ -115,7 +111,7 @@ fun MapBox(rowIndex: Int, columnIndex: Int, lvl: RobuzzleLevel, gameDataViewMode
 }
 
 @Composable
-fun MapCase(color: Char, screenConfig: ScreenConfig, gameDataViewModel: GameDataViewModel){
+fun MapCase(color: Char, gameDataViewModel: GameDataViewModel){
     Box(
         Modifier
             .gradientBackground(
@@ -130,7 +126,7 @@ fun MapCase(color: Char, screenConfig: ScreenConfig, gameDataViewModel: GameData
 
 
 @Composable
-fun Star(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, rowIndex: Int, columnIndex: Int, stars: MutableList<Position>) {
+fun Star(rowIndex: Int, columnIndex: Int, stars: MutableList<Position>) {
 
     stars.forEachIndexed { index, position ->
         if (position.Match(Position(rowIndex, columnIndex))) {

@@ -15,7 +15,7 @@ import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.*
-import com.mobilegame.robozzle.presentation.ui.InGameCompose.RobuzzleLevelDisplay
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
 import com.mobilegame.robozzle.toREMOVE.PlayerData
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ProfilScreen
@@ -30,15 +30,15 @@ fun Navigation() {
 
     val navController = rememberNavController()
 
-    var playerData = PlayerData()
+    val playerData = PlayerData()
 
     val ctxt = LocalContext.current
 
-    var mUserViewModel: UserViewModel = viewModel(
+    val mUserViewModel: UserViewModel = viewModel(
         factory = UserViewModelFactory(ctxt.applicationContext as Application)
     )
 
-    var mLevelViewModel: MainMenuViewModel = viewModel(
+    val mLevelViewModel: MainMenuViewModel = viewModel(
         factory = RobuzzleLevelFactory(ctxt.applicationContext as Application)
     )
 
@@ -75,7 +75,7 @@ fun Navigation() {
             arguments = listOf(navArgument("levelNumber") { type = NavType.StringType }))
         {
             entry ->
-            RobuzzleLevelDisplay(level = levelsList[entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
+            PlayingScreen(level = levelsList[entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
         }
     }
 }

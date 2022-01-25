@@ -15,28 +15,28 @@ import java.lang.Exception
 class UserImplementation (
     private val client: HttpClient
 ): UserService {
-    override suspend fun getUser(id: Int): UserRequest? {
-        return try {
-            client.get {
-                url { encodedPath = "${USER_PATH}/$id" }
-            }
-        } catch (e: RedirectResponseException) {
-            //3xx- responses
-            Log.e("3xx","Error: ${e.response.status.description}")
-            null
-        } catch (e: ClientRequestException) {
-            //4xx- responses
-            Log.e("4xx","getUser() Error: ${e.response.status.description}")
-            null
-        } catch (e: ServerResponseException) {
-            //5xx- responses
-            Log.e("5xx","Error: ${e.response.status.description}")
-            null
-        } catch (e: Exception) {
-            Log.e("getUser","Error: ${e.message}")
-            null
-        }
-    }
+//    override suspend fun getUser(id: Int): UserRequest? {
+//        return try {
+//            client.get {
+//                url { encodedPath = "${USER_PATH}/$id" }
+//            }
+//        } catch (e: RedirectResponseException) {
+//            //3xx- responses
+//            Log.e("3xx","Error: ${e.response.status.description}")
+//            null
+//        } catch (e: ClientRequestException) {
+//            //4xx- responses
+//            Log.e("4xx","getUser() Error: ${e.response.status.description}")
+//            null
+//        } catch (e: ServerResponseException) {
+//            //5xx- responses
+//            Log.e("5xx","Error: ${e.response.status.description}")
+//            null
+//        } catch (e: Exception) {
+//            Log.e("getUser","Error: ${e.message}")
+//            null
+//        }
+//    }
 
     //    override suspend fun createUser(user: UserRequest): UserRequest? {
     override suspend fun postNewUser(user: UserRequest) {

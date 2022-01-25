@@ -23,8 +23,8 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 
     var service: UserService
 
-    private val _currentUser = MutableLiveData<User>(User(id, "", ""))
-    val currentUser: MutableLiveData<User> = _currentUser
+    private val _currentUser = MutableLiveData<User?>(User(id, "", ""))
+    val currentUser: MutableLiveData<User?> = _currentUser
     fun GetCurrentUserName(): String {
         return _currentUser.value!!.name
     }
@@ -38,25 +38,17 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     init {
         val userDao = UserDataBase.getInstance(application).userDao()
         repository = UserRepository(userDao)
-        service = UserService.create(_currentUser.value!!.name, _currentUser.value!!.password)
-//
-//        LoadUser()
-//
-//
-//        _currentUser.value?.let {
-//            IsUserStoredRemotely()
+        service = UserService.create()
+    }
+
+//    fun IsUserStoredRemotely() {
+//        var ret: Boolean = false
+//        val launch: Job = viewModelScope.launch(Dispatchers.IO) {
+//            var userRequest: UserRequest? =
+//                service.getUser("${_currentUser.value?.name}${_currentUser.value?.password}".hashCode())
+//            ConnectedIsTrue()
 //        }
-
-    }
-
-    fun IsUserStoredRemotely() {
-        var ret: Boolean = false
-        val launch: Job = viewModelScope.launch(Dispatchers.IO) {
-            var userRequest: UserRequest? =
-                service.getUser("${_currentUser.value?.name}${_currentUser.value?.password}".hashCode())
-            ConnectedIsTrue()
-        }
-    }
+//    }
 
 //    fun ConnectToServer() {
 //        service.getUser()
@@ -64,8 +56,8 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 
     fun LoadUser() {
         viewModelScope.launch(Dispatchers.Default) {
-            var userStored = repository.getUser(id)
-            userStored?.let { _currentUser.postValue(userStored!!) }
+            val userStored = repository.getUser()
+            userStored?.let { _currentUser.postValue(userStored) }
         }
     }
 
@@ -89,10 +81,10 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 }
 
+@InternalCoroutinesApi
 class UserViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {
-    @InternalCoroutinesApi
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         if (modelClass.isAssignableFrom(UserViewModel::class.java)) {

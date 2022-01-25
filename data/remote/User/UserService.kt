@@ -18,7 +18,7 @@ import io.ktor.http.*
 
 
 interface UserService {
-    suspend fun getUser(id: Int): UserRequest?
+//    suspend fun getUser(id: Int): UserRequest?
 
 //    suspend fun createUser(user: UserRequest): UserRequest?
     suspend fun postNewUser(user: UserRequest)
@@ -29,7 +29,7 @@ interface UserService {
     suspend fun test3(user: UserRequest)
 
     companion object {
-        fun create(username: String, password: String): UserService {
+        fun create(): UserService {
             return UserImplementation(
                 client = HttpClient(Android) {
                     install(HttpTimeout) {

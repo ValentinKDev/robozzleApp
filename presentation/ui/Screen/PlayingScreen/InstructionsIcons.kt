@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.InGameCompose
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.gradientBackground
-import com.mobilegame.robozzle.Extensions.match
 import com.mobilegame.robozzle.domain.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.ui.ColorsList
 
@@ -38,14 +37,15 @@ fun InstructionIconsMenu(instruction: Char, gameDataViewModel: GameDataViewModel
 fun InstructionIcons(instruction: Char, gameDataViewModel: GameDataViewModel, sizeCase: Int, sizeIcon: Int) {
     if (instruction.toString().matches("[RGBg]".toRegex())) {
         //todo: resize shape of the colored square inside the black square in the actionsRow
-        MyIconCaseColoring(instruction, sizeIcon, sizeCase, gameDataViewModel)
+//        MyIconCaseColoring(instruction, sizeIcon, sizeCase, gameDataViewModel)
+        MyIconCaseColoring(instruction, sizeCase, gameDataViewModel)
     }
     else if (instruction == 'n') { return }
-    else { SelectGoogleIcons(instruction, sizeIcon, sizeCase) }
+    else { SelectGoogleIcons(instruction, sizeIcon) }
 }
 
 @Composable
-fun SelectGoogleIcons(instruction: Char, sizeIcon: Int, sizeCase: Int) {
+fun SelectGoogleIcons(instruction: Char, sizeIcon: Int) {
     Box(modifier = Modifier.fillMaxSize()) {
         Icon(
             imageVector = when (instruction) {
@@ -74,7 +74,7 @@ fun SelectGoogleIcons(instruction: Char, sizeIcon: Int, sizeCase: Int) {
 @Composable
 fun MyIconCaseColoring(
     instruction: Char,
-    sizeIcon: Int,
+//    sizeIcon: Int,
     sizeCase: Int,
     gameDataViewModel: GameDataViewModel
 ) {

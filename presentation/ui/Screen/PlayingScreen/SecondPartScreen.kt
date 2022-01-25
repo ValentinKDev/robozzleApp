@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.InGameCompose
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -17,11 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.*
 import com.mobilegame.robozzle.Extensions.gradientBackground
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.AnimationLogic
 import com.mobilegame.robozzle.domain.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -30,6 +27,7 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.*
 import kotlinx.coroutines.*
 
+@DelicateCoroutinesApi
 @Composable
 fun SecondScreenPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     Log.i("" , "call SecondScreenPart")
@@ -173,7 +171,7 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewMode
 //                    horizontalArrangement = Alignment.Center
                 ) {
                     function.instructions.toList().forEachIndexed { index, c ->
-                        var caseColor = function.colors[index].toString()
+                        val caseColor = function.colors[index].toString()
 //                        var caseColor = function.colors[index]
                         Box(
                             modifier = Modifier
@@ -331,6 +329,7 @@ fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screen
     }
 }
 
+@DelicateCoroutinesApi
 @Composable
 fun NextButton(screenConfig: ScreenConfig, lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, animationIsOnPause: Boolean) {
     IconButton(
