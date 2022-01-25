@@ -1,2 +1,4 @@
 /data/remote/*
 /data/remote/HttpRoutes.kt
+Http*
+*Routes.kt
