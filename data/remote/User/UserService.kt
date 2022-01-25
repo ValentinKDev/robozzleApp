@@ -16,6 +16,7 @@ import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
+
 interface UserService {
     suspend fun getUser(id: Int): UserRequest?
 
