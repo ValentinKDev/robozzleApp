@@ -28,7 +28,7 @@ import kotlinx.coroutines.*
 fun Navigation() {
     //todo: should i create a LoadingScreen between every Screen to reset and reload Data to avoid some issues ?
 
-    val putain_de_bordel_de_git = "..."
+    val putain_de_bordel_de_git = "... jet brain ..."
 
     val navController = rememberNavController()
 
