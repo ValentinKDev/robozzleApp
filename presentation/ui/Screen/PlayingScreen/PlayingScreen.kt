@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.Print_List_Position
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.InGame.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.res.FALSE

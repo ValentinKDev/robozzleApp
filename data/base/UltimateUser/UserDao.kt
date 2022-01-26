@@ -1,8 +1,7 @@
-package com.mobilegame.robozzle.data.base.User
+package com.mobilegame.robozzle.data.base.UltimateUser
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {

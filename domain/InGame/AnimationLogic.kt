@@ -9,6 +9,7 @@ import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.model.GameDataViewModel
 import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.Dispatchers

@@ -10,58 +10,68 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.User.ProfilViewModel
 import com.mobilegame.robozzle.domain.model.UserViewModel
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.toREMOVE.PlayerData
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
-@Composable
-fun ProfilScreen(playerData: PlayerData, userVM: UserViewModel) {
-//    val selectedTab by userVM.profilVM.tabSeclected.observeAsState(initial = 1)
-    val selectedTab by userVM.profilVM.tabSeclected.collectAsState()
+//@InternalCoroutinesApi
+//@Composable
+//fun ProfilScreen(navController: NavController, userVM: UserViewModel) {
+//    infoLog("", "launch profil Screen")
+//
+////    val noUser: Boolean by userVM.noUser.collectAsState(true)
+//    val noUser: Boolean = userVM.noUser.value
+//
+//    infoLog("noUser", noUser.toString())
+//    if (noUser) {
+//        infoLog("navigate", "register/login")
+////        navController.navigate(Screens.RegisterLoginScreen.route)
+//        RegisterLoginScreen(userVM = userVM)
+//    }
+//    else {
+//        infoLog("navigate", "user infos")
+//        navController.navigate(Screens.UserInfoScreen.route)
+//    }
+//
+////    val selectedTab by userVM.profilVM.tabSeclected.collectAsState()
+////    val selectedTab by userVM.profilVM.tabSeclected.observeAsState(initial = 1)
+//}
 
-    infoLog("", "launch profil Screen")
-    Column(
-    ) {
-        DisplayProfilTabsHeader(userVM)
-        Spacer(modifier = Modifier.height(50.dp))
-        if (selectedTab == 1) DisplayLoginTab() else DisplayRegisterTab(playerData, userVM)
-    }
-}
 
-
-@InternalCoroutinesApi
-@Composable
-fun DisplayProfilTabsHeader(userVM: UserViewModel) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(1.0f)
-                .background(if (userVM.profilVM.IsRegisterTabSelected()) Color.Gray else Color.Transparent)
-//                    .height(70.dp)
-                .clickable {
-                    userVM.profilVM.SelectLoginTab()
-                }
-        ) {
-            Text(text = "Login ${userVM.profilVM.tabSeclected.value}", Modifier.align(Alignment.Center))
-        }
-
-        Box(
-            modifier = Modifier
-                .weight(1.0f)
-                .background(if (userVM.profilVM.IsLoginTabSelected()) Color.Gray else Color.Transparent)
-                .clickable {
-                    userVM.profilVM.SelectRegisterTab()
-                }
-        ) {
-            Text(text = "Register", Modifier.align(Alignment.Center))
-        }
-    }
-}
-
+//@InternalCoroutinesApi
+//@Composable
+//fun DisplayProfilTabsHeader(userVM: UserViewModel) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(70.dp)
+//    ) {
+//        Box(
+//            modifier = Modifier
+//                .weight(1.0f)
+//                .background(if (userVM.profilVM.IsRegisterTabSelected()) Color.Gray else Color.Transparent)
+////                    .height(70.dp)
+//                .clickable {
+//                    userVM.profilVM.SelectLoginTab()
+//                }
+//        ) {
+//            Text(text = "Login ${userVM.profilVM.tabSeclected.value}", Modifier.align(Alignment.Center))
+//        }
+//
+//        Box(
+//            modifier = Modifier
+//                .weight(1.0f)
+//                .background(if (userVM.profilVM.IsLoginTabSelected()) Color.Gray else Color.Transparent)
+//                .clickable {
+//                    userVM.profilVM.SelectRegisterTab()
+//                }
+//        ) {
+//            Text(text = "Register", Modifier.align(Alignment.Center))
+//        }
+//    }
+//}
+//

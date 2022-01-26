@@ -18,8 +18,9 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun MainSreen(navController: NavController, playerData: PlayerData, mUserViewModel: UserViewModel) {
-    val connected: Boolean by mUserViewModel.connected.observeAsState(initial = false)
+fun MainSreen(navController: NavController, mUserViewModel: UserViewModel) {
+//    val
+//    val connected: Boolean by mUserViewModel.connected.observeAsState(initial = false)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -30,10 +31,10 @@ fun MainSreen(navController: NavController, playerData: PlayerData, mUserViewMod
     ){
 //        Text(text = "name is ${playerData.name}")
 //        Text(text = "playerName is ${mUserViewModel.GetCurrentUserName()}")
-        if (connected) Text(text = "Connected as ${mUserViewModel.GetCurrentUserName()}")
+//        if (connected) Text(text = "Connected as ${mUserViewModel.GetCurrentUserName()}")
         Padd()
         ButtonMainScren(text = "Profile", navController = navController, route = Screens.ProfilScreen.route)
-        Spacer(modifier = Modifier.height(50.dp))
+        Padd()
         ButtonMainScren(text = "Levels", navController = navController, route = Screens.LevelsScreen.route)
         Padd()
         ButtonMainScren(text = "Config", navController = navController, route = Screens.ConfigScreen.route)

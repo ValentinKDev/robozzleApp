@@ -11,7 +11,7 @@ import java.lang.Exception
 class JWTTokenImplementation(
     private val client: HttpClient
 ): JWTTokenService {
-    override suspend fun getJwtToken(user: UserRequest): String? {
+    override suspend fun getJwtToken(user: UserRequest): String {
         return try {
             client.get {
                 url { encodedPath = USER_REGISTRATION_PATH }
@@ -19,18 +19,22 @@ class JWTTokenImplementation(
         } catch (e: RedirectResponseException) {
             //3xx- responses
             Log.e("3xx","Error: ${e.response.status.description}")
-            null
+//            null
+            ""
         } catch (e: ClientRequestException) {
             //4xx- responses
             Log.e("4xx","Error: ${e.response.status.description}")
-            null
+//            null
+            ""
         } catch (e: ServerResponseException) {
             //5xx- responses
             Log.e("5xx","Error: ${e.response.status.description}")
-            null
+//            null
+            ""
         } catch (e: Exception) {
             Log.e("getUser","Error: ${e.message}")
-            null
+//            null
+            ""
         }
     }
 }

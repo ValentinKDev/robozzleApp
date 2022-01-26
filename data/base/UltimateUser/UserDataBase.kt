@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.data.base.User
+package com.mobilegame.robozzle.data.base.UltimateUser
 
 import android.content.Context
 import androidx.room.Database

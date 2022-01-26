@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.base.User.User
 import com.mobilegame.robozzle.data.remote.AppConfig.AppConfigService
 import com.mobilegame.robozzle.data.remote.HttpRoutes
 import com.mobilegame.robozzle.data.remote.HttpRoutes.Auth_test
@@ -84,7 +83,7 @@ fun CreatorScreen() {
 class testViewModel(): ViewModel() {
 
     val userService: UserService
-    val userTest = User( id = -1, name = "unAutre", password = "123", )
+//    val userTest = User( id = -1, name = "unAutre", password = "123", )
 //    val userTest = User( id = -1, name = "moi", password = "123", )
 //    val userTest = User( id = -1, name = "admin", password = "123", )
 
@@ -94,7 +93,7 @@ class testViewModel(): ViewModel() {
 
     fun post() {
         viewModelScope.launch(Dispatchers.IO) {
-            userService.postNewUser(UserRequest(userTest.name, userTest.password))
+//            userService.postNewUser(UserRequest(userTest.name, userTest.password))
         }
     }
     val BASE = "http://$HOST:$PORT"
