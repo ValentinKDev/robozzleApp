@@ -1,20 +1,14 @@
-package com.mobilegame.robozzle.domain.InGame
+package com.mobilegame.robozzle.domain.model
 
-import android.graphics.Point
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.Extensions.clone
 import com.mobilegame.robozzle.Extensions.copy
 import com.mobilegame.robozzle.Extensions.replaceAt
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.InGame.ColorSwitch
+import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
@@ -23,7 +17,6 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.IndexOutOfBoundsException
 
 
 //class GameDataViewModel(lvl: RobuzzleLevel): ViewModel() {

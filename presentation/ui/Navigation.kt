@@ -18,7 +18,6 @@ import com.mobilegame.robozzle.domain.model.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
 import com.mobilegame.robozzle.toREMOVE.PlayerData
-import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ProfilScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -29,10 +28,7 @@ import kotlinx.coroutines.*
 @Composable
 fun Navigation() {
     //todo: should i create a LoadingScreen between every Screen to reset and reload Data to avoid some issues ?
-
     val navController = rememberNavController()
-
-//    val UserInfo =
 
     val playerData = PlayerData()
 
@@ -64,15 +60,11 @@ fun Navigation() {
             CreatorScreen()
         }
         composable( route = Screens.ProfilScreen.route) {
-            if (mUserViewModel.noUser.value) RegisterLoginScreen(userVM = mUserViewModel)
-            else UserInfoScreen()
-//            ProfilScreen(navController = navController,userVM = mUserViewModel)
-        }
-        composable(route = Screens.RegisterLoginScreen.route) {
-            RegisterLoginScreen(userVM = mUserViewModel)
-        }
-        composable(route = Screens.UserInfoScreen.route) {
-            UserInfoScreen()
+            if (mUserViewModel.UserNotStored()) {
+                RegisterLoginScreen(navController = navController, userVM = mUserViewModel)
+            } else {
+                UserInfoScreen()
+            }
         }
         composable(route = Screens.LevelsScreen.route) {
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data

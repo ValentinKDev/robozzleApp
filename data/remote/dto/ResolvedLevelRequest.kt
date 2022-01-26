@@ -14,12 +14,12 @@ data class ResolvedLevelRequest(
     val details: WinDetailsRequest
 )
 
-@Serializable
-data class WinDetailsRequest(
-    @SerialName("instructionsNumber")
-    val instructionsNumber: Int,
-    @SerialName("actionsNumber")
-    val actionsNumber: Int,
-    @SerialName("solutionFound")
-    val solutionFound: List<List<String>>
+//@Serializable
+//data class WinDetailsRequest(
+//    @SerialName("instructionsNumber")
+//    val instructionsNumber: Int,
+//    @SerialName("actionsNumber")
+//    val actionsNumber: Int,
+//    @SerialName("solutionFound")
+//    val solutionFound: List<List<String>>
 )

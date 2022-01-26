@@ -5,10 +5,15 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
+import com.mobilegame.robozzle.data.base.UltimateUser.User
+import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
 import com.mobilegame.robozzle.data.remote.User.UserService
+import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import com.mobilegame.robozzle.data.store.*
-import com.mobilegame.robozzle.data.store.user.User
+import com.mobilegame.robozzle.data.store.user.UserStore
 import com.mobilegame.robozzle.domain.model.User.ProfilViewModel
+import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.model.User.ResolvedLevelViewModel
 import com.mobilegame.robozzle.presentation.res.NONE
 import com.mobilegame.robozzle.domain.res.*
@@ -20,18 +25,27 @@ import kotlinx.coroutines.flow.*
 class UserViewModel(application: Application): AndroidViewModel(application) {
     private val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATASTORE)
 
-    val id = UNKNOWN
+    val lvlStatsVM = ResolvedLevelViewModel(application)
+//    val id = UNKNOWN
+    var tab = 2
 
     val profilVM = ProfilViewModel()
-    val lvlStatsVM = ResolvedLevelViewModel(application)
 
-    var service: UserService
+    val registLogVM = RegisterLoginViewModel()
 
-    private val _currentUser = MutableLiveData<User?>(null)
-    val currentUser: MutableLiveData<User?> = _currentUser
+//    var userService: UserService
+
+    private val _currentUser = MutableStateFlow<UserStore?>(null)
+    val currentUser: StateFlow<UserStore?> = _currentUser
+//    private val _currentUser = MutableLiveData<UserStore?>(null)
+//    val currentUser: MutableLiveData<UserStore?> = _currentUser
+
+    private val _tokenJwt = MutableStateFlow<String>("")
+    val tokenJwt: StateFlow<String> = _tokenJwt
 
     private val _noUser = MutableStateFlow(true)
-    val noUser: StateFlow<Boolean> = _noUser
+//    val noUser: StateFlow<Boolean> = _noUser
+    fun UserNotStored(): Boolean = _noUser.value
 
     fun GetCurrentUserName(): String {
         return _currentUser.value!!.name
@@ -45,30 +59,46 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch {
             LoadUser()
         }
-        service = UserService.create()
+//        userService = UserService.create(_tokenJwt.value)
+    }
+
+    //todo : do i have to store the token?
+    suspend fun GetAToken() {
+        withContext(Dispatchers.IO) {
+            val tokenService = JWTTokenService.create(registLogVM.name.value, registLogVM.password.value)
+            _tokenJwt.value = tokenService.getJwtToken(UserRequest(registLogVM.name.value, registLogVM.password.value))
+        }
+    }
+
+    suspend fun GetUserFromServer() {
+        withContext(Dispatchers.IO) {
+            val userService = UserService.create(_tokenJwt.value)
+            val user: UserRequest? = userService.getUltimateUser()
+        }
     }
 
     suspend fun LoadUser() {
         val user = getUserFromDatastore()
-        _currentUser.postValue( if (user.equals(User(NONE, NONE, NONE))) null else user)
-        _currentUser.value?.let {
-            _noUser.value = false
-        }
+        _currentUser.value = if (user.equals(UserStore(NONE, NONE, NONE))) null else user
+        _currentUser.value?.let { _noUser.value = false }
     }
 
-    private suspend fun getUserFromDatastore(): User {
+    private suspend fun getUserFromDatastore(): UserStore {
         val dataStore: DataStore<Preferences> = getApplication<Application>().dataStore
 
-        return User(
+        return UserStore(
             id = getStringFromDatastore(USER_ID_INFOS_KEY, dataStore),
             name = getStringFromDatastore(USER_NAME_INFOS_KEY, dataStore),
             password = getStringFromDatastore(USER_PASSWORD_INFOS_KEY, dataStore)
         )
     }
 
-    private suspend fun saveUserInDatastore(user: User) {
+    suspend fun saveUserInDatastore(user: User) {
+//    suspend fun saveUserInDatastore() {
         val dataStore: DataStore<Preferences> = getApplication<Application>().dataStore
+//        val user = registLogVM
 
+//        saveStringInDatastore(USER_ID_INFOS_KEY, registLogVM.id.value, dataStore)
         saveStringInDatastore(USER_ID_INFOS_KEY, user.id, dataStore)
         saveStringInDatastore(USER_NAME_INFOS_KEY, user.name, dataStore)
         saveStringInDatastore(USER_PASSWORD_INFOS_KEY, user.password, dataStore)

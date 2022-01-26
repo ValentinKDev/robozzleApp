@@ -34,7 +34,7 @@ fun MainSreen(navController: NavController, mUserViewModel: UserViewModel) {
 //        if (connected) Text(text = "Connected as ${mUserViewModel.GetCurrentUserName()}")
         Padd()
         ButtonMainScren(text = "Profile", navController = navController, route = Screens.ProfilScreen.route)
-        Spacer(modifier = Modifier.height(50.dp))
+        Padd()
         ButtonMainScren(text = "Levels", navController = navController, route = Screens.LevelsScreen.route)
         Padd()
         ButtonMainScren(text = "Config", navController = navController, route = Screens.ConfigScreen.route)

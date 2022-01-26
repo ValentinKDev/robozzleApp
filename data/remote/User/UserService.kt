@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.data.remote.User
 import android.util.Log
 import com.mobilegame.robozzle.data.remote.HttpRoutes
 import com.mobilegame.robozzle.data.remote.Level.TokenInfo
+import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -18,18 +19,21 @@ import io.ktor.http.*
 
 
 interface UserService {
-//    suspend fun getUser(id: Int): UserRequest?
+    suspend fun getUltimateUser(): UltimateUserRequest?
 
 //    suspend fun createUser(user: UserRequest): UserRequest?
-    suspend fun postNewUser(user: UserRequest)
+    //todo : return a value to know if the user is already in the database ?
+    suspend fun postNewUser(user: UserRequest): String
 //    suspend fun getUsers(): List<UserRequest>
 
+
+
 //    suspend fun createPlayerAuth(player: UserRequest): UserRequest?
-    suspend fun test(user: UserRequest): TokenInfo?
-    suspend fun test3(user: UserRequest)
+//    suspend fun test(user: UserRequest): TokenInfo?
+//    suspend fun test3(user: UserRequest)
 
     companion object {
-        fun create(): UserService {
+        fun create(token: String): UserService {
             return UserImplementation(
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
@@ -72,10 +76,8 @@ interface UserService {
                         bearer {
                             loadTokens {
                                 BearerTokens(
-//                                    accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4ODg4L2hlbGxvIiwiaXNzIjoiaHR0cDovLzAuMC4wLjA6ODg4OCIsIm5hbWUiOiJhZG1pbiIsImV4cCI6MTY0Mjk3NDQ4MSwidXNlcklkIjoiMCJ9.xA9BeR3jQBb8KQt3Zu0AqxJXxP-tGrTZ2aV9TEJVAy0",
-//                                    refreshToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4ODg4L2hlbGxvIiwiaXNzIjoiaHR0cDovLzAuMC4wLjA6ODg4OCIsIm5hbWUiOiJhZG1pbiIsImV4cCI6MTY0Mjk3NDQ4MSwidXNlcklkIjoiMCJ9.xA9BeR3jQBb8KQt3Zu0AqxJXxP-tGrTZ2aV9TEJVAy0",
-                                    accessToken = "sdlf",
-                                    refreshToken = "sdlf",
+                                    accessToken = token,
+                                    refreshToken = token,
                                 )
                             }
                         }
