@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.presentation.ui.ColorsList
 import com.mobilegame.robozzle.presentation.ui.RecognizeColor
 import kotlinx.coroutines.DelicateCoroutinesApi
 
+//todo : use the navigation to avoid the recall of the function DisplayGameScreen 3 times
 @DelicateCoroutinesApi
 @Composable
 fun DisplayGameScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {

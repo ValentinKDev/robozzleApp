@@ -106,12 +106,6 @@ class AppConfigViewModel (application: Application): AndroidViewModel(applicatio
     }
 
 
-    //todo : get from datastore ? ??? wtf room or not room
-    suspend fun getLocalVersionValue(key: String, default: String = NONE): String = withContext(Dispatchers.IO) {
-        val wrappedKey = stringPreferencesKey(key)
-        val valueFlow: Flow<String> = getApplication<Application>().dataStore.data.map { it[wrappedKey] ?: default }
-        return@withContext valueFlow.first()
-    }
     private suspend fun UpDateLocalVersion() {
         infoLog(".. Update Local Version ()", "start")
         withContext(Dispatchers.IO) {
@@ -120,6 +114,13 @@ class AppConfigViewModel (application: Application): AndroidViewModel(applicatio
                 LoadVersionFromLocal()
             }
         }
+    }
+
+    //todo : get from datastore ? ??? wtf room or not room
+    suspend fun getLocalVersionValue(key: String, default: String = NONE): String = withContext(Dispatchers.IO) {
+        val wrappedKey = stringPreferencesKey(key)
+        val valueFlow: Flow<String> = getApplication<Application>().dataStore.data.map { it[wrappedKey] ?: default }
+        return@withContext valueFlow.first()
     }
 
     suspend fun saveLocalVersionValue(key: String, value: String) = withContext(Dispatchers.IO) {

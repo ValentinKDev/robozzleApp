@@ -26,7 +26,7 @@ fun ButtonRegister(name: String, password: String, vm: UserViewModel) {
                 .align(Alignment.Center)
                 .background(Color.Gray)
                 .clickable {
-                    vm.CreateUser(name, password)
+//                    vm.CreateUser(name, password)
                 }
         ) {
             Text(text = "Register", Modifier.align(Alignment.Center))
