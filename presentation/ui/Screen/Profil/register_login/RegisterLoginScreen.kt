@@ -22,7 +22,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel, registerLoginVM: RegisterLoginViewModel = viewModel()) {
+fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel = viewModel(), registerLoginVM: RegisterLoginViewModel = viewModel()) {
     infoLog("Launch", "RegisterLoginScreen")
     Column {
         RegisterLoginTabs(userVM = userVM)

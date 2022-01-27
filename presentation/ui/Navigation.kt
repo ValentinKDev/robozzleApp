@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -46,25 +47,25 @@ fun Navigation() {
 
     val levelsList: List<RobuzzleLevel> by mLevelViewModel.rbAllLevelList.observeAsState(initial = emptyList())
 
-    mLevelViewModel.testroomversion()
     Log.v("Navigation", "levelList size ${levelsList.size}")
 
     NavHost(navController = navController, startDestination = Screens.MainScreen.route){
         composable(route = Screens.MainScreen.route) {
-            MainSreen(navController = navController, mUserViewModel)
+            MainSreen(navController = navController)
         }
         composable(route = Screens.ConfigScreen.route) {
             ConfigScreen()
         }
         composable(route = Screens.CreatorScreen.route) {
-            CreatorScreen()
+            CreatorScreen(mUserViewModel)
         }
         composable( route = Screens.ProfilScreen.route) {
-            if (mUserViewModel.UserNotStored()) {
-                RegisterLoginScreen(navController = navController, userVM = mUserViewModel)
-            } else {
-                UserInfoScreen()
-            }
+//            if (mUserViewModel.UserNotStored()) {
+//            RegisterLoginScreen(navController = navController, userVM = mUserViewModel)
+            RegisterLoginScreen(navController = navController)
+//            } else {
+//                UserInfoScreen()
+//            }
         }
         composable(route = Screens.LevelsScreen.route) {
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
@@ -81,3 +82,11 @@ fun Navigation() {
         }
     }
 }
+
+//class Action(navController: NavHostController) {
+//    @OptIn(InternalCoroutinesApi::class)
+//    val Main: () -> Unit = {
+//        MainSreen(navController = navController)
+//    }
+//    val navigateBack: () -> Unit = { navController.popBackStack() }
+//}

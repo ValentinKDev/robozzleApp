@@ -18,7 +18,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun MainSreen(navController: NavController, mUserViewModel: UserViewModel) {
+fun MainSreen(navController: NavController) {
 //    val
 //    val connected: Boolean by mUserViewModel.connected.observeAsState(initial = false)
 

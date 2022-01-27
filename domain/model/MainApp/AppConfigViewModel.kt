@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @InternalCoroutinesApi
+//class AppConfigViewModel (): ViewModel() {
 class AppConfigViewModel (application: Application): AndroidViewModel(application) {
 //class AppConfigViewModel (val application: Application): ViewModel {
 

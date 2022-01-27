@@ -3,7 +3,6 @@ package com.mobilegame.robozzle.data.remote.dto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class ResolvedLevelRequest(
     @SerialName("lvl_id")
@@ -22,4 +21,3 @@ data class ResolvedLevelRequest(
 //    val actionsNumber: Int,
 //    @SerialName("solutionFound")
 //    val solutionFound: List<List<String>>
-)

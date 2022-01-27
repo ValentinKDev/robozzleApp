@@ -118,6 +118,7 @@ fun DisplayActionsRow(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, 
 }
 
 //todo : est ce que la barre d'action s'affiche uniquement lors du lancement ? est ce que je peux animer les action qui se stack au fur et a mesure que le joueur selectionne des instructions
+//todo : bug affichage quand la fonction 0 ne fait que rappeller la fonction 0
 @Composable
 fun DisplayActionRowCase(action: Int, lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     Box(
