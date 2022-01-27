@@ -27,7 +27,14 @@ import kotlinx.coroutines.flow.*
 
 @InternalCoroutinesApi
 class MainMenuViewModel(application: Application): AndroidViewModel(application) {
+//class MainMenuViewModel(): ViewModel() {
 
+
+//    val dataStore: DataStore<Preferences> by lazy { getApplication<Application>().dataStore }
+//    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
+//    val dataStore: DataStore<Preferences> = application.Data
+
+    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
 
     private val _cannotPlayCuzServerDown = MutableStateFlow<Boolean>(false)
     val cannotPlayCuzServerDown: StateFlow<Boolean> = _cannotPlayCuzServerDown
@@ -61,28 +68,21 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
         _serverLevelsListVersion.postValue(version)
     }
 
-    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
 
-    suspend fun saveRegisterTokenInMemory(key: String, registerToken: String) = withContext(Dispatchers.IO) {
-        val wrappedKey = stringPreferencesKey(key)
-        getApplication<Application>().dataStore.edit {
-            it[wrappedKey] = registerToken
-        }
-    }
-
-    suspend fun getRegisterTokenInMemory(key: String, default: String = NONE): String = withContext(Dispatchers.IO) {
-        val wrappedKey = stringPreferencesKey(key)
-        val valueFlow: Flow<String> = getApplication<Application>().dataStore.data.map {it[wrappedKey] ?: default}
-        return@withContext valueFlow.first()
-    }
-
-
-    fun testroomversion() {
-
-    }
+//    suspend fun saveRegisterTokenInMemory(key: String, registerToken: String) = withContext(Dispatchers.IO) {
+//        val wrappedKey = stringPreferencesKey(key)
+//        getApplication<Application>().dataStore.edit {
+//            it[wrappedKey] = registerToken
+//        }
+//    }
+//
+//    suspend fun getRegisterTokenInMemory(key: String, default: String = NONE): String = withContext(Dispatchers.IO) {
+//        val wrappedKey = stringPreferencesKey(key)
+//        val valueFlow: Flow<String> = getApplication<Application>().dataStore.data.map {it[wrappedKey] ?: default}
+//        return@withContext valueFlow.first()
+//    }
 
     var appConfigVM: AppConfigViewModel = AppConfigViewModel(application)
-
 
     init {
         Log.e("init", "MainMenuViewModel()")

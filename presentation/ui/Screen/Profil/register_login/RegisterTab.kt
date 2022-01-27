@@ -16,11 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.remote.User.ServerSend
+import com.mobilegame.robozzle.data.remote.User.ServerRet
 import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.model.UserViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ButtonRegister
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -33,22 +32,26 @@ import kotlinx.coroutines.launch
 fun RegisterTab(navController: NavController, vm: UserViewModel, registerLoginVM: RegisterLoginViewModel) {
     val serverReturn by registerLoginVM.registerReturn.collectAsState()
 
-
     when (serverReturn) {
-        ServerSend.POSITIV.ret -> {
-            navController.navigate(Screens.UserInfoScreen.route)
+        ServerRet.POSITIV.ret -> {
+//            infoLog("serverReturn", "positiv")
+
+            GlobalScope.launch {
+                vm.GetAToken()
+            }
+//            navController.navigate(Screens.UserInfoScreen.route)
         }
         else -> {
             Box {
                 //todo: may be just write a message under the Register button ???
                 RegisteringElements(registerLoginVM = registerLoginVM)
                 if (
-                    serverReturn == ServerSend.ERROR200.ret
-                    || serverReturn == ServerSend.ERROR300.ret
-                    || serverReturn == ServerSend.ERROR400.ret
-                    || serverReturn == ServerSend.ERROR500.ret
+                    serverReturn == ServerRet.ERROR200.ret
+                    || serverReturn == ServerRet.ERROR300.ret
+                    || serverReturn == ServerRet.ERROR400.ret
+                    || serverReturn == ServerRet.ERROR500.ret
                     //exception server not availbale ?
-                    || serverReturn == ServerSend.EXCETPTION.ret
+                    || serverReturn == ServerRet.EXCETPTION.ret
                 ) {
                     Row(
                         Modifier.fillMaxHeight().align(Alignment.Center)

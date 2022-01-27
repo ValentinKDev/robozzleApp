@@ -34,6 +34,7 @@ fun DisplayGameScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel
 }
 
 //todo : highlight in background only the instruction you selected ?
+//todo : il manque la touche supprimer l'instruction selectionnée
 @Composable
 fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig ) {
 

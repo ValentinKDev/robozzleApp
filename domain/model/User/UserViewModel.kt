@@ -8,10 +8,10 @@ import androidx.lifecycle.*
 import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
 import com.mobilegame.robozzle.data.remote.User.UserService
-import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import com.mobilegame.robozzle.data.store.*
 import com.mobilegame.robozzle.data.store.user.UserStore
+import com.mobilegame.robozzle.domain.DataStoredProviding
 import com.mobilegame.robozzle.domain.model.User.ProfilViewModel
 import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.model.User.ResolvedLevelViewModel
@@ -73,7 +73,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     suspend fun GetUserFromServer() {
         withContext(Dispatchers.IO) {
             val userService = UserService.create(_tokenJwt.value)
-            val user: UserRequest? = userService.getUltimateUser()
+//            val ultimateUser: UltimateUserRequest? = userService.getUltimateUser()
         }
     }
 
@@ -87,21 +87,18 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         val dataStore: DataStore<Preferences> = getApplication<Application>().dataStore
 
         return UserStore(
-            id = getStringFromDatastore(USER_ID_INFOS_KEY, dataStore),
-            name = getStringFromDatastore(USER_NAME_INFOS_KEY, dataStore),
-            password = getStringFromDatastore(USER_PASSWORD_INFOS_KEY, dataStore)
+            id = getStringFromDatastore(DataStoredProviding.ID.key, dataStore),
+            name = getStringFromDatastore(DataStoredProviding.NAME.key, dataStore),
+            password = getStringFromDatastore(DataStoredProviding.PASSWORD.key, dataStore)
         )
     }
 
     suspend fun saveUserInDatastore(user: User) {
-//    suspend fun saveUserInDatastore() {
         val dataStore: DataStore<Preferences> = getApplication<Application>().dataStore
-//        val user = registLogVM
 
-//        saveStringInDatastore(USER_ID_INFOS_KEY, registLogVM.id.value, dataStore)
-        saveStringInDatastore(USER_ID_INFOS_KEY, user.id, dataStore)
-        saveStringInDatastore(USER_NAME_INFOS_KEY, user.name, dataStore)
-        saveStringInDatastore(USER_PASSWORD_INFOS_KEY, user.password, dataStore)
+//        saveStringInDatastore(DataStoredProviding.ID.key, user.id, dataStore)
+//        saveStringInDatastore(DataStoredProviding.NAME.key, user.name, dataStore)
+//        saveStringInDatastore(DataStoredProviding.PASSWORD.key, user.password, dataStore)
     }
 //    private suspend fun getUserInfoFromDatastore(infoKey: String, default: String = NONE): String = withContext(Dispatchers.IO) {
 //        val wrappedKey = stringPreferencesKey(infoKey)

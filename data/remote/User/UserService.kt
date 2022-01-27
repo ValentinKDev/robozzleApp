@@ -19,7 +19,7 @@ import io.ktor.http.*
 
 
 interface UserService {
-    suspend fun getUltimateUser(): UltimateUserRequest?
+    suspend fun getUltimateUser(name: String): UltimateUserRequest?
 
 //    suspend fun createUser(user: UserRequest): UserRequest?
     //todo : return a value to know if the user is already in the database ?
