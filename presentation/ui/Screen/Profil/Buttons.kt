@@ -9,14 +9,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
+import com.mobilegame.robozzle.domain.model.UserViewModel
 import kotlinx.coroutines.*
 
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel) {
+fun ButtonRegister(enable: Boolean, name: String, password: String, vm: UserViewModel, navController: NavController) {
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -26,10 +27,8 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
                 .background(Color.Gray)
             ,
             onClick = {
-                GlobalScope.launch {
-                    infoLog("register button", "click")
-                    vm.RegisterProcess(name, password)
-                }
+              infoLog("register", "onClick")
+                vm.registerOnClickListner()
             },
             enabled = enable
         ) {

@@ -2,8 +2,8 @@ package com.mobilegame.robozzle.data.remote
 
 object HttpRoutes {
     const val PORT = 8888
-    const val HOST = "192.168.0.13"
-//    const val HOST = "192.168.0.8"
+//    const val HOST = "192.168.0.13"
+    const val HOST = "192.168.0.8"
     private const val BASE_URL = "http://$HOST:$PORT"
     const val Auth_test = "$BASE_URL/me"
     const val APP_CONFIG = "/config/data"
@@ -11,8 +11,10 @@ object HttpRoutes {
     const val LEVELS_NUMBER_PATH = "/all_levels/size"
     const val PLAYER_PATH = "/players"
     const val USER_PATH = "/users"
+    const val GET_TOKEN_PATH = "/token/generate"
     const val USER_REGISTRATION_PATH = "/newuser643/register"
     const val USER_ULTIMATE_PATH = "/user"
+    const val USER_GET_TOKEN = "/user/mytoken"
     const val TEST_TOKEN = "/test/token"
     const val TRY_ME = "/me"
     const val LOGIN_PATH = "/login"

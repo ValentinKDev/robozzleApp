@@ -5,6 +5,7 @@ import com.mobilegame.robozzle.data.remote.HttpRoutes
 import com.mobilegame.robozzle.data.remote.Level.TokenInfo
 import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
+import com.mobilegame.robozzle.domain.model.UserViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -20,6 +21,7 @@ import io.ktor.http.*
 
 interface UserService {
     suspend fun getUltimateUser(name: String): UltimateUserRequest?
+//    suspend fun getUser(): UserRequest?
 
 //    suspend fun createUser(user: UserRequest): UserRequest?
     //todo : return a value to know if the user is already in the database ?
@@ -48,7 +50,6 @@ interface UserService {
                             override fun log(message: String) {
                                 Log.v("Logger Ktor =>", message)
                             }
-
                         }
                         level = LogLevel.ALL
                     }

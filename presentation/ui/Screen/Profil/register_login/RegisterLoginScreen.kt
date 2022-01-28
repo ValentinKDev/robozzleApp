@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,27 +24,28 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel = viewModel(), registerLoginVM: RegisterLoginViewModel = viewModel()) {
+//fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel = viewModel(), registerLoginVM: RegisterLoginViewModel = viewModel()) {
+fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel) {
     infoLog("Launch", "RegisterLoginScreen")
     Column {
-        RegisterLoginTabs(userVM = userVM)
+        RegisterLoginTabsHead(userVM = userVM)
         if (userVM.tab == 1) {
             infoLog("tab", "login")
             LoginTab(userVM = userVM)
         }
         else {
             infoLog("tab", "resgister")
-            RegisterTab(navController, userVM, registerLoginVM)
+            RegisterTab(navController, userVM)
         }
-//        DisplayProfilTabsHeader(userVM)
         Spacer(modifier = Modifier.height(50.dp))
-//        if (selectedTab == 1) DisplayLoginTab() else DisplayRegisterTab(playerData, userVM)
     }
 }
 
 @InternalCoroutinesApi
 @Composable
-fun RegisterLoginTabs(userVM: UserViewModel) {
+fun RegisterLoginTabsHead(userVM: UserViewModel) {
+    val tabSelected by userVM.registLogVM.tabSeclected.collectAsState(1)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,24 +54,28 @@ fun RegisterLoginTabs(userVM: UserViewModel) {
         Box(
             modifier = Modifier
                 .weight(1.0f)
-                .background(if (userVM.profilVM.IsRegisterTabSelected()) Color.Gray else Color.Transparent)
+                //todo: could avoid the test on tabselect by using an boolean variable like isRegisterTabSelected
+                .background(if (tabSelected == 1) Color.Transparent else Color.Gray)
+//                .background(if (userVM.registLogVM.IsRegisterTabSelected()) Color.Gray else Color.Transparent)
 //                    .height(70.dp)
                 .clickable {
-                    userVM.profilVM.SelectLoginTab()
+                    userVM.registLogVM.SelectLoginTab()
                 }
+
         ) {
-            Text(text = "Login ${userVM.profilVM.tabSeclected.value}", Modifier.align(Alignment.Center))
+            Text(text = "Register", Modifier.align(Alignment.Center))
         }
 
         Box(
             modifier = Modifier
                 .weight(1.0f)
-                .background(if (userVM.profilVM.IsLoginTabSelected()) Color.Gray else Color.Transparent)
+//                .background(if (userVM.registLogVM.IsLoginTabSelected()) Color.Gray else Color.Transparent)
+                .background(if (tabSelected == 2) Color.Transparent else Color.Gray)
                 .clickable {
-                    userVM.profilVM.SelectRegisterTab()
+                    userVM.registLogVM.SelectRegisterTab()
                 }
         ) {
-            Text(text = "Register", Modifier.align(Alignment.Center))
+            Text(text = "Login ${userVM.registLogVM.tabSeclected.value}", Modifier.align(Alignment.Center))
         }
     }
 }

@@ -32,7 +32,7 @@ fun LoginTab(userVM: UserViewModel) {
 //                    userVM.profilVM.SelectLoginTab()
 //                }
 //        ) {
-            Text(text = "Login ${userVM.profilVM.tabSeclected.value}")
+            Text(text = "Login ${userVM.registLogVM.tabSeclected.value}")
 //        }
 //
 //        Box(

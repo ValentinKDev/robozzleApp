@@ -1,8 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -12,80 +11,58 @@ import androidx.compose.material.icons.filled.Android
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.remote.User.ServerRet
-import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
+import com.mobilegame.robozzle.domain.UserConnectionState
 import com.mobilegame.robozzle.domain.model.UserViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ButtonRegister
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisterTab(navController: NavController, vm: UserViewModel, registerLoginVM: RegisterLoginViewModel) {
-    val serverReturn by registerLoginVM.registerReturn.collectAsState()
+fun RegisterTab(navController: NavController, vm: UserViewModel) {
+    val connectionState by vm.userConnectionSate.collectAsState(UserConnectionState.NotConnected)
 
-    when (serverReturn) {
-        ServerRet.POSITIV.ret -> {
-//            infoLog("serverReturn", "positiv")
-
-            GlobalScope.launch {
-                vm.GetAToken()
-            }
-//            navController.navigate(Screens.UserInfoScreen.route)
+    when (connectionState) {
+        UserConnectionState.NoUser ->  {
+            infoLog("RegisterTab", "connectionState not connected")
+            RegisteringElements(vm, navController = navController)
         }
-        else -> {
-            Box {
-                //todo: may be just write a message under the Register button ???
-                RegisteringElements(registerLoginVM = registerLoginVM)
-                if (
-                    serverReturn == ServerRet.ERROR200.ret
-                    || serverReturn == ServerRet.ERROR300.ret
-                    || serverReturn == ServerRet.ERROR400.ret
-                    || serverReturn == ServerRet.ERROR500.ret
-                    //exception server not availbale ?
-                    || serverReturn == ServerRet.EXCETPTION.ret
-                ) {
-                    Row(
-                        Modifier.fillMaxHeight().align(Alignment.Center)
-                    ) {
-                        Column(
-                        ) {
-                            Box(
-                                Modifier
-                                    .background(Color.Red)
-                                    .width(250.dp)
-                                    .height(150.dp)
-                                    .clickable {
-                                        registerLoginVM.resetRegisterReturn()
-                                    }
-//                                .clickable()
-                            ){
-                                Text("Error")
-                            }
-                        }
-                    }
-                }
-            }
+        //todo : personalize ret from server for weird error or just an already exsiting name
+        UserConnectionState.NotConnected ->  {
+            infoLog("RegisterTab", "connectionState not connected")
+            RegisteringElements(vm, navController = navController)
+            Toast.makeText(LocalContext.current, "Error impossible to registrate with this login", Toast.LENGTH_SHORT).show()
         }
+        UserConnectionState.Created -> {
+            infoLog("RegisterTab", "connectionState created")
+            vm.newUserCreationProcess()
+//            vm.getAToken(vm.registLogVM.name.value, vm.registLogVM.password.value)
+//            vm.connectUserToServer(vm.registLogVM.name.value, vm.registLogVM.password.value)
+        }
+        UserConnectionState.Connected -> {
+            infoLog("RegisterTab", "connectionState connected")
+            navController.navigate(Screens.MainScreen.route)
+        }
+        else -> errorLog("Register Tab", "Error from the connectionState / value $connectionState")
     }
 }
 
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisteringElements(registerLoginVM: RegisterLoginViewModel) {
-    var name by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    val isValidName: Boolean = name.length >= 3
-    val isValidPassword: Boolean = password.length >= 3
+fun RegisteringElements(vm: UserViewModel, navController: NavController) {
+    val name by remember(vm.registLogVM) {vm.registLogVM.name}.collectAsState( initial = "" )
+    val password by remember(vm.registLogVM) {vm.registLogVM.password}.collectAsState( initial = "" )
+    val isValidName: Boolean = vm.registLogVM.nameIsValid.value
+    val isValidPassword: Boolean = vm.registLogVM.passwordIsValid.value
 
     Column( )
     {
@@ -93,52 +70,25 @@ fun RegisteringElements(registerLoginVM: RegisterLoginViewModel) {
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             value = name,
-            onValueChange = {
-                name = it.trim()
-                //todo: add tabulation and other weird shit in the unauthorized characters
-                if (name.isNotEmpty() && "[./:*?<>|~#%&+{}-]".toRegex().matches(name[name.lastIndex].toString())) {
-                    name = name.substringBefore(name[name.lastIndex])
-                }
-                infoLog("name input", name)
-            },
+            onValueChange = { vm.registLogVM.handleInputName(it) },
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
-            label = {
-//                val diplayedText = "name or email"
-                val label =
-                    if (name.isEmpty()) "name or email"
-                    else if (!isValidName) {
-                        if (registerLoginVM.name.value.length < 3) { "your name can't be less than 3 characters" }
-                        //todo: protect against illegal character
-//                        else if (("[./:*?<>|~#%&+{}-]\t".toRegex()).find(name)) { "your name contains unauthorized characeter" }
-//                        else if (name.con)k
-//                        else if (name.contains("[./:*?<>|~#%&+{}-]".toRegex())) { "your name contains unauthorized characeter" }
-                        else { "your name is incorrect" }
-                    }
-                    else "your login id :"
-                Text(text = label)
-            },
+            label = { Text(text = vm.registLogVM.getNameInputFieldLabel()) },
             isError = !isValidName,
         )
 
-//        val textValidInfo = if (isValidName) "valid" else "invalid"
-        if (name.isNotEmpty() && !isValidName) Text("Player name \"$name\" is invalid", Modifier.align(Alignment.CenterHorizontally))
+        if (!isValidName) Text("Player name \"$name\" is invalid", Modifier.align(Alignment.CenterHorizontally))
 
         Spacer(modifier = Modifier.height(50.dp))
 
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
+            label = { Text(vm.registLogVM.getPasswordInputFieldLabel()) },
             value = password,
             onValueChange = {
-                password = it.trim()
+                vm.registLogVM.trimPasswordInput(it)
             },
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
-            label = {
-                val label =
-                    if (password.isEmpty()) "password"
-                else if (!isValidPassword) "your password can't be less than 3 characters"
-                else ""
-                Text(text = label)
-            },
+            isError = !isValidPassword,
             enabled = isValidName,
         )
 
@@ -146,6 +96,6 @@ fun RegisteringElements(registerLoginVM: RegisterLoginViewModel) {
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = registerLoginVM)
+        ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navController = navController)
     }
 }

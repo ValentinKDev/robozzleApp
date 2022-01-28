@@ -60,12 +60,7 @@ fun Navigation() {
             CreatorScreen(mUserViewModel)
         }
         composable( route = Screens.ProfilScreen.route) {
-//            if (mUserViewModel.UserNotStored()) {
-//            RegisterLoginScreen(navController = navController, userVM = mUserViewModel)
-            RegisterLoginScreen(navController = navController)
-//            } else {
-//                UserInfoScreen()
-//            }
+            RegisterLoginScreen(navController = navController, mUserViewModel)
         }
         composable(route = Screens.LevelsScreen.route) {
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
