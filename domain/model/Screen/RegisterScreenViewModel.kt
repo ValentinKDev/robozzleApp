@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.model.User
+package com.mobilegame.robozzle.domain.model.Screen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class RegisterLoginViewModel(): ViewModel() {
+class RegisterScreenViewModel(): ViewModel() {
+
+
 
     private val _tabSelected = MutableStateFlow(1)
     val tabSeclected : StateFlow<Int> = _tabSelected

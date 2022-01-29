@@ -2,11 +2,6 @@ package com.mobilegame.robozzle.domain.model
 
 import android.app.Application
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.Extensions.toRobuzzleLevelList
 import com.mobilegame.robozzle.analyse.errorLog
@@ -20,8 +15,8 @@ import com.mobilegame.robozzle.data.remote.dto.LevelRequest
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.MainApp.AppConfigViewModel
+import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.res.ERROR
-import com.mobilegame.robozzle.presentation.res.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -34,7 +29,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 //    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
 //    val dataStore: DataStore<Preferences> = application.Data
 
-    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
+//    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
 
     private val _cannotPlayCuzServerDown = MutableStateFlow<Boolean>(false)
     val cannotPlayCuzServerDown: StateFlow<Boolean> = _cannotPlayCuzServerDown
@@ -51,15 +46,11 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
 
     private val repository: LevelRepository
-//    private val version_repository: Level_VersionRepository
 
     val _localLevelsListVersion = MutableLiveData<String?>(null)
-
-//    val _localLevelsListVersion = MutableLiveData<String>()
     private fun Set_localLevelListVersion(version: String) {
         verbalLog("set", "$version")
-//        _localLevelsListVersion.postValue(version)
-    _localLevelsListVersion.value = version
+        _localLevelsListVersion.value = version
         verbalLog("isSet", "${_localLevelsListVersion.value}")
     }
 
@@ -69,22 +60,17 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
     }
 
 
-//    suspend fun saveRegisterTokenInMemory(key: String, registerToken: String) = withContext(Dispatchers.IO) {
-//        val wrappedKey = stringPreferencesKey(key)
-//        getApplication<Application>().dataStore.edit {
-//            it[wrappedKey] = registerToken
-//        }
-//    }
-//
-//    suspend fun getRegisterTokenInMemory(key: String, default: String = NONE): String = withContext(Dispatchers.IO) {
-//        val wrappedKey = stringPreferencesKey(key)
-//        val valueFlow: Flow<String> = getApplication<Application>().dataStore.data.map {it[wrappedKey] ?: default}
-//        return@withContext valueFlow.first()
-//    }
-
     var appConfigVM: AppConfigViewModel = AppConfigViewModel(application)
 
+//    val datastoreRepo = DataStoreService.createUserService(getApplication())
+//    val datastoreVM = DataViewModel(datastoreRepo)
+
     init {
+//        infoLog("test", "main menu viewModel")
+//        infoLog("dataStored name", "${datastoreVM.getName()}")
+//        datastoreVM.getName()
+
+
         Log.e("init", "MainMenuViewModel()")
         val levelDao = LevelDataBase.getInstance(application).levelDao()
         repository = LevelRepository(levelDao)
@@ -162,6 +148,20 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
+//    suspend fun saveRegisterTokenInMemory(key: String, registerToken: String) = withContext(Dispatchers.IO) {
+//        val wrappedKey = stringPreferencesKey(key)
+//        getApplication<Application>().dataStore.edit {
+//            it[wrappedKey] = registerToken
+//        }
+//    }
+//
+//    suspend fun getRegisterTokenInMemory(key: String, default: String = NONE): String = withContext(Dispatchers.IO) {
+//        val wrappedKey = stringPreferencesKey(key)
+//        val valueFlow: Flow<String> = getApplication<Application>().dataStore.data.map {it[wrappedKey] ?: default}
+//        return@withContext valueFlow.first()
+//    }
+
+
 //    private suspend fun LoadLevelListVersions() {
 //        infoLog("Load Level List Version ()", "in Scope")
 //        todo: remove if double
@@ -193,7 +193,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
 }
 
-class RobuzzleLevelFactory(
+class MainMenurViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {
     @InternalCoroutinesApi

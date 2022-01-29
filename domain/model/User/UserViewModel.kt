@@ -1,9 +1,6 @@
 package com.mobilegame.robozzle.domain.model
 
 import android.app.Application
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -13,16 +10,14 @@ import com.mobilegame.robozzle.data.remote.User.ServerRet
 import com.mobilegame.robozzle.data.remote.User.UserService
 import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
-import com.mobilegame.robozzle.data.store.*
-import com.mobilegame.robozzle.data.store.user.UserStore
-import com.mobilegame.robozzle.domain.KeyProvider
+//import com.mobilegame.robozzle.data.store.user.UserStore
 import com.mobilegame.robozzle.domain.UserConnectionState
-import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
+import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
 import com.mobilegame.robozzle.domain.model.User.ResolvedLevelViewModel
-import com.mobilegame.robozzle.domain.repository.datastore.DataStoreRepository
+import com.mobilegame.robozzle.data.store.DataStoreService
+import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.ERROR
 import com.mobilegame.robozzle.domain.res.NOTOKEN
-import com.mobilegame.robozzle.domain.res.PREFERENCES_NAME
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.lang.NumberFormatException
@@ -35,12 +30,13 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 //    val id = UNKNOWN
     var tab = 2
 
-    val registLogVM = RegisterLoginViewModel()
+    val registLogVM = RegisterScreenViewModel()
 
 //    var userService: UserService
 
-    private val _currentUser = MutableStateFlow<UserStore?>(null)
-    val currentUser: StateFlow<UserStore?> = _currentUser
+    private val _currentUser = MutableStateFlow<User?>(null)
+    val currentUser: StateFlow<User?> = _currentUser
+
 //    private val _currentUser = MutableLiveData<UserStore?>(null)
 //    val currentUser: MutableLiveData<UserStore?> = _currentUser
 
@@ -60,6 +56,9 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     private fun set_userConnectionState(state: UserConnectionState) {
         _userConnectionState.value = state
     }
+
+    val userDataStoreService = DataStoreService.createUserService(getApplication())
+    val userDataStoreVM = UserDataStoreViewModel(userDataStoreService)
 
     init {
     }
@@ -141,21 +140,34 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 //    private val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATASTORE)
 //    val dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
 
+    fun getUserInDataStore() {
+        infoLog("get user in Datastore", "start")
+//        val dataStoreService = DataStoreRepository.create(getApplication())
+//        val datastoreVM = DataViewModel(dataStoreService)
+
+        val id = userDataStoreVM.getId()
+        val name = userDataStoreVM.getName()
+        val password = userDataStoreVM.getPassword()
+        infoLog(id.toString(), "from datastore")
+        infoLog(name!!, "from datastore")
+        infoLog(password!!, "from datastore")
+    }
+
     suspend fun saveUserInDatastore(user: User) {
         infoLog("saveUserInDatastore", "start")
+//        val dataStoreService = DataStoreRepository.create(getApplication())
+//        val userDataStoreVM = DataViewModel(dataStoreService)
+        userDataStoreVM.saveId(user.id)
+        userDataStoreVM.saveName(user.name)
+        userDataStoreVM.savePassword(user.password)
 
 //        saveStringInDatastore(KeyProvider.Id.key, user.id.toString(), dataStore)
 //        saveStringInDatastore(KeyProvider.Name.key, user.name, dataStore)
 //        saveStringInDatastore(KeyProvider.Password.key, user.password, dataStore)
 //        saveStringInDatastore()
 
-        val datastoreRepo = DataStoreRepository.create(getApplication())
-        val datastoreVM = DataViewModel(datastoreRepo)
 
         infoLog("check ", "n")
-//        datastoreVM.saveId(user.id)
-//        datastoreVM.saveName(user.name)
-//        datastoreVM.savePassword(user.password)
 
 //        dataRepo.putInt(KeyProvider.Id.key, user.id)
 //        dataRepo.putString(KeyProvider.Name.key, user.name)

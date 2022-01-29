@@ -1,6 +1,6 @@
 package com.mobilegame.robozzle.data.remote
 
-object HttpRoutes {
+internal :object HttpRoutes {
     const val PORT = 8888
 //    const val HOST = "192.168.0.13"
     const val HOST = "192.168.0.8"

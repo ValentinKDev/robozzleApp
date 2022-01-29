@@ -4,13 +4,12 @@ import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.MainMenuViewModel
+import com.mobilegame.robozzle.domain.model.MainMenurViewModelFactory
 import com.mobilegame.robozzle.domain.model.UserViewModel
+import com.mobilegame.robozzle.domain.model.UserViewModelFactory
 import com.mobilegame.robozzle.presentation.ui.Navigation
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -20,9 +19,16 @@ class MainActivity : ComponentActivity() {
     @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        val context = LocalContext
         setContent {
-            val navController = rememberNavController()
-            Navigation()
+            val context = LocalContext.current
+            val mUserViewModel: UserViewModel = viewModel(
+                factory = UserViewModelFactory(context.applicationContext as Application)
+            )
+            val mainMenuVM: MainMenuViewModel = viewModel(
+                factory = MainMenurViewModelFactory(context.applicationContext as Application)
+            )
+            Navigation(mUserViewModel, mainMenuVM)
         }
     }
 }

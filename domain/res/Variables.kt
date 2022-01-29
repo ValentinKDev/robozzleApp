@@ -9,7 +9,7 @@ internal const val TRUE = 1
 internal const val FALSE = 0
 internal const val UNKNOWN = -1
 
-internal const val PREFERENCES_NAME = "pref_data_store"
+//internal const val PREFERENCES_NAME = "pref_data_store"
 internal const val NAME_KEY = "name_datastore_key"
 internal const val PASSWORD_KEY = "key_datastore_key"
 internal const val ID_KEY = "id_datastore_key"
