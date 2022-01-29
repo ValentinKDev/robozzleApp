@@ -76,6 +76,16 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
             infoLog("user connection state after", "${userConnectionSate.value}")
         }
     }
+
+    fun newUserCreationProcess() {
+        viewModelScope.launch {
+            coroutineScope {
+                val token = getAToken(registLogVM.name.value, registLogVM.password.value)
+                connectUserToServer(registLogVM.name.value, token)
+            }
+        }
+    }
+
     //todo : do i have to store the token?
     suspend fun getAToken(name: String, password: String): String {
         infoLog("userVM", "getAToken()")
@@ -87,38 +97,30 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 
     suspend fun connectUserToServer(userName: String, token: String) {
-            infoLog("connectUserToServer", "userName : ${userName} token : ${token}")
-            val userService: UserService = UserService.create(token)
+        infoLog("connectUserToServer", "userName : ${userName} token : ${token}")
+        val userService: UserService = UserService.create(token)
+        val ultimateUser: UltimateUserRequest? = userService.getUltimateUser(userName)
 
-            val ultimateUser: UltimateUserRequest? = userService.getUltimateUser(userName)
-//            if (ultimateUser == null) {
-//                set_userConnectionState(UserConnectionState.NotConnected)
-//            } else {
-//                set_userConnectionState(UserConnectionState.Connected)
-//                val userId = try {
-//                    ultimateUser.id.toInt()
-//                } catch (e: NumberFormatException) {
-//                    errorLog("UserToServer", "Error number format exception")
-//                    errorLog("UserToServer", "${e.message}")
-//                    ERROR
-//                }
-//                saveUserInDatastore(User(userId, ultimateUser.name, ultimateUser.password))
-//            }
-    }
-
-    fun newUserCreationProcess() {
-        viewModelScope.launch {
-            coroutineScope {
-                val token = getAToken(registLogVM.name.value, registLogVM.password.value)
-//                val first = async { getAToken(registLogVM.name.value, registLogVM.password.value) }
-//                first.await()
-                connectUserToServer(registLogVM.name.value, token)
+        if (ultimateUser == null) {
+            set_userConnectionState(UserConnectionState.NotConnected)
+        } else {
+            set_userConnectionState(UserConnectionState.Connected)
+        }
+        ultimateUser?. let {
+            val userId = try {
+                ultimateUser.id.toInt()
+            } catch (e: NumberFormatException) {
+                errorLog("UserToServer", "ulimateUser.id = null")
+                errorLog("UserToServer", "Error number format exception")
+                errorLog("UserToServer", "${e.message}")
+                ERROR
             }
+            saveUserInDatastore(User(userId, ultimateUser.name, ultimateUser.password))
         }
     }
 
-
     suspend fun saveUserInDatastore(user: User) {
+        infoLog("saveUserInDatastore", "start")
 //        val dataStore: DataStore<Preferences> = getApplication<Application>().dataStore
 
 //        saveStringInDatastore(DataStoredProviding.ID.key, user.id, dataStore)
@@ -156,13 +158,6 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 //            _tokenJwt.value = tokenService.getJwtToken()
 //        }
 //    }
-
-    suspend fun GetUserFromServer() {
-        withContext(Dispatchers.IO) {
-            val userService = UserService.create(_tokenJwt.value)
-//            val ultimateUser: UltimateUserRequest? = userService.getUltimateUser()
-        }
-    }
 
 
 //    suspend fun LoadUser() {
