@@ -43,14 +43,13 @@ fun RegisterTab(navController: NavController, vm: UserViewModel) {
         }
         UserConnectionState.Created -> {
             infoLog("RegisterTab", "connectionState created")
-            vm.newUserCreationProcess()
-//            vm.getAToken(vm.registLogVM.name.value, vm.registLogVM.password.value)
-//            vm.connectUserToServer(vm.registLogVM.name.value, vm.registLogVM.password.value)
-        }
-        UserConnectionState.Connected -> {
-            infoLog("RegisterTab", "connectionState connected")
+//            vm.newUserCreationProcess()
             navController.navigate(Screens.MainScreen.route)
         }
+//        UserConnectionState.Connected -> {
+//            infoLog("RegisterTab", "connectionState connected")
+//            navController.navigate(Screens.MainScreen.route)
+//        }
         else -> errorLog("Register Tab", "Error from the connectionState / value $connectionState")
     }
 }

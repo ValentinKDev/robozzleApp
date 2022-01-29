@@ -11,8 +11,9 @@ import com.mobilegame.robozzle.domain.res.PREFERENCES_NAME
 import kotlinx.coroutines.flow.first
 
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
+
 class DataStoreRepositoryImplementation(private val context: Context) : DataStoreRepository {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
 
     override suspend fun putString(key: String, value: String) {
         val preferencesKey = stringPreferencesKey(key)

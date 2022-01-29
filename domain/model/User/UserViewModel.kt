@@ -15,20 +15,21 @@ import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import com.mobilegame.robozzle.data.store.*
 import com.mobilegame.robozzle.data.store.user.UserStore
+import com.mobilegame.robozzle.domain.KeyProvider
 import com.mobilegame.robozzle.domain.UserConnectionState
 import com.mobilegame.robozzle.domain.model.User.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.model.User.ResolvedLevelViewModel
+import com.mobilegame.robozzle.domain.repository.datastore.DataStoreRepository
 import com.mobilegame.robozzle.domain.res.ERROR
 import com.mobilegame.robozzle.domain.res.NOTOKEN
+import com.mobilegame.robozzle.domain.res.PREFERENCES_NAME
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.lang.NumberFormatException
-import kotlin.coroutines.coroutineContext
 
 //todo: Securise to API HTTP
 @InternalCoroutinesApi
 class UserViewModel(application: Application): AndroidViewModel(application) {
-    private val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATASTORE)
 
     val lvlStatsVM = ResolvedLevelViewModel(application)
 //    val id = UNKNOWN
@@ -60,27 +61,45 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         _userConnectionState.value = state
     }
 
+    init {
+    }
+
     fun registerOnClickListner() {
         infoLog("register", "onclicklistner()")
         viewModelScope.launch {
-            val userService: UserService = UserService.create(token = NOTOKEN)
-            val newUserRequest = UserRequest(registLogVM.name.value, registLogVM.password.value)
-            val serverRet: String = userService.postNewUser(newUserRequest)
-            infoLog("user connection state before", "${userConnectionSate.value}")
-            set_userConnectionState(
-                when (serverRet) {
-                    ServerRet.Positiv.ret -> UserConnectionState.Created
-                    else -> UserConnectionState.NotConnected
-                }
-            )
-            infoLog("user connection state after", "${userConnectionSate.value}")
+            createANewUser()
+            getAToken(registLogVM.name.value, registLogVM.password.value)
+            waitForToken()
+            connectUserToServer(registLogVM.name.value, tokenJwt.value)
         }
+    }
+
+    private suspend fun waitForToken() {
+        while (tokenJwt.value == NOTOKEN) {
+            infoLog("wait", "token")
+            delay(50)
+        }
+    }
+
+    private suspend fun createANewUser() {
+        infoLog("createANewUser", "start")
+        val userService: UserService = UserService.create(token = NOTOKEN)
+        val newUserRequest = UserRequest(registLogVM.name.value, registLogVM.password.value)
+        val serverRet: String = userService.postNewUser(newUserRequest)
+        infoLog("user connection state before", "${userConnectionSate.value}")
+        set_userConnectionState( when (serverRet) {
+            ServerRet.Positiv.ret -> UserConnectionState.Created
+            else -> UserConnectionState.NotConnected
+        })
+        infoLog("user connection state after", "${userConnectionSate.value}")
     }
 
     fun newUserCreationProcess() {
         viewModelScope.launch {
             coroutineScope {
-                val token = getAToken(registLogVM.name.value, registLogVM.password.value)
+                var token = NOTOKEN
+                token = getAToken(registLogVM.name.value, registLogVM.password.value)
+                waitForToken()
                 connectUserToServer(registLogVM.name.value, token)
             }
         }
@@ -119,13 +138,36 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+//    private val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_DATASTORE)
+//    val dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
+
     suspend fun saveUserInDatastore(user: User) {
         infoLog("saveUserInDatastore", "start")
+
+//        saveStringInDatastore(KeyProvider.Id.key, user.id.toString(), dataStore)
+//        saveStringInDatastore(KeyProvider.Name.key, user.name, dataStore)
+//        saveStringInDatastore(KeyProvider.Password.key, user.password, dataStore)
+//        saveStringInDatastore()
+
+        val datastoreRepo = DataStoreRepository.create(getApplication())
+        val datastoreVM = DataViewModel(datastoreRepo)
+
+        infoLog("check ", "n")
+//        datastoreVM.saveId(user.id)
+//        datastoreVM.saveName(user.name)
+//        datastoreVM.savePassword(user.password)
+
+//        dataRepo.putInt(KeyProvider.Id.key, user.id)
+//        dataRepo.putString(KeyProvider.Name.key, user.name)
+//        dataRepo.putString(KeyProvider.Password.key, user.password)
+
+//        val check = dataRepo.getInt(KeyProvider.Id.key)
+//        val check2 = dataRepo.getString(KeyProvider.Name.key)
+//        errorLog("check", "id $check")
+//        errorLog("check", "name $check2")
+
 //        val dataStore: DataStore<Preferences> = getApplication<Application>().dataStore
 
-//        saveStringInDatastore(DataStoredProviding.ID.key, user.id, dataStore)
-//        saveStringInDatastore(DataStoredProviding.NAME.key, user.name, dataStore)
-//        saveStringInDatastore(DataStoredProviding.PASSWORD.key, user.password, dataStore)
     }
 
     //    fun collectConnectedState(): Flow<UserConnectionState> = flow {
@@ -143,22 +185,6 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 //    fun ConnectedIsTrue() {_connected.postValue(true)}
 //    fun ConnectedIsTrue() {_connected.postValue(true)}
-
-    init {
-        viewModelScope.launch {
-//            LoadUser()
-        }
-//        userService = UserService.create(_tokenJwt.value)
-    }
-
-//    suspend fun GetAToken() {
-//        withContext(Dispatchers.IO) {
-//            val tokenService = JWTTokenService.create(registLogVM.name.value, registLogVM.password.value)
-////            _tokenJwt.value = tokenService.getJwtToken(UserRequest(registLogVM.name.value, registLogVM.password.value))
-//            _tokenJwt.value = tokenService.getJwtToken()
-//        }
-//    }
-
 
 //    suspend fun LoadUser() {
 //        val user = getUserFromDatastore()

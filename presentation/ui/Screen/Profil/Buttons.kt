@@ -29,6 +29,7 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: UserView
             onClick = {
               infoLog("register", "onClick")
                 vm.registerOnClickListner()
+//                vm.newUserCreationProcess()
             },
             enabled = enable
         ) {
