@@ -20,7 +20,7 @@ class UserImplementation (
 //        var ret: UltimateUserRequest
         return try {
             client.get {
-                url { encodedPath = "user/ultimate" }
+                url { encodedPath = "user/ultimate/${name}" }
             }
         } catch (e: NoTransformationFoundException) {
             //2xx- responses

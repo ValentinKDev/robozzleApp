@@ -90,7 +90,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
             infoLog("connectUserToServer", "userName : ${userName} token : ${token}")
             val userService: UserService = UserService.create(token)
 
-//            val ultimateUser: UltimateUserRequest? = userService.getUltimateUser(userName)
+            val ultimateUser: UltimateUserRequest? = userService.getUltimateUser(userName)
 //            if (ultimateUser == null) {
 //                set_userConnectionState(UserConnectionState.NotConnected)
 //            } else {
