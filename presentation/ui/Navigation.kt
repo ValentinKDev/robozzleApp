@@ -62,6 +62,7 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             CreatorScreen()
         }
         composable( route = Screens.ProfilScreen.route) {
+            infoLog("Screens routing", "ProfilScreen")
 //            if (mUserViewModel.userConnectionSate.value == UserConnectionState.Connected)
 //                UserInfoScreen(navController = navController, mUserViewModel)
             if (mainMenuVM.userDataViewModel.getUserConnectionState() == UserConnection.Connected.state)

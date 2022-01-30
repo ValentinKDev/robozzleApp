@@ -40,21 +40,25 @@ fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
         }
         UserConnection.NotCreated.state ->  {
 //            infoLog("RegisterTab", "connectionState $connectionState")
+            Toast.makeText(LocalContext.current, "${vm.name} already exist", Toast.LENGTH_LONG).show()
             RegisteringElements(vm, navController = navController)
-            Toast.makeText(LocalContext.current, "${vm.name} already exist", Toast.LENGTH_SHORT).show()
             vm.setUserConnectionState(UserConnection.NoUser.state)
         }
         //todo : personalize ret from server for weird error or just an already exsiting name
-        UserConnection.NotConnected.state ->  {
-            RegisteringElements(vm, navController = navController)
-            Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_SHORT).show()
-        }
         UserConnection.Created.state -> {
+            Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_LONG).show()
+            RegisteringElements(vm, navController = navController)
 //            infoLog("RegisterTab", "connectionState created")
 //            vm.newUserCreationProcess()
 //            navController.navigate(Screens.MainScreen.route)
-            navController.navigate(Screens.ProfilScreen.route)
+        }
+        UserConnection.NotConnected.state ->  {
+            Toast.makeText(LocalContext.current, "Server facing some issue with your profil", Toast.LENGTH_LONG).show()
+            RegisteringElements(vm, navController = navController)
+        }
+        UserConnection.CreatedAndVerified.state -> {
             vm.setUserConnectionState(UserConnection.Connected.state)
+            navController.navigate(Screens.ProfilScreen.route)
         }
         UserConnection.Connected.state -> {
 //            errorLog("RegisterTab", "connectionState connected")

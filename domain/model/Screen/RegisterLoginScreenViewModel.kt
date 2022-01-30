@@ -97,6 +97,7 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
                 infoLog("getUserFromServerAndStore", "start")
                 connectionState = getUserFromServerAndStore(name.value, password.value)
             }
+            errorLog("set user connection state", connectionState)
             setUserConnectionState(connectionState)
         }
     }
