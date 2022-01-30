@@ -11,13 +11,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.UserViewModel
+import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
 import kotlinx.coroutines.*
 
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun ButtonRegister(enable: Boolean, name: String, password: String, vm: UserViewModel, navController: NavController) {
+fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterScreenViewModel, navController: NavController) {
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -27,14 +27,34 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: UserView
                 .background(Color.Gray)
             ,
             onClick = {
-              infoLog("register", "onClick")
                 vm.registerOnClickListner()
-//                vm.newUserCreationProcess()
             },
             enabled = enable
         ) {
 //            Text(text = "Register", Modifier.align(Alignment.Center))
             Text(text = "Register")
+        }
+    }
+}
+
+@DelicateCoroutinesApi
+@InternalCoroutinesApi
+@Composable
+fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterScreenViewModel, navController: NavController) {
+    Box(Modifier.fillMaxWidth()) {
+        Button(
+            modifier = Modifier
+                .height(50.dp)
+                .width(150.dp)
+                .align(Alignment.Center)
+                .background(Color.Gray)
+            ,
+            onClick = {
+                infoLog("Login", "onClick")
+            },
+            enabled = enable
+        ) {
+            Text(text = "Login")
         }
     }
 }

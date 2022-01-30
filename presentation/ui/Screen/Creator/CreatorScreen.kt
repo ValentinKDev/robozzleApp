@@ -24,7 +24,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 //@SuppressLint("CoroutineCreationDuringComposition")
 @InternalCoroutinesApi
 @Composable
-fun CreatorScreen(mUserViewModel: UserViewModel, testViewModel: testViewModel = viewModel()) {
+fun CreatorScreen() {
 
     infoLog("launch", "CreatorScreen()")
 //    val co by mUserViewModel.connected.collectAsState()

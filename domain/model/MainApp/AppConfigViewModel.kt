@@ -136,15 +136,15 @@ class AppConfigViewModel (application: Application): AndroidViewModel(applicatio
     private fun isSameVersion(): Boolean = _versionLocal.value.equals(_versionServer.value)
 }
 
-class AppConfigFactory(
-    private val application: Application
-) : ViewModelProvider.Factory {
-    @InternalCoroutinesApi
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(MainMenuViewModel::class.java)) {
-            return AppConfigViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class AppConfigFactory(
+//    private val application: Application
+//) : ViewModelProvider.Factory {
+//    @InternalCoroutinesApi
+//    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//        @Suppress("UNCHECKED_CAST")
+//        if (modelClass.isAssignableFrom(MainMenuViewModel::class.java)) {
+//            return AppConfigViewModel(application) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}

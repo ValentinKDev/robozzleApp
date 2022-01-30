@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.UserConnection
 import com.mobilegame.robozzle.domain.UserConnectionState
 import com.mobilegame.robozzle.domain.model.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
@@ -28,7 +29,8 @@ import kotlinx.coroutines.*
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun Navigation(mUserViewModel: UserViewModel = viewModel(), mainMenuVM: MainMenuViewModel = viewModel()) {
+fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
+//    val ctxt = LocalContext.current
 //    val mUserViewModel: UserViewModel = viewModel(
 //        factory = UserViewModelFactory(ctxt.applicationContext as Application)
 //    )
@@ -42,7 +44,6 @@ fun Navigation(mUserViewModel: UserViewModel = viewModel(), mainMenuVM: MainMenu
 
     val playerData = PlayerData()
 
-    val ctxt = LocalContext.current
 
     infoLog("Navigation", "${mainMenuVM._localLevelsListVersion.value}")
 
@@ -58,13 +59,15 @@ fun Navigation(mUserViewModel: UserViewModel = viewModel(), mainMenuVM: MainMenu
             ConfigScreen()
         }
         composable(route = Screens.CreatorScreen.route) {
-            CreatorScreen(mUserViewModel)
+            CreatorScreen()
         }
         composable( route = Screens.ProfilScreen.route) {
-            if (mUserViewModel.userConnectionSate.value == UserConnectionState.Connected)
-                UserInfoScreen(navController = navController, mUserViewModel)
+//            if (mUserViewModel.userConnectionSate.value == UserConnectionState.Connected)
+//                UserInfoScreen(navController = navController, mUserViewModel)
+            if (mainMenuVM.userDataViewModel.getUserConnectionState() == UserConnection.Connected.state)
+                UserInfoScreen(navController = navController)
             else
-                RegisterLoginScreen(navController = navController, mUserViewModel)
+                RegisterLoginScreen(navController = navController)
         }
         composable(route = Screens.LevelsScreen.route) {
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data

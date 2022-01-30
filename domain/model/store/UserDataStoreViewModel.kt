@@ -2,41 +2,79 @@ package com.mobilegame.robozzle.domain.model.store
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.store.DataStoreService
+import com.mobilegame.robozzle.domain.UserConnection
+import com.mobilegame.robozzle.domain.UserConnectionState
+import com.mobilegame.robozzle.domain.res.ID_NO_VALUE
+import com.mobilegame.robozzle.domain.res.IntGet
+import com.mobilegame.robozzle.domain.res.NAME_NO_VALUE
+import com.mobilegame.robozzle.domain.res.PASSWORD_NO_VALUE
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
+//todo : declare the service here by using the context direction in the param ?
 class UserDataStoreViewModel (
     private val service: DataStoreService
 ) : ViewModel() {
+    fun getUser(): User {
+        infoLog("get user in Datastore from UserDataStoreViewModel", "start")
+        val id = getId() ?: ID_NO_VALUE
+        val name = getName() ?: NAME_NO_VALUE
+        val password = getPassword() ?: PASSWORD_NO_VALUE
 
-    fun saveName(value: String) {
+        infoLog(id.toString(), "from datastore")
+        infoLog(name, "name from datastore")
+        infoLog(password, "password from datastore")
+        return User(id, name, password)
+    }
+
+    fun saveUser(user: User) {
+        saveId(user.id)
+        saveName(user.name)
+        savePassword(user.password)
+    }
+
+    fun saveUserConnectionState(state: String) {
+        viewModelScope.launch {
+            service.putString(KeyProvider.ConnectionState.key, state)
+        }
+    }
+
+    private fun saveName(value: String) {
         viewModelScope.launch {
             service.putString(KeyProvider.Name.key, value)
         }
     }
 
-    fun getName(): String? = runBlocking {
+    fun getUserConnectionState(): String? = runBlocking {
+        infoLog("get", "user connection state")
+        service.getString(KeyProvider.ConnectionState.key)
+    }
+
+    private fun getName(): String? = runBlocking {
         service.getString(KeyProvider.Name.key)
     }
 
-    fun savePassword(value: String) {
+    private fun savePassword(value: String) {
         viewModelScope.launch {
             service.putString(KeyProvider.Password.key, value)
         }
     }
 
-    fun getPassword(): String? = runBlocking {
+    private fun getPassword(): String? = runBlocking {
         service.getString(KeyProvider.Password.key)
     }
 
-    fun saveId(value: Int) {
+    private fun saveId(value: Int) {
         viewModelScope.launch {
             service.putInt(KeyProvider.Id.key, value)
         }
     }
 
-    fun getId(): Int? = runBlocking {
+    private fun getId(): Int? = runBlocking {
         service.getInt(KeyProvider.Id.key)
     }
 }

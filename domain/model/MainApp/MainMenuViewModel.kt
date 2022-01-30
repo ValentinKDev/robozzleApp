@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.MainApp.AppConfigViewModel
 import com.mobilegame.robozzle.data.store.DataStoreService
+import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.ERROR
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -23,7 +24,9 @@ import kotlinx.coroutines.flow.*
 @InternalCoroutinesApi
 class MainMenuViewModel(application: Application): AndroidViewModel(application) {
 //class MainMenuViewModel(): ViewModel() {
-
+    val userDataViewModel = UserDataStoreViewModel(
+    service = DataStoreService.createUserService(getApplication())
+    )
 
 //    val dataStore: DataStore<Preferences> by lazy { getApplication<Application>().dataStore }
 //    val Application.dataStore: DataStore<Preferences> by preferencesDataStore(name = "version")
@@ -193,15 +196,15 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
 }
 
-class MainMenurViewModelFactory(
-    private val application: Application
-) : ViewModelProvider.Factory {
-    @InternalCoroutinesApi
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(MainMenuViewModel::class.java)) {
-            return MainMenuViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+//class MainMenurViewModelFactory(
+//    private val application: Application
+//) : ViewModelProvider.Factory {
+//    @InternalCoroutinesApi
+//    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//        @Suppress("UNCHECKED_CAST")
+//        if (modelClass.isAssignableFrom(MainMenuViewModel::class.java)) {
+//            return MainMenuViewModel(application) as T
+//        }
+//        throw IllegalArgumentException("Unknown ViewModel class")
+//    }
+//}
