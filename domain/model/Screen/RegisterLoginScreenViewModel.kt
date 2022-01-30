@@ -78,6 +78,15 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
     private val _validPassword = MutableStateFlow<Boolean>(false)
     val passwordIsValid: StateFlow<Boolean> = _validPassword
 
+    fun loginOnClickListner() {
+        infoLog("login", "onclicklistner()")
+        viewModelScope.launch {
+            //get a token
+            //get the ultimate user by using the id
+            //save ultimateUser
+        }
+    }
+
     fun registerOnClickListner() {
         infoLog("register", "onclicklistner()")
         viewModelScope.launch {

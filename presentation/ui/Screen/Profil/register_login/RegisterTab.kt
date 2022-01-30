@@ -29,17 +29,14 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 @Composable
 fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
-//    val connectionState by vm.userConnectionSate.collectAsState(UserConnectionState.NotConnected)
     val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
 
     infoLog("RegisterTab", "connectionState $connectionState")
     when (connectionState) {
-//        UserConnectionState.NoUser ->  {
         UserConnection.NoUser.state ->  {
             RegisteringElements(vm, navController = navController)
         }
         UserConnection.NotCreated.state ->  {
-//            infoLog("RegisterTab", "connectionState $connectionState")
             Toast.makeText(LocalContext.current, "${vm.name} already exist", Toast.LENGTH_LONG).show()
             RegisteringElements(vm, navController = navController)
             vm.setUserConnectionState(UserConnection.NoUser.state)
@@ -48,9 +45,6 @@ fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
         UserConnection.Created.state -> {
             Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_LONG).show()
             RegisteringElements(vm, navController = navController)
-//            infoLog("RegisterTab", "connectionState created")
-//            vm.newUserCreationProcess()
-//            navController.navigate(Screens.MainScreen.route)
         }
         UserConnection.NotConnected.state ->  {
             Toast.makeText(LocalContext.current, "Server facing some issue with your profil", Toast.LENGTH_LONG).show()
@@ -61,13 +55,7 @@ fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
             navController.navigate(Screens.ProfilScreen.route)
         }
         UserConnection.Connected.state -> {
-//            errorLog("RegisterTab", "connectionState connected")
-//            infoLog("RegisterTab", "connectionState connected")
-//            navController.navigate(Screens.MainScreen.route)
         }
-//        UserConnection.NotConnected.state -> {
-//            infoLog("Regis", "")
-//        }
         else -> errorLog("Register Tab", "Error from the connectionState / value $connectionState")
     }
 }

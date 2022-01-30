@@ -13,21 +13,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
+import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ButtonLogin
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ButtonRegister
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun LoginTab(navController: NavController, vm: RegisterScreenViewModel) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp)
-    ) {
-            Text(text = "Login : ${vm.tabSeclected.value}")
-    }
+fun LoginTab(navController: NavController, vm: RegisterScreenViewModel = viewModel()) {
 
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
     val password by remember(vm) {vm.password}.collectAsState( initial = "" )
@@ -66,6 +61,6 @@ fun LoginTab(navController: NavController, vm: RegisterScreenViewModel) {
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navController = navController)
+        ButtonLogin(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navController = navController)
     }
 }
