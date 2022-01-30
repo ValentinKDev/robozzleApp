@@ -1,10 +1,10 @@
-package com.mobilegame.robozzle.domain
+package com.mobilegame.robozzle.domain.state
 
 enum class UserConnectionState {
    Created, Connected, NotConnected, NoUser, ServerNotReached
 }
 
-
+//todo a connection state sealed class for every type of request: Token , UltimateUser, Levels...
 sealed class UserConnection(val state: String) {
    object Created: UserConnection("created_state")
    object CreatedAndVerified: UserConnection("created_and_verified_state")

@@ -2,14 +2,10 @@ package com.mobilegame.robozzle.domain.model.store
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.store.DataStoreService
-import com.mobilegame.robozzle.domain.UserConnection
-import com.mobilegame.robozzle.domain.UserConnectionState
 import com.mobilegame.robozzle.domain.res.ID_NO_VALUE
-import com.mobilegame.robozzle.domain.res.IntGet
 import com.mobilegame.robozzle.domain.res.NAME_NO_VALUE
 import com.mobilegame.robozzle.domain.res.PASSWORD_NO_VALUE
 import kotlinx.coroutines.launch

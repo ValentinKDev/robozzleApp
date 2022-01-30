@@ -26,7 +26,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 //fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel = viewModel(), registerLoginVM: RegisterLoginViewModel = viewModel()) {
 fun RegisterLoginScreen(navController: NavController, regLogVM: RegisterScreenViewModel = viewModel()) {
     infoLog("Launch", "RegisterLoginScreen")
-    val tabSelected by regLogVM.tabSeclected.collectAsState(1)
+    val tabSelected by regLogVM.tabSeclected.collectAsState()
     infoLog("tabSelected", tabSelected.toString())
 
     Column {

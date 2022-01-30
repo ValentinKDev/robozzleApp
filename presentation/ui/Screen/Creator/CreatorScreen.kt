@@ -5,20 +5,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.UserConnectionState
-import com.mobilegame.robozzle.domain.model.UserViewModel
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
-import io.ktor.client.features.auth.*
-import io.ktor.client.features.auth.providers.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
 import kotlinx.coroutines.InternalCoroutinesApi
 
 //@SuppressLint("CoroutineCreationDuringComposition")

@@ -1,14 +1,8 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -19,20 +13,15 @@ import com.mobilegame.robozzle.data.remote.User.UserService
 import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import com.mobilegame.robozzle.data.store.DataStoreService
-import com.mobilegame.robozzle.domain.UserConnection
-import com.mobilegame.robozzle.domain.UserConnectionState
-import com.mobilegame.robozzle.domain.model.UserViewModel
+import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.model.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
-import com.mobilegame.robozzle.domain.res.ERROR
 import com.mobilegame.robozzle.domain.res.NOTOKEN
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
+import com.mobilegame.robozzle.domain.state.TokenState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.NumberFormatException
 
 //class RegisterScreenViewModel(context: Context): ViewModel() {
 class RegisterScreenViewModel(application: Application): AndroidViewModel(application) {
@@ -44,12 +33,18 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
         service = DataStoreService.createUserService(getApplication())
     )
 
+//    private val _canNotLog = MutableStateFlow<Boolean>(true)
+//    val canNotLog: StateFlow<Boolean> = _canNotLog
+
     private val _userConnectionState = MutableStateFlow(UserConnection.NoUser.state)
     val userConnectionState: StateFlow<String> = _userConnectionState
     fun setUserConnectionState(state: String) {
         _userConnectionState.value = state
         userDataStoreVM.saveUserConnectionState(state)
     }
+
+    private val _connectionEstablished = MutableStateFlow<Boolean>(false)
+    val connectionEstablished: StateFlow<Boolean> = _connectionEstablished
 
     private val _tabSelected = MutableStateFlow(1)
     val tabSeclected : StateFlow<Int> = _tabSelected
@@ -61,7 +56,7 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
         _validName.value = newName.isValid()
     }
 
-    private val _tokenJwt = MutableStateFlow(NOTOKEN) ;
+    private val _tokenJwt = MutableStateFlow("")
     val tokenJwt: StateFlow<String> = _tokenJwt
 
     private val _validName = MutableStateFlow<Boolean>(false)
@@ -78,12 +73,38 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
     private val _validPassword = MutableStateFlow<Boolean>(false)
     val passwordIsValid: StateFlow<Boolean> = _validPassword
 
+    private val _canNotLog = MutableStateFlow<Int>(0)
+    val canNotLog: StateFlow<Int> = _canNotLog
+
+//    todo should warn about the impossibility to log or register with this name and password
+    private val _tokenState = MutableStateFlow<String>(TokenState.NoToken.ret)
+    val tokenState: StateFlow<String> = _tokenState
+
     fun loginOnClickListner() {
         infoLog("login", "onclicklistner()")
         viewModelScope.launch {
             //get a token
-            //get the ultimate user by using the id
-            //save ultimateUser
+            var connection = UserConnection.NoUser.state
+            getAToken(name.value, password.value)
+            if (tokenState.value == TokenState.Invalid.ret) _canNotLog.value += 1
+            else {
+                waitForToken()
+                //get the ultimate user by using the id
+                //save ultimateUser
+                connection = getUserFromServerAndStore(
+                    userName = name.value,
+                    expectedState = UserConnection.CreatedAndVerified.state,
+                    errorState = UserConnection.NotConnected.state
+                )
+            }
+            infoLog("going to set user connection to ", if (connection != UserConnection.NotConnected.state) { UserConnection.Connected.state } else connection )
+            setUserConnectionState(
+                state =  if (connection != UserConnection.NotConnected.state) {
+                    UserConnection.Connected.state
+                } else connection
+            )
+            delay(500)
+            _connectionEstablished.value = checkConnectionState()
         }
     }
 
@@ -98,41 +119,65 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
                 //get a token for the new user
                     infoLog("getAToken", "start")
                 getAToken(name.value, password.value)
+                delay(300)
                 infoLog("waitfortoken", "start")
                 waitForToken()
-                delay(500)
                 //get the id of the new user with the token
                 //store the user with the id and the connection state
                 infoLog("getUserFromServerAndStore", "start")
-                connectionState = getUserFromServerAndStore(name.value, password.value)
+                connectionState = getUserFromServerAndStore(
+                    userName = name.value,
+                    expectedState = UserConnection.CreatedAndVerified.state,
+                    errorState = UserConnection.NotConnected.state
+                )
             }
             errorLog("set user connection state", connectionState)
             setUserConnectionState(connectionState)
+            //todo: use this connection established flow to clean the navigation logic
+            _connectionEstablished.value = checkConnectionState()
         }
     }
 
-    suspend fun getUserFromServerAndStore(userName: String, token: String): String {
-        infoLog("connectUserToServer", "userName : ${userName} token : ${token}")
+    suspend fun getUserFromServerAndStore(userName: String, expectedState: String, errorState: String): String {
+        infoLog("connectUserToServer", "userName : ${userName}")
 //        val returnState:
+//        todo : what about the token State when it is deprecated and the server tels us so ?
         val ultimateUser: UltimateUserRequest? = getUltimateUserFromServer()
         //todo : UltimateUser to User ?
-        ultimateUser?.let {
-            val userId = try {
-                ultimateUser.id.toInt()
-            } catch (e: NumberFormatException) {
-                errorLog("getUserFromServer", "${e.message}")
-                ERROR
-            }
+        return ( if (ultimateUser != null)
+        {
             userDataStoreVM.saveUser(
                 User(
-                    userId,
+                    ultimateUser.id.toInt(),
                     ultimateUser.name,
                     ultimateUser.password
                 )
             )
+            expectedState
         }
-        return if (ultimateUser == null) UserConnection.NotConnected.state else UserConnection.CreatedAndVerified.state
+        else
+        {
+            _canNotLog.value += 1
+            errorState }
+                )
     }
+//        ultimateUser?.let {
+//        if (ultimateUser != null) {
+//            val userId = try {
+//                ultimateUser.id.toInt()
+//            } catch (e: NumberFormatException) {
+//                errorLog("getUserFromServer", "${e.message}")
+//                ERROR
+//            }
+//            userDataStoreVM.saveUser(
+//                User(
+//                    userId,
+//                    ultimateUser.name,
+//                    ultimateUser.password
+//                )
+//            )
+//        } else _canNotLog.value += 1
+//        return if (ultimateUser == null) errorState else expectedState
 
 
     suspend fun getUltimateUserFromServer(): UltimateUserRequest? {
@@ -161,42 +206,30 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
                 UserConnection.NotCreated.state
             }
         }
-//        setUserConnectionState( when (serverRet) {
-//            ServerRet.Positiv.ret -> {
-//                UserConnection.Created.state
-//            }
-//            else -> {
-//                UserConnection.NotConnected.state
-//            }
-//        })
     }
 
-//    fun newUserCreationProcess() {
-//        viewModelScope.launch {
-//            coroutineScope {
-//                var token = NOTOKEN
-//                token = getAToken(registLogVM.name.value, registLogVM.password.value)
-//                waitForToken()
-//                connectUserToServer(registLogVM.name.value, token)
-//            }
-//        }
-//    }
+    fun checkConnectionState(): Boolean = userConnectionState.value != UserConnection.CreatedAndVerified.state
 
     //todo : do i have to store the token?
-    suspend fun getAToken(name: String, password: String): String {
+    suspend fun getAToken(name: String, password: String) {
         infoLog("userVM", "getAToken()")
-        var token = NOTOKEN
+//        var token = NOTOKEN
         val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password)
-        token = jwtTokenService.getJwtToken()
+        val tokenServer: String? = jwtTokenService.getJwtToken()
 
-        _tokenJwt.value = token
-        tokenDataVm.saveToken(token)
-
-        return token
+        if (tokenServer != null) {
+            _tokenState.value = TokenState.Valid.ret
+            _tokenJwt.value = tokenServer
+            tokenDataVm.saveToken(tokenServer)
+//            return token
+        } else {
+            _tokenState.value = TokenState.Invalid.ret
+        }
+//        return ""
     }
 
     private suspend fun waitForToken() {
-        while (tokenJwt.value == NOTOKEN) {
+        while (tokenState.value == TokenState.NoToken.ret) {
             infoLog("wait", "token")
             delay(50)
         }

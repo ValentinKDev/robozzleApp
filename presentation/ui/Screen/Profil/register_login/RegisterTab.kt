@@ -16,10 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.UserConnection
-import com.mobilegame.robozzle.domain.UserConnectionState
+import com.mobilegame.robozzle.domain.state.UserConnection
+import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.Profil.ButtonRegister
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -37,7 +36,7 @@ fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
             RegisteringElements(vm, navController = navController)
         }
         UserConnection.NotCreated.state ->  {
-            Toast.makeText(LocalContext.current, "${vm.name} already exist", Toast.LENGTH_LONG).show()
+            Toast.makeText(LocalContext.current, "${vm.name.value} already exist", Toast.LENGTH_LONG).show()
             RegisteringElements(vm, navController = navController)
             vm.setUserConnectionState(UserConnection.NoUser.state)
         }

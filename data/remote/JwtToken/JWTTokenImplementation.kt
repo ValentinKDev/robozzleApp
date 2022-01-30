@@ -12,7 +12,7 @@ import java.lang.Exception
 class JWTTokenImplementation(
     private val client: HttpClient
 ): JWTTokenService {
-    override suspend fun getJwtToken(): String {
+    override suspend fun getJwtToken(): String? {
         verbalLog("getJwtToken", "ask server")
         return try {
             client.get {
@@ -21,18 +21,18 @@ class JWTTokenImplementation(
         } catch (e: RedirectResponseException) {
             //3xx- responses
             Log.e("3xx","Error: ${e.response.status.description}")
-            INVALIDTOKEN
+            null
         } catch (e: ClientRequestException) {
             //4xx- responses
             Log.e("4xx","Error: ${e.response.status.description}")
-            INVALIDTOKEN
+            null
         } catch (e: ServerResponseException) {
             //5xx- responses
             Log.e("5xx","Error: ${e.response.status.description}")
-            INVALIDTOKEN
+            null
         } catch (e: Exception) {
             Log.e("getUser","Error: ${e.message}")
-            INVALIDTOKEN
+            null
         }
     }
 }

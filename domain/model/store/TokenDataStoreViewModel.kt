@@ -16,6 +16,7 @@ class TokenDataStoreViewModel (
             service.putString(KeyProvider.Name.key, value)
         }
     }
+
     private fun getTokenData(): String? = runBlocking {
         service.getString(KeyProvider.Name.key)
     }

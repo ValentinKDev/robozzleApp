@@ -15,7 +15,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 
 interface JWTTokenService {
-    suspend fun getJwtToken(): String
+    suspend fun getJwtToken(): String?
 
     companion object {
         fun create(username: String, password: String): JWTTokenService {

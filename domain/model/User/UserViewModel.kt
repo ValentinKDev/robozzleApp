@@ -6,19 +6,14 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
-import com.mobilegame.robozzle.data.remote.User.ServerRet
 import com.mobilegame.robozzle.data.remote.User.UserService
 import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
-import com.mobilegame.robozzle.data.remote.dto.UserRequest
 //import com.mobilegame.robozzle.data.store.user.UserStore
-import com.mobilegame.robozzle.domain.UserConnectionState
-import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
-import com.mobilegame.robozzle.domain.model.User.ResolvedLevelViewModel
+import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.model.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.ERROR
-import com.mobilegame.robozzle.domain.res.IntGet
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -101,14 +96,20 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     //todo : do i have to store the token?
     suspend fun getAToken(name: String, password: String): String {
         infoLog("userVM", "getAToken()")
-        var token = NOTOKEN
+        var token: String? = null
         val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password)
         token = jwtTokenService.getJwtToken()
 
-        _tokenJwt.value = token
-        tokenDataVm.saveToken(token)
-
-        return token
+        return (if (token == null) { "" } else {
+            _tokenJwt.value = token
+            tokenDataVm.saveToken(token)
+            token
+        })
+//        token ?.let {
+//            _tokenJwt.value = token
+//            tokenDataVm.saveToken(token)
+//            return token
+//        }
     }
 
 //    fun registerOnClickListner() {
