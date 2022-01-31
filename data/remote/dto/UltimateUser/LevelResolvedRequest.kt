@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LevelResolvedRequest(
     val lvl_id: Int,
-    val difficulty: Int,
+    val points: Int,
     val details: WinDetailsRequest
 )

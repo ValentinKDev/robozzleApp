@@ -7,6 +7,6 @@ data class UltimateUserRequest(
     val id: String,
     val name: String,
     val password: String,
-
-    val playerRanks: PlayerRanksRequest
+    val playerRanksJson: String
+//    val playerRanks: PlayerRanksRequest
 )

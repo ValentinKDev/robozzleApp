@@ -4,7 +4,7 @@ import com.mobilegame.robozzle.Extensions.toMutableListOfFunctionInstructions
 //import com.mobilegame.robozzle.data.base.ResolvedLevel.ResolvedLevelData
 //import com.mobilegame.robozzle.data.remote.dto.ResolvedLevelRequest
 import com.mobilegame.robozzle.data.remote.dto.UltimateUser.WinDetailsRequest
-import com.mobilegame.robozzle.domain.ResolvedLevel.WinDetails
+import com.mobilegame.robozzle.domain.LevelResolved.WinDetails
 
 //fun ResolvedLevelData.toResolvedLevel(): ResolvedLevel {
 //    return ResolvedLevel(

@@ -8,7 +8,8 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.repository.LevelRepository
-import com.mobilegame.robozzle.data.base.Level.Level
+import com.mobilegame.robozzle.data.base.Level.LevelData
+import com.mobilegame.robozzle.data.base.Level.LevelDao
 import com.mobilegame.robozzle.data.base.Level.LevelDataBase
 import com.mobilegame.robozzle.data.remote.Level.LevelService
 import com.mobilegame.robozzle.data.remote.dto.LevelRequest
@@ -44,8 +45,8 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
         _rbAllLevelsList.postValue(mList)
     }
 
-    private val _rbAllLevelListFromRoom = MutableLiveData<List<Level>>(emptyList())
-    val rbAllLevelListFromRoom : MutableLiveData<List<Level>> = _rbAllLevelListFromRoom
+    private val _rbAllLevelListFromRoom = MutableLiveData<List<LevelData>>(emptyList())
+    val rbAllLevelDataListFromRoom : MutableLiveData<List<LevelData>> = _rbAllLevelListFromRoom
 
 
     private val repository: LevelRepository
@@ -75,7 +76,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
 
         Log.e("init", "MainMenuViewModel()")
-        val levelDao = LevelDataBase.getInstance(application).levelDao()
+        val levelDao: LevelDao = LevelDataBase.getInstance(application).levelDao()
         repository = LevelRepository(levelDao)
 
         viewModelScope.launch {

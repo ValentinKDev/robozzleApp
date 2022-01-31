@@ -20,8 +20,7 @@ data class RobuzzleLevel(
     val starsList: MutableList<Position>,
 ) {
     lateinit var selected : SelectedFunctionInstructionCase
-//    var preloadActions = 25
-//    var preloadActions = 20
+
     var preloadActions = 2
     var breadcrumb: Breadcrumb = Breadcrumb(playerInitial, map.toMutableList(), starsList.clone(), preloadActions, funInstructionsList)
 

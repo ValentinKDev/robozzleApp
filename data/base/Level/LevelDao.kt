@@ -10,36 +10,36 @@ interface LevelDao {
 //    fun getAllMutableLive(): MutableLiveData<List<Level>>
 
     @Query("SELECT * FROM level_table")
-    fun getAllLive(): LiveData<List<Level>>
+    fun getAllLive(): LiveData<List<LevelData>>
 
     @Query("SELECT * FROM level_table")
-    fun getAllFlow(): Flow<List<Level>>
+    fun getAllFlow(): Flow<List<LevelData>>
 
     @Query("SELECT * FROM level_table")
-    fun getAll(): List<Level>
+    fun getAll(): List<LevelData>
 
     @Query("SELECT * FROM level_table WHERE id IN (:id)")
-    fun loadAllByIds(id: IntArray): List<Level>
+    fun loadAllByIds(id: IntArray): List<LevelData>
 
     @Query("SELECT * FROM level_table WHERE id = :id")
-    fun getALevel(id: Int): Level?
+    fun getALevel(id: Int): LevelData?
 
     @Query("SELECT * FROM level_table WHERE difficulty IN (:diff)")
-    fun loadAllByDifficutly(diff: IntArray): List<Level>
+    fun loadAllByDifficutly(diff: IntArray): List<LevelData>
 
     @Insert
-    fun insertAll(vararg level: Level)
+    fun insertAll(vararg levelData: LevelData)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addLevel(lvl: Level)
+    suspend fun addLevel(lvl: LevelData)
 
     @Query("DELETE FROM level_table")
     fun deleteAll()
 
     @Delete
-    fun delete(level: Level)
+    fun delete(levelData: LevelData)
 
     @Update
-    fun updateLevels(vararg levels: Level)
+    fun updateLevels(vararg levelData: LevelData)
 
 }

@@ -2,9 +2,8 @@ package com.mobilegame.robozzle.Extensions
 
 import android.util.Log
 import androidx.compose.runtime.State
-import com.mobilegame.robozzle.analyse.Print_rb_Level
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.data.base.Level.Level
+import com.mobilegame.robozzle.data.base.Level.LevelData
 import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
@@ -66,15 +65,15 @@ private fun List<List<String>>.parseToFunctionInstructionMutableList(): MutableL
     return ret
 }
 
-fun State<List<LevelRequest>>.convertToLevelList(): List<Level> {
-    var ret = emptyList<Level>().toMutableList()
+fun State<List<LevelRequest>>.convertToLevelList(): List<LevelData> {
+    var ret = emptyList<LevelData>().toMutableList()
     this.value.forEachIndexed { index, levelRequest ->
         ret.add(levelRequest.convertToLevel())
     }
     return ret
 }
 
-fun LevelRequest.convertToLevel(): Level {
+fun LevelRequest.convertToLevel(): LevelData {
     if (this.id.toInt() == 8) {
         errorLog("ID 8", this.funInstructionsList.toStr())
     }
@@ -84,7 +83,7 @@ fun LevelRequest.convertToLevel(): Level {
 //    this.map.forEach { Log.v("","$it") }
 //    Log.e("playerInitial", "${this.playerInitial}")
 //    Log.e("playerInitialSTR", "${this.playerInitial.toStr()}")
-    return Level(
+    return LevelData(
         id = this.id.toInt(),
         name = this.name,
         difficulty = this.difficulty.toInt(),
@@ -144,7 +143,7 @@ private fun List<List<String>>.toStr(): String {
 //    return ret
 //}
 
-fun List<Level>.toRobuzzleLevelList(): List<RobuzzleLevel> {
+fun List<LevelData>.toRobuzzleLevelList(): List<RobuzzleLevel> {
     var list = mutableListOf<RobuzzleLevel>()
     this.forEach {
         list.add(it.toRobuzzleLevel())
@@ -153,7 +152,7 @@ fun List<Level>.toRobuzzleLevelList(): List<RobuzzleLevel> {
     return list
 }
 
-fun Level.toRobuzzleLevel(): RobuzzleLevel {
+fun LevelData.toRobuzzleLevel(): RobuzzleLevel {
     var ret: RobuzzleLevel
 //    Log.e("Level ${this.id}", "name ${this.name}")
 //    this.mapStr.toMap().forEach { Log.v("","$it") }

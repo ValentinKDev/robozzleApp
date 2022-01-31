@@ -6,8 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "player_ranks_table")
 data class LevelResolvedData(
-    @PrimaryKey val id_level: Int,
-    @ColumnInfo(name = "points") val points: String,
-    @ColumnInfo(name = "instruction_number") val instructionNumber: String,
-    @ColumnInfo(name = "action_number") val actionNumber: String,
+    @PrimaryKey val id: Int,
+//    @ColumnInfo(name = "id_level") val idLevel: Int,
+    @ColumnInfo(name = "points") val points: Int,
+    @ColumnInfo(name = "WinDetails") val winDetailsJson: String,
+//    @ColumnInfo(name = "instruction_number") val instructionNumberJson: String,
+//    @ColumnInfo(name = "action_number") val actionNumberJson: String,
+//    @ColumnInfo(name = "solution_found") val solutionFoundJson: String,
 )

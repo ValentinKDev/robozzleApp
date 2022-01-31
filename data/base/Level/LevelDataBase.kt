@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Level::class], version = 2, exportSchema = false)
+@Database(entities = [LevelData::class], version = 2, exportSchema = false)
 abstract class LevelDataBase: RoomDatabase() {
     abstract fun levelDao(): LevelDao
     companion object{
