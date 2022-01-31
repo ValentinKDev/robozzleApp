@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.data.remote.dto.UltimateUser
+package com.mobilegame.robozzle.data.remote.dto
 
 import kotlinx.serialization.Serializable
 
@@ -8,5 +8,4 @@ data class UltimateUserRequest(
     val name: String,
     val password: String,
     val playerRanksJson: String
-//    val playerRanks: PlayerRanksRequest
 )

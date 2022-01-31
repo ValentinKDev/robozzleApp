@@ -2,7 +2,7 @@ package com.mobilegame.robozzle.data.remote.User
 
 import android.util.Log
 import com.mobilegame.robozzle.data.remote.HttpRoutes
-import com.mobilegame.robozzle.data.remote.dto.UltimateUser.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -19,18 +19,9 @@ import io.ktor.http.*
 
 interface UltimateUserService {
     suspend fun getUltimateUser(name: String): UltimateUserRequest?
-//    suspend fun getUser(): UserRequest?
 
-//    suspend fun createUser(user: UserRequest): UserRequest?
     //todo : return a value to know if the user is already in the database ?
     suspend fun postNewUser(user: UserRequest): String
-//    suspend fun getUsers(): List<UserRequest>
-
-
-
-//    suspend fun createPlayerAuth(player: UserRequest): UserRequest?
-//    suspend fun test(user: UserRequest): TokenInfo?
-//    suspend fun test3(user: UserRequest)
 
     companion object {
         fun create(token: String): UltimateUserService {

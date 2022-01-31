@@ -10,7 +10,7 @@ import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
 import com.mobilegame.robozzle.data.remote.User.ServerRet
 import com.mobilegame.robozzle.data.remote.User.UltimateUserService
-import com.mobilegame.robozzle.data.remote.dto.UltimateUser.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.state.UserConnection

@@ -2,7 +2,7 @@ package com.mobilegame.robozzle.data.remote.User
 
 import android.util.Log
 import com.mobilegame.robozzle.data.remote.HttpRoutes.USER_REGISTRATION_PATH
-import com.mobilegame.robozzle.data.remote.dto.UltimateUser.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import io.ktor.client.*
 import io.ktor.client.call.*
