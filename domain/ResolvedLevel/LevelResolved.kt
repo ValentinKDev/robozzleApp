@@ -2,7 +2,7 @@ package com.mobilegame.robozzle.domain.ResolvedLevel
 
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 
-data class ResolvedLevel (
+data class LevelResolved (
     val lvl_id: Int,
     val lvl_difficulty: Int,
     val details: WinDetails,

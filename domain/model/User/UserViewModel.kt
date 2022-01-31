@@ -6,8 +6,8 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
-import com.mobilegame.robozzle.data.remote.User.UserService
-import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.User.UltimateUserService
+import com.mobilegame.robozzle.data.remote.dto.UltimateUser.UltimateUserRequest
 //import com.mobilegame.robozzle.data.store.user.UserStore
 import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.data.store.DataStoreService
@@ -71,8 +71,8 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
 
     suspend fun connectUserToServer(userName: String, token: String) {
         infoLog("connectUserToServer", "userName : ${userName} token : ${token}")
-        val userService: UserService = UserService.create(token)
-        val ultimateUser: UltimateUserRequest? = userService.getUltimateUser(userName)
+        val ultimateUserService: UltimateUserService = UltimateUserService.create(token)
+        val ultimateUser: UltimateUserRequest? = ultimateUserService.getUltimateUser(userName)
 
         if (ultimateUser == null) {
             set_userConnectionState(UserConnectionState.NotConnected)

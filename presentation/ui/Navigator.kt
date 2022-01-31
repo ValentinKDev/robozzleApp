@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation
+package com.mobilegame.robozzle.presentation.ui
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

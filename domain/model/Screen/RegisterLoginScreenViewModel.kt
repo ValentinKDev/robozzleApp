@@ -9,8 +9,8 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.base.UltimateUser.User
 import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
 import com.mobilegame.robozzle.data.remote.User.ServerRet
-import com.mobilegame.robozzle.data.remote.User.UserService
-import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.User.UltimateUserService
+import com.mobilegame.robozzle.data.remote.dto.UltimateUser.UltimateUserRequest
 import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.state.UserConnection
@@ -32,9 +32,6 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
     val userDataStoreVM = UserDataStoreViewModel(
         service = DataStoreService.createUserService(getApplication())
     )
-
-//    private val _canNotLog = MutableStateFlow<Boolean>(true)
-//    val canNotLog: StateFlow<Boolean> = _canNotLog
 
     private val _userConnectionState = MutableStateFlow(UserConnection.NoUser.state)
     val userConnectionState: StateFlow<String> = _userConnectionState
@@ -181,8 +178,8 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
 
 
     suspend fun getUltimateUserFromServer(): UltimateUserRequest? {
-        val userService: UserService = UserService.create(tokenJwt.value)
-        val ultimateUser: UltimateUserRequest? = userService.getUltimateUser(name.value)
+        val ultimateUserService: UltimateUserService = UltimateUserService.create(tokenJwt.value)
+        val ultimateUser: UltimateUserRequest? = ultimateUserService.getUltimateUser(name.value)
 
         //todo : more state ?
 //        if (ultimateUser == null) { setUserConnectionState(UserConnection.NotConnected.state) }
@@ -192,9 +189,9 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
 
     private suspend fun createANewUserAndGetState(): String {
         infoLog("createANewUserAndGetState()", "start")
-        val userService: UserService = UserService.create(token = NOTOKEN)
+        val ultimateUserService: UltimateUserService = UltimateUserService.create(token = NOTOKEN)
         val newUserRequest = UserRequest(name.value, password.value)
-        val serverRet: String = userService.postNewUser(newUserRequest)
+        val serverRet: String = ultimateUserService.postNewUser(newUserRequest)
         infoLog("user connection state before", userConnectionState.value)
 
         return when (serverRet) {

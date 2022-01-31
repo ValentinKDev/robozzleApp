@@ -1,11 +1,14 @@
-package com.mobilegame.robozzle.data.remote.ResolvedLevel
+package com.mobilegame.robozzle.data.remote.User
 
 import android.util.Log
 import com.mobilegame.robozzle.data.remote.HttpRoutes
-import com.mobilegame.robozzle.data.remote.dto.ResolvedLevelRequest
+import com.mobilegame.robozzle.data.remote.dto.UltimateUser.UltimateUserRequest
+import com.mobilegame.robozzle.data.remote.dto.UserRequest
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
+import io.ktor.client.features.auth.*
+import io.ktor.client.features.auth.providers.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
@@ -13,17 +16,29 @@ import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-interface ResolvedLevelService {
-//    suspend fun GetWinLevel(name: String, id): WinLevelRequest?
 
-    suspend fun GetResolvedLevelsList(name: String): List<ResolvedLevelRequest>
+interface UltimateUserService {
+    suspend fun getUltimateUser(name: String): UltimateUserRequest?
+//    suspend fun getUser(): UserRequest?
 
-    suspend fun CreateResolvedLevel(resolvedLevel: ResolvedLevelRequest)
+//    suspend fun createUser(user: UserRequest): UserRequest?
+    //todo : return a value to know if the user is already in the database ?
+    suspend fun postNewUser(user: UserRequest): String
+//    suspend fun getUsers(): List<UserRequest>
+
+
+
+//    suspend fun createPlayerAuth(player: UserRequest): UserRequest?
+//    suspend fun test(user: UserRequest): TokenInfo?
+//    suspend fun test3(user: UserRequest)
 
     companion object {
-        fun create(): ResolvedLevelService {
-            return ResolvedLevelImplementation(
+        fun create(token: String): UltimateUserService {
+            return UltimateUserImplementation(
                 client = HttpClient(Android) {
+                    install(HttpTimeout) {
+                        requestTimeoutMillis = 1500
+                    }
                     defaultRequest {
                         host = HttpRoutes.HOST
                         port = HttpRoutes.PORT
@@ -33,7 +48,6 @@ interface ResolvedLevelService {
                             override fun log(message: String) {
                                 Log.v("Logger Ktor =>", message)
                             }
-
                         }
                         level = LogLevel.ALL
                     }
@@ -55,6 +69,16 @@ interface ResolvedLevelService {
 
                         install(DefaultRequest) {
                             header(HttpHeaders.ContentType, ContentType.Application.Json)
+                        }
+                    }
+                    install(Auth) {
+                        bearer {
+                            loadTokens {
+                                BearerTokens(
+                                    accessToken = token,
+                                    refreshToken = token,
+                                )
+                            }
                         }
                     }
                 }
