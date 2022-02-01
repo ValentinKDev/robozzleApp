@@ -1,9 +1,8 @@
-package com.mobilegame.robozzle.data.remote.JwtToken
+package com.mobilegame.robozzle.data.server.JwtToken
 
 import android.util.Log
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.remote.HttpRoutes.USER_GET_TOKEN
-import com.mobilegame.robozzle.domain.res.INVALIDTOKEN
+import com.mobilegame.robozzle.data.server.HttpRoutes.USER_GET_TOKEN
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*

@@ -37,7 +37,7 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
     val playerData = PlayerData()
 
 
-    infoLog("Navigation", "${mainMenuVM._localLevelsListVersion.value}")
+//    infoLog("Navigation", "${mainMenuVM._localLevelsListVersion.value}")
 
 //    val levelsList: List<RobuzzleLevel> by mainMenuVM.rbAllLevelList.observeAsState(initial = emptyList())
 
@@ -57,7 +57,7 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             infoLog("Screens routing", "ProfilScreen")
 //            if (mUserViewModel.userConnectionSate.value == UserConnectionState.Connected)
 //                UserInfoScreen(navController = navController, mUserViewModel)
-            if (mainMenuVM.userDataViewModel.getUserConnectionState() == UserConnection.Connected.state)
+            if (mainMenuVM.userDataVM.getUserConnectionState() == UserConnection.Connected.state)
                 UserInfoScreen(navController = navController)
             else
                 RegisterLoginScreen(navController = navController)

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.data.base.Level.LevelData
 import com.mobilegame.robozzle.data.base.Level.LevelDao
 import com.mobilegame.robozzle.data.base.Level.LevelDataBase
-import com.mobilegame.robozzle.data.remote.dto.LevelRequest
+import com.mobilegame.robozzle.data.server.dto.LevelRequest
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.room.toLevel
 import com.mobilegame.robozzle.domain.model.room.toLevelData
@@ -37,19 +37,21 @@ class LevelRoomViewModel(context: Context): ViewModel() {
         listLevel
     }
 
-    fun addLevel(levelRequest: LevelRequest) {
+//    fun addLevel(levelRequest: LevelRequest) {
+    fun addLevel(levelRequest: String) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.addLevel(levelRequest.toLevelData())
         }
     }
 
-    fun addLevels(list: List<LevelRequest>) {
+//    fun addLevels(list: List<LevelRequest>) {
+    fun addLevels(list: List<String>) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.addLevelsData(list.toLevelDataList())
         }
     }
 
-    fun getLevelIds(): List<Int> = runBlocking {
+    fun getLevelIds(): List<Int> = runBlocking(Dispatchers.IO) {
         val levelIds: List<Int> = repo.getAllLevelsIds()
         levelIds
     }

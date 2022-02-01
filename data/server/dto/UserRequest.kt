@@ -1,6 +1,5 @@
-package com.mobilegame.robozzle.data.remote.dto
+package com.mobilegame.robozzle.data.server.dto
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable

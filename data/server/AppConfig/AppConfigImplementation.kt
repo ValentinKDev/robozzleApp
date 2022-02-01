@@ -1,8 +1,8 @@
-package com.mobilegame.robozzle.data.remote.AppConfig
+package com.mobilegame.robozzle.data.server.AppConfig
 
 import android.util.Log
-import com.mobilegame.robozzle.data.remote.HttpRoutes
-import com.mobilegame.robozzle.data.remote.dto.AppConfigRequest
+import com.mobilegame.robozzle.data.server.HttpRoutes
+import com.mobilegame.robozzle.data.server.dto.AppConfigRequest
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*

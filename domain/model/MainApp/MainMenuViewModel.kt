@@ -6,98 +6,87 @@ import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.domain.repository.LevelRepository
 import com.mobilegame.robozzle.data.base.Level.LevelData
-import com.mobilegame.robozzle.data.base.Level.LevelDao
-import com.mobilegame.robozzle.data.base.Level.LevelDataBase
-import com.mobilegame.robozzle.data.remote.Level.LevelService
-import com.mobilegame.robozzle.data.remote.dto.LevelRequest
-import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
+import com.mobilegame.robozzle.data.server.Level.LevelService
+import com.mobilegame.robozzle.data.server.dto.LevelRequest
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
-import com.mobilegame.robozzle.domain.model.MainApp.AppConfigViewModel
-import com.mobilegame.robozzle.data.store.DataStoreService
-import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.store.AppConfigDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.server.appConfig.AppConfigServerViewModel
+import com.mobilegame.robozzle.domain.model.server.level.LevelServerViewModel
 import com.mobilegame.robozzle.domain.res.ERROR
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @InternalCoroutinesApi
 class MainMenuViewModel(application: Application): AndroidViewModel(application) {
-    private val _cannotPlayCuzServerDown = MutableStateFlow<Boolean>(false)
-    val cannotPlayCuzServerDown: StateFlow<Boolean> = _cannotPlayCuzServerDown
 
-    private val _rbAllLevelsList = MutableLiveData<List<RobuzzleLevel>>(emptyList())
-    val rbAllLevelList: MutableLiveData<List<RobuzzleLevel>> = _rbAllLevelsList
-    fun SetRbAllLevelList(mList: List<RobuzzleLevel>) {
-        infoLog("..Set Rb All Level List()", "list size${mList.size}")
-        _rbAllLevelsList.postValue(mList)
-    }
+    val userDataVM = UserViewModel(getApplication())
 
-    private val _rbAllLevelListFromRoom = MutableLiveData<List<LevelData>>(emptyList())
-    val rbAllLevelDataListFromRoom : MutableLiveData<List<LevelData>> = _rbAllLevelListFromRoom
-
-    val _localLevelsListVersion = MutableLiveData<String?>(null)
-    private fun Set_localLevelListVersion(version: String) {
-        verbalLog("set", "$version")
-        _localLevelsListVersion.value = version
-        verbalLog("isSet", "${_localLevelsListVersion.value}")
-    }
-
-    private val _serverLevelsListVersion = MutableLiveData<String?>(null)
-    fun Set_serverLevelsListVersion(version: String) {
-        _serverLevelsListVersion.postValue(version)
-    }
-
-
-    var appConfigVM: AppConfigViewModel = AppConfigViewModel(application)
+    private val levelRoomVM = LevelRoomViewModel(getApplication())
+    private val levelServerVM = LevelServerViewModel()
+    private val appConfigDataStoreVM = AppConfigDataStoreViewModel(getApplication())
+    private val appConfigServerVM = AppConfigServerViewModel()
 
     init {
         viewModelScope.launch {
             Log.e("init", "MainMenuViewModel()")
-            //load version
 
-            //load list of levels id from room
-            //get list of level s id from server
-                //compare list
-                    //get level list from server
-                    //load level list from room
-                    //update levels needing to be updated
-            //load list from room
+            //load version
+            infoLog("get version", "local")
+            var localVersion: String? = appConfigDataStoreVM.getVersion()
+            infoLog("-> local version", "$localVersion")
+
+            if (localVersion == null) {
+                //Start all the dl process
+                infoLog("start", "all dl process")
+                infoLog("get version", "server")
+                val serverVersion: String? = appConfigServerVM.getVersion()
+                infoLog("-> sever version", "$serverVersion")
+                serverVersion?.let {
+                    infoLog("add to app config dataStore", "version")
+                    appConfigDataStoreVM.setVersion(it)
+                    infoLog("get list of ALL LevelRequest", "server")
+                    val listOfAllLevels: List<String> = levelServerVM.getAllLevelList()
+                    infoLog("add to level Room", "list of LevelsRequest size ${listOfAllLevels.size}")
+                    levelRoomVM.addLevels(listOfAllLevels)
+                }
+            } else {
+                //load list of levels id from room
+                infoLog("get list level Id", "local")
+                val localListLevelsId: List<Int> = levelRoomVM.getLevelIds()
+                infoLog("-> list level Id", "$localListLevelsId")
+                if (localListLevelsId.isEmpty()) {
+                    //Start all the dl process
+                    infoLog("start", "all dl process")
+                    infoLog("get list of ALL LevelRequest", "server")
+                    val listOfAllLevels = levelServerVM.getAllLevelList()
+                    infoLog("add to level Room", "list of LevelsRequest size ${listOfAllLevels.size}")
+                    levelRoomVM.addLevels(listOfAllLevels)
+                } else {
+                    //get list of level s id from server
+                    infoLog("get list level id", "server")
+                    val serverListLevelsId: List<Int> = levelServerVM.getLevelIdList()
+                    infoLog("-> list level id", "$serverListLevelsId")
+                    if (serverListLevelsId.isEmpty()) errorLog("error", "server list level's id is empty")
+                    else {
+                        //compare list
+                        if (!localListLevelsId.containsAll(serverListLevelsId)) {
+                            //get level list to add to local data from server
+                            val listOfLevelIdMissing: List<Int> = serverListLevelsId.filterNot { localListLevelsId.contains(it) }
+                            infoLog("list of level Id Missing", "$listOfLevelIdMissing")
+                            infoLog("get list of level Id Missing", "server")
+                            val listOfLevelMissingJson: List<String> = levelServerVM.getLevelListById(listOfLevelIdMissing)
+                            infoLog("-> list of level Id Missing size", "${listOfLevelMissingJson.size}")
+                            //update levels needing to be updated
+//                            infoLog("add list of level Id Missing", "$listOfLevelIdMissing")
+                            levelRoomVM.addLevels(listOfLevelMissingJson)
+                        }
+                    }
+                }
+            }
+            //load list from room ? or use the differents difficulty as only UI
         }
         infoLog("Main Menu View Model", "init end")
-    }
-
-    private fun CannotReachServerVerion(): Boolean = appConfigVM.versionDeprecated.value == ERROR
-
-    private fun versionDeprecated(): Int = appConfigVM.versionDeprecated.value
-
-    private suspend fun HandleDeprecatedVersion() {
-//            todo : if not equal check which are the Levels to add so the past one which does save half solution and winsolutions are not ereased
-        DeleteDeprecatedData()
-        AddLevelRequestsAndUpdateVM()
-    }
-
-    private fun DeleteDeprecatedData() {
-        viewModelScope.launch(Dispatchers.IO) {
-//            repository.delAll()
-        }
-    }
-
-    suspend fun LoadRbLevels() {
-        infoLog(".. Load Robuzzle Levels ()", "start")
-        withContext(Dispatchers.IO){
-//            SetRbAllLevelList(repository.getAllLevelsFromRoom().toRobuzzleLevelList())
-        }
-    }
-
-    suspend fun AddLevelRequestsAndUpdateVM() {
-        val service = LevelService.create()
-        var levelRequestsList: List<LevelRequest> = emptyList()
-
-        levelRequestsList = service.getLevels()
-        viewModelScope.launch(Dispatchers.IO) {
-//            repository.addLevelRequests(levelRequestsList)
-//            SetRbAllLevelList(repository.getAllLevelsFromRoom().toRobuzzleLevelList())
-        }
     }
 }

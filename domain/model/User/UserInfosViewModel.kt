@@ -13,6 +13,8 @@ class UserInfoViewModel(application: Application): AndroidViewModel(application)
 
     val name: String = userDataStoreVM.getUser().name
 
+    get
+
     init {
         //Load the playerRanks from Room
         //Load the playerRanks (list of resolvedLevel) with Ultimate request

@@ -5,9 +5,9 @@ import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 //import com.mobilegame.robozzle.data.base.UltimateUser.User
-import com.mobilegame.robozzle.data.remote.JwtToken.JWTTokenService
-import com.mobilegame.robozzle.data.remote.User.UltimateUserService
-import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
+import com.mobilegame.robozzle.data.server.JwtToken.JWTTokenService
+import com.mobilegame.robozzle.data.server.User.UltimateUserService
+import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 //import com.mobilegame.robozzle.data.store.user.UserStore
 import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.data.store.DataStoreService
@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.domain.model.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.ERROR
 import com.mobilegame.robozzle.domain.res.NOTOKEN
+import com.mobilegame.robozzle.domain.state.UserConnection
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.lang.NumberFormatException
@@ -50,7 +51,15 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         _userConnectionState.value = state
     }
 
+//    fun getuserConnectionState(state: UserConnectionState) {
+//        userDataStoreVM.getUserConnectionState()
+//    }
+
     init {
+    }
+
+    fun getUserConnectionState(): String = runBlocking(Dispatchers.IO) {
+        userDataStoreVM.getUserConnectionState() ?: UserConnection.NoUser.state
     }
 
     private suspend fun waitForToken() {

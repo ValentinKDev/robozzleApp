@@ -9,7 +9,7 @@ interface LevelDao {
     @Query("SELECT * FROM level_table")
     fun getAll(): List<LevelData>
 
-    @Query("SELECT * FROM level_table WHERE id")
+    @Query("SELECT id FROM level_table")
     fun getAllIds(): List<Int>
 
     @Query("SELECT * FROM level_table WHERE id IN (:id)")

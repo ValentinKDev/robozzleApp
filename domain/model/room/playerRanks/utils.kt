@@ -3,10 +3,7 @@ package com.mobilegame.robozzle.domain.model.room
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mobilegame.robozzle.data.base.Level.LevelData
-import com.mobilegame.robozzle.data.base.PlayerRanks.LevelResolvedData
-import com.mobilegame.robozzle.data.remote.dto.LevelRequest
-import com.mobilegame.robozzle.domain.LevelResolved.LevelResolved
-import com.mobilegame.robozzle.domain.LevelResolved.WinDetails
+import com.mobilegame.robozzle.data.server.dto.LevelRequest
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.level.Level
@@ -15,7 +12,7 @@ private val ListStringType = object : TypeToken<List<String>>() {}.type!!
 private val ListFunctionInstructionType = object : TypeToken<List<FunctionInstructions>>() {}.type!!
 private val ListPostionType = object : TypeToken<List<Position>>() {}.type!!
 
-internal fun List<LevelRequest>.toLevelDataList(): List<LevelData> {
+internal fun List<String>.toLevelDataList(): List<LevelData> {
     val mutableList: MutableList<LevelData> = mutableListOf()
     this.forEach {
         mutableList.add(it.toLevelData())
@@ -23,9 +20,10 @@ internal fun List<LevelRequest>.toLevelDataList(): List<LevelData> {
     return mutableList.toList()
 }
 
-internal fun LevelRequest.toLevelData(): LevelData {
+internal fun String.toLevelData(): LevelData {
     val gson = Gson()
-    val level: Level = gson.fromJson(this.descriptionJson, Level::class.java)
+//    val level: Level = gson.fromJson(this.descriptionJson, Level::class.java)
+    val level: Level = gson.fromJson(this, Level::class.java)
     return LevelData(
         id = level.id,
         name= level.name,

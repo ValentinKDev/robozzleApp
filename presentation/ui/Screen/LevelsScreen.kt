@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.MainMenuViewModel
@@ -29,7 +30,8 @@ fun LevelsScreen(
     navController: NavController,
 //    levelsList: List<RobuzzleLevel>,
     playerData: PlayerData,
-    mLevelViewModel: MainMenuViewModel
+    levelScreenVM: 
+//    mLevelViewModel: MainMenuViewModel
 ) {
     val levelsList: List<RobuzzleLevel> by mLevelViewModel.rbAllLevelList.observeAsState(initial = emptyList())
     Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")

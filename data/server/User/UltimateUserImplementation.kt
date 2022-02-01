@@ -1,9 +1,9 @@
-package com.mobilegame.robozzle.data.remote.User
+package com.mobilegame.robozzle.data.server.User
 
 import android.util.Log
-import com.mobilegame.robozzle.data.remote.HttpRoutes.USER_REGISTRATION_PATH
-import com.mobilegame.robozzle.data.remote.dto.UltimateUserRequest
-import com.mobilegame.robozzle.data.remote.dto.UserRequest
+import com.mobilegame.robozzle.data.server.HttpRoutes.USER_REGISTRATION_PATH
+import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
+import com.mobilegame.robozzle.data.server.dto.UserRequest
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.*
