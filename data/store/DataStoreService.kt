@@ -7,6 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 
 val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.User.pref)
 val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Token.pref)
+val Context.appPrefDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.App.pref)
 
 interface DataStoreService {
     suspend fun putString(key: String, value: String)
@@ -21,6 +22,10 @@ interface DataStoreService {
 
         fun createTokenService(context: Context): DataStoreService {
             return DataStoreImplementation(context.tokenDataStore)
+        }
+
+        fun createAppData(context: Context): DataStoreService {
+            return DataStoreImplementation(context.appPrefDataStore)
         }
     }
 }

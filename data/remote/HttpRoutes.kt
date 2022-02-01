@@ -9,6 +9,7 @@ internal object HttpRoutes {
     const val APP_CONFIG = "/config/data"
     const val LEVEL_PATH = "/level_list"
     const val LEVELS_NUMBER_PATH = "/all_levels/size"
+    const val LEVELS_ID_PATH = "/all_levels/listids"
     const val PLAYER_PATH = "/players"
     const val USER_PATH = "/users"
     const val GET_TOKEN_PATH = "/token/generate"

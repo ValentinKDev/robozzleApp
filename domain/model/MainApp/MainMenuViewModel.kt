@@ -36,9 +36,6 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
     private val _rbAllLevelListFromRoom = MutableLiveData<List<LevelData>>(emptyList())
     val rbAllLevelDataListFromRoom : MutableLiveData<List<LevelData>> = _rbAllLevelListFromRoom
 
-
-    private val repository: LevelRepository
-
     val _localLevelsListVersion = MutableLiveData<String?>(null)
     private fun Set_localLevelListVersion(version: String) {
         verbalLog("set", "$version")
@@ -55,34 +52,19 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
     var appConfigVM: AppConfigViewModel = AppConfigViewModel(application)
 
     init {
-        Log.e("init", "MainMenuViewModel()")
-        val levelDao: LevelDao = LevelDataBase.getInstance(application).levelDao()
-        repository = LevelRepository(levelDao)
-
         viewModelScope.launch {
+            Log.e("init", "MainMenuViewModel()")
+            //load version
 
-            while (versionDeprecated() == UNKNOWN) {
-                delay(200)
-                infoLog("delay",".")
-                if (CannotReachServerVerion()) break
-            }
-
-            when (versionDeprecated()) {
-                com.mobilegame.robozzle.domain.res.TRUE -> { errorLog("", "TRUE")
-                    HandleDeprecatedVersion()
-                }
-                com.mobilegame.robozzle.domain.res.FALSE -> { errorLog("", "FALSE")
-                }
-                ERROR -> { errorLog("", "ERROR")
-                    _cannotPlayCuzServerDown.value = true
-                }
-                else -> {errorLog("some weird shit happening", " in MainMenuViewModel()")
-                    _cannotPlayCuzServerDown.value = true
-                }
-            }
-            LoadRbLevels()
+            //load list of levels id from room
+            //get list of level s id from server
+                //compare list
+                    //get level list from server
+                    //load level list from room
+                    //update levels needing to be updated
+            //load list from room
         }
-        infoLog("xx Main Menu View Model", "init end")
+        infoLog("Main Menu View Model", "init end")
     }
 
     private fun CannotReachServerVerion(): Boolean = appConfigVM.versionDeprecated.value == ERROR
@@ -97,7 +79,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
     private fun DeleteDeprecatedData() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.delAll()
+//            repository.delAll()
         }
     }
 

@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.data.remote.Level
 
 import android.util.Log
+import com.mobilegame.robozzle.data.remote.HttpRoutes.LEVELS_ID_PATH
 import com.mobilegame.robozzle.data.remote.HttpRoutes.LEVELS_NUMBER_PATH
 import com.mobilegame.robozzle.data.remote.HttpRoutes.LEVEL_PATH
 import com.mobilegame.robozzle.data.remote.dto.LevelRequest
@@ -61,7 +62,7 @@ class LevelImplementation (
     override suspend fun getLevelIdList(): List<Int> {
         return try {
             client.get {
-                url { encodedPath =  }
+                url { encodedPath = LEVELS_ID_PATH }
             }
         } catch (e: RedirectResponseException) {
             //3xx- responses

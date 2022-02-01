@@ -44,7 +44,7 @@ class LevelRoomViewModel(context: Context): ViewModel() {
     }
 
     fun addLevels(list: List<LevelRequest>) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repo.addLevelsData(list.toLevelDataList())
         }
     }
