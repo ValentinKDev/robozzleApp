@@ -6,17 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LevelDao {
-//    @Query("SELECT * FROM level_table")
-//    fun getAllMutableLive(): MutableLiveData<List<Level>>
-
-    @Query("SELECT * FROM level_table")
-    fun getAllLive(): LiveData<List<LevelData>>
-
-    @Query("SELECT * FROM level_table")
-    fun getAllFlow(): Flow<List<LevelData>>
-
     @Query("SELECT * FROM level_table")
     fun getAll(): List<LevelData>
+
+    @Query("SELECT * FROM level_table WHERE id")
+    fun getAllIds(): List<Int>
 
     @Query("SELECT * FROM level_table WHERE id IN (:id)")
     fun loadAllByIds(id: IntArray): List<LevelData>

@@ -15,45 +15,15 @@ private val ListStringType = object : TypeToken<List<String>>() {}.type!!
 private val ListFunctionInstructionType = object : TypeToken<List<FunctionInstructions>>() {}.type!!
 private val ListPostionType = object : TypeToken<List<Position>>() {}.type!!
 
-internal fun List<LevelResolvedData>.toLevelResolvedType(): List<LevelResolved> {
-    val list: MutableList<LevelResolved> = mutableListOf()
-    this.forEachIndexed { index, data ->
-        list.add(
-//            index = index,
-            element = data.toLevelResolvedType()
-        )
-    }
-    return list.toList()
-}
-
-internal fun LevelResolvedData.toLevelResolvedType(): LevelResolved {
-    val winDetails: WinDetails = Gson().fromJson(this.winDetailsJson, WinDetails::class.java)
-    return LevelResolved(
-//        lvl_id = this.idLevel,
-        lvl_id = this.id,
-        points = this.points,
-        details = winDetails
-    )
-}
-
-internal fun List<LevelResolved>.toLevelResolvedDataList(): List<LevelResolvedData> {
-    val list: MutableList<LevelResolvedData> = mutableListOf()
+internal fun List<LevelRequest>.toLevelDataList(): List<LevelData> {
+    val mutableList: MutableList<LevelData> = mutableListOf()
     this.forEach {
-        list.add(it.toLevelResolvedData())
+        mutableList.add(it.toLevelData())
     }
-    return list.toList()
+    return mutableList.toList()
 }
 
-internal fun LevelResolved.toLevelResolvedData(): LevelResolvedData {
-    val gson = Gson()
-    return LevelResolvedData(
-        id = this.lvl_id,
-//        idLevel = this.,
-        points = this.points,
-        winDetailsJson = gson.toJson(this.details),
-    )
-}
-private fun LevelRequest.toLevelData(): LevelData {
+internal fun LevelRequest.toLevelData(): LevelData {
     val gson = Gson()
     val level: Level = gson.fromJson(this.descriptionJson, Level::class.java)
     return LevelData(

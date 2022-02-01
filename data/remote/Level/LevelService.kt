@@ -21,6 +21,7 @@ interface LevelService {
 
     suspend fun getLevelsNumber(): Int
 
+    suspend fun getLevelIdList(): List<Int>
 
     companion object {
         val tokenClient = HttpClient(CIO) {

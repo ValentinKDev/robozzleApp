@@ -1,17 +1,16 @@
-package com.mobilegame.robozzle.domain.model.room
+package com.mobilegame.robozzle.domain.model.room.playerRanks
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-import com.google.gson.Gson
 import com.mobilegame.robozzle.data.base.PlayerRanks.LevelResolvedData
 import com.mobilegame.robozzle.data.base.PlayerRanks.PlayerRanksDao
 import com.mobilegame.robozzle.data.base.PlayerRanks.PlayerRanksDataBase
 import com.mobilegame.robozzle.domain.LevelResolved.LevelResolved
 import com.mobilegame.robozzle.domain.LevelResolved.PlayerRanks
-import com.mobilegame.robozzle.domain.LevelResolved.WinDetails
+import com.mobilegame.robozzle.domain.model.room.level.toLevelResolvedData
+import com.mobilegame.robozzle.domain.model.room.level.toLevelResolvedDataList
+import com.mobilegame.robozzle.domain.model.room.level.toLevelResolvedType
 import com.mobilegame.robozzle.domain.repository.PlayerRanksRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi

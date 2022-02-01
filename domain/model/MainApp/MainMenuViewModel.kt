@@ -23,10 +23,6 @@ import kotlinx.coroutines.flow.*
 
 @InternalCoroutinesApi
 class MainMenuViewModel(application: Application): AndroidViewModel(application) {
-    val userDataViewModel = UserDataStoreViewModel(
-    service = DataStoreService.createUserService(getApplication())
-    )
-
     private val _cannotPlayCuzServerDown = MutableStateFlow<Boolean>(false)
     val cannotPlayCuzServerDown: StateFlow<Boolean> = _cannotPlayCuzServerDown
 
@@ -108,7 +104,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
     suspend fun LoadRbLevels() {
         infoLog(".. Load Robuzzle Levels ()", "start")
         withContext(Dispatchers.IO){
-            SetRbAllLevelList(repository.getAllLevelsFromRoom().toRobuzzleLevelList())
+//            SetRbAllLevelList(repository.getAllLevelsFromRoom().toRobuzzleLevelList())
         }
     }
 
@@ -118,8 +114,8 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
         levelRequestsList = service.getLevels()
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addLevelRequests(levelRequestsList)
-            SetRbAllLevelList(repository.getAllLevelsFromRoom().toRobuzzleLevelList())
+//            repository.addLevelRequests(levelRequestsList)
+//            SetRbAllLevelList(repository.getAllLevelsFromRoom().toRobuzzleLevelList())
         }
     }
 }

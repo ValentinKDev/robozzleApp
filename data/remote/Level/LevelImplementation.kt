@@ -57,4 +57,27 @@ class LevelImplementation (
             -1
         }
     }
+
+    override suspend fun getLevelIdList(): List<Int> {
+        return try {
+            client.get {
+                url { encodedPath =  }
+            }
+        } catch (e: RedirectResponseException) {
+            //3xx- responses
+            Log.e("3xx","Error: ${e.response.status.description}")
+            emptyList()
+        } catch (e: ClientRequestException) {
+            //4xx- responses
+            Log.e("4xx","Error: ${e.response.status.description}")
+            emptyList()
+        } catch (e: ServerResponseException) {
+            //5xx- responses
+            Log.e("5xx","Error: ${e.response.status.description}")
+            emptyList()
+        } catch (e: Exception) {
+            Log.e("getLevels","Error: ${e.message}")
+            emptyList()
+        }
+    }
 }
