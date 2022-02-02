@@ -6,7 +6,11 @@ import com.mobilegame.robozzle.data.base.Level.LevelData
 import com.mobilegame.robozzle.data.server.dto.LevelRequest
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.domain.model.level.LevelOverView
+
+private val MutableListStringType = object : TypeToken<MutableList<String>>() {}.type!!
 
 private val ListStringType = object : TypeToken<List<String>>() {}.type!!
 private val ListFunctionInstructionType = object : TypeToken<List<FunctionInstructions>>() {}.type!!
@@ -50,10 +54,41 @@ internal fun LevelData.toLevel(): Level {
     )
 }
 
+internal fun LevelData.toRobuzzleLevel(): RobuzzleLevel {
+    val gson = Gson()
+    return RobuzzleLevel(
+        id = this.id,
+        name = this.name,
+        difficulty = this.difficulty,
+        map = gson.fromJson(this.mapJson, ListStringType),
+        instructionsMenu = gson.fromJson(this.instructionsMenuJson, ListFunctionInstructionType),
+        funInstructionsList = gson.fromJson(this.funInstructionsListJson, ListFunctionInstructionType),
+        playerInitial = gson.fromJson(this.playerInitalJson, ListPostionType),
+        starsList = gson.fromJson(this.starsListJson, ListPostionType)
+    )
+}
+
 internal fun List<LevelData>.toLevelList(): List<Level> {
     val levelList: MutableList<Level> = mutableListOf()
     this.forEach {
         levelList.add(it.toLevel())
     }
     return levelList
+}
+
+internal fun buildLevelOverView(id: Int, name: String, mapJson: String): LevelOverView {
+    val gson = Gson()
+    return LevelOverView(
+        id = id,
+        name = name,
+        map = gson.fromJson(mapJson, ListStringType)
+    )
+}
+
+internal fun buildLevelOverViewList(ids: List<Int>, names: List<String>, mapsJson: List<String>): List<LevelOverView> {
+    val mutableList: MutableList<LevelOverView> = mutableListOf()
+    ids.forEachIndexed { index, id ->
+        mutableList.add( element = buildLevelOverView(id, names[index], mapsJson[index]) )
+    }
+    return mutableList.toList()
 }

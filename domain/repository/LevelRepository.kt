@@ -18,6 +18,22 @@ class LevelRepository(private val levelDao: LevelDao) {
         return levelDao.getAll()
     }
 
+    fun getLevelsByDifficulty(diff: Int): List<LevelData> {
+        return levelDao.getAllFromDifficulty(diff)
+    }
+
+    fun getIdByDifficulty(diff: Int): List<Int> {
+        return levelDao.getAllIdFromDifficulty(diff)
+    }
+
+    fun getNamesByDifficulty(diff: Int): List<String> {
+        return levelDao.getAllNameFromDifficulty(diff)
+    }
+
+    fun getMapJsonByDifficulty(diff: Int): List<String> {
+        return levelDao.getAllMapJsonFromDifficulty(diff)
+    }
+
     fun  delAll() {
         levelDao.deleteAll()
     }

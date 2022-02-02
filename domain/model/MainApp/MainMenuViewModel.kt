@@ -23,7 +23,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
 
     val userDataVM = UserViewModel(getApplication())
 
-    private val levelRoomVM = LevelRoomViewModel(getApplication())
+    val levelRoomVM = LevelRoomViewModel(getApplication())
     private val levelServerVM = LevelServerViewModel()
     private val appConfigDataStoreVM = AppConfigDataStoreViewModel(getApplication())
     private val appConfigServerVM = AppConfigServerViewModel()

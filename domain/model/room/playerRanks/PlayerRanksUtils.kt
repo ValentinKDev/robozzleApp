@@ -1,9 +1,11 @@
 package com.mobilegame.robozzle.domain.model.room.level
 
 import com.google.gson.Gson
+import com.mobilegame.robozzle.data.base.Level.LevelData
 import com.mobilegame.robozzle.data.base.PlayerRanks.LevelResolvedData
 import com.mobilegame.robozzle.domain.LevelResolved.LevelResolved
 import com.mobilegame.robozzle.domain.LevelResolved.WinDetails
+import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 
 internal fun List<LevelResolvedData>.toLevelResolvedType(): List<LevelResolved> {
     val list: MutableList<LevelResolved> = mutableListOf()
@@ -43,3 +45,5 @@ internal fun LevelResolved.toLevelResolvedData(): LevelResolvedData {
         winDetailsJson = gson.toJson(this.details),
     )
 }
+
+//internal fun LevelData.toRobuzzleLevel(): RobuzzleLevel {

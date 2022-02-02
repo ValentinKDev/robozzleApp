@@ -12,6 +12,7 @@ import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.model.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
+import com.mobilegame.robozzle.presentation.ui.Screen.Facilities.ErrorScreen
 import com.mobilegame.robozzle.toREMOVE.PlayerData
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
@@ -22,26 +23,8 @@ import kotlinx.coroutines.*
 @InternalCoroutinesApi
 @Composable
 fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
-//    val ctxt = LocalContext.current
-//    val mUserViewModel: UserViewModel = viewModel(
-//        factory = UserViewModelFactory(ctxt.applicationContext as Application)
-//    )
-
-//    val mainMenuVM: MainMenuViewModel = viewModel(
-//        factory = RobuzzleLevelFactory(ctxt.applicationContext as Application)
-//    )
-
     //todo: should i create a LoadingScreen between every Screen to reset and reload Data to avoid some issues ?
     val navController = rememberNavController()
-
-    val playerData = PlayerData()
-
-
-//    infoLog("Navigation", "${mainMenuVM._localLevelsListVersion.value}")
-
-//    val levelsList: List<RobuzzleLevel> by mainMenuVM.rbAllLevelList.observeAsState(initial = emptyList())
-
-//    Log.v("Navigation", "levelList size ${levelsList.size}")
 
     NavHost(navController = navController, startDestination = Screens.MainScreen.route){
         composable(route = Screens.MainScreen.route) {
@@ -62,22 +45,28 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             else
                 RegisterLoginScreen(navController = navController)
         }
-        composable(route = Screens.LevelsScreen.route) {
+        composable(
+            route = Screens.LevelsScreen.route + "/{difficulty}",
+            arguments = listOf(navArgument("difficulty") {type = NavType.IntType})
+        ) { entry ->
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
-            LevelsScreen(navController = navController, playerData, mainMenuVM)
-//            levelsList?.let {  RobuzzleLevelDisplay(level = levelsList[6])}
-//            levelsList?.let {  RobuzzleLevelDisplay(level = levelsList[3])}
-//            levelsList?.let {  RobuzzleLevelDisplay(level = levelsList[8])}
+            LevelsScreenByID(navController = navController, difficulty = entry.arguments?.getInt("difficulty")!!)
         }
         composable(
-            route = Screens.InGameScreen.route + "/{levelNumber}",
-            arguments = listOf(navArgument("levelNumber") { type = NavType.StringType })
+            route = Screens.InGameScreen.route + "/{levelId}",
+            arguments = listOf(navArgument("levelId") { type = NavType.StringType })
         ) { entry ->
 //            PlayingScreen(level = levelsList[entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
-            PlayingScreen(level = mainMenuVM.rbAllLevelList.value!![entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
+//            PlayingScreen(level = mainMenuVM.rbAllLevelList.value!![entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
+            if (entry.arguments?.getString("levelId")?.toInt() == null) {
+                ErrorScreen()
+            } else {
+                PlayingScreen(level = mainMenuVM.levelRoomVM.getRobuzzle(entry.arguments?.getString("levelId")?.toInt()!!)!!)
+            }
         }
     }
 }
+
 
 //class Action(navController: NavHostController) {
 //    @OptIn(InternalCoroutinesApi::class)
