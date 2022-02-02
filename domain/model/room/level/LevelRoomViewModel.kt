@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.domain.model.room.level
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.base.Level.LevelData
 import com.mobilegame.robozzle.data.base.Level.LevelDao
 import com.mobilegame.robozzle.data.base.Level.LevelDataBase
@@ -35,7 +36,8 @@ class LevelRoomViewModel(context: Context): ViewModel() {
     }
 
     fun getRobuzzle(id: Int): RobuzzleLevel? = runBlocking(Dispatchers.IO) {
-        repo.getALevel(id)?.toRobuzzleLevel()
+        val robuzzleLevel = repo.getALevel(id)?.toRobuzzleLevel()
+        robuzzleLevel
     }
 
     fun getAllLevels(): List<Level> = runBlocking(Dispatchers.IO) {

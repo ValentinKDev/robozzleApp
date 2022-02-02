@@ -54,7 +54,8 @@ class LevelRepository(private val levelDao: LevelDao) {
     }
 
     fun getALevel(id: Int): LevelData? {
-        return levelDao.getALevel(id)
+        val leveldata = levelDao.getALevel(id)
+        return leveldata
     }
 
     suspend fun addLevels(levelData: List<LevelData>) {

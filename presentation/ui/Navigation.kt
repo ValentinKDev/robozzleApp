@@ -55,8 +55,6 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             route = Screens.InGameScreen.route + "/{levelId}",
             arguments = listOf(navArgument("levelId") { type = NavType.StringType })
         ) { entry ->
-//            PlayingScreen(level = levelsList[entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
-//            PlayingScreen(level = mainMenuVM.rbAllLevelList.value!![entry.arguments?.getString("levelNumber")?.toInt()!! - 1])
             if (entry.arguments?.getString("levelId")?.toInt() == null) {
                 ErrorScreen()
             } else {

@@ -2,8 +2,11 @@ package com.mobilegame.robozzle.domain.model.room
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.base.Level.LevelData
 import com.mobilegame.robozzle.data.server.dto.LevelRequest
+import com.mobilegame.robozzle.domain.InGame.Direction
+import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
@@ -56,17 +59,23 @@ internal fun LevelData.toLevel(): Level {
 
 internal fun LevelData.toRobuzzleLevel(): RobuzzleLevel {
     val gson = Gson()
+    val playerInitial : List<Position> = gson.fromJson(this.playerInitalJson, ListPostionType)
     return RobuzzleLevel(
         id = this.id,
         name = this.name,
         difficulty = this.difficulty,
         map = gson.fromJson(this.mapJson, ListStringType),
-        instructionsMenu = gson.fromJson(this.instructionsMenuJson, ListFunctionInstructionType),
+        instructionsMenu = gson.fromJson<List<FunctionInstructions>?>(this.instructionsMenuJson, ListFunctionInstructionType).toMutableList(),
         funInstructionsList = gson.fromJson(this.funInstructionsListJson, ListFunctionInstructionType),
-        playerInitial = gson.fromJson(this.playerInitalJson, ListPostionType),
+        playerInitial = playerInitial.toPlayerInGame(),
         starsList = gson.fromJson(this.starsListJson, ListPostionType)
     )
 }
+
+private fun List<Position>.toPlayerInGame(): PlayerInGame = PlayerInGame(
+    Position(this[0].line, this[0].column),
+    Direction(this[1].line, this[1].column)
+)
 
 internal fun List<LevelData>.toLevelList(): List<Level> {
     val levelList: MutableList<Level> = mutableListOf()
