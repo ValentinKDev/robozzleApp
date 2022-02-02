@@ -8,5 +8,5 @@ import com.mobilegame.robozzle.domain.model.level.Level
 private val ListIntType = object : TypeToken<List<Int>>() {}.type!!
 
 internal fun String?.toIntList(): List<Int> {
-    return Gson().fromJson(this, ListIntType)
+    return Gson().fromJson(this ?: Gson().toJson(emptyList<Int>()), ListIntType)
 }

@@ -13,7 +13,6 @@ import com.mobilegame.robozzle.domain.model.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Facilities.ErrorScreen
-import com.mobilegame.robozzle.toREMOVE.PlayerData
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -28,7 +27,7 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
 
     NavHost(navController = navController, startDestination = Screens.MainScreen.route){
         composable(route = Screens.MainScreen.route) {
-            MainSreen(navController = navController)
+            MainScreen(navController = navController)
         }
         composable(route = Screens.ConfigScreen.route) {
             ConfigScreen()
@@ -46,7 +45,7 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
                 RegisterLoginScreen(navController = navController)
         }
         composable(
-            route = Screens.LevelsScreen.route + "/{difficulty}",
+            route = Screens.LevelsScreenByID.route + "/{difficulty}",
             arguments = listOf(navArgument("difficulty") {type = NavType.IntType})
         ) { entry ->
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
@@ -63,6 +62,9 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             } else {
                 PlayingScreen(level = mainMenuVM.levelRoomVM.getRobuzzle(entry.arguments?.getString("levelId")?.toInt()!!)!!)
             }
+        }
+        composable(route = Screens.DonationScreen.route) {
+
         }
     }
 }

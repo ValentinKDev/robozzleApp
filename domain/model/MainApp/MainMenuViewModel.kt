@@ -55,7 +55,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
                 //load list of levels id from room
                 infoLog("get list level Id", "local")
                 val localListLevelsId: List<Int> = levelRoomVM.getLevelIds()
-                infoLog("-> list level Id", "$localListLevelsId")
+                infoLog("-> local list level Id", "$localListLevelsId")
                 if (localListLevelsId.isEmpty()) {
                     //Start all the dl process
                     infoLog("start", "all dl process")
