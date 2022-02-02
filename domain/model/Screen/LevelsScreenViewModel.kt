@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.model.Screen
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
@@ -21,7 +22,12 @@ class LevelsScreenViewModel(application: Application): AndroidViewModel(applicat
 
     private val levelRoomViewModel = LevelRoomViewModel(getApplication())
 
-    fun loadRobuzzleList(difficulty: Int) {
+    fun loadLevelListById(difficulty: Int) {
+        infoLog("load Level list by diff", "start")
         _levelOverViewList.value  = levelRoomViewModel.getAllLevelOverViewFromDifficulty(difficulty)
+    }
+
+    init {
+//        loadLevelListById()
     }
 }

@@ -38,6 +38,7 @@ fun LevelsScreenByID(
 ) {
     val levelsList: List<LevelOverView> by levelScreenVM.levelOverViewList.collectAsState()
     Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
+    levelScreenVM.loadLevelListById(difficulty)
 
     if (levelsList.isNotEmpty()) {
     //todo: Use a normal Column and make it scrollable using modifier and state so the fckning UI won t recompose for nothing ???
