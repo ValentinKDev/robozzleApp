@@ -1,16 +1,19 @@
 package com.mobilegame.robozzle.presentation.ui
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButton
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreenButtonStyle
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.spacer.VerticalSpace
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -31,7 +34,11 @@ fun MainScreen(navController: NavController) {
                 .padding(vertical = 10.dp, horizontal = 10.dp)
         ) {
             Box( modifier = Modifier .align(CenterVertically)
-            ) { Text(text = "nom du joueur") }
+            ) {
+                UserDataStoreViewModel(LocalContext.current).getName()?.let {
+                    Text(text = "player : $it")
+                }?: Text(text = "Not registered")
+            }
 
             Box( modifier = Modifier .align(CenterVertically),
             ) { MainScreenButton(navController, MainScreenButtonStyle.Profil.type) }

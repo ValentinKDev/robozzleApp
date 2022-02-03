@@ -3,13 +3,16 @@ package com.mobilegame.robozzle.domain.InGame
 import android.graphics.Point
 import android.util.Log
 import com.mobilegame.robozzle.Extensions.copy
+import com.mobilegame.robozzle.Extensions.countInstruction
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.model.GameDataViewModel
+import com.mobilegame.robozzle.domain.WinDetails.WinDetails
+import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.Dispatchers
@@ -196,7 +199,16 @@ class AnimationLogic(val breadcrumb: Breadcrumb, var gameDataVM: GameDataViewMod
     }
 
     private suspend fun ProcessResult(result: Int) {
-        withContext(Dispatchers.Main) { gameDataVM.SetWinTo(result) }
+        withContext(Dispatchers.Main) {
+            gameDataVM.SetWinTo(
+                value = result,
+                winDetails = WinDetails(
+                    instructionsNumber = breadcrumb.funInstructionsList.countInstruction(),
+                    actionsNumber = breadcrumb.actionsCount,
+                    solutionFound = breadcrumb.funInstructionsList
+                )
+            )
+        }
         Log.e("END animation", "--${result}--")
     }
 

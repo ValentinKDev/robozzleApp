@@ -16,7 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.Print_List_Position
 import com.mobilegame.robozzle.analyse.Print_List_String
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.res.FALSE
@@ -28,6 +28,9 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 @Composable
 fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = viewModel()) {
     val win: Int by gameDataViewModel.win.collectAsState(UNKNOWN)
+
+    gameDataViewModel.lvlId = level.id
+    gameDataViewModel.lvlDifficulty = level.id
 
     Log.i("", "_")
     Log.e("LAUNCH LEVEL", "${level.id} - ${level.name}")

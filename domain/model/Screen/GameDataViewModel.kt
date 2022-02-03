@@ -1,6 +1,9 @@
-package com.mobilegame.robozzle.domain.model
+package com.mobilegame.robozzle.domain.model.Screen
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.Extensions.clone
@@ -14,18 +17,25 @@ import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.WinDetails.WinDetails
+import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
 //class GameDataViewModel(lvl: RobuzzleLevel): ViewModel() {
-class GameDataViewModel(): ViewModel() {
+//class GameDataViewModel(val context: Context): ViewModel() {
+//class GameDataViewModel(): ViewModel() {
+class GameDataViewModel(application: Application): AndroidViewModel(application) {
     /*
     Faire un objet qui regroupe toute les infos sur l animation en cours ?
      */
 //    val originalStarsList: MutableList<Position> = lvl.starsList.clone()
     var originalStarsList: MutableList<Position> = mutableListOf()
+
+    var lvlId: Int = -42
+    var lvlDifficulty: Int = -42
 
     private var playerInital: PlayerInGame = PlayerInGame(Position(0,0))
 
@@ -74,8 +84,13 @@ class GameDataViewModel(): ViewModel() {
     private val _win = MutableStateFlow<Int>(UNKNOWN)
     val win: StateFlow<Int> = _win
 
-//    fun MutableStateFlow<Int>.value.setWinTo(value: Int) {_win.value = value}
-    fun SetWinTo(value: Int) {_win.value = value}
+    @OptIn(InternalCoroutinesApi::class)
+    fun SetWinTo(value: Int, winDetails: WinDetails) {
+        if (value == com.mobilegame.robozzle.domain.res.TRUE ) {
+            RankVM(getApplication()).postPlayerWin(lvlId, lvlDifficulty, winDetails)
+        }
+        _win.value = value
+    }
 
     //todo : try to use State instead of LiveData, it might ensure this display is triggered when you click
     private val _displayInstructionsMenu = MutableLiveData(false)
@@ -115,7 +130,6 @@ class GameDataViewModel(): ViewModel() {
 //    verbalLog("change player animated status", "change")
         _playerAnimated.postValue(newStatus)
     }
-
 
     private val _animationGoBack = MutableLiveData(false)
     val animationGoBack: MutableLiveData<Boolean> = _animationGoBack

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.gradientBackground
-import com.mobilegame.robozzle.domain.model.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
 import com.mobilegame.robozzle.presentation.ui.ColorsList
 
 @Composable

@@ -54,7 +54,7 @@ class UserDataStoreViewModel (
         service.getString(KeyProvider.ConnectionState.key)
     }
 
-    private fun getName(): String? = runBlocking {
+    fun getName(): String? = runBlocking {
         service.getString(KeyProvider.Name.key)
     }
 
@@ -74,7 +74,7 @@ class UserDataStoreViewModel (
         }
     }
 
-    private fun getId(): Int? = runBlocking {
+    fun getId(): Int? = runBlocking {
         service.getInt(KeyProvider.Id.key)
     }
 }

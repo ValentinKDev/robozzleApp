@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.data.room.PlayerRanks
+package com.mobilegame.robozzle.data.room.levelWins
 
 import android.content.Context
 import androidx.room.Database
@@ -8,19 +8,19 @@ import androidx.room.RoomDatabase
 //import com.mobilegame.robozzle.data.base.ResolvedLevel.ResolvedLevelDao
 //import com.mobilegame.robozzle.data.base.ResolvedLevel.ResolvedLevelData
 
-@Database(entities = [LevelResolvedData::class], version = 2, exportSchema = false)
-abstract class PlayerRanksDataBase: RoomDatabase() {
-    abstract fun playerRanksDao(): PlayerRanksDao
+@Database(entities = [LevelWinData::class], version = 5, exportSchema = false)
+abstract class LevelWinDataBase: RoomDatabase() {
+    abstract fun playerRanksDao(): LevelWinDao
     companion object{
         @Volatile
-        private var INSTANCE: PlayerRanksDataBase? = null
-        fun getInstance(context: Context): PlayerRanksDataBase {
+        private var INSTANCE: LevelWinDataBase? = null
+        fun getInstance(context: Context): LevelWinDataBase {
             var instance = INSTANCE
             if (instance == null){
                 instance = Room.databaseBuilder(
                     context.applicationContext,
-                    PlayerRanksDataBase::class.java,
-                    "level_database"
+                    LevelWinDataBase::class.java,
+                    "level_win_database"
                 ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

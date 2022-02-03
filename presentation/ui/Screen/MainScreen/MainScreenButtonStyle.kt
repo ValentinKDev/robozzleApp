@@ -1,6 +1,7 @@
-package com.mobilegame.robozzle.presentation.ui.Screen
+package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
 
 import androidx.compose.ui.graphics.Color
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 
 sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {

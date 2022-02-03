@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.mobilegame.robozzle.data.server.ranking.LevelRankingService
+import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.data.server.ranking.RankingService
+import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.general.TokenVM
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -15,17 +17,27 @@ import kotlinx.coroutines.runBlocking
 class RankingServerViewModel(
     context: Context
 ): ViewModel() {
-    lateinit var service: LevelRankingService
-
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            TokenVM(context).getToken().let { token ->
-                service = LevelRankingService.create(token!!)
-            }
-        }
-    }
+    private val service: RankingService? = RankingService.create(TokenVM(context).getToken())
+    private val userDataStore = UserDataStoreViewModel(context)
 
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
-        service.getWinnerListJson(levelId).toListPlayerWin()
+        service?.let {
+            it.getWinnerListJson(levelId).toListPlayerWin()
+        } ?: emptyList()
+    }
+
+    fun postPlayerWin(levelId: Int , points: Int, winDetails: WinDetails) {
+        viewModelScope.launch(Dispatchers.IO) {
+            userDataStore.getId()?.let { playerId ->
+                val playerWin = PlayerWin(
+                    playerID = playerId,
+                    points = points,
+                    winDetails = winDetails
+                )
+                val playerWinJson = Gson().toJson(playerWin)
+
+                service?.postPlayerWinJson(playerWinJson = playerWinJson, levelId = levelId)
+            } ?: errorLog("RankingServerViewModel.postPlayerWin", "error")
+        }
     }
 }

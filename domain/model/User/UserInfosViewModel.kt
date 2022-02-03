@@ -7,7 +7,7 @@ import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 
 class UserInfoViewModel(application: Application): AndroidViewModel(application) {
     val userDataStoreVM = UserDataStoreViewModel(
-        service = DataStoreService.createUserService(application)
+        getApplication()
     )
 
     val name: String = userDataStoreVM.getUser().name

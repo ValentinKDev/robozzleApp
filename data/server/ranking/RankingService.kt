@@ -2,10 +2,6 @@ package com.mobilegame.robozzle.data.server.ranking
 
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
-import com.mobilegame.robozzle.data.server.JwtToken.JWTTokenService
-import com.mobilegame.robozzle.data.server.Level.LevelImplementation
-import com.mobilegame.robozzle.domain.Player.PlayerWin
-import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -18,14 +14,14 @@ import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-interface LevelRankingService {
-    suspend fun getWinnerListJson(id: Int): String?
+interface RankingService {
+    suspend fun getWinnerListJson(levelId: Int): String?
 
-    suspend fun postPlayerWin(playerWinJson: String)
+    suspend fun postPlayerWinJson(playerWinJson: String, levelId: Int)
 
     companion object {
-        fun create(token: String): LevelRankingService {
-            return LevelRankingImplementation (
+        fun create(token: String?): RankingService? {
+            return if (token != null) { RankingImplementation (
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
                         requestTimeoutMillis = 1500
@@ -68,7 +64,9 @@ interface LevelRankingService {
                         level = LogLevel.ALL
                     }
                 }
-            )
+            ) } else {
+                null
+            }
         }
     }
 }

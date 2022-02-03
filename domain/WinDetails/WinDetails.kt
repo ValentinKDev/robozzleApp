@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.LevelResolved
+package com.mobilegame.robozzle.domain.WinDetails
 
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 
@@ -7,3 +7,4 @@ data class WinDetails (
     val actionsNumber: Int,
     val solutionFound: List<FunctionInstructions>,
 )
+

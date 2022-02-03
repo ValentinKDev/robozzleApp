@@ -48,10 +48,10 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             arguments = listOf(navArgument("difficulty") {type = NavType.IntType})
         ) { entry ->
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
-//            LevelsScreenByID(navController = navController, difficulty = entry.arguments?.getInt("difficulty")!!)
+            LevelsScreenByID(navController = navController, difficulty = entry.arguments?.getInt("difficulty")!!)
 
 
-            mainMenuVM.levelRoomVM.getRobuzzle(6)?.let { PlayingScreen(level = it) }
+//            mainMenuVM.levelRoomVM.getRobuzzle(6)?.let { PlayingScreen(level = it) }
         }
         composable(
             route = Screens.InGameScreen.route + "/{levelId}",

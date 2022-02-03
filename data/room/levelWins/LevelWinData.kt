@@ -1,12 +1,12 @@
-package com.mobilegame.robozzle.data.room.PlayerRanks
+package com.mobilegame.robozzle.data.room.levelWins
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "player_ranks_table")
-data class LevelResolvedData(
-    @PrimaryKey val id: Int,
+@Entity(tableName = "level_win_table")
+data class LevelWinData(
+    @PrimaryKey val levelId: Int,
 //    @ColumnInfo(name = "id_level") val idLevel: Int,
     @ColumnInfo(name = "points") val points: Int,
     @ColumnInfo(name = "WinDetails") val winDetailsJson: String,

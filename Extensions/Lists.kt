@@ -1,7 +1,9 @@
 package com.mobilegame.robozzle.Extensions
 
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 
 fun MutableList<Position>.Contains(pos: Position): Boolean{
@@ -41,11 +43,23 @@ fun MutableList<Int>.Contains(int: Int): Boolean {
 }
 
 fun <E> MutableList<E>.copy(): MutableList<E> {
-    var ret = emptyList<E>().toMutableList()
+    val ret = emptyList<E>().toMutableList()
     this.forEach {
         ret.add(it)
     }
     return ret
+}
+
+fun MutableList<FunctionInstructions>.countInstruction(): Int {
+    var count = 0
+    this.forEach{ function ->
+        for (i in 0 until function.instructions.length) {
+            if (function.instructions[i].match("[UrlRGB0123456798]".toRegex()))
+                count += 1
+        }
+    }
+    infoLog("number of instruction for this win", "$count")
+    return count
 }
 
 //fun MutableList<FunctionInstructions>.countInstructions(): Int {

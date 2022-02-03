@@ -61,7 +61,7 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
                     //get list of level s id from server
                     infoLog("get list level id", "server")
                     val serverListLevelsId: List<Int> = levelServerVM.getLevelIdList()
-                    infoLog("-> list level id", "$serverListLevelsId")
+                    infoLog("->server list level id", "$serverListLevelsId")
                     if (serverListLevelsId.isEmpty()) errorLog("error", "server list level's id is empty")
                     else {
                         //compare list
