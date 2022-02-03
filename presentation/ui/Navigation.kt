@@ -37,8 +37,7 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
         }
         composable( route = Screens.ProfilScreen.route) {
             infoLog("Screens routing", "ProfilScreen")
-//            if (mUserViewModel.userConnectionSate.value == UserConnectionState.Connected)
-//                UserInfoScreen(navController = navController, mUserViewModel)
+            //todo : bring this coniditon to the navigation button
             if (mainMenuVM.userDataVM.getUserConnectionState() == UserConnection.Connected.state)
                 UserInfoScreen(navController = navController)
             else
@@ -49,7 +48,10 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
             arguments = listOf(navArgument("difficulty") {type = NavType.IntType})
         ) { entry ->
             //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
-            LevelsScreenByID(navController = navController, difficulty = entry.arguments?.getInt("difficulty")!!)
+//            LevelsScreenByID(navController = navController, difficulty = entry.arguments?.getInt("difficulty")!!)
+
+
+            mainMenuVM.levelRoomVM.getRobuzzle(6)?.let { PlayingScreen(level = it) }
         }
         composable(
             route = Screens.InGameScreen.route + "/{levelId}",
@@ -66,12 +68,3 @@ fun Navigation(mainMenuVM: MainMenuViewModel = viewModel()) {
         }
     }
 }
-
-
-//class Action(navController: NavHostController) {
-//    @OptIn(InternalCoroutinesApi::class)
-//    val Main: () -> Unit = {
-//        MainSreen(navController = navController)
-//    }
-//    val navigateBack: () -> Unit = { navController.popBackStack() }
-//}

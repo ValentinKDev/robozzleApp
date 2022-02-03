@@ -1,8 +1,8 @@
 package com.mobilegame.robozzle.domain.repository
 
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.base.PlayerRanks.LevelResolvedData
-import com.mobilegame.robozzle.data.base.PlayerRanks.PlayerRanksDao
+import com.mobilegame.robozzle.data.room.PlayerRanks.LevelResolvedData
+import com.mobilegame.robozzle.data.room.PlayerRanks.PlayerRanksDao
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi

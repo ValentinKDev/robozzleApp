@@ -14,8 +14,8 @@ import com.mobilegame.robozzle.data.server.dto.UserRequest
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.User
 import com.mobilegame.robozzle.domain.state.UserConnection
-import com.mobilegame.robozzle.domain.model.store.TokenDataStoreViewModel
-import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.TokenState
 import kotlinx.coroutines.delay
@@ -27,10 +27,10 @@ import kotlinx.coroutines.launch
 class RegisterScreenViewModel(application: Application): AndroidViewModel(application) {
 
     val tokenDataVm = TokenDataStoreViewModel(
-        service = DataStoreService.createTokenService(getApplication())
+        getApplication()
     )
     val userDataStoreVM = UserDataStoreViewModel(
-        service = DataStoreService.createUserService(getApplication())
+        getApplication()
     )
 
     private val _userConnectionState = MutableStateFlow(UserConnection.NoUser.state)

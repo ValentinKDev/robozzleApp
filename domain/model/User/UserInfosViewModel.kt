@@ -1,10 +1,9 @@
 package com.mobilegame.robozzle.domain.model.User
 
 import android.app.Application
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.data.store.DataStoreService
-import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 
 class UserInfoViewModel(application: Application): AndroidViewModel(application) {
     val userDataStoreVM = UserDataStoreViewModel(

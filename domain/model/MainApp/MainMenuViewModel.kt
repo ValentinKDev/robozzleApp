@@ -5,22 +5,14 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.base.Level.LevelData
-import com.mobilegame.robozzle.data.server.Level.LevelService
-import com.mobilegame.robozzle.data.server.dto.LevelRequest
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
-import com.mobilegame.robozzle.domain.model.store.AppConfigDataStoreViewModel
-import com.mobilegame.robozzle.domain.model.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.domain.model.server.appConfig.AppConfigServerViewModel
-import com.mobilegame.robozzle.domain.model.server.level.LevelServerViewModel
-import com.mobilegame.robozzle.domain.res.ERROR
+import com.mobilegame.robozzle.domain.model.data.store.AppConfigDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.server.appConfig.AppConfigServerViewModel
+import com.mobilegame.robozzle.domain.model.data.server.level.LevelServerViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 
 @InternalCoroutinesApi
 class MainMenuViewModel(application: Application): AndroidViewModel(application) {
-
     val userDataVM = UserViewModel(getApplication())
 
     val levelRoomVM = LevelRoomViewModel(getApplication())
@@ -36,15 +28,17 @@ class MainMenuViewModel(application: Application): AndroidViewModel(application)
             infoLog("get version", "local")
             var localVersion: String? = appConfigDataStoreVM.getVersion()
             infoLog("-> local version", "$localVersion")
+            infoLog("get version", "server")
+            val serverVersion: String? = appConfigServerVM.getVersion()
+            infoLog("-> sever version", "$serverVersion")
 
-            if (localVersion == null) {
+            if (localVersion == null || serverVersion != localVersion) {
+                if (localVersion == null)
+                    errorLog("first connection", "Welcome to Robuzzle")
                 //Start all the dl process
                 infoLog("start", "all dl process")
-                infoLog("get version", "server")
-                val serverVersion: String? = appConfigServerVM.getVersion()
-                infoLog("-> sever version", "$serverVersion")
                 serverVersion?.let {
-                    infoLog("add to app config dataStore", "version")
+                    infoLog("add to app config dataStore", "server version")
                     appConfigDataStoreVM.setVersion(it)
                     infoLog("get list of ALL LevelRequest", "server")
                     val listOfAllLevels: List<String> = levelServerVM.getAllLevelList()

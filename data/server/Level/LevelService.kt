@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.data.server.Level
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
 import com.mobilegame.robozzle.data.server.dto.LevelRequest
+import com.mobilegame.robozzle.domain.Player.PlayerWin
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -17,15 +18,11 @@ import io.ktor.client.engine.cio.*
 import kotlinx.serialization.*
 
 interface LevelService {
-//    suspend fun getAllLevels(): List<LevelRequest>
+    suspend fun getLevelIdList(): String?
+
     suspend fun getAllLevels(): List<String>
 
-//    suspend fun getLevelsById(idList: List<Int>): List<LevelRequest>
     suspend fun getLevelsById(idList: List<Int>): List<String>
-
-    suspend fun getLevelsNumber(): Int
-
-    suspend fun getLevelIdList(): String?
 
     companion object {
         fun create(): LevelService {

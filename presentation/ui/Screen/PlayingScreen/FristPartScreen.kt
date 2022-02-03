@@ -1,6 +1,9 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
@@ -9,6 +12,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.gradientBackground
 import com.mobilegame.robozzle.Extensions.isDirection
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -34,18 +39,28 @@ fun MapLayout(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenCo
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    Button(
-        modifier = Modifier .background(Color.Transparent)
+    val clickable = Modifier.clickable (
+        interactionSource = interactionSource,
+        indication = rememberRipple(color = Color.Transparent)
+//        indication = LocalIndication.current
+    ) { infoLog("clickable", "map") }
+
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .wrapContentSize()
+            .then(clickable)
         ,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-        onClick= {
-//            if (animationIsPlaying) {
-//                gameDataViewModel.mapLayoutPressedToTrue()
-//            }
-        },
-        //todo : resize the map to smaller and give an effect oh pushing while buttonpressed
-        interactionSource = interactionSource
     ) {
+//    Button(
+//        modifier = Modifier .background(Color.Transparent)
+//        ,
+//        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+//        onClick= {
+//        },
+//        //todo : resize the map to smaller and give an effect oh pushing while buttonpressed
+//        interactionSource = interactionSource
+//    ) {
         when (isPressed) {
             true -> gameDataViewModel.mapLayoutPressedToTrue()
             false -> gameDataViewModel.mapLayoutPressedToFalse()

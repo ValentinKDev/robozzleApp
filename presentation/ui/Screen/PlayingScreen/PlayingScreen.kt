@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.Print_List_Position
+import com.mobilegame.robozzle.analyse.Print_List_String
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
@@ -30,8 +31,10 @@ fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = v
 
     Log.i("", "_")
     Log.e("LAUNCH LEVEL", "${level.id} - ${level.name}")
-    infoLog("", "${level.playerInitial.pos.line}, ${level.playerInitial.pos.column}")
+    Log.i("", "_")
+    infoLog("player position ", "${level.playerInitial.pos.line}, ${level.playerInitial.pos.column}")
     Print_List_Position("stars", level.starsList)
+    Print_List_String(level.map)
 
 //        todo: Display a card with a bit of a delay to explain clearly the player has won this level
     when (win) {

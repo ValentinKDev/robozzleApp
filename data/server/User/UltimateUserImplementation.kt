@@ -48,40 +48,6 @@ class UltimateUserImplementation (
 //        return ret
     }
 
-//    override suspend fun getUser(): UserRequest? {
-//
-//        return try {
-//            client.post {
-//                url { encodedPath = "$USER_ULTIMATE_PATH/admin" }
-//                contentType(ContentType.Application.Json)
-//                body = UserRe(1, name = "admin", password = "admin")
-//            }
-//        } catch (e: NoTransformationFoundException) {
-//            Log.e("2xx","Error: ${e.message}")
-//            null
-//        } catch (e: RedirectResponseException) {
-//            //3xx- responses
-//            Log.e("3xx","Error: ${e.response.status.description}")
-//            null
-////            ret = ServerSend.ERROR300.ret
-//        } catch (e: ClientRequestException) {
-//            //4xx- responses
-//            Log.e("4xx","Error: ${e.response.status.description}")
-////            ret = ServerSend.ERROR400.ret
-//            null
-//        } catch (e: ServerResponseException) {
-//            //5xx- responses
-//            Log.e("5xx","Error: ${e.response.status.description}")
-////            ret = ServerSend.ERROR500.ret
-//            null
-//        } catch (e: Exception) {
-//            Log.e("Exception","Error: ${e.message}")
-////            ret = ServerSend.EXCETPTION.ret
-//            null
-//        }
-////        return ret
-//    }
-
     override suspend fun postNewUser(user: UserRequest): String {
         var ret : String = ServerRet.NotAttribution.ret
         try {

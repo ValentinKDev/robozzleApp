@@ -12,8 +12,8 @@ import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.User
-import com.mobilegame.robozzle.domain.model.store.TokenDataStoreViewModel
-import com.mobilegame.robozzle.domain.model.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.ERROR
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.UserConnection
@@ -25,12 +25,11 @@ import java.lang.NumberFormatException
 @InternalCoroutinesApi
 class UserViewModel(application: Application): AndroidViewModel(application) {
 
-    private val userDataStoreService = DataStoreService.createUserService(getApplication())
-    val userDataStoreVM = UserDataStoreViewModel(userDataStoreService)
+//    private val userDataStoreService = DataStoreService.createUserService(getApplication())
+//    val userDataStoreVM = UserDataStoreViewModel(userDataStoreService)
+    val userDataStoreVM = UserDataStoreViewModel(getApplication())
 
-    private val tokenDataVm = TokenDataStoreViewModel(
-        service =  DataStoreService.createTokenService(getApplication())
-    )
+    private val tokenDataVm = TokenDataStoreViewModel(getApplication())
 
     private val _currentUser = MutableStateFlow<User?>(userDataStoreVM.getUser())
     val currentUser: StateFlow<User?> = _currentUser
@@ -94,18 +93,18 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 
     //todo : do i have to store the token?
-    suspend fun getAToken(name: String, password: String): String {
-        infoLog("userVM", "getAToken()")
-        var token: String? = null
-        val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password)
-        token = jwtTokenService.getJwtToken()
-
-        return (if (token == null) { "" } else {
-            _tokenJwt.value = token
-            tokenDataVm.saveToken(token)
-            token
-        })
-    }
+//    suspend fun getAToken(name: String, password: String): String {
+//        infoLog("userVM", "getAToken()")
+//        var token: String? = null
+//        val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password)
+//        token = jwtTokenService.getJwtToken()
+//
+//        return (if (token == null) { "" } else {
+//            _tokenJwt.value = token
+//            tokenDataVm.saveToken(token)
+//            token
+//        })
+//    }
 
     fun saveUserInDatastore(user: User) {
         infoLog("saveUserInDatastore", "start")

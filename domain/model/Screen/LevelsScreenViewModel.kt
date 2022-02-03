@@ -3,10 +3,8 @@ package com.mobilegame.robozzle.domain.model.Screen
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
-import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
-import com.mobilegame.robozzle.domain.model.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
