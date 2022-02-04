@@ -17,8 +17,10 @@ import io.ktor.http.*
 interface JWTTokenService {
     suspend fun getJwtToken(): String?
 
+    suspend fun verifyToken(): String
+
     companion object {
-        fun create(username: String, password: String): JWTTokenService {
+        fun create(username: String, password: String, token: String): JWTTokenService {
             return JWTTokenImplementation(
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
@@ -47,6 +49,14 @@ interface JWTTokenService {
                         basic {
                             credentials {
                                 BasicAuthCredentials(username = username, password = password)
+                            }
+                        }
+                        bearer {
+                            loadTokens {
+                                BearerTokens(
+                                    accessToken = token,
+                                    refreshToken = token,
+                                )
                             }
                         }
                     }

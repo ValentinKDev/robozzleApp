@@ -6,4 +6,5 @@ internal sealed class KeyProvider(val key: String) {
     object Id: KeyProvider("id_key_datastore")
     object ConnectionState: KeyProvider("connection_State_key_datastore")
     object Version: KeyProvider("version_key_datastore")
+    object Token: KeyProvider("token_key_datastore")
 }

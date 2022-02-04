@@ -15,12 +15,12 @@ class TokenDataStoreViewModel (
 
     fun saveToken(value: String) {
         viewModelScope.launch {
-            service.putString(KeyProvider.Name.key, value)
+            service.putString(KeyProvider.Token.key, value)
         }
     }
 
     fun getTokenData(): String? = runBlocking {
-        service.getString(KeyProvider.Name.key)
+        service.getString(KeyProvider.Token.key)
     }
 
     fun getToken(): String {

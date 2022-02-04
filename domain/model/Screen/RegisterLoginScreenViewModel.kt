@@ -211,7 +211,7 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
     suspend fun getAToken(name: String, password: String) {
         infoLog("userVM", "getAToken()")
 //        var token = NOTOKEN
-        val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password)
+        val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password,"")
         val tokenServer: String? = jwtTokenService.getJwtToken()
 
         if (tokenServer != null) {

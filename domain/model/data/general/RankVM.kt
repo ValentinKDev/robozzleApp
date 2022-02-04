@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.data.server.User.ServerRet
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
@@ -30,17 +31,24 @@ class RankVM(
             errorLog("points", "$points")
             if (LevelWinRoomViewModel(context).noBetterInStock(levelId, points)) {
                 //to server if possible
-                RankingServerViewModel(context).postPlayerWin(
-                    levelId = levelId,
-                    points = points,
-                    winDetails = winDetails
-                )
+//                if (RankingServerViewModel(context).postPlayerWin(
+//                    levelId = levelId,
+//                    points = points,
+//                    winDetails = winDetails
+//                ) == ServerRet.Error400.ret) {
+//                    TokenVM(context).getNewTokenAndStore()
+                    RankingServerViewModel(context).postPlayerWin(
+                        levelId = levelId,
+                        points = points,
+                        winDetails = winDetails
+                    )
+//                }
                 //to my room of LevelWin
-                LevelWinRoomViewModel(context).addLevelWinData(
-                    levelId = levelId,
-                    points = points,
-                    winDetails = winDetails
-                )
+//                LevelWinRoomViewModel(context).addLevelWinData(
+//                    levelId = levelId,
+//                    points = points,
+//                    winDetails = winDetails
+//                )
             }
             else errorLog("better win in stock", "already")
 

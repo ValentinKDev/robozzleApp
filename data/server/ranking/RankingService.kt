@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.data.server.ranking
 
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
+import com.mobilegame.robozzle.domain.Player.PlayerWin
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -17,7 +18,8 @@ import io.ktor.http.*
 interface RankingService {
     suspend fun getWinnerListJson(levelId: Int): String?
 
-    suspend fun postPlayerWinJson(playerWinJson: String, levelId: Int)
+    suspend fun postPlayerWinJson(playerWin: PlayerWin, levelId: Int): String
+//    suspend fun postPlayerWinJson(playerWinJson: String, levelId: Int): String
 
     companion object {
         fun create(token: String?): RankingService? {

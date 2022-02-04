@@ -205,7 +205,7 @@ class AnimationLogic(val breadcrumb: Breadcrumb, var gameDataVM: GameDataViewMod
                 winDetails = WinDetails(
                     instructionsNumber = breadcrumb.funInstructionsList.countInstruction(),
                     actionsNumber = breadcrumb.actionsCount,
-                    solutionFound = breadcrumb.funInstructionsList
+                    solutionFound = breadcrumb.funInstructionsList.toList()
                 )
             )
         }
