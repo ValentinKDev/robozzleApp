@@ -12,27 +12,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
-import com.mobilegame.robozzle.domain.model.MainMenuViewModel
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenViewModel
-import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
-import com.mobilegame.robozzle.toREMOVE.PlayerData
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun LevelsScreenByID(
-    navController: NavController,
+fun LevelsScreenByDifficulty(
+    navigator: Navigator,
     difficulty: Int,
     levelScreenVM: LevelsScreenViewModel = viewModel(),
 ) {
@@ -44,14 +38,14 @@ fun LevelsScreenByID(
     //todo: Use a normal Column and make it scrollable using modifier and state so the fckning UI won t recompose for nothing ???
         LazyColumn {
             itemsIndexed(levelsList) { index, level ->
-                DisplayLevelOverView(level, navController)
+                DisplayLevelOverView(level, navigator)
             }
         }
     } else { Text(text = "Can't access the server and no level in the phone internal storage") }
 }
 
 @Composable
-fun DisplayLevelOverView(level: LevelOverView, navController: NavController) {
+fun DisplayLevelOverView(level: LevelOverView, navigator: Navigator) {
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
@@ -72,8 +66,11 @@ fun DisplayLevelOverView(level: LevelOverView, navController: NavController) {
             modifier = Modifier
                 .fillMaxHeight()
                 .clickable {
-                    Log.v("OnClick", "route = ${Screens.InGameScreen.route + "/" + level.id} ")
-                    navController.navigate(Screens.InGameScreen.route + "/" + level.id)
+//                    Log.v("OnClick", "route = ${Screens.InGameScreen.route + "/" + level.id} ")
+//                    navController.navigate(Screens.InGameScreen.route + "/" + level.id)
+//                    LevelsScreenByDifficultyViewModel(navigator).navigateTo(level.id)
+//                    NavViewModel(navigator).navigateTo(Screens.LevelsByID, level.id.toString())
+                    NavViewModel(navigator).navigateTo(Screens.InGame, level.id.toString())
                 }
         ) {
             Box(Modifier.weight(1.0f)) { DisplayLevelImage() }

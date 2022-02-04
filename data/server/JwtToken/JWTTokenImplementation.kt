@@ -7,7 +7,8 @@ import com.mobilegame.robozzle.data.server.HttpRoutes.USER_GET_TOKEN
 import com.mobilegame.robozzle.data.server.HttpRoutes.USER_VERIFY_TOKEN
 import com.mobilegame.robozzle.data.server.User.ServerRet
 import com.mobilegame.robozzle.data.server.tryGetAndCatchErrors
-import com.mobilegame.robozzle.domain.state.TokenState
+import com.mobilegame.robozzle.domain.model.data.general.TokenState
+//import com.mobilegame.robozzle.domain.state.TokenState
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.*

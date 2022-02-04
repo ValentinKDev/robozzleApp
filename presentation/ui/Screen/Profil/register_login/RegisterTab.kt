@@ -13,12 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -27,31 +27,31 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
+fun RegisterTab(navigator: Navigator, vm: RegisterScreenViewModel) {
     val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
 
     infoLog("RegisterTab", "connectionState $connectionState")
     when (connectionState) {
         UserConnection.NoUser.state ->  {
-            RegisteringElements(vm, navController = navController)
+            RegisteringElements(vm, navigator)
         }
         UserConnection.NotCreated.state ->  {
             Toast.makeText(LocalContext.current, "${vm.name.value} already exist", Toast.LENGTH_LONG).show()
-            RegisteringElements(vm, navController = navController)
+            RegisteringElements(vm, navigator)
             vm.setUserConnectionState(UserConnection.NoUser.state)
         }
         //todo : personalize ret from server for weird error or just an already exsiting name
         UserConnection.Created.state -> {
             Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_LONG).show()
-            RegisteringElements(vm, navController = navController)
+            RegisteringElements(vm, navigator)
         }
         UserConnection.NotConnected.state ->  {
             Toast.makeText(LocalContext.current, "Server facing some issue with your profil", Toast.LENGTH_LONG).show()
-            RegisteringElements(vm, navController = navController)
+            RegisteringElements(vm, navigator)
         }
         UserConnection.CreatedAndVerified.state -> {
             vm.setUserConnectionState(UserConnection.Connected.state)
-            navController.navigate(Screens.ProfilScreen.route)
+            navigator.navigate(Screens.Profil)
         }
         UserConnection.Connected.state -> {
         }
@@ -62,7 +62,7 @@ fun RegisterTab(navController: NavController, vm: RegisterScreenViewModel) {
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisteringElements(vm: RegisterScreenViewModel, navController: NavController) {
+fun RegisteringElements(vm: RegisterScreenViewModel, navigator: Navigator) {
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
     val password by remember(vm) {vm.password}.collectAsState( initial = "" )
     val isValidName: Boolean = vm.nameIsValid.value
@@ -100,6 +100,6 @@ fun RegisteringElements(vm: RegisterScreenViewModel, navController: NavControlle
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navController = navController)
+        ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navigator)
     }
 }

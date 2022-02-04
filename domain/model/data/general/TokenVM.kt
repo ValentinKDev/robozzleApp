@@ -1,15 +1,10 @@
 package com.mobilegame.robozzle.domain.model.data.general
 
-import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import com.mobilegame.robozzle.data.server.User.ServerRet
-import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.model.data.server.token.TokenServerViewModel
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
-import com.mobilegame.robozzle.domain.state.TokenState
+//import com.mobilegame.robozzle.domain.state.TokenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -36,4 +31,12 @@ class TokenVM(
     private fun String?.validity(): String? {
         return this?.let { tokenServerVM.verifyTokenValidity(it) }
     }
+}
+
+sealed class TokenState(val server: String) {
+    object ValidateBy: TokenState("validate_from_server")
+    object UnauthorizedBy: TokenState("unauthorized_from_server")
+    object IssueWith: TokenState("unauthorized_from_server")
+    object CanNotReach: TokenState("unauthorized_from_server")
+    object NoToken: TokenState("no_token_present")
 }

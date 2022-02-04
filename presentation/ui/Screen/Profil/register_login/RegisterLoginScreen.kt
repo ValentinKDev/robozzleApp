@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.RegisterTab
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -24,15 +25,15 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 @Composable
 //fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel = viewModel(), registerLoginVM: RegisterLoginViewModel = viewModel()) {
-fun RegisterLoginScreen(navController: NavController, regLogVM: RegisterScreenViewModel = viewModel()) {
+fun RegisterLoginScreen(navigator: Navigator, regLogVM: RegisterScreenViewModel = viewModel()) {
     infoLog("Launch", "RegisterLoginScreen")
     val tabSelected by regLogVM.tabSeclected.collectAsState()
     infoLog("tabSelected", tabSelected.toString())
 
     Column {
         RegisterLoginTabsHead(tabSelected, regLogVM)
-        if (tabSelected == 1) { RegisterTab(navController, regLogVM) }
-        else { LoginTab(navController, regLogVM) }
+        if (tabSelected == 1) { RegisterTab(navigator, regLogVM) }
+        else { LoginTab(navigator, regLogVM) }
         Spacer(modifier = Modifier.height(50.dp))
     }
 }

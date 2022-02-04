@@ -16,11 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun LoginTab(navController: NavController, vm: RegisterScreenViewModel = viewModel()) {
+fun LoginTab(navigator: Navigator, vm: RegisterScreenViewModel = viewModel()) {
 
 //    val showErrorMessage by vm.canNotLog.collectAsState()
 
@@ -61,6 +62,6 @@ fun LoginTab(navController: NavController, vm: RegisterScreenViewModel = viewMod
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        ButtonLogin(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navController = navController)
+        ButtonLogin(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navigator)
     }
 }

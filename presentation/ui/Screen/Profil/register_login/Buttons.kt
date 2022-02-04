@@ -18,13 +18,14 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
 import com.mobilegame.robozzle.domain.state.UserConnection
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.*
 
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterScreenViewModel, navController: NavController) {
+fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterScreenViewModel, navigator: Navigator) {
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -47,14 +48,14 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterScreenViewModel, navController: NavController) {
+fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterScreenViewModel, navigator: Navigator) {
     val connectionEstablished by vm.connectionEstablished.collectAsState()
     val showErrorMessage by vm.canNotLog.collectAsState()
 //    val error
 
     errorLog("connectionEstablished", "${connectionEstablished}")
 
-    if (connectionEstablished) navController.navigate(Screens.ProfilScreen.route)
+    if (connectionEstablished) navigator.navigate(Screens.Profil)
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier

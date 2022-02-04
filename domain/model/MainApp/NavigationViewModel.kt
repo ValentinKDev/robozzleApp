@@ -10,9 +10,11 @@ import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.appConfig.AppConfigServerViewModel
 import com.mobilegame.robozzle.domain.model.data.server.level.LevelServerViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 @InternalCoroutinesApi
-class MainMenuViewModel(application: Application): AndroidViewModel(application) {
+class NavigationViewModel(application: Application): AndroidViewModel(application) {
     val userDataVM = UserViewModel(getApplication())
 
     val levelRoomVM = LevelRoomViewModel(getApplication())

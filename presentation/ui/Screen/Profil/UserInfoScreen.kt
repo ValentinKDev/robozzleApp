@@ -12,12 +12,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.User.UserInfoViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.*
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @InternalCoroutinesApi
 @Composable
-fun UserInfoScreen(navController: NavController, userInfoViewModel: UserInfoViewModel = viewModel()) {
+fun UserInfoScreen(navigator: Navigator, userInfoViewModel: UserInfoViewModel = viewModel()) {
     infoLog("Launch", "UserInfoScreen()")
 
     Column() {

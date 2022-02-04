@@ -1,43 +1,32 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
-import android.app.Application
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.data.general.TokenVM
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
 
 //@SuppressLint("CoroutineCreationDuringComposition")
 @InternalCoroutinesApi
 @Composable
-fun CreatorScreen() {
+fun CreatorScreen(navigator: Navigator, testViewModel: testViewModel = viewModel()) {
 
     infoLog("launch", "CreatorScreen()")
-//    val co by mUserViewModel.connected.collectAsState()
-
-//    val co by remember(mUserViewModel) {mUserViewModel.collectConnectedState()}.collectAsState(
-//        initial = UserConnectionState.Connected
-//    )
-//        initial = UserConnectionState.NOUSER
-//    )
-//    infoLog("co", co.toString())
-
 
     Column() {
-//        val tes= RankVM(LocalContext.current).getLevelRanking(5)
         val ctxt = LocalContext.current
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick= {
-//                     TokenVM(LocalContext.current as Application)
-//                infoLog("num before", "${testViewModel.num}")
-//                testViewModel.num = -42
-//                infoLog("num after", "${testViewModel.num}")
                 val test = TokenVM(ctxt).getToken()
             },
         ) {
@@ -46,14 +35,28 @@ fun CreatorScreen() {
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick= {
-//                     mUserViewModel.connectedTO(UserConnectionState.CONNECTED)
+                     LoginViewModel(navigator).navToMain("truc", "machin")
             },
         ) {
-//            Text(text = "${co}")
+            Text(text = "3")
         }
     }
 }
+class LoginViewModel(private val navigator: Navigator) : ViewModel() {
 
+    fun navToMain(username: String, password: String) {
+        viewModelScope.launch {
+            // long running login process happens here
+            errorLog("nav", "$username $password")
+
+        }
+    }
+    fun navToCreator() {
+        viewModelScope.launch {
+        }
+    }
+
+}
 
 class testViewModel(): ViewModel() {
     var num = 0
