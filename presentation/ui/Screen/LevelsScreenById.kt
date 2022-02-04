@@ -70,7 +70,7 @@ fun DisplayLevelOverView(level: LevelOverView, navigator: Navigator) {
 //                    navController.navigate(Screens.InGameScreen.route + "/" + level.id)
 //                    LevelsScreenByDifficultyViewModel(navigator).navigateTo(level.id)
 //                    NavViewModel(navigator).navigateTo(Screens.LevelsByID, level.id.toString())
-                    NavViewModel(navigator).navigateTo(Screens.InGame, level.id.toString())
+                    NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
                 }
         ) {
             Box(Modifier.weight(1.0f)) { DisplayLevelImage() }

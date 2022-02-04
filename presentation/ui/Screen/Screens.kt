@@ -17,7 +17,7 @@ sealed class Screens(override val route: String): NavigationDestination {
     object  Config: Screens("config_screen")
     object  Creator: Screens("creator_screen")
     object  Donation: Screens("donation_screen")
-    object  InGame: Screens("ingame_screen")
+    object  Playing: Screens("ingame_screen")
     object  RegisterLogin: Screens("registerlogin_screen")
     object  UserInfo: Screens("userinfo_screen")
 
