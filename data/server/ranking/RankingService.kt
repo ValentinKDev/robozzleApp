@@ -19,7 +19,8 @@ interface RankingService {
     suspend fun getWinnerListJson(levelId: Int): String?
 
     suspend fun postPlayerWinJson(playerWin: PlayerWin, levelId: Int): String
-//    suspend fun postPlayerWinJson(playerWinJson: String, levelId: Int): String
+
+//    suspend fun getUserPersonalRank(): String?
 
     companion object {
         fun create(token: String?): RankingService? {

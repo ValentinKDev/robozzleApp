@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDao
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDataBase
+import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.data.room.level.isBetterThan
 //import com.mobilegame.robozzle.domain.LevelResolved.LevelResolved
@@ -34,12 +35,6 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
         } ?: true
     }
 
-//    fun getAllLevelResolved(): PlayerRanks = runBlocking(Dispatchers.IO) {
-//        val listLevelResolvedData: List<LevelWin> = repo.getPlayerRanksFromRoom()
-//        val listLevelResolved : List<LevelResolved> = listLevelResolvedData.toLevelResolvedType()
-//        PlayerRanks(resolved = listLevelResolved)
-//    }
-
     fun addLevelWinData(levelId: Int, points: Int, winDetails: WinDetails) {
          viewModelScope.launch(Dispatchers.IO) {
              val lvlWinData = LevelWinData(
@@ -51,12 +46,24 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
          }
     }
 
-//    fun addPlayerRanks(playerRanks: PlayerRanks) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repo.addListLevelResolved(playerRanks.resolved.toLevelResolvedDataList())
-//        }
-//    }
+    fun getAllLevelWins(): List<LevelWin> = runBlocking(Dispatchers.IO) {
+        repo.getListLevelWinsData().toLevelWinList()
+    }
 }
 
+fun List<LevelWinData>.toLevelWinList(): List<LevelWin> {
+    val mutableList: MutableList<LevelWin> = mutableListOf()
+    this.forEach {
+        val windetails: WinDetails = Gson().fromJson(it.winDetailsJson, WinDetails::class.java)
+        mutableList.add(
+            LevelWin(
+                levelId = it.levelId,
+                points = it.points,
+                winDetails = windetails
+            )
+        )
+    }
+    return mutableList.toList()
+}
 
 

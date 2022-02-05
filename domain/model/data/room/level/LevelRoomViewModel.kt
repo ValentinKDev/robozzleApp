@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import com.mobilegame.robozzle.data.room.Level.LevelDataBase
+import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
@@ -62,13 +63,21 @@ class LevelRoomViewModel(context: Context): ViewModel() {
     }
 
     fun getAllLevelOverViewFromDifficulty(diff: Int): List<LevelOverView> = runBlocking(Dispatchers.IO) {
-        val mutableListOverView: MutableList<LevelOverView> = mutableListOf()
-
         val listId: List<Int> = repo.getIdByDifficulty(diff)
         val listName: List<String> = repo.getNamesByDifficulty(diff)
         val listMapJson: List<String> = repo.getMapJsonByDifficulty(diff)
 
-        buildLevelOverViewList(listId, listName, listMapJson)
+        buildLevelOverViewList(ids = listId, names = listName, mapsJson = listMapJson)
+    }
+
+    fun getLevelOverViewInList(listWin: List<LevelWin>): List<LevelOverView> = runBlocking(Dispatchers.IO) {
+        val mutableList: MutableList<LevelOverView> = mutableListOf()
+        listWin.forEach { win ->
+            repo.getALevel(win.levelId)?.let { levelData ->
+                mutableList.add(levelData.toLevelOverView())
+            }
+        }
+        mutableList.toList()
     }
 }
 

@@ -13,11 +13,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.state.UserConnectionState
-import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -27,7 +28,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisterTab(navigator: Navigator, vm: RegisterScreenViewModel) {
+fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
 
     infoLog("RegisterTab", "connectionState $connectionState")
@@ -62,7 +63,7 @@ fun RegisterTab(navigator: Navigator, vm: RegisterScreenViewModel) {
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-fun RegisteringElements(vm: RegisterScreenViewModel, navigator: Navigator) {
+fun RegisteringElements(vm: RegisterLoginViewModel, navigator: Navigator) {
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
     val password by remember(vm) {vm.password}.collectAsState( initial = "" )
     val isValidName: Boolean = vm.nameIsValid.value

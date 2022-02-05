@@ -19,12 +19,11 @@ import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.TokenState
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 //class RegisterScreenViewModel(context: Context): ViewModel() {
-class RegisterScreenViewModel(application: Application): AndroidViewModel(application) {
+class RegisterLoginViewModel(application: Application): AndroidViewModel(application) {
 
     val tokenDataVm = TokenDataStoreViewModel(
         getApplication()
@@ -43,24 +42,22 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
     private val _connectionEstablished = MutableStateFlow<Boolean>(false)
     val connectionEstablished: StateFlow<Boolean> = _connectionEstablished
 
-    private val _tabSelected = MutableStateFlow(1)
-    val tabSeclected : StateFlow<Int> = _tabSelected
 
     private val _name = MutableStateFlow<String>("")
-    val name: StateFlow<String> = _name
+    val name: StateFlow<String> = _name.asStateFlow()
     fun set_name(newName: String) {
         _name.value = newName
         _validName.value = newName.isValid()
     }
 
     private val _tokenJwt = MutableStateFlow("")
-    val tokenJwt: StateFlow<String> = _tokenJwt
+    val tokenJwt: StateFlow<String> = _tokenJwt.asStateFlow()
 
     private val _validName = MutableStateFlow<Boolean>(false)
-    val nameIsValid: StateFlow<Boolean> = _validName
+    val nameIsValid: StateFlow<Boolean> = _validName.asStateFlow()
 
     private val _password = MutableStateFlow<String>("")
-    val password: StateFlow<String> = _password
+    val password: StateFlow<String> = _password.asStateFlow()
 
     private fun set_password (newPassword: String) {
         _password.value = newPassword
@@ -68,14 +65,14 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
     }
 
     private val _validPassword = MutableStateFlow<Boolean>(false)
-    val passwordIsValid: StateFlow<Boolean> = _validPassword
+    val passwordIsValid: StateFlow<Boolean> = _validPassword.asStateFlow()
 
     private val _canNotLog = MutableStateFlow<Int>(0)
-    val canNotLog: StateFlow<Int> = _canNotLog
+    val canNotLog: StateFlow<Int> = _canNotLog.asStateFlow()
 
 //    todo should warn about the impossibility to log or register with this name and password
     private val _tokenState = MutableStateFlow<String>(TokenState.NoToken.ret)
-    val tokenState: StateFlow<String> = _tokenState
+    val tokenState: StateFlow<String> = _tokenState.asStateFlow()
 
     fun loginOnClickListner() {
         infoLog("login", "onclicklistner()")
@@ -272,13 +269,13 @@ class RegisterScreenViewModel(application: Application): AndroidViewModel(applic
         } else { this }
     }
 
-    fun SelectLoginTab() = run { _tabSelected.value = 1
-        Log.e("SelectLoginTab", "${tabSeclected.value}")
-    }
-    fun SelectRegisterTab() = run {
-        _tabSelected.value = 2
-        Log.e("SelectRegisterTab", "${tabSeclected.value}")
-    }
+//    fun SelectLoginTab() = run { _tabSelected.value = 5
+//        Log.e("SelectLoginTab", "${tabSeclected.value}")
+//    }
+//    fun SelectRegisterTab() = run {
+//        _tabSelected.value = 2
+//        Log.e("SelectRegisterTab", "${tabSeclected.value}")
+//    }
 }
 
 //@InternalCoroutinesApi

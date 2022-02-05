@@ -11,36 +11,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
+import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.RegisterTab
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.*
 
 @DelicateCoroutinesApi
 @InternalCoroutinesApi
 @Composable
-//fun RegisterLoginScreen(navController: NavController, userVM: UserViewModel = viewModel(), registerLoginVM: RegisterLoginViewModel = viewModel()) {
-fun RegisterLoginScreen(navigator: Navigator, regLogVM: RegisterScreenViewModel = viewModel()) {
+fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
+    val tabSelected: Int by tab.selected.collectAsState()
+
     infoLog("Launch", "RegisterLoginScreen")
-    val tabSelected by regLogVM.tabSeclected.collectAsState()
-    infoLog("tabSelected", tabSelected.toString())
 
     Column {
-        RegisterLoginTabsHead(tabSelected, regLogVM)
-        if (tabSelected == 1) { RegisterTab(navigator, regLogVM) }
-        else { LoginTab(navigator, regLogVM) }
+        RegisterLoginTabsHead(tab)
+        if (tabSelected == 1) { RegisterTab(navigator) }
+        else { LoginTab(navigator) }
         Spacer(modifier = Modifier.height(50.dp))
     }
 }
 
 @InternalCoroutinesApi
 @Composable
-fun RegisterLoginTabsHead(tabSelected: Int ,vm: RegisterScreenViewModel) {
+fun RegisterLoginTabsHead(tab: Tab) {
+    val tabRegister: Boolean = tab.selected.value == 1
+    val tabLogin: Boolean = !tabRegister
 
     Row(
         modifier = Modifier
@@ -51,11 +51,9 @@ fun RegisterLoginTabsHead(tabSelected: Int ,vm: RegisterScreenViewModel) {
             modifier = Modifier
                 .weight(1.0f)
                 //todo: could avoid the test on tabselect by using an boolean variable like isRegisterTabSelected
-                .background(if (tabSelected == 1) Color.Transparent else Color.Gray)
-//                .background(if (vm.registLogVM.IsRegisterTabSelected()) Color.Gray else Color.Transparent)
-//                    .height(70.dp)
+                .background(if (tabRegister) Color.Transparent else Color.Gray)
                 .clickable {
-                    vm.SelectLoginTab()
+                    TabSelectionViewModel().setTabToRegister(tab)
                 }
 
         ) {
@@ -65,15 +63,22 @@ fun RegisterLoginTabsHead(tabSelected: Int ,vm: RegisterScreenViewModel) {
         Box(
             modifier = Modifier
                 .weight(1.0f)
-//                .background(if (vm.registLogVM.IsLoginTabSelected()) Color.Gray else Color.Transparent)
-                .background(if (tabSelected == 2) Color.Transparent else Color.Gray)
+                .background(if (tabLogin) Color.Transparent else Color.Gray)
                 .clickable {
-                    vm.SelectRegisterTab()
+                    TabSelectionViewModel().setTabToLogin(tab)
                 }
         ) {
-            Text(text = "Login ${vm.tabSeclected.value}", Modifier.align(Alignment.Center))
+            Text(text = "Login", Modifier.align(Alignment.Center))
         }
     }
 }
 //todo: can't register as none cuz its a defaut variable/ or change the variable
 
+class Tab() {
+    private val _selected: MutableStateFlow<Int> = MutableStateFlow(1)
+    val selected : StateFlow<Int> = _selected.asStateFlow()
+    fun setSelecedTo(t: Int) {
+        _selected.value = t
+        infoLog("_selected", "${_selected.value}")
+    }
+}

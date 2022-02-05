@@ -83,19 +83,24 @@ internal fun List<LevelData>.toLevelList(): List<Level> {
     return levelList
 }
 
-internal fun buildLevelOverView(id: Int, name: String, mapJson: String): LevelOverView {
+internal fun buildLevelOverView(id: Int, difficulty: Int = 0, name: String, mapJson: String): LevelOverView {
     val gson = Gson()
     return LevelOverView(
         id = id,
+        diff = difficulty,
         name = name,
         map = gson.fromJson(mapJson, ListStringType)
     )
 }
 
-internal fun buildLevelOverViewList(ids: List<Int>, names: List<String>, mapsJson: List<String>): List<LevelOverView> {
+internal fun buildLevelOverViewList(ids: List<Int>, diffs: List<Int> = emptyList(), names: List<String>, mapsJson: List<String>): List<LevelOverView> {
     val mutableList: MutableList<LevelOverView> = mutableListOf()
     ids.forEachIndexed { index, id ->
-        mutableList.add( element = buildLevelOverView(id, names[index], mapsJson[index]) )
+        mutableList.add( element = buildLevelOverView(id = id, name = names[index], mapJson = mapsJson[index]) )
     }
     return mutableList.toList()
+}
+
+internal fun LevelData.toLevelOverView(): LevelOverView {
+    return LevelOverView(id = this.id, diff = this.difficulty, name = this.name, map = Gson().fromJson(this.mapJson, ListStringType))
 }

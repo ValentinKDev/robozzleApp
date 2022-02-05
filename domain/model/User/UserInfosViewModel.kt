@@ -5,16 +5,16 @@ import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 
-class UserInfoViewModel(application: Application): AndroidViewModel(application) {
-    val userDataStoreVM = UserDataStoreViewModel(
-        getApplication()
-    )
+class UserInfosScreenViewModel(application: Application): AndroidViewModel(application) {
+//    val userDataStoreVM = UserDataStoreViewModel(
+//        getApplication()
+//    )
 
-    val name: String = userDataStoreVM.getUser().name
+//    val name: String = userDataStoreVM.getUser().name
 
-    get
+//    get
 
-    init {
+//    init {
         //Load the playerRanks from Room
         //Load the playerRanks (list of resolvedLevel) with Ultimate request
             //compare list from server and room use the longest or the room one
@@ -22,6 +22,6 @@ class UserInfoViewModel(application: Application): AndroidViewModel(application)
                 //if room longest -> update server
                 //if room = server size -> update server
         //charger la page
-    }
+//    }
 
 }

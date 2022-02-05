@@ -88,7 +88,12 @@ class LaunchingViewModel(context: Context): ViewModel() {
                         }
                     }
                 }
-                //load list from room ? or use the differents difficulty as only UI
+                //check if user in data store exist
+                    //if it does check it levelWins are stored in room
+                        //if it does load the wins from the server for this player
+                            //compare them
+                            //add the ones from room to server
+                            //or add the ones from server to room ??? that does not make any sens because they should be checked and loaded at the login
         }
 
         infoLog("Main Menu View Model", "init end")

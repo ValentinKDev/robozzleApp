@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 
 @InternalCoroutinesApi
 @Composable
-//fun MainScreen(navController: NavController) {
 fun MainScreen(navigator: Navigator) {
     infoLog("MainScreen", "launch")
     Column(
@@ -49,7 +48,6 @@ fun MainScreen(navigator: Navigator) {
 
             Box( modifier = Modifier .align(CenterVertically),
             ) { MainScreenButton(navigator, MainScreenButtonStyle.Profil.type) }
-//            ) { MainScreenButton(navController, MainScreenButtonStyle.Profil.type) }
         }
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -65,19 +63,14 @@ fun MainScreen(navigator: Navigator) {
                 ,
             ) {
                 MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty1.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.LevelDifficulty1.type)
                 VerticalSpace(10)
                 MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty2.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.LevelDifficulty2.type)
                 VerticalSpace(10)
                 MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty3.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.LevelDifficulty3.type)
                 VerticalSpace(10)
                 MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty4.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.LevelDifficulty4.type)
                 VerticalSpace(10)
                 MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty5.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.LevelDifficulty5.type)
                 VerticalSpace(10)
             }
         }
@@ -89,19 +82,15 @@ fun MainScreen(navigator: Navigator) {
                     vertical = 15.dp
                 )
                 .weight(0.2F)
-//                .background(Color.Yellow)
         ) {
             Row(horizontalArrangement = Arrangement.Start, modifier = Modifier.weight(0.3F).align(CenterVertically)) {
-//                MainScreenButton(navController, info = MainScreenButtonStyle.Creator.type)
                 MainScreenButton(navigator, info = MainScreenButtonStyle.Creator.type)
             }
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.align(CenterVertically)) {
                 MainScreenButton(navigator, info = MainScreenButtonStyle.Donation.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.Donation.type)
             }
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.weight(0.3F).align(CenterVertically)) {
                 MainScreenButton(navigator, info = MainScreenButtonStyle.Config.type)
-//                MainScreenButton(navController, info = MainScreenButtonStyle.Config.type)
             }
         }
     }

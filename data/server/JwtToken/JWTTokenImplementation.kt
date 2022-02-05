@@ -14,6 +14,7 @@ import io.ktor.client.call.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import java.lang.Exception
+import java.util.concurrent.TimeoutException
 
 class JWTTokenImplementation(
     private val client: HttpClient
@@ -36,50 +37,23 @@ class JWTTokenImplementation(
             }
         } catch (e: NoTransformationFoundException) {
             Log.e("2xx","Error: ${e.message}")
-//            ServerRet.Error200.ret
             TokenState.IssueWith.server
         } catch (e: RedirectResponseException) {
             //3xx- responses
             Log.e("3xx","Error: ${e.response.status.description}")
-//            ServerRet.Error300.ret
             TokenState.IssueWith.server
         } catch (e: ClientRequestException) {
             //4xx- responses
             Log.e("4xx","Error: ${e.response.status.description}")
-//            ServerRet.Error400.ret
             TokenState.UnauthorizedBy.server
         } catch (e: ServerResponseException) {
             //5xx- responses
             Log.e("5xx","Error: ${e.response.status.description}")
             TokenState.IssueWith.server
-//            ServerRet.Error500.ret
         } catch (e: Exception) {
-            Log.e("getUser","Error: ${e.message}")
+            Log.e("verifyToken", "Error: ${e.message}")
+//            Log.e("verifyToken", "Error: ${e.respon}")
             TokenState.IssueWith.server
-//            ServerRet.Exception.ret
         }
     }
-//    override suspend fun getJwtToken(): String? {
-//        verbalLog("getJwtToken", "ask server")
-//        return try {
-//            client.get {
-//                url { encodedPath = USER_GET_TOKEN }
-//            }
-//        } catch (e: RedirectResponseException) {
-//            //3xx- responses
-//            Log.e("3xx","Error: ${e.response.status.description}")
-//            null
-//        } catch (e: ClientRequestException) {
-//            //4xx- responses
-//            Log.e("4xx","Error: ${e.response.status.description}")
-//            null
-//        } catch (e: ServerResponseException) {
-//            //5xx- responses
-//            Log.e("5xx","Error: ${e.response.status.description}")
-//            null
-//        } catch (e: Exception) {
-//            Log.e("getUser","Error: ${e.message}")
-//            null
-//        }
-//    }
 }

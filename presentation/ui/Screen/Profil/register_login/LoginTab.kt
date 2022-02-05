@@ -14,14 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.mobilegame.robozzle.domain.model.Screen.RegisterScreenViewModel
+import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun LoginTab(navigator: Navigator, vm: RegisterScreenViewModel = viewModel()) {
+fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 
 //    val showErrorMessage by vm.canNotLog.collectAsState()
 

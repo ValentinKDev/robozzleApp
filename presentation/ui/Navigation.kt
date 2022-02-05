@@ -14,11 +14,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.*
+import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
+import com.mobilegame.robozzle.presentation.ui.Screen.Profil.Tab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
@@ -55,7 +57,7 @@ fun Navigation(navigator: Navigator) {
             infoLog("Screens routing", "ProfilScreen")
 //            //todo : bring this coniditon to the navigation button
             if (UserDataStoreViewModel(context).getName().isNullOrBlank())
-                RegisterLoginScreen(navigator)
+                RegisterLoginScreen(navigator, Tab())
             else
                 UserInfoScreen(navigator)
         }
