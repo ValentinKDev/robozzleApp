@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.model.data.general
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.data.server.token.TokenServerViewModel
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 //import com.mobilegame.robozzle.domain.state.TokenState
@@ -16,20 +17,22 @@ class TokenVM(
     private val localToken: String? = tokenDataVM.getTokenData()
 
     fun getToken(): String = runBlocking(Dispatchers.IO) {
-        when (localToken.validity()) {
-            TokenState.ValidateBy.server -> localToken ?: tokenServerVM.getTokenServer() ?: TokenState.CanNotReach.server
+        val validity = localToken.validity()
+        errorLog("validity", validity)
+        when (validity) {
             TokenState.UnauthorizedBy.server -> {
                 val newToken: String?
                 newToken = tokenServerVM.getTokenServer() ?: TokenState.CanNotReach.server
                 tokenDataVM.saveToken(newToken)
                 newToken
             }
-            else -> TokenState.NoToken.server
+            TokenState.NoToken.server -> TokenState.NoToken.server
+            else -> localToken!!
         }
     }
 
-    private fun String?.validity(): String? {
-        return this?.let { tokenServerVM.verifyTokenValidity(it) }
+    private fun String?.validity(): String {
+        return tokenServerVM.verifyTokenValidity(localToken)
     }
 }
 

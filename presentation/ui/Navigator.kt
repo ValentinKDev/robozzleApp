@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class Navigator {
-    var destination: MutableStateFlow<String> = MutableStateFlow(Screens.MainMenu.route)
     var dest: MutableSharedFlow<String> = MutableSharedFlow()
     var des: SharedFlow<String> = dest.asSharedFlow()
 

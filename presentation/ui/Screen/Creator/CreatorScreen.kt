@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
 import android.content.Context
+import android.view.View
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -13,17 +14,22 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
+import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.data.general.TokenVM
 import com.mobilegame.robozzle.domain.model.data.server.ranking.RankingServerViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 //@SuppressLint("CoroutineCreationDuringComposition")
 @InternalCoroutinesApi
 @Composable
-fun CreatorScreen(navigator: Navigator) {
+fun CreatorScreen(navigator: Navigator, testShared: TestShared) {
 
     infoLog("launch", "CreatorScreen()")
 
@@ -32,22 +38,7 @@ fun CreatorScreen(navigator: Navigator) {
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick= {
-//                RankVM(ctxt).postPlayerWin(
-                CreatorVM(ctxt).postTest(
-                    levelId = 3,
-                    levelName = "machin",
-                    levelDifficutlty = 1,
-                    winDetails = WinDetails(
-                        instructionsNumber = 4,
-                        actionsNumber = 25,
-                        solutionFound = listOf(
-                            FunctionInstructions(
-                                instructions = "U0r0",
-                                colors = "gRgg",
-                            )
-                        )
-                    )
-                )
+                     NavViewModel(navigator).navigateTo(Screens.Donation)
             },
         ) {
             Text(text = "1")
@@ -63,15 +54,14 @@ fun CreatorScreen(navigator: Navigator) {
     }
 }
 
-class CreatorVM(context: Context): ViewModel() {
+//class CreatorVM(context: Context): ViewModel() {
+//
+//}
+class TestShared(): ViewModel() {
+    var shared: MutableSharedFlow<String> = MutableSharedFlow()
+    var sha: SharedFlow<String> = shared.asSharedFlow()
 
-    val rankingServerVM = RankingServerViewModel(context)
-    fun postTest(levelId: Int, levelName: String, levelDifficutlty: Int, winDetails: WinDetails) {
-        val points: Int = ( (200 / winDetails.instructionsNumber) * levelDifficutlty) - winDetails.actionsNumber
-        rankingServerVM.postPlayerWin(
-            levelId = levelId,
-            points = points,
-            winDetails = winDetails
-        )
+    suspend fun navig(str: String) {
+        shared.emit(str)
     }
 }

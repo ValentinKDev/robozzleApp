@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -76,7 +77,7 @@ fun DisplayLevelOverView(level: LevelOverView, navigator: Navigator) {
         ) {
             Box(Modifier.weight(1.0f)) { DisplayLevelImage() }
             Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level) }
-            Box(Modifier.weight(1.0f)) { DisplayLevelState(level) }
+            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, navigator) }
         }
     }
 }
@@ -105,13 +106,24 @@ fun DisplayLevelDescription(level: LevelOverView) {
 }
 
 @Composable
-fun DisplayLevelState(level: LevelOverView) {
+fun DisplayLevelState(level: LevelOverView, navigator: Navigator) {
     Box(modifier = Modifier
         .width(100.dp)
         .fillMaxHeight()
         .background(Color.White)
     ) {
             Text(modifier = Modifier.align(Alignment.Center),text = "X")
+        Button(
+            modifier = Modifier
+                .height(15.dp)
+                .width(15.dp)
+        ,
+            onClick = {
+                NavViewModel(navigator).navigateTo(Screens.RanksLevel, level.id.toString())
+            }
+        ) {
+
+        }
     }
 }
 
