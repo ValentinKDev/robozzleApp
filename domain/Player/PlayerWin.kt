@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PlayerWin(
-    val playerID: Int,
+//    val playerID: Int,
+    val playerName: String,
     val points: Int,
     val winDetails: WinDetails
 )

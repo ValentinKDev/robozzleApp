@@ -52,7 +52,8 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
 
     errorLog("connectionEstablished", "${connectionEstablished}")
 
-    if (connectionEstablished) navigator.navigate(Screens.Profil)
+//    if (connectionEstablished) navigator.navigate(Screens.Profil)
+    if (connectionEstablished) vm.navigation(Screens.Profil, navigator)
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier

@@ -27,34 +27,16 @@ class RankingServerViewModel(
         } ?: emptyList()
     }
 
-//    fun postPlayerWin(levelId: Int , points: Int, winDetails: WinDetails) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            userDataStore.getId()?.let { playerId ->
-//                val playerWin = PlayerWin(
-//                    playerID = playerId,
-//                    points = points,
-//                    winDetails = winDetails
-//                )
-//                val playerWinJson = Gson().toJson(playerWin)
-//                errorLog("json", "${playerWinJson}")
-//
-//                service?.postPlayerWinJson(playerWinJson = playerWinJson, levelId = levelId)
-//            } ?: errorLog("RankingServerViewModel.postPlayerWin", "error")
-//        }
-//    }
-
     fun postPlayerWin(levelId: Int , points: Int, winDetails: WinDetails): String = runBlocking(Dispatchers.IO) {
         var ret = "no user"
-        userDataStore.getId()?.let { playerId ->
+//        userDataStore.getId()?.let { playerId ->
+        userDataStore.getName()?.let { _playerName ->
             val playerWin = PlayerWin(
-                playerID = playerId,
+//                playerID = playerId,
+                playerName = _playerName,
                 points = points,
                 winDetails = winDetails
             )
-//            val playerWinJson = Gson().toJson(playerWin)
-//            errorLog("json", "${playerWinJson}")
-
-//            service?.let { ret = it.postPlayerWinJson(playerWinJson = playerWinJson, levelId = levelId) }
             service?.let { ret = it.postPlayerWinJson(playerWin = playerWin, levelId = levelId) }
         }
         ret

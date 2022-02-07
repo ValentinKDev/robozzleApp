@@ -30,6 +30,7 @@ fun LevelsScreenByDifficulty(
     difficulty: Int,
     levelScreenVM: LevelsScreenViewModel = viewModel(),
 ) {
+    //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
     val levelsList: List<LevelOverView> by levelScreenVM.levelOverViewList.collectAsState()
     Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
     levelScreenVM.loadLevelListById(difficulty)

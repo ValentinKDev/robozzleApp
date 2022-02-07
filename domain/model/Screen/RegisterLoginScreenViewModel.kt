@@ -18,6 +18,8 @@ import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.TokenState
+import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -269,13 +271,11 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         } else { this }
     }
 
-//    fun SelectLoginTab() = run { _tabSelected.value = 5
-//        Log.e("SelectLoginTab", "${tabSeclected.value}")
-//    }
-//    fun SelectRegisterTab() = run {
-//        _tabSelected.value = 2
-//        Log.e("SelectRegisterTab", "${tabSeclected.value}")
-//    }
+    fun navigation(navigDestination: NavigationDestination, navigator: Navigator) {
+        viewModelScope.launch() {
+            navigator.navig(navigDestination)
+        }
+    }
 }
 
 //@InternalCoroutinesApi

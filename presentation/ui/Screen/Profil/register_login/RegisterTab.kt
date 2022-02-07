@@ -52,7 +52,8 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
         }
         UserConnection.CreatedAndVerified.state -> {
             vm.setUserConnectionState(UserConnection.Connected.state)
-            navigator.navigate(Screens.Profil)
+            vm.navigation(Screens.Profil, navigator)
+//            navigator.navigate(Screens.Profil)
         }
         UserConnection.Connected.state -> {
         }

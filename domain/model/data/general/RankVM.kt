@@ -27,7 +27,7 @@ class RankVM(
     fun postPlayerWin(levelId: Int, levelDifficulty: Int, winDetails: WinDetails) {
         viewModelScope.launch(Dispatchers.IO) {
             errorLog("PostPlayerWin", "start")
-            val points: Int = ((1000/ winDetails.instructionsNumber) * levelDifficulty) - winDetails.actionsNumber
+            val points: Int = ( (200 / winDetails.instructionsNumber) * levelDifficulty) - winDetails.actionsNumber
             errorLog("points", "$points")
             if (LevelWinRoomViewModel(context).noBetterInStock(levelId, points)) {
                 //to server if possible

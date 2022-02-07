@@ -17,11 +17,13 @@ import com.mobilegame.robozzle.domain.model.*
 import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.Tab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
+import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
 import kotlinx.coroutines.*
@@ -44,16 +46,12 @@ fun Navigation(navigator: Navigator) {
         navController = navController,
         startDestination = Screens.MainMenu.route
     ) {
-        composable(route = Screens.MainMenu.route) {
-            MainScreen(navigator)
-        }
-        composable(route = Screens.Config.route) {
-            ConfigScreen()
-        }
-        composable(route = Screens.Creator.route) {
-            CreatorScreen(navigator)
-        }
-        composable( route = Screens.Profil.route) {
+        composable( route = Screens.MainMenu.route )    { MainScreen(navigator) }
+        composable( route = Screens.Config.route )      { ConfigScreen() }
+        composable( route = Screens.Donation.route)     { DonationScreen() }
+        composable( route = Screens.Creator.route )     { CreatorScreen(navigator) }
+        composable( route = Screens.Profil.route )
+        {
             infoLog("Screens routing", "ProfilScreen")
 //            //todo : bring this coniditon to the navigation button
             if (UserDataStoreViewModel(context).getName().isNullOrBlank())
@@ -62,20 +60,22 @@ fun Navigation(navigator: Navigator) {
                 UserInfoScreen(navigator)
         }
         composable(
-            route = Screens.LevelByDifficulty.route + "/{difficulty}",
-            arguments = listOf(navArgument("difficulty") {type = NavType.IntType})
+            route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}/",
+            arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})
         ) { entry ->
-            //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
-            LevelsScreenByDifficulty(navigator, difficulty = entry.arguments?.getInt("difficulty")!!)
+//            RanksLevelScreen(levelId = entry.arguments?.getInt(Arguments.LevelId.key))
         }
         composable(
-            route = Screens.Playing.route + "/{levelId}",
-            arguments = listOf(navArgument("levelId") { type = NavType.IntType })
+            route = Screens.LevelByDifficulty.route + "/{${Arguments.LevelDifficulty.key}}",
+            arguments = listOf(navArgument(Arguments.LevelDifficulty.key) {type = NavType.IntType})
         ) { entry ->
-            PlayingScreen(level = LevelRoomViewModel(context).getRobuzzle(entry.arguments?.getInt("levelId")!!)!!)
+            LevelsScreenByDifficulty(navigator, difficulty = entry.arguments?.getInt(Arguments.LevelDifficulty.key)!!)
         }
-        composable(route = Screens.Donation.route) {
-            DonationScreen()
+        composable(
+            route = Screens.Playing.route + "/{${Arguments.LevelId.key}}",
+            arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
+        ) { entry ->
+            PlayingScreen(level = LevelRoomViewModel(context).getRobuzzle(entry.arguments?.getInt(Arguments.LevelId.key)!!)!!)
         }
     }
 }
