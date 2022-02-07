@@ -35,10 +35,12 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
         } ?: true
     }
 
-    fun addLevelWinData(levelId: Int, points: Int, winDetails: WinDetails) {
+    fun addLevelWinData(levelId: Int, levelName: String, points: Int, winDetails: WinDetails) {
          viewModelScope.launch(Dispatchers.IO) {
              val lvlWinData = LevelWinData(
+//                 id = levelId,
                  levelId = levelId,
+                 levelName = levelName,
                  points = points,
                  winDetailsJson = Gson().toJson(winDetails)
              )
@@ -58,6 +60,7 @@ fun List<LevelWinData>.toLevelWinList(): List<LevelWin> {
         mutableList.add(
             LevelWin(
                 levelId = it.levelId,
+                levelName = it.levelName,
                 points = it.points,
                 winDetails = windetails
             )

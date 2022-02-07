@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "level_win_table")
 data class LevelWinData(
     @PrimaryKey val levelId: Int,
-//    @ColumnInfo(name = "id_level") val idLevel: Int,
+//    @ColumnInfo(name = "level_id") val levelId: Int,
+    @ColumnInfo(name = "level_name") val levelName: String,
     @ColumnInfo(name = "points") val points: Int,
     @ColumnInfo(name = "WinDetails") val winDetailsJson: String,
 //    @ColumnInfo(name = "instruction_number") val instructionNumberJson: String,

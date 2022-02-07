@@ -50,8 +50,7 @@ fun Navigation(navigator: Navigator) {
         composable( route = Screens.Config.route )      { ConfigScreen() }
         composable( route = Screens.Donation.route)     { DonationScreen() }
         composable( route = Screens.Creator.route )     { CreatorScreen(navigator) }
-        composable( route = Screens.Profil.route )
-        {
+        composable( route = Screens.Profil.route ) {
             infoLog("Screens routing", "ProfilScreen")
 //            //todo : bring this coniditon to the navigation button
             if (UserDataStoreViewModel(context).getName().isNullOrBlank())
@@ -60,10 +59,15 @@ fun Navigation(navigator: Navigator) {
                 UserInfoScreen(navigator)
         }
         composable(
-            route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}/",
+            route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})
         ) { entry ->
-//            RanksLevelScreen(levelId = entry.arguments?.getInt(Arguments.LevelId.key))
+            infoLog("nav", "to ranks level screen")
+            entry.arguments?.getInt(Arguments.LevelId.key)?.let { _levelId ->
+                LevelRoomViewModel(context).getLevel(_levelId)?.let { _level ->
+                    RanksLevelScreen(levelId = _levelId, levelName = _level.name)
+                }
+            }
         }
         composable(
             route = Screens.LevelByDifficulty.route + "/{${Arguments.LevelDifficulty.key}}",

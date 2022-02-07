@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.state.UserConnectionState
@@ -52,7 +53,9 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
         }
         UserConnection.CreatedAndVerified.state -> {
             vm.setUserConnectionState(UserConnection.Connected.state)
-            vm.navigation(Screens.Profil, navigator)
+//            NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
+            NavViewModel(navigator).navigateTo(Screens.Profil)
+//            vm.navigation(Screens.Profil, navigator)
 //            navigator.navigate(Screens.Profil)
         }
         UserConnection.Connected.state -> {

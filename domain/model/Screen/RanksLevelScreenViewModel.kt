@@ -7,26 +7,31 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.server.ranking.RankingServerViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @InternalCoroutinesApi
-class RanksLevelScreenViewModel(context: Context): ViewModel() {
-    private val rankVM = RankVM(context as Application)
+class RanksLevelScreenViewModel(): ViewModel() {
     private var rankingList: List<PlayerWin> = emptyList()
     var firstColRankingList: List<PlayerWin> = emptyList()
     var secondColRankingList: List<PlayerWin> = emptyList()
     var thirdColRankingList: List<PlayerWin> = emptyList()
 
-    fun load(levelId: Int) {
+//    private val levelRoomVM = LevelRoomViewModel(context)
+
+
+    fun load(levelId: Int, context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            rankingList = rankVM.getLevelRanking(levelId).sortedBy { it.points }
+            rankingList = RankVM(context).getLevelRanking(levelId).sortedBy { it.points }
             firstColRankingList = getFirstColumnList()
             secondColRankingList = getSecondColumnList()
             thirdColRankingList = getThirdColumnList()
         }
+
     }
 
     fun getFirstColumnList(): List<PlayerWin> = runBlocking {

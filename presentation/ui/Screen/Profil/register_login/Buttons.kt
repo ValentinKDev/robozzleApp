@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -53,7 +54,8 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
     errorLog("connectionEstablished", "${connectionEstablished}")
 
 //    if (connectionEstablished) navigator.navigate(Screens.Profil)
-    if (connectionEstablished) vm.navigation(Screens.Profil, navigator)
+//    if (connectionEstablished) NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
+    if (connectionEstablished) NavViewModel(navigator).navigateTo(Screens.Profil)
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier

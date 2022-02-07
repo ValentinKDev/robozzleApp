@@ -89,11 +89,10 @@ class LaunchingViewModel(context: Context): ViewModel() {
                     }
                 }
                 //check if user in data store exist
-                    //if it does check it levelWins are stored in room
+                    //if it does check if levelWins are stored in room
                         //if it does load the wins from the server for this player
                             //compare them
-                            //add the ones from room to server
-                            //or add the ones from server to room ??? that does not make any sens because they should be checked and loaded at the login
+                                //add the ones from room to server
         }
 
         infoLog("Main Menu View Model", "init end")

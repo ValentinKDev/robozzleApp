@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.domain.model.data.general
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -19,49 +20,39 @@ import kotlinx.coroutines.runBlocking
 @InternalCoroutinesApi
 class RankVM(
     context: Context
-): AndroidViewModel(context as Application) {
-    private val context = getApplication<Application>()
-
+//): AndroidViewModel(context as Application) {
+): ViewModel() {
+//    private val context = getApplication<Application>()
+    val levelWinRoomVM = LevelWinRoomViewModel(context)
+    val rankingServerVM = RankingServerViewModel(context)
 
     //function to post my win
-    fun postPlayerWin(levelId: Int, levelDifficulty: Int, winDetails: WinDetails) {
+    fun postPlayerWin(levelId: Int, levelName: String, levelDifficulty: Int, winDetails: WinDetails) {
         viewModelScope.launch(Dispatchers.IO) {
             errorLog("PostPlayerWin", "start")
-            val points: Int = ( (200 / winDetails.instructionsNumber) * levelDifficulty) - winDetails.actionsNumber
+            val points: Int = ( (1000 / winDetails.instructionsNumber) * levelDifficulty) - winDetails.actionsNumber
             errorLog("points", "$points")
-            if (LevelWinRoomViewModel(context).noBetterInStock(levelId, points)) {
-                //to server if possible
-//                if (RankingServerViewModel(context).postPlayerWin(
-//                    levelId = levelId,
-//                    points = points,
-//                    winDetails = winDetails
-//                ) == ServerRet.Error400.ret) {
-//                    TokenVM(context).getNewTokenAndStore()
-                    RankingServerViewModel(context).postPlayerWin(
-                        levelId = levelId,
-                        points = points,
-                        winDetails = winDetails
-                    )
-//                }
+            if (levelWinRoomVM.noBetterInStock(levelId, points)) {
+                rankingServerVM.postPlayerWin(
+                    levelId = levelId,
+                    points = points,
+                    winDetails = winDetails
+                )
                 //to my room of LevelWin
-//                LevelWinRoomViewModel(context).addLevelWinData(
-//                    levelId = levelId,
-//                    points = points,
-//                    winDetails = winDetails
-//                )
+                levelWinRoomVM.addLevelWinData(
+                    levelId = levelId,
+                    levelName = levelName,
+                    points = points,
+                    winDetails = winDetails
+                )
             }
             else errorLog("better win in stock", "already")
 
         }
     }
 
-    fun checkBestWin(levelId: Int, winDetails: WinDetails) {
-
-//        LevelWinRoomViewModel(context).getLeve
-    }
-
     //function to get the ranking of a Level from server
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
-        RankingServerViewModel(context).getLevelRanking(levelId)
+        rankingServerVM.getLevelRanking(levelId)
     }
 }

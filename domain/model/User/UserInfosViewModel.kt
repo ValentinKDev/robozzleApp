@@ -1,27 +1,35 @@
 package com.mobilegame.robozzle.domain.model.User
 
 import android.app.Application
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.data.store.DataStoreService
+import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.level.LevelOverView
+import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
 class UserInfosScreenViewModel(application: Application): AndroidViewModel(application) {
-//    val userDataStoreVM = UserDataStoreViewModel(
-//        getApplication()
-//    )
 
-//    val name: String = userDataStoreVM.getUser().name
+    val name = UserDataStoreViewModel(getApplication()).getName()
+    val levelWinList = LevelWinRoomViewModel(getApplication()).getAllLevelWins()
+    val levelList: List<LevelOverView> = LevelRoomViewModel(getApplication()).getLevelOverViewInList(levelWinList)
 
-//    get
-
-//    init {
-        //Load the playerRanks from Room
-        //Load the playerRanks (list of resolvedLevel) with Ultimate request
-            //compare list from server and room use the longest or the room one
-                //if server longest -> update room
-                //if room longest -> update server
-                //if room = server size -> update server
-        //charger la page
+    init {
+        //launch levelwin list from room
+        //get levelwin list from server
+        //compare local and server data
+            //update server if needed
+    }
+//    fun navigation(destination: NavigationDestination, levelId: Int, navigator: Navigator) {
+//        viewModelScope.launch {
+//            navigator.navig(destination, argumentStr = levelId.toString())
+//        }
 //    }
-
 }

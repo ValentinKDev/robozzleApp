@@ -23,13 +23,15 @@ interface RankingService {
 //    suspend fun getUserPersonalRank(): String?
 
     companion object {
-        fun create(token: String?): RankingService? {
-            return if (token != null) { RankingImplementation (
+        fun create(token: String): RankingService {
+//            return if (token != null) { RankingImplementation (
+            return RankingImplementation (
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
                         requestTimeoutMillis = 1500
                     }
                     install(JsonFeature) {
+                        acceptContentTypes = acceptContentTypes + ContentType("application","json+hal")
                         serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
                             prettyPrint = true
                             isLenient = true
@@ -67,9 +69,10 @@ interface RankingService {
                         level = LogLevel.ALL
                     }
                 }
-            ) } else {
-                null
-            }
+            )
+//        } else {
+//                null
+//            }
         }
     }
 }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class NavViewModel(private val navigator: Navigator): ViewModel() {
     fun navigateTo(navigationDestination: NavigationDestination, argStr: String = "") {
-        infoLog("mainScreenViewModel.em", "triggered" )
         viewModelScope.launch {
             navigator.navig(navigationDestination, argStr)
         }

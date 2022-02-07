@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 //import com.mobilegame.robozzle.data.base.ResolvedLevel.ResolvedLevelDao
 //import com.mobilegame.robozzle.data.base.ResolvedLevel.ResolvedLevelData
 
-@Database(entities = [LevelWinData::class], version = 5, exportSchema = false)
+@Database(entities = [LevelWinData::class], version = 7, exportSchema = false)
 abstract class LevelWinDataBase: RoomDatabase() {
     abstract fun playerRanksDao(): LevelWinDao
     companion object{

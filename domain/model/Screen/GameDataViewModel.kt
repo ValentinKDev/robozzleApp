@@ -34,6 +34,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 //    val originalStarsList: MutableList<Position> = lvl.starsList.clone()
     var originalStarsList: MutableList<Position> = mutableListOf()
 
+    var lvlName: String? = null
     var lvlId: Int = -42
     var lvlDifficulty: Int = -42
 
@@ -87,7 +88,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     @OptIn(InternalCoroutinesApi::class)
     fun SetWinTo(value: Int, winDetails: WinDetails) {
         if (value == com.mobilegame.robozzle.domain.res.TRUE ) {
-            RankVM(getApplication()).postPlayerWin(lvlId, lvlDifficulty, winDetails)
+            lvlName?.let { RankVM(getApplication()).postPlayerWin(lvlId, it, lvlDifficulty, winDetails) }
         }
         _win.value = value
     }

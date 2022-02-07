@@ -271,11 +271,11 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         } else { this }
     }
 
-    fun navigation(navigDestination: NavigationDestination, navigator: Navigator) {
-        viewModelScope.launch() {
-            navigator.navig(navigDestination)
-        }
-    }
+//    fun navigation(navigDestination: NavigationDestination, navigator: Navigator) {
+//        viewModelScope.launch() {
+//            navigator.navig(navigDestination)
+//        }
+//    }
 }
 
 //@InternalCoroutinesApi

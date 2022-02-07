@@ -18,16 +18,20 @@ import kotlinx.coroutines.runBlocking
 class RankingServerViewModel(
     context: Context
 ): ViewModel() {
-    private val service: RankingService? = RankingService.create(TokenVM(context).getToken())
+    private val service: RankingService = RankingService.create(TokenVM(context).getToken())
     private val userDataStore = UserDataStoreViewModel(context)
 
+//    init {
+//        TokenVM(context).getToken()?.
+//    }
+
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
-        service?.let {
-            it.getWinnerListJson(levelId).toListPlayerWin()
-        } ?: emptyList()
+//        service?.let {
+            service.getWinnerListJson(levelId).toListPlayerWin()
+//        } ?: emptyList()
     }
 
-    fun postPlayerWin(levelId: Int , points: Int, winDetails: WinDetails): String = runBlocking(Dispatchers.IO) {
+    fun postPlayerWin(levelId: Int, points: Int, winDetails: WinDetails): String = runBlocking(Dispatchers.IO) {
         var ret = "no user"
 //        userDataStore.getId()?.let { playerId ->
         userDataStore.getName()?.let { _playerName ->
@@ -37,7 +41,10 @@ class RankingServerViewModel(
                 points = points,
                 winDetails = winDetails
             )
-            service?.let { ret = it.postPlayerWinJson(playerWin = playerWin, levelId = levelId) }
+//            service?.let {
+                infoLog("postPlayerWin", "to server")
+                ret = service.postPlayerWinJson(playerWin = playerWin, levelId = levelId)
+//            }
         }
         ret
     }

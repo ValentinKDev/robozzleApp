@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.Screen.RanksLevelScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.DisplayWinOverView
@@ -14,10 +15,10 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun RanksLevelScreen(levelId: Int, levelName: String, vm: RanksLevelScreenViewModel) {
-    vm.load(levelId)
+fun RanksLevelScreen(levelId: Int, levelName: String, vm: RanksLevelScreenViewModel = viewModel()) {
+    vm.load(levelId, LocalContext.current)
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxSize()
     ) {

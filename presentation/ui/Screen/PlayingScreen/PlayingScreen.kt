@@ -30,14 +30,15 @@ fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = v
     val win: Int by gameDataViewModel.win.collectAsState(UNKNOWN)
 
     gameDataViewModel.lvlId = level.id
-    gameDataViewModel.lvlDifficulty = level.id
+    gameDataViewModel.lvlDifficulty = level.difficulty
+    gameDataViewModel.lvlName = level.name
 
     Log.i("", "_")
     Log.e("LAUNCH LEVEL", "${level.id} - ${level.name}")
     Log.i("", "_")
     infoLog("player position ", "${level.playerInitial.pos.line}, ${level.playerInitial.pos.column}")
     Print_List_Position("stars", level.starsList)
-    Print_List_String(level.map)
+//    Print_List_String(level.map)
 
 //        todo: Display a card with a bit of a delay to explain clearly the player has won this level
     when (win) {

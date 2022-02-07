@@ -24,7 +24,7 @@ class LevelWinsRepository(private val levelWinDao: LevelWinDao) {
         levelWinDao.addLevelWinData(lvlResolvedData)
     }
 
-    suspend fun addListLevelResolved(lvlWinDataList: List<LevelWinData>) {
+    suspend fun addListLevelWinData(lvlWinDataList: List<LevelWinData>) {
         lvlWinDataList.forEachIndexed { index, it ->
             infoLog(index.toString(), "levelWin added")
             addLevelWinData(it)
