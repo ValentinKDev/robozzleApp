@@ -9,25 +9,16 @@ import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDataBase
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
-import com.mobilegame.robozzle.domain.model.data.room.level.isBetterThan
-//import com.mobilegame.robozzle.domain.LevelResolved.LevelResolved
 import com.mobilegame.robozzle.domain.repository.LevelWinsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@InternalCoroutinesApi
+//@InternalCoroutinesApi
 class LevelWinRoomViewModel(context: Context): ViewModel() {
     private val dao: LevelWinDao = LevelWinDataBase.getInstance(context).playerRanksDao()
     private val repo: LevelWinsRepository = LevelWinsRepository(dao)
-
-    fun winDetailsIsBetter(idLevel: Int, winDetails: WinDetails): Boolean = runBlocking(Dispatchers.IO) {
-        repo.getLevelWinData(idLevel)?. let {
-            val winDetailData = Gson().fromJson(it.winDetailsJson, WinDetails::class.java)
-            winDetails.isBetterThan(winDetailData)
-        } ?: true
-    }
 
     fun noBetterInStock(levelId: Int, points: Int): Boolean = runBlocking(Dispatchers.IO) {
         repo.getPoint(levelId)?.let { pointsRoom ->
@@ -48,8 +39,23 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
          }
     }
 
+    fun addLevelWinDataList(list: List<LevelWin>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            list.forEach {
+                repo.addLevelWinData(it.toLevelWinData())
+            }
+        }
+    }
+
     fun getAllLevelWins(): List<LevelWin> = runBlocking(Dispatchers.IO) {
         repo.getListLevelWinsData().toLevelWinList()
+    }
+
+
+    fun deleteAllLevelWinRoom() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteAllLevelWinData()
+        }
     }
 }
 

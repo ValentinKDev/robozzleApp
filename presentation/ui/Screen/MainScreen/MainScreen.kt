@@ -15,9 +15,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButtonStyle
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.spacer.VerticalSpace
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -46,7 +48,13 @@ fun MainScreen(navigator: Navigator) {
             }
 
             Box( modifier = Modifier .align(CenterVertically),
-            ) { MainScreenButton(navigator, MainScreenButtonStyle.Profil.type) }
+//            ) { MainScreenButton(navigator, MainScreenButtonStyle.Profil.type) }
+            ) {
+                MainScreenButton( navigator,
+                    UserDataStoreViewModel(LocalContext.current).getName()?.let
+                    { MainScreenButtonStyle.UserInfos.type } ?: MainScreenButtonStyle.RegisterLogin.type
+                )
+            }
         }
         Row(
             horizontalArrangement = Arrangement.Center,

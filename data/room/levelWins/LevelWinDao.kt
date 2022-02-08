@@ -24,8 +24,12 @@ interface LevelWinDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addLevelWinData(lvl: LevelWinData)
 
+    @Query("DELETE FROM level_win_table")
+    fun deleteAll()
+
     @Delete
     fun delete(level: LevelWinData)
+
 
     @Update
     fun updateLevelWinData(vararg levels: LevelWinData)

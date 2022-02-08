@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.*
@@ -49,13 +50,17 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
 fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel, navigator: Navigator) {
     val connectionEstablished by vm.connectionEstablished.collectAsState()
     val showErrorMessage by vm.canNotLog.collectAsState()
-//    val error
+    val ctxt = LocalContext.current
 
     errorLog("connectionEstablished", "${connectionEstablished}")
 
 //    if (connectionEstablished) navigator.navigate(Screens.Profil)
 //    if (connectionEstablished) NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
-    if (connectionEstablished) NavViewModel(navigator).navigateTo(Screens.Profil)
+//    if (connectionEstablished) NavViewModel(navigator).navigateTo(Screens.Profil)
+    if (connectionEstablished)
+        NavViewModel(navigator).navigateTo(
+            UserDataStoreViewModel(ctxt).getName()?.let { Screens.RegisterLogin }?: Screens.UserInfo
+        )
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -65,13 +70,13 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
                 .background(Color.Gray)
             ,
             onClick = {
-                vm.loginOnClickListner()
+                vm.loginOnClickListner(ctxt)
             },
             enabled = enable
         ) {
             Text(text = "Login")
         }
     }
-    if (showErrorMessage > 0) Toast.makeText(LocalContext.current, "Can't reach Servers", Toast.LENGTH_LONG).show()
-    if (showErrorMessage < 0) Toast.makeText(LocalContext.current, "Wrong login", Toast.LENGTH_LONG).show()
+    if (showErrorMessage > 0) Toast.makeText(ctxt, "Can't reach Servers", Toast.LENGTH_LONG).show()
+    if (showErrorMessage < 0) Toast.makeText(ctxt, "Wrong login", Toast.LENGTH_LONG).show()
 }

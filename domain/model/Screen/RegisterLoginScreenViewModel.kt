@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,9 @@ import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.server.dto.UserRequest
 import com.mobilegame.robozzle.data.store.DataStoreService
 import com.mobilegame.robozzle.domain.User
+import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.domain.model.data.server.level.LevelServerViewModel
+import com.mobilegame.robozzle.domain.model.data.server.ranking.RankingServerViewModel
 import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
@@ -101,6 +105,9 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             )
             delay(500)
             _connectionEstablished.value = checkConnectionState()
+
+            //dl stats from server
+            if (connection == UserConnection.Connected.state) RankVM(getApplication()).wipeRoomRankinAndDLUsersRanking()
         }
     }
 

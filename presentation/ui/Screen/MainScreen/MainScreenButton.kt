@@ -13,7 +13,6 @@ import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 
 @Composable
-//fun MainScreenButton(navController: NavController, info: NavigationButtonInfo) {
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo) {
     Button(
         modifier = Modifier
@@ -21,12 +20,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo) {
             .width(info.width.dp)
             .height(info.height.dp)
         ,
-//        onClick = { navController.navigate(info.route) },
         onClick = {
-//                  SomeVM(navigator, nav)
-//            MainScreenViewModel(navigator).navigateTo(info)
-//            MainScreenViewModel(navigator).nav(info)
-//                  navigator.em(info.destination)
                   NavViewModel(navigator).navigateTo(info.destination, info.arg)
         },
         enabled = info.enable

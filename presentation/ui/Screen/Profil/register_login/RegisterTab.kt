@@ -18,9 +18,13 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
+import com.mobilegame.robozzle.presentation.ui.Screen.Profil.Tab
+import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -54,7 +58,18 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
         UserConnection.CreatedAndVerified.state -> {
             vm.setUserConnectionState(UserConnection.Connected.state)
 //            NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
-            NavViewModel(navigator).navigateTo(Screens.Profil)
+//            NavViewModel(navigator).navigateTo(Screens.Profil)
+
+            NavViewModel(navigator).navigateTo(
+                if (UserDataStoreViewModel(LocalContext.current).getName().isNullOrBlank())
+                    Screens.RegisterLogin
+                else
+                    Screens.UserInfo
+            )
+//                NavViewModel(navigator).navigateTo(Screens.RegisterLogin)
+//                RegisterLoginScreen(navigator, Tab())
+//            else
+//                UserInfoScreen(navigator)
 //            vm.navigation(Screens.Profil, navigator)
 //            navigator.navigate(Screens.Profil)
         }

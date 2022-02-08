@@ -11,6 +11,7 @@ import com.mobilegame.robozzle.data.server.tryGetAndCatchErrors
 import com.mobilegame.robozzle.data.server.tryPostAndCatchErrors
 import com.mobilegame.robozzle.domain.Player.MyString
 import com.mobilegame.robozzle.domain.Player.PlayerWin
+import com.mobilegame.robozzle.domain.User
 import com.mobilegame.robozzle.domain.model.data.general.TokenVM
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -34,29 +35,41 @@ class RankingImplementation(
 
     override suspend fun postPlayerWinJson(playerWin: PlayerWin, levelId: Int): String {
         infoLog("postPlayerWinJson", "send")
-        return try {
-            client.post {
-                url { this.encodedPath =  "$RANKING_POST_WIN/$levelId"}
-                contentType(ContentType.Application.Json)
-                body = playerWin
-                ServerRet.Positiv.ret
-            }
-        } catch (e: NoTransformationFoundException) {
-            Log.e("2xx","Error: ${e.message}")
-            ServerRet.Error200.ret
-        } catch (e: RedirectResponseException) {
-            Log.e("3xx","Error: ${e.response.status.description}")
-            ServerRet.Error300.ret
-        } catch (e: ClientRequestException) {
-            Log.e("4xx","Error: ${e.response.status.description}")
-            ServerRet.Error400.ret
-        } catch (e: ServerResponseException) {
-            Log.e("5xx","Error: ${e.response.status.description}")
-            ServerRet.Error500.ret
-        } catch (e: Exception) {
-            Log.e("Exception","Error: ${e.message}")
-            ServerRet.Exception.ret
-        }
+        return client.tryPostAndCatchErrors<PlayerWin>(
+            funName = "getLevelRankingJson",
+            encodedPath = "$RANKING_POST_WIN/$levelId",
+            objToPost = playerWin
+        )
+//        return try {
+//            client.post {
+//                url { this.encodedPath =  "$RANKING_POST_WIN/$levelId"}
+//                contentType(ContentType.Application.Json)
+//                body = playerWin
+//                ServerRet.Positiv.ret
+//            }
+//        } catch (e: NoTransformationFoundException) {
+//            Log.e("2xx","Error: ${e.message}")
+//            ServerRet.Error200.ret
+//        } catch (e: RedirectResponseException) {
+//            Log.e("3xx","Error: ${e.response.status.description}")
+//            ServerRet.Error300.ret
+//        } catch (e: ClientRequestException) {
+//            Log.e("4xx","Error: ${e.response.status.description}")
+//            ServerRet.Error400.ret
+//        } catch (e: ServerResponseException) {
+//            Log.e("5xx","Error: ${e.response.status.description}")
+//            ServerRet.Error500.ret
+//        } catch (e: Exception) {
+//            Log.e("Exception","Error: ${e.message}")
+//            ServerRet.Exception.ret
+//        }
+    }
+
+    override suspend fun getPlayerWinJson(user: User): String {
+        return client.tryGetAndCatchErrors<String>(
+            funName = "getPlayerWinJson",
+            encodedPath = ,
+        )
     }
 }
 

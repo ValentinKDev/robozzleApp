@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.server.ranking.RankingService
+import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.general.TokenVM
@@ -21,31 +22,25 @@ class RankingServerViewModel(
     private val service: RankingService = RankingService.create(TokenVM(context).getToken())
     private val userDataStore = UserDataStoreViewModel(context)
 
-//    init {
-//        TokenVM(context).getToken()?.
-//    }
-
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
-//        service?.let {
             service.getWinnerListJson(levelId).toListPlayerWin()
-//        } ?: emptyList()
     }
 
     fun postPlayerWin(levelId: Int, points: Int, winDetails: WinDetails): String = runBlocking(Dispatchers.IO) {
         var ret = "no user"
-//        userDataStore.getId()?.let { playerId ->
         userDataStore.getName()?.let { _playerName ->
             val playerWin = PlayerWin(
-//                playerID = playerId,
                 playerName = _playerName,
                 points = points,
                 winDetails = winDetails
             )
-//            service?.let {
                 infoLog("postPlayerWin", "to server")
                 ret = service.postPlayerWinJson(playerWin = playerWin, levelId = levelId)
-//            }
         }
         ret
+    }
+
+    fun getLevelWins(): List<LevelWin> = runBlocking(Dispatchers.IO) {
+        service.getPlayerWinJson(userDataStore.getUser()).toListLevelWin()
     }
 }

@@ -1,13 +1,9 @@
 package com.mobilegame.robozzle.domain.model.data.general
 
-import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.server.User.ServerRet
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
@@ -17,7 +13,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@InternalCoroutinesApi
+//@InternalCoroutinesApi
 class RankVM(
     context: Context
 //): AndroidViewModel(context as Application) {
@@ -54,5 +50,12 @@ class RankVM(
     //function to get the ranking of a Level from server
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
         rankingServerVM.getLevelRanking(levelId)
+    }
+
+    fun wipeRoomRankinAndDLUsersRanking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            levelWinRoomVM.deleteAllLevelWinRoom()
+            levelWinRoomVM.addLevelWinDataList( rankingServerVM.getLevelWins() )
+        }
     }
 }

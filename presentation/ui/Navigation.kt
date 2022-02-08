@@ -42,18 +42,12 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
         navController = navController,
         startDestination = Screens.MainMenu.route
     ) {
-        composable( route = Screens.MainMenu.route )    { MainScreen(navigator) }
-        composable( route = Screens.Config.route )      { ConfigScreen() }
-        composable( route = Screens.Donation.route)     { DonationScreen(testShared) }
-        composable( route = Screens.Creator.route )     { CreatorScreen(navigator, testShared) }
-        composable( route = Screens.Profil.route ) {
-            infoLog("Screens routing", "ProfilScreen")
-//            //todo : bring this coniditon to the navigation button
-            if (UserDataStoreViewModel(context).getName().isNullOrBlank())
-                RegisterLoginScreen(navigator, Tab())
-            else
-                UserInfoScreen(navigator)
-        }
+        composable( route = Screens.MainMenu.route )        { MainScreen(navigator) }
+        composable( route = Screens.Config.route )          { ConfigScreen() }
+        composable( route = Screens.Donation.route)         { DonationScreen(testShared) }
+        composable( route = Screens.Creator.route )         { CreatorScreen(navigator, testShared) }
+        composable( route = Screens.UserInfo.route )        { UserInfoScreen(navigator) }
+        composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
         composable(
             route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})

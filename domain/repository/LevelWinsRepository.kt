@@ -5,7 +5,7 @@ import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDao
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
+//@InternalCoroutinesApi
 class LevelWinsRepository(private val levelWinDao: LevelWinDao) {
 
     fun getListLevelWinsData(): List<LevelWinData> {
@@ -22,6 +22,10 @@ class LevelWinsRepository(private val levelWinDao: LevelWinDao) {
 
     suspend fun addLevelWinData(lvlResolvedData: LevelWinData) {
         levelWinDao.addLevelWinData(lvlResolvedData)
+    }
+
+    fun deleteAllLevelWinData() {
+        levelWinDao.deleteAll()
     }
 
     suspend fun addListLevelWinData(lvlWinDataList: List<LevelWinData>) {

@@ -56,7 +56,7 @@ class Breadcrumb (
 
     fun CreateNewBeadcrumb(addActions: Int, newfunInstructionsList: MutableList<FunctionInstructions>) {
         funInstructionsList = newfunInstructionsList
-        Print_FunInstructionList(funInstructionsList)
+//        Print_FunInstructionList(funInstructionsList)
         ResetVars(addActions)
 
         CreateBreadcrumb()

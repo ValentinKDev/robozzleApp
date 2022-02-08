@@ -22,8 +22,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 
-//    val showErrorMessage by vm.canNotLog.collectAsState()
-
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
     val password by remember(vm) {vm.password}.collectAsState( initial = "" )
     val isValidName: Boolean = vm.nameIsValid.value

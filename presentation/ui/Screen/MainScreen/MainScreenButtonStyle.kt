@@ -5,7 +5,9 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 
 sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
-    object Profil: MainScreenButtonStyle( NavigationButtonInfo("profile", 100,100, Color.Gray, Screens.Profil,"", true))
+//    object Profil: MainScreenButtonStyle( NavigationButtonInfo("profile", 100,100, Color.Gray, Screens.Profil,"", true))
+    object UserInfos: MainScreenButtonStyle( NavigationButtonInfo("profile", 100,100, Color.Gray, Screens.UserInfo,"", true))
+    object RegisterLogin: MainScreenButtonStyle( NavigationButtonInfo("profile", 100,100, Color.Gray, Screens.RegisterLogin,"", true))
 
     object LevelDifficulty1: MainScreenButtonStyle( NavigationButtonInfo( "difficulty 1",300,80, Color.Gray, Screens.LevelByDifficulty, "1",true))
     object LevelDifficulty2: MainScreenButtonStyle( NavigationButtonInfo( "difficulty 2",300,80, Color.Gray, Screens.LevelByDifficulty, "2",true))
