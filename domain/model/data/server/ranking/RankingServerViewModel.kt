@@ -10,6 +10,7 @@ import com.mobilegame.robozzle.data.server.ranking.RankingService
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
+import com.mobilegame.robozzle.domain.User
 import com.mobilegame.robozzle.domain.model.data.general.TokenVM
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,12 @@ class RankingServerViewModel(
 
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
             service.getWinnerListJson(levelId).toListPlayerWin()
+    }
+
+    fun postListLevelWin(listLevelWin: List<LevelWin>, user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            service.postLevelWinListJson(listLevelWin.toJsonString(), user)
+        }
     }
 
     fun postPlayerWin(levelId: Int, points: Int, winDetails: WinDetails): String = runBlocking(Dispatchers.IO) {

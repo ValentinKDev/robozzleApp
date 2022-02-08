@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.ranking.RankingServerViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -21,6 +23,7 @@ class RankVM(
 //    private val context = getApplication<Application>()
     val levelWinRoomVM = LevelWinRoomViewModel(context)
     val rankingServerVM = RankingServerViewModel(context)
+    val userDataStore = UserDataStoreViewModel(context)
 
     //function to post my win
     fun postPlayerWin(levelId: Int, levelName: String, levelDifficulty: Int, winDetails: WinDetails) {
@@ -56,6 +59,22 @@ class RankVM(
         viewModelScope.launch(Dispatchers.IO) {
             levelWinRoomVM.deleteAllLevelWinRoom()
             levelWinRoomVM.addLevelWinDataList( rankingServerVM.getLevelWins() )
+        }
+    }
+
+    fun compareLocalAndServerLevelWin() {
+        infoLog("compare Local and Server LevelWin", "start")
+        val roomList: List<LevelWin> = levelWinRoomVM.getAllLevelWins()
+        val serverList: List<LevelWin> = rankingServerVM.getLevelWins()
+
+        if (!serverList.containsAll(roomList)) {
+            if (roomList.containsAll(serverList)) {
+                rankingServerVM.postListLevelWin(roomList, userDataStore.getUser())
+            }
+            else {
+                //todo : wipe data process ?
+                errorLog("server and local listOf LevelWin", "seems to be corrupted")
+            }
         }
     }
 }

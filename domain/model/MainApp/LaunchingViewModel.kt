@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.data.store.AppConfigDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.appConfig.AppConfigServerViewModel
@@ -20,13 +21,11 @@ class LaunchingViewModel(context: Context): ViewModel() {
 //    val userDataVM = UserViewModel(context as Application)
 
 //    val levelRoomVM = LevelRoomViewModel(getApplication())
-    val levelRoomVM = LevelRoomViewModel(context)
+    private val levelRoomVM = LevelRoomViewModel(context)
     private val levelServerVM = LevelServerViewModel()
     private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
     private val appConfigServerVM = AppConfigServerViewModel()
-
-    init {
-        }
+    private val rankVM = RankVM(context)
 
         fun launch() {
 
@@ -42,8 +41,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
                 infoLog("-> sever version", "$serverVersion")
 
                 if (localVersion == null || serverVersion != localVersion) {
-                    if (localVersion == null)
-                        errorLog("first connection", "Welcome to Robuzzle")
+                    localVersion?.let { errorLog("first connection", "Welcome to Robuzzle") }
                     //Start all the dl process
                     infoLog("start", "all dl process")
                     serverVersion?.let {
@@ -85,6 +83,12 @@ class LaunchingViewModel(context: Context): ViewModel() {
 //                            infoLog("add list of level Id Missing", "$listOfLevelIdMissing")
                                 levelRoomVM.addLevels(listOfLevelMissingJson)
                             }
+                            //check if user in data store exist
+                                //if it does check if levelWins are stored in room
+                            rankVM.getLevelRanking()
+                                    //if it does load the wins from the server for this player
+                                        //compare them
+                                            //add the ones from room to server
                         }
                     }
                 }
