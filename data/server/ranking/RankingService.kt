@@ -23,7 +23,7 @@ interface RankingService {
 
     suspend fun postLevelWinListJson(listJson: String, user: User): String
 
-    suspend fun getPlayerWinJson(user: User): String
+    suspend fun getPlayerWinJson(user: User): String?
 
 //    suspend fun getUserPersonalRank(): String?
 

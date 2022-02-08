@@ -9,6 +9,7 @@ import com.mobilegame.robozzle.domain.User
 import com.mobilegame.robozzle.domain.res.ID_NO_VALUE
 import com.mobilegame.robozzle.domain.res.NAME_NO_VALUE
 import com.mobilegame.robozzle.domain.res.PASSWORD_NO_VALUE
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -29,6 +30,14 @@ class UserDataStoreViewModel (
         infoLog(name, "name from datastore")
         infoLog(password, "password from datastore")
         return User(id, name, password)
+    }
+
+    fun clearUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            service.delInt(KeyProvider.Id.key)
+            service.delString(KeyProvider.Name.key)
+            service.delString(KeyProvider.Password.key)
+        }
     }
 
     fun saveUser(user: User) {

@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.data.store.DataStoreService
+import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
@@ -27,9 +28,11 @@ class UserInfosScreenViewModel(application: Application): AndroidViewModel(appli
         //compare local and server data
             //update server if needed
     }
-//    fun navigation(destination: NavigationDestination, levelId: Int, navigator: Navigator) {
-//        viewModelScope.launch {
-//            navigator.navig(destination, argumentStr = levelId.toString())
-//        }
-//    }
+
+    fun logingOut() {
+        //clear user datastore
+        UserDataStoreViewModel(getApplication()).clearUser()
+        //clear room level win
+        LevelWinRoomViewModel(getApplication()).deleteAllLevelWinRoom()
+    }
 }

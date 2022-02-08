@@ -10,10 +10,12 @@ val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name 
 val Context.appPrefDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.App.pref)
 
 interface DataStoreService {
-    suspend fun putString(key: String, value: String)
     suspend fun getString(key: String): String?
+    suspend fun putString(key: String, value: String)
+    suspend fun delString(key: String)
     suspend fun getInt(key: String): Int?
     suspend fun putInt(key: String, value: Int)
+    suspend fun delInt(key: String)
 
     companion object {
         fun createUserService(context: Context): DataStoreService {

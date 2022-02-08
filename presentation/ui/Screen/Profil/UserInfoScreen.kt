@@ -6,13 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
@@ -26,18 +24,57 @@ import kotlinx.coroutines.*
 @SuppressLint("CoroutineCreationDuringComposition")
 @InternalCoroutinesApi
 @Composable
-fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel()) {
+fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = viewModel()) {
     infoLog("Launch", "UserInfoScreen()")
+    val ctxt = LocalContext.current
 
     Column() {
-        Text(text = "UserInfoScreen")
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "user name ${vm.name}")
-        Spacer(modifier = Modifier.height(30.dp))
-        LazyColumn {
-            //todo : UI 2 columns
-            itemsIndexed(vm.levelWinList) { _, levelWin ->
-                DisplayWinOverView(levelWin, navigator)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1F)
+            ,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(3F)
+                ,
+            ) {
+                Text(text = "UserInfoScreen")
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(text = "user name ${screenVM.name}")
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1F)
+                ,
+            ) {
+                Button(
+                    modifier = Modifier
+                        .size(20.dp)
+                    ,
+                    onClick = {
+                        screenVM.logingOut()
+                        NavViewModel(navigator).navigateTo(Screens.MainMenu)
+                    }
+                ) {
+                    Text(text = "Log out")
+                }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(9F)
+            ,
+        ) {
+            LazyColumn {
+                //todo : UI 2 columns
+                itemsIndexed(screenVM.levelWinList) { _, levelWin ->
+                    DisplayWinOverView(levelWin, navigator)
+                }
             }
         }
     }
@@ -49,8 +86,8 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator) {
         modifier = Modifier
             .background(Color.Yellow)
             .clickable {
-                    infoLog("click on card", "start")
-                    NavViewModel(navigator).navigateTo(Screens.RanksLevel, levelWin.levelId.toString())
+                infoLog("click on card", "start")
+                NavViewModel(navigator).navigateTo(Screens.RanksLevel, levelWin.levelId.toString())
             }
     ) {
 

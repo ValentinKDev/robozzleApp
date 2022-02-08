@@ -50,7 +50,6 @@ class RankVM(
         }
     }
 
-    //function to get the ranking of a Level from server
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
         rankingServerVM.getLevelRanking(levelId)
     }
