@@ -45,36 +45,12 @@ fun SecondScreenPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, s
                 .fillMaxSize()
         ) {
             Column {
-                //todo: simplify this shit
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height((screenConfig.heightDp / 200).dp)
-                    .background(Color.Black)){}
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height((screenConfig.heightDp / 240).dp)
-                    .background(Color.Transparent)){}
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height((screenConfig.heightDp / 200).dp)
-                    .background(Color.Black)){}
-                Row(modifier = Modifier .weight(1.0f)) {
-//                    if (lvl.guideline.actionList.isNotEmpty()) DisplayActionsRow(lvl, gameDataViewModel, screenConfig)
+                ActionRowSurronder(screenConfig = screenConfig)
+                Column(modifier = Modifier .weight(1.0f)) {
                     if (lvl.breadcrumb.actionList.isNotEmpty())
                         DisplayActionsRow(lvl, gameDataViewModel, screenConfig)
                 }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height((screenConfig.heightDp / 200).dp)
-                    .background(Color.Black)){}
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height((screenConfig.heightDp / 240).dp)
-                    .background(Color.Transparent)){}
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height((screenConfig.heightDp / 200).dp)
-                    .background(Color.Black)){}
+                ActionRowSurronder(screenConfig = screenConfig)
                 Row(modifier = Modifier.weight(5.0f, false)) {
                     DisplayFunctionsPart(lvl = lvl, gameDataViewModel, screenConfig)
                 }
@@ -84,6 +60,22 @@ fun SecondScreenPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, s
             }
         }
     }
+}
+
+@Composable
+fun ActionRowSurronder(screenConfig: ScreenConfig) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height((screenConfig.heightDp / 200).dp)
+        .background(Color.Black)){}
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height((screenConfig.heightDp / 240).dp)
+        .background(Color.Transparent)){}
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height((screenConfig.heightDp / 200).dp)
+        .background(Color.Black)){}
 }
 
 //Todo: replace all this logic based on the breadCrumb in an viewModel or an other entity to unload the screen ??? should it be really on the main thread ?
@@ -96,7 +88,7 @@ fun DisplayActionsRow(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, 
 
 //    errorLog("$currentAction", "")
 
-    Row(modifier = Modifier.padding(5.dp)) {
+    Row(modifier = Modifier.padding(start = 5.dp, end = 5.dp)) {
 //Todo: delay the disparition of the last action in actionList
 //        if (currentAction != lvl.guideline.actionList.length - 1) {
         if (currentAction != lvl.breadcrumb.actionList.length - 1) {
@@ -189,15 +181,12 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewMode
                         ) {
                             val instructionChar = function.instructions[index]
                             if (
-//                                lvl.guideline.currentInstructionList.isNotEmpty() &&
-                                lvl.breadcrumb.currentInstructionList.isNotEmpty() &&
-                                ((currentAction == 0 && functionNumber == 0 && index == 0) ||
-//                                        lvl.guideline.currentInstructionList[currentAction].Match( Position(functionNumber, index) ))
-                                        lvl.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, index) ))
+                                lvl.breadcrumb.currentInstructionList.isNotEmpty()
+                                && ( (currentAction == 0 && functionNumber == 0 && index == 0)
+                                        || lvl.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, index) )
+                                        )
                                 && animationRunningInBackground
-//                                && lvl.guideline.currentInstructionList.isNotEmpty()
-                            )
-                                {
+                            ) {
                                 Box(
                                     modifier = Modifier
                                         .background(Color.White)
@@ -220,10 +209,7 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewMode
                                         .size((screenConfig.functionBoxSize - 12).dp)
                                         .padding((screenConfig.functionBoxPadd).dp)
                                 ){
-//                                    val text = function.instructions[index].toString()
-//                                    if (text.isNotBlank() && text != "."){
                                     if (instructionChar != '.'){
-//                                        Text(text = text)
                                         InstructionsIconsFunction(instructionChar, gameDataViewModel, screenConfig)
                                     }
                                 }
@@ -231,12 +217,10 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewMode
                             else {
                                 Box() {
                                     FunctionCase(
-//                                        RecognizeColor(caseColor, false),
                                         caseColor,
                                         gameDataViewModel,
                                         screenConfig,
-//                                        function.instructions[index].toString()
-                                    instructionChar
+                                        instructionChar
                                     )
                                 }
                             }
@@ -250,25 +234,20 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewMode
 }
 
 @Composable
-//fun FunctionCase(color: Color, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig, instructionChar: Char) {
 fun FunctionCase(color: String, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig, instructionChar: Char) {
     Box(
         modifier = Modifier
-//            .background(color)
             .gradientBackground(
                 ColorsList(
                     color,
                     gameDataViewModel.displayInstructionsMenu.value == true
                 ),
-//                45f
                 175f
             )
             .size(screenConfig.functionBoxSize.dp)
             .padding(screenConfig.functionBoxPadd.dp)
     ){
-//        if (text.isNotBlank() && text != "."){
         if (instructionChar != '.'){
-//            Text(text = text)
             InstructionsIconsFunction(instructionChar, gameDataViewModel, screenConfig)
         }
     }
@@ -299,7 +278,6 @@ fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screen
                         if (animationRunningInBackground) {
                             gameDataViewModel.AnimationIsOnPauseChangeStatus()
                         } else if (animationIsPlaying) {
-//                        gameDataViewModel.StartAnimation()
                             StartAnimation(lvl, gameDataViewModel)
                         }
                     }

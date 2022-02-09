@@ -5,10 +5,16 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 
 class DonationScreenViewModel(): ViewModel() {
@@ -24,14 +30,25 @@ class DonationScreenViewModel(): ViewModel() {
         _textSelected.value = text
     }
 
+    private val _snackShared = MutableSharedFlow<Int>()
+    val snackShared = _snackShared.asSharedFlow()
+//    private val _snackShared = MutableStateFlow<Int>(0)
+//    val snackShared: StateFlow<Int> = _snackShared
+    
 
     val list = listOf<String>("one", "two", "tree", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fithteen", "sixteen", "seventeen", "eighteen", "nineteenl", "twenty")
 
-    @SuppressLint("ServiceCast")
-    fun clipIt(context: Context) {
+    fun clipAndToast(context: Context) {
         val clip = ClipData.newPlainText("address", textSelected.value)
         val myClipboard : ClipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager //as ClipboardManager
 
         myClipboard.setPrimaryClip(clip)
+        Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
+    }
+
+    fun triggerSnackBar() {
+        viewModelScope.launch {
+            _snackShared.emit(1)
+        }
     }
 }

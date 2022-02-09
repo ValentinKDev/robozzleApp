@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -136,20 +140,23 @@ fun DonationScreenSecondPart(screenVM: DonationScreenViewModel = viewModel()) {
                 }
                 /** Column to place the copy button */
                 Column( modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1F)
+                    .fillMaxHeight()
+                    .weight(1F)
                 ) {
-                    Button(
+//                    Button(
+                    IconButton(
                         modifier = Modifier
                             .height(40.dp)
                             .fillMaxWidth()
-                            .background(Color.Yellow)
+//                            .background(Color.Yellow)
                         ,
                         onClick = {
-                            screenVM.clipIt(ctxt)
+                            screenVM.clipAndToast(ctxt)
                         },
 //                        enabled =
-                    ) {}
+                    ) {
+                        Icon(imageVector = Icons.Default.ContentCopy, contentDescription = "copy icone", tint = Color.Black)
+                    }
                 }
             }
         }
