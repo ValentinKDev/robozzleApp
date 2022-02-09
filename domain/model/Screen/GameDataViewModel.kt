@@ -1,11 +1,9 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.Extensions.clone
 import com.mobilegame.robozzle.Extensions.copy
 import com.mobilegame.robozzle.Extensions.replaceAt
@@ -85,10 +83,9 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     private val _win = MutableStateFlow<Int>(UNKNOWN)
     val win: StateFlow<Int> = _win
 
-    @OptIn(InternalCoroutinesApi::class)
     fun SetWinTo(value: Int, winDetails: WinDetails) {
         if (value == com.mobilegame.robozzle.domain.res.TRUE ) {
-            lvlName?.let { RankVM(getApplication()).postPlayerWin(lvlId, it, lvlDifficulty, winDetails) }
+            lvlName?.let { RankVM(getApplication()).registerANewWin(lvlId, it, lvlDifficulty, winDetails) }
         }
         _win.value = value
     }

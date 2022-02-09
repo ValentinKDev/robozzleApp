@@ -18,7 +18,6 @@ import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 @Composable
 fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 

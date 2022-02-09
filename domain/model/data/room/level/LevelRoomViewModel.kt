@@ -21,7 +21,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@InternalCoroutinesApi
 class LevelRoomViewModel(context: Context): ViewModel() {
     private val dao: LevelDao = LevelDataBase.getInstance(context).levelDao()
     private val repo: LevelRepository = LevelRepository(dao)

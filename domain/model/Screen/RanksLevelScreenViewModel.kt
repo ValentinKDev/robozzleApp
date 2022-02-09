@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@InternalCoroutinesApi
 class RanksLevelScreenViewModel(application: Application): AndroidViewModel(application) {
     private val _rankingList = MutableStateFlow<List<PlayerWin>>(emptyList())
     val rankingList: StateFlow<List<PlayerWin>> = _rankingList

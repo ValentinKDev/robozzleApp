@@ -29,9 +29,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@SuppressLint("CoroutineCreationDuringComposition")
-@DelicateCoroutinesApi
-@InternalCoroutinesApi
 @Composable
 fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
@@ -79,8 +76,6 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
     }
 }
 
-@DelicateCoroutinesApi
-@InternalCoroutinesApi
 @Composable
 fun RegisteringElements(vm: RegisterLoginViewModel, navigator: Navigator) {
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )

@@ -9,7 +9,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-@InternalCoroutinesApi
 class LevelsScreenViewModel(application: Application): AndroidViewModel(application) {
     //todo: might be wise enough to create a specific class Level overview to manipulate only id, name, map
 //    private val _ = MutableStateFlow<List<Level>>(mutableListOf())

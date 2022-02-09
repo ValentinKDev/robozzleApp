@@ -8,6 +8,7 @@ import com.mobilegame.robozzle.data.room.levelWins.LevelWinDao
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDataBase
 import com.mobilegame.robozzle.domain.Player.LevelWin
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.repository.LevelWinsRepository
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +52,9 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
         repo.getListLevelWinsData().toLevelWinList()
     }
 
+    fun getALevelWinSolution(id: Int): List<FunctionInstructions>? = runBlocking(Dispatchers.IO) {
+        repo.getLevelWinData(id)?.winDetailsJson?.getSolution()
+    }
 
     fun deleteAllLevelWinRoom() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -59,20 +63,5 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
     }
 }
 
-fun List<LevelWinData>.toLevelWinList(): List<LevelWin> {
-    val mutableList: MutableList<LevelWin> = mutableListOf()
-    this.forEach {
-        val windetails: WinDetails = Gson().fromJson(it.winDetailsJson, WinDetails::class.java)
-        mutableList.add(
-            LevelWin(
-                levelId = it.levelId,
-                levelName = it.levelName,
-                points = it.points,
-                winDetails = windetails
-            )
-        )
-    }
-    return mutableList.toList()
-}
 
 

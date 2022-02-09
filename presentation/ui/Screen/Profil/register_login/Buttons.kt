@@ -21,8 +21,6 @@ import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.*
 
-@DelicateCoroutinesApi
-@InternalCoroutinesApi
 @Composable
 fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel, navigator: Navigator) {
     Box(Modifier.fillMaxWidth()) {
@@ -44,8 +42,6 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
     }
 }
 
-@DelicateCoroutinesApi
-@InternalCoroutinesApi
 @Composable
 fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel, navigator: Navigator) {
     val connectionEstablished by vm.connectionEstablished.collectAsState()

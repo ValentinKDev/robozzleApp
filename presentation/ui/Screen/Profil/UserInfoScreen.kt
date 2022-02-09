@@ -21,8 +21,6 @@ import com.mobilegame.robozzle.presentation.ui.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.*
 
-@SuppressLint("CoroutineCreationDuringComposition")
-@InternalCoroutinesApi
 @Composable
 fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = viewModel()) {
     infoLog("Launch", "UserInfoScreen()")

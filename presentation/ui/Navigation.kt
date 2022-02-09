@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
@@ -25,7 +26,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @DelicateCoroutinesApi
-@InternalCoroutinesApi
 @Composable
 fun Navigation(navigator: Navigator, testShared: TestShared) {
     infoLog("navigatgion", "...")
@@ -68,7 +68,11 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
             route = Screens.Playing.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
         ) { entry ->
-            PlayingScreen(level = LevelRoomViewModel(context).getRobuzzle(entry.arguments?.getInt(Arguments.LevelId.key)!!)!!)
+//            PlayingScreen(level = LevelRoomViewModel(context).getRobuzzle(entry.arguments?.getInt(Arguments.LevelId.key)!!)!!)
+//            PlayingScreen(level = LevelVM(context).getRobuzzleLevel(entry.arguments?.getInt(Arguments.LevelId.key)!!))
+            entry.arguments?.getInt(Arguments.LevelId.key)?.let {
+                PlayingScreen(level = LevelVM(context).getRobuzzleLevel(it))
+            }
         }
     }
 }

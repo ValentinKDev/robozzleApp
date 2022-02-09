@@ -26,8 +26,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-//@SuppressLint("CoroutineCreationDuringComposition")
-@InternalCoroutinesApi
 @Composable
 fun CreatorScreen(navigator: Navigator, testShared: TestShared) {
 

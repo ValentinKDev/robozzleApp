@@ -5,7 +5,6 @@ import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 class LevelRepository(private val levelDao: LevelDao) {
 
     var aLevelData: LevelData? = null

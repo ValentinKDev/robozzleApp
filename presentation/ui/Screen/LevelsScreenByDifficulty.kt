@@ -24,7 +24,6 @@ import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 @Composable
 fun LevelsScreenByDifficulty(
     navigator: Navigator,

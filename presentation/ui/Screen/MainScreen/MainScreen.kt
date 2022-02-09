@@ -24,7 +24,6 @@ import com.mobilegame.robozzle.presentation.ui.spacer.VerticalSpace
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@InternalCoroutinesApi
 @Composable
 fun MainScreen(navigator: Navigator) {
     infoLog("MainScreen", "launch")

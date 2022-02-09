@@ -26,7 +26,7 @@ class RankVM(
     val userDataStore = UserDataStoreViewModel(context)
 
     //function to post my win
-    fun postPlayerWin(levelId: Int, levelName: String, levelDifficulty: Int, winDetails: WinDetails) {
+    fun registerANewWin(levelId: Int, levelName: String, levelDifficulty: Int, winDetails: WinDetails) {
         viewModelScope.launch(Dispatchers.IO) {
             errorLog("PostPlayerWin", "start")
             val points: Int = ( (1000 / winDetails.instructionsNumber) * levelDifficulty) - winDetails.actionsNumber
@@ -44,9 +44,9 @@ class RankVM(
                     points = points,
                     winDetails = winDetails
                 )
+//                add the solution to the level
             }
             else errorLog("better win in stock", "already")
-
         }
     }
 

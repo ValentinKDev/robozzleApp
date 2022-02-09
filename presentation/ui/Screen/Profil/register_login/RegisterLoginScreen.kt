@@ -20,8 +20,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
-@DelicateCoroutinesApi
-@InternalCoroutinesApi
 @Composable
 fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
     val tabSelected: Int by tab.selected.collectAsState()
@@ -36,7 +34,6 @@ fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
     }
 }
 
-@InternalCoroutinesApi
 @Composable
 fun RegisterLoginTabsHead(tab: Tab) {
     val tabRegister: Boolean = tab.selected.value == 1

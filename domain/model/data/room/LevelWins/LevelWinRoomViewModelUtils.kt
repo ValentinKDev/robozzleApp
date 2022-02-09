@@ -3,7 +3,13 @@ package com.mobilegame.robozzle.domain.model.data.room.LevelWins
 import com.google.gson.Gson
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
 import com.mobilegame.robozzle.domain.Player.LevelWin
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
+
+internal fun String.getSolution(): List<FunctionInstructions> {
+    val winDetails: WinDetails = Gson().fromJson(this, WinDetails::class.java)
+    return winDetails.solutionFound
+}
 
 internal fun LevelWin.toLevelWinData(): LevelWinData = LevelWinData(
     levelId = this.levelId,
@@ -11,3 +17,19 @@ internal fun LevelWin.toLevelWinData(): LevelWinData = LevelWinData(
     points = this.points,
     winDetailsJson = Gson().toJson(this.winDetails, WinDetails::class.java)
 )
+
+internal fun List<LevelWinData>.toLevelWinList(): List<LevelWin> {
+    val mutableList: MutableList<LevelWin> = mutableListOf()
+    this.forEach {
+        val windetails: WinDetails = Gson().fromJson(it.winDetailsJson, WinDetails::class.java)
+        mutableList.add(
+            LevelWin(
+                levelId = it.levelId,
+                levelName = it.levelName,
+                points = it.points,
+                winDetails = windetails
+            )
+        )
+    }
+    return mutableList.toList()
+}

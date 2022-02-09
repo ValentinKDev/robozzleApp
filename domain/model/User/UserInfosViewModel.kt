@@ -15,7 +15,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@InternalCoroutinesApi
 class UserInfosScreenViewModel(application: Application): AndroidViewModel(application) {
 
     val name = UserDataStoreViewModel(getApplication()).getName()
