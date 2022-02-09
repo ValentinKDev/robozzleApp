@@ -12,10 +12,6 @@ class Navigator {
     var dest: MutableSharedFlow<String> = MutableSharedFlow()
     var des: SharedFlow<String> = dest.asSharedFlow()
 
-//    fun navigate(destination: NavigationDestination, argumentStr: String = "") {
-//        if (argumentStr.isEmpty()) this.destination.value = destination.route
-//        else this.destination.value = destination.route + "/" + argumentStr
-//    }
     suspend fun navig(destination: NavigationDestination, argumentStr: String = "") {
         if (argumentStr.isEmpty()) dest.emit(destination.route)
         else dest.emit(destination.route + "/" + argumentStr)

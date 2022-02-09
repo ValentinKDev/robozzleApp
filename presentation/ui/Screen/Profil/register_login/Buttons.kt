@@ -70,7 +70,7 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
                 .background(Color.Gray)
             ,
             onClick = {
-                vm.loginOnClickListner(ctxt)
+                vm.loginOnClickListner()
             },
             enabled = enable
         ) {
