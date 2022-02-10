@@ -22,16 +22,9 @@ interface AppConfigService {
             return AppConfigImplementation (
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
+//                        requestTimeoutMillis = 300
                         requestTimeoutMillis = 1500
                     }
-//                    install(Auth) {
-//                        digest {
-//                            credentials {
-//                                DigestAuthCredentials(username = "admin", password = "admin")
-//                            }
-//                            realm = "Access to the '/' path"
-//                        }
-//                    }
                     defaultRequest {
                         host = HttpRoutes.HOST
                         port = HttpRoutes.PORT

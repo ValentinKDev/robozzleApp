@@ -15,7 +15,7 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     object LevelDifficulty4: MainScreenButtonStyle( NavigationButtonInfo( "difficulty 4",300,80, Color.Gray, Screens.LevelByDifficulty, "4",true))
     object LevelDifficulty5: MainScreenButtonStyle( NavigationButtonInfo( "difficulty 5",300,80, Color.Gray, Screens.LevelByDifficulty, "5",true))
 
-    object Config: MainScreenButtonStyle( NavigationButtonInfo( "config",100,100, Color.Gray, Screens.Config ,"",false))
+    object Config: MainScreenButtonStyle( NavigationButtonInfo( "config",100,100, Color.Gray, Screens.Config ,"",true))
     object Creator: MainScreenButtonStyle( NavigationButtonInfo("creator",100,100, Color.Gray, Screens.Creator ,"", true))
     object Donation: MainScreenButtonStyle( NavigationButtonInfo("donation",100,100, Color.Gray, Screens.Donation,"", true))
 }

@@ -1,9 +1,9 @@
-package com.mobilegame.robozzle.presentation.ui
+package com.mobilegame.robozzle.presentation.res
 
-import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
 
 val normalInGameBackGround = Color(0xdd080808)
+
 
 val darkerGray =        Color(0xdf686868)
 val darkerdarkerGray =  Color(0xbf353535)
@@ -48,9 +48,12 @@ fun ColorsList(toRecognize: String, darkerFilter: Boolean): List<Color> {
 fun RecognizeColor(toRecognize: String, darkerFilter: Boolean): Color {
     var color: Color
 
-    val red = if (darkerFilter) { darkerRed } else { niceRed}
-    val blue = if (darkerFilter) { darkerBlue } else { niceBlue}
-    val green = if (darkerFilter) { darkerGreen } else { niceGreen}
+    val red = if (darkerFilter) { darkerRed } else { niceRed
+    }
+    val blue = if (darkerFilter) { darkerBlue } else { niceBlue
+    }
+    val green = if (darkerFilter) { darkerGreen } else { niceGreen
+    }
     val gray = if (darkerFilter) { darkerGray } else { Color.Gray}
 
     when (toRecognize) {

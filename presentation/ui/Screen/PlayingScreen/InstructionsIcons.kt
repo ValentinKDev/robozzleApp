@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.gradientBackground
 import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
-import com.mobilegame.robozzle.presentation.ui.ColorsList
+import com.mobilegame.robozzle.presentation.res.ColorsList
 
 @Composable
 fun InstructionsIconsFunction(instruction: Char, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {

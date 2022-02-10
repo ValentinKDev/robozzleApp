@@ -24,7 +24,6 @@ import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.*
 import kotlinx.coroutines.*
 
 @DelicateCoroutinesApi

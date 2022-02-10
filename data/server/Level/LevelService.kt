@@ -29,6 +29,7 @@ interface LevelService {
             return LevelImplementation (
             client = HttpClient(Android) {
                 install(HttpTimeout) {
+//                    requestTimeoutMillis = 300
                     requestTimeoutMillis = 1500
                 }
                 install(JsonFeature) {
