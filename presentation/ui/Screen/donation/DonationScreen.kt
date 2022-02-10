@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,10 +12,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -33,6 +31,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButto
 import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
 import kotlinx.coroutines.flow.*
 
+@ExperimentalAnimationApi
 @Composable
 fun DonationScreen() {
 
@@ -60,55 +59,73 @@ fun DonationScreen() {
 }
 
 
+@ExperimentalAnimationApi
 @Composable
 fun FoldableScrollingBar(screenVM: DonationScreenViewModel, foldState: Boolean) {
+//    val visibleChoiceList by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .height(if (foldState) 400.dp else 40.dp)
             .fillMaxWidth()
-            .background(Color.Red)
+//            .background(Color.Red)
             .clickable { screenVM.foldUnfold() }
     ) {
         Row(
             modifier = Modifier
                 .height(40.dp)
                 .fillMaxWidth()
+                .background(Color.Red)
             ,
         ) { Text(text = screenVM.textSelected.value) }
-        if (foldState) {
-            Row(
-                modifier = Modifier
-                    .height(400.dp)
-                    .width(300.dp)
-                    .clickable { screenVM.foldUnfold() }
-                    .background(Color.DarkGray)
+//        AnimatedVisibility(
+//            visible = visibleChoiceList,
+//            visible = foldState,
+//            enter = slideInVertically(),
+//            exit = slideOutVertically(),
+//            initiallyVisible = false
+//        ) {
+            Box(
+                Modifier
+                .animateContentSize()
             ) {
-                if (foldState) {
-                    LazyColumn {
-                        itemsIndexed(screenVM.list) { _, _element ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(40.dp)
-                                    .clickable {
-                                        screenVM.foldUnfold()
-                                        screenVM.setTextSelectedTo(_element)
-                                    }
-                            ) { Text(text = _element) }
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(2.dp)
-                                    .background(Color.Black)
-                            ) { }
+//                if (foldState) {
+                    Column(
+                        modifier = Modifier
+//                            .height(400.dp)
+                            .height(if (foldState) 400.dp else 0.dp)
+                            .width(300.dp)
+                            .clickable { screenVM.foldUnfold() }
+                            .background(Color.DarkGray)
+                    ) {
+                        if (foldState) {
+                            LazyColumn {
+                                itemsIndexed(screenVM.list) { _, _element ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(40.dp)
+                                            .clickable {
+                                                screenVM.foldUnfold()
+                                                screenVM.setTextSelectedTo(_element)
+                                            }
+                                    ) { Text(text = _element) }
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(2.dp)
+                                            .background(Color.Black)
+                                    ) { }
+                                }
+                            }
                         }
                     }
-                }
-            }
+//                }
+//            }
         }
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun DonationScreenSecondPart(screenVM: DonationScreenViewModel = viewModel()) {
     val scrollingBar by screenVM.scrolingBar.collectAsState()

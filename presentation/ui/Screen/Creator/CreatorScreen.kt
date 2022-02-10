@@ -8,11 +8,14 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
@@ -40,7 +43,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
     infoLog("launch", "CreatorScreen()")
-    val visibleGreen by remember(testShared) {testShared.vGreen}.collectAsState()
+//    val visibleButton2 by remember(testShared) {testShared.vGreen}.collectAsState(initial = true)
+    val visibleButton2 by remember { mutableStateOf(true)}
+//    val visibleButton2 by remember(testShared) {testShared.shared}.collectAsState()
 //    var visibleGreen by remember { mutableStateOf(true) }
     var visibleMagenta by remember { mutableStateOf(true) }
     var visiblethird by remember { mutableStateOf(true) }
@@ -56,7 +61,7 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
         label = "",
         transitionSpec = {
             if (targetState == ButtonState.OnTop) {
-                tween(500)
+                tween(3000)
             } else {
                 tween(250)
             }
@@ -64,7 +69,7 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
     ) { state ->
         when (state) {
             ButtonState.OnPlace -> 300.dp
-            ButtonState.OnTop -> 400.dp
+            ButtonState.OnTop -> 500.dp
         }
     }
         
@@ -80,15 +85,16 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 onClick= {
+                    buttonState = if (buttonState == ButtonState.OnTop) ButtonState.OnPlace else ButtonState.OnTop
+                    testShared.changeVGreen()
+                    visibleMagenta = !visibleMagenta
+                    visiblethird = !visiblethird
+                    visibleCol = !visibleCol
+                    testShared.changeShared()
                 },
             ) { Text(text = "1") }
         }
         Spacer(modifier = Modifier.size(20.dp))
-        AnimatedVisibility(
-            visible = visibleCol,
-            enter = slideInHorizontally(),
-            exit = slideOutHorizontally()
-        ) {
             Column(
                 modifier = Modifier
                     .align(CenterHorizontally)
@@ -104,11 +110,16 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
                     Button(
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                         onClick= {
+                            buttonState = if (buttonState == ButtonState.OnTop) ButtonState.OnPlace else ButtonState.OnTop
+                            testShared.changeVGreen()
+                            visibleMagenta = !visibleMagenta
+                            visiblethird = !visiblethird
+                            visibleCol = !visibleCol
                         },
+//                        shape = RoundRect(Rect, 5)
                     ) { Text(text = "2") }
                 }
             }
-        }
         Column(
             modifier = Modifier
 //                .fillMaxHeight()
@@ -124,15 +135,19 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
             ) {
                 AnimatedVisibility(
                     visible = visibleMagenta,
-                    enter = slideInVertically(),
-//                    exit = slideOutVertically()
-                    exit = slideOutVertically(targetOffsetY = { it - 300})
+                    enter = slideInHorizontally(),
+//                    exit = slideOutVertically(targetOffsetY = ,animationSpec = )
+                    exit = slideOutVertically(targetOffsetY = { it - 370})
+//                    exit = slideOutVertically(
+//                        targetOffsetY = { it - 370},
+//
+//                    )
                 ) {
                     Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray),
                         modifier = Modifier
                             .height(50.dp)
                             .width(sizeButton)
-//                            .width(300.dp)
                         ,
                         onClick = {
                             buttonState = if (buttonState == ButtonState.OnTop) ButtonState.OnPlace else ButtonState.OnTop
@@ -140,7 +155,8 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
                             visibleMagenta = !visibleMagenta
                             visiblethird = !visiblethird
                             visibleCol = !visibleCol
-                            NavViewModel(navigator).navigateTo(Screens.Test)
+                            testShared.changeShared()
+                            NavViewModel(navigator).navigateTo(Screens.Test, 1.toString())
                         }
                     ) {
                         Text("button 1")
@@ -148,25 +164,34 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
                 }
             }
             Spacer(modifier = Modifier.size(10.dp))
-            Row(
-                modifier = Modifier
-                    .height(50.dp)
-            ) {
+//            Row(
+//                modifier = Modifier
+//                    .height(50.dp)
+//            ) {
                 AnimatedVisibility(
-                    visibleGreen,
+//                    visibleGreen,
+                    visible = visibleButton2,
                     enter = slideInHorizontally(),
                     exit = slideOutHorizontally()
                 ) {
-                    Box(
+                    Button(
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Gray),
                         modifier = Modifier
                             .height(50.dp)
                             .width(300.dp)
-                            .background(Color.Green)
-                    ) {
-                    }
+                        ,
+                        onClick = {
+                            buttonState = if (buttonState == ButtonState.OnTop) ButtonState.OnPlace else ButtonState.OnTop
+                            testShared.changeVGreen()
+                            visibleMagenta = !visibleMagenta
+                            visiblethird = !visiblethird
+                            visibleCol = !visibleCol
+                            testShared.changeShared()
+                            NavViewModel(navigator).navigateTo(Screens.Test, 2.toString())
+                        }
+                    ) { Text("button 2") }
                 }
-
-            }
+//            }
             Spacer(modifier = Modifier.size(10.dp))
             Row(
                 modifier = Modifier
@@ -197,7 +222,19 @@ private enum class ButtonState {
     OnPlace, OnTop
 }
 
+//enum class ButtonOrigin {
+//
+//}
+
 class TestShared(): ViewModel() {
+    private val _shared = MutableSharedFlow<Boolean>()
+    val shared = _shared.asSharedFlow()
+    fun changeShared() {
+        viewModelScope.launch() {
+            _shared.tryEmit(shared.last())
+        }
+    }
+
     private val _vGreen = MutableStateFlow<Boolean>(true)
     val vGreen: StateFlow<Boolean> = _vGreen
     fun changeVGreen() {_vGreen.value = !_vGreen.value}
@@ -206,3 +243,5 @@ class TestShared(): ViewModel() {
 
     }
 }
+
+//class

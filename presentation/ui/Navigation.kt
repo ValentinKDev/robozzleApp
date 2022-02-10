@@ -1,8 +1,9 @@
 package com.mobilegame.robozzle.presentation.ui
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,6 +15,7 @@ import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
+import com.mobilegame.robozzle.presentation.ui.Screen.Creator.Animator
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.TestScreen
@@ -43,14 +45,13 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
     val context = LocalContext.current
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Creator.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Creator.route
     ) {
         composable( route = Screens.MainMenu.route )        { MainScreen(navigator) }
         composable( route = Screens.Config.route )          { ConfigScreen() }
         composable( route = Screens.Donation.route)         { DonationScreen() }
         composable( route = Screens.Creator.route )         { CreatorScreen(navigator) }
-        composable( route = Screens.Test.route )            { TestScreen(navigator) }
         composable( route = Screens.UserInfo.route )        { UserInfoScreen(navigator) }
         composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
         composable(
@@ -79,5 +80,26 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
                 PlayingScreen(level = LevelVM(context).getRobuzzleLevel(it))
             }
         }
+        composable(
+            route = Screens.Test.route + "/{${Arguments.LevelDifficulty.key}}",
+            arguments = listOf(navArgument(Arguments.LevelDifficulty.key) {type = NavType.IntType}),
+        ) { entry ->
+            entry.arguments?.getInt(Arguments.LevelDifficulty.key)?.let {
+                TestScreen(navigator, Animator(), it) }
+            }
     }
+}
+@ExperimentalAnimationApi
+fun EnterAnimation(content: @Composable () -> Unit) {
+//    AnimatedVisibility(
+//        visible = true,
+//        enter = slideInVertically(
+//            initialOffsetY = { -40 }
+//        ) + expandVertically(
+//            expandFrom = Alignment.Top
+//        ) + fadeIn(initialAlpha = 0.3f),
+//        exit = slideOutVertically() + shrinkVertically() + fadeOut(),
+////        content = content,
+////        initiallyVisible = false
+//    )
 }
