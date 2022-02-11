@@ -1,8 +1,13 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -12,11 +17,13 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,7 +31,9 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.DonationScreenViewModel
+import com.mobilegame.robozzle.presentation.res.gray5
 import com.mobilegame.robozzle.presentation.ui.DisplayLevelOverView
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.TestShared
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButtonStyle
@@ -34,93 +43,75 @@ import kotlinx.coroutines.flow.*
 @ExperimentalAnimationApi
 @Composable
 fun DonationScreen() {
-
-    Column( Modifier
-            .fillMaxSize()
-    ) {
-        //Header
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(3F)
-            ,
-        ) {
+    Column( Modifier.fillMaxSize() )
+    {
+        Box( modifier = Modifier.fillMaxWidth().weight(3F) )
+        {
             DonationScreenFirstPart()
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(5F)
-            ,
-        ) {
+        Box( modifier = Modifier.fillMaxWidth().weight(5F) )
+        {
             DonationScreenSecondPart()
         }
     }
 }
 
-
 @ExperimentalAnimationApi
 @Composable
-fun FoldableScrollingBar(screenVM: DonationScreenViewModel, foldState: Boolean) {
-//    val visibleChoiceList by remember { mutableStateOf(false) }
-    Column(
-        modifier = Modifier
-            .height(if (foldState) 400.dp else 40.dp)
-            .fillMaxWidth()
-//            .background(Color.Red)
-            .clickable { screenVM.foldUnfold() }
+fun FoldableScrollingBar(screenVM: DonationScreenViewModel) {
+    val unfold by remember(screenVM) {screenVM.unfold}.collectAsState(false)
+    val transition = updateTransition(targetState = unfold, label = "")
+    val sizeList by transition.animateDp( label = "", ) { _unfold ->
+        when (_unfold) {
+            false -> 0.dp
+            true -> 400.dp
+        }
+    }
+
+    Column( modifier = Modifier
+        .height(400.dp)
+        .fillMaxWidth()
+        .background(gray5)
     ) {
-        Row(
-            modifier = Modifier
-                .height(40.dp)
-                .fillMaxWidth()
-                .background(Color.Red)
+        Row( modifier = Modifier
+            .height(40.dp)
+            .fillMaxWidth()
+            .background(Color.Red)
+            .clickable { screenVM.foldUnfold() }
             ,
         ) { Text(text = screenVM.textSelected.value) }
-//        AnimatedVisibility(
-//            visible = visibleChoiceList,
-//            visible = foldState,
-//            enter = slideInVertically(),
-//            exit = slideOutVertically(),
-//            initiallyVisible = false
-//        ) {
-            Box(
-                Modifier
-                .animateContentSize()
+        AnimatedVisibility(
+            visible = unfold,
+            enter = expandVertically(),
+        ) {
+            Box( modifier = Modifier
+                .height(sizeList)
+                .width(300.dp)
+                .clickable { screenVM.foldUnfold() }
+                .background(Color.DarkGray)
             ) {
-//                if (foldState) {
-                    Column(
-                        modifier = Modifier
-//                            .height(400.dp)
-                            .height(if (foldState) 400.dp else 0.dp)
-                            .width(300.dp)
-                            .clickable { screenVM.foldUnfold() }
-                            .background(Color.DarkGray)
-                    ) {
-                        if (foldState) {
-                            LazyColumn {
-                                itemsIndexed(screenVM.list) { _, _element ->
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(40.dp)
-                                            .clickable {
-                                                screenVM.foldUnfold()
-                                                screenVM.setTextSelectedTo(_element)
-                                            }
-                                    ) { Text(text = _element) }
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(2.dp)
-                                            .background(Color.Black)
-                                    ) { }
-                                }
-                            }
+                if (unfold) {
+                    LazyColumn {
+                        itemsIndexed(screenVM.list) { _, _element ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                                    .clickable {
+                                        screenVM.foldUnfold()
+                                        screenVM.setTextSelectedTo(_element)
+                                    }
+                            ) { Text(text = _element) }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(2.dp)
+                                    .background(Color.Black)
+                            ) { }
                         }
                     }
-//                }
-//            }
+                }
+            }
         }
     }
 }
@@ -128,7 +119,6 @@ fun FoldableScrollingBar(screenVM: DonationScreenViewModel, foldState: Boolean) 
 @ExperimentalAnimationApi
 @Composable
 fun DonationScreenSecondPart(screenVM: DonationScreenViewModel = viewModel()) {
-    val scrollingBar by screenVM.scrolingBar.collectAsState()
     val ctxt = LocalContext.current
 
     Column( modifier = Modifier
@@ -142,7 +132,6 @@ fun DonationScreenSecondPart(screenVM: DonationScreenViewModel = viewModel()) {
             .fillMaxHeight()
             .width(300.dp)
             .align(CenterHorizontally)
-//                .background(Color.Green)
         ) {
             Row( modifier = Modifier
                 .fillMaxHeight()
@@ -153,24 +142,21 @@ fun DonationScreenSecondPart(screenVM: DonationScreenViewModel = viewModel()) {
                     .fillMaxHeight()
                     .weight(8F)
                 ) {
-                    FoldableScrollingBar(screenVM = screenVM, foldState = scrollingBar)
+                    FoldableScrollingBar(screenVM = screenVM)
                 }
                 /** Column to place the copy button */
                 Column( modifier = Modifier
                     .fillMaxHeight()
                     .weight(1F)
                 ) {
-//                    Button(
                     IconButton(
                         modifier = Modifier
                             .height(40.dp)
                             .fillMaxWidth()
-//                            .background(Color.Yellow)
                         ,
                         onClick = {
                             screenVM.clipAndToast(ctxt)
                         },
-//                        enabled =
                     ) {
                         Icon(imageVector = Icons.Default.ContentCopy, contentDescription = "copy icone", tint = Color.Black)
                     }

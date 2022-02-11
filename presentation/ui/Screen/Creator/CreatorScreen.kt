@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -133,11 +134,13 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
                 modifier = Modifier
                     .height(50.dp)
             ) {
+                val density = LocalDensity.current
                 AnimatedVisibility(
                     visible = visibleMagenta,
                     enter = slideInHorizontally(),
 //                    exit = slideOutVertically(targetOffsetY = ,animationSpec = )
                     exit = slideOutVertically(targetOffsetY = { it - 370})
+//                    exit = slideOutVertically{ with(density) {-40.dp.roundToPx()} } + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3F)
 //                    exit = slideOutVertically(
 //                        targetOffsetY = { it - 370},
 //
