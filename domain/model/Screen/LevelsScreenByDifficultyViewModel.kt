@@ -1,7 +1,9 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -29,6 +31,14 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     private val _headerVisible = MutableStateFlow(false)
     val headerVisible: StateFlow<Boolean> = _headerVisible.asStateFlow()
     fun setHeaderVisible(value: Boolean) {_headerVisible.value = value}
+
+    fun setVisiblityAtHeadClick() {
+        viewModelScope.launch {
+            setListVisible(false)
+            delay(200)
+            setHeaderVisible(false)
+        }
+    }
 
     fun setVisibilityAtLaunch() {
         viewModelScope.launch {

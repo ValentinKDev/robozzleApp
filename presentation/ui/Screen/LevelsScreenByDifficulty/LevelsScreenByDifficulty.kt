@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.presentation.ui
 
 import android.util.Log
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -47,7 +48,7 @@ fun LevelsScreenByDifficulty(
         AnimatedVisibility(
             visible = listVisible,
             enter = slideInVertically(),
-            exit = slideOutVertically() + fadeOut()
+            exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(animationSpec = tween(300))
         ) {
             LevelsScreenByDifficultyList(
                 navigator = navigator,
@@ -57,7 +58,7 @@ fun LevelsScreenByDifficulty(
         AnimatedVisibility(
             visible = headerVisible,
             enter = slideInVertically(initialOffsetY = { -70 }),
-//            exit =
+            exit = slideOutVertically(targetOffsetY = { +70 })
         ) {
             LevelsScreenByDifficultyHeader(
                 navigator = navigator,

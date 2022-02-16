@@ -23,7 +23,7 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
             .height(100.dp)
             .fillMaxWidth()
             .clickable {
-//                vm.setListVisible()
+                vm.setVisiblityAtHeadClick()
                 NavViewModel(navigator).navigateTo(
                     Screens.MainMenu,
                     argStr = levelDifficulty.toString()

@@ -120,12 +120,9 @@ fun enterTransitionByFrom(id: Int, from: Int): EnterTransition {
 
 @ExperimentalAnimationApi
 fun exitTransitionByState(buttonState: ButtonState, id : Int): ExitTransition {
-    infoLog("id ${id}", "state ${buttonState}")
     return when (buttonState) {
         ButtonState.OnBottom -> slideOutVertically(targetOffsetY = {it + 50}, animationSpec = tween(500))
         ButtonState.OnTop -> slideOutVertically(targetOffsetY = {
-            infoLog("$id offsetY", "${it}")
-//            it - 450
             when (id) {
                 ButtonId.LevelDiff1.key -> -400
                 ButtonId.LevelDiff2.key -> -550
