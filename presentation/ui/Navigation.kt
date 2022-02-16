@@ -25,7 +25,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @ExperimentalAnimationApi
-@DelicateCoroutinesApi
 @Composable
 fun Navigation(navigator: Navigator, testShared: TestShared) {
     infoLog("navigatgion", "...")

@@ -15,7 +15,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-@InternalCoroutinesApi
 //class LaunchingViewModel(application: Application): AndroidViewModel(application) {
 class LaunchingViewModel(context: Context): ViewModel() {
 //    val userDataVM = UserViewModel(context as Application)

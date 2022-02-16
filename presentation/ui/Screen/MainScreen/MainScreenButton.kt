@@ -48,23 +48,13 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
         when (state) {
             ButtonState.OnTop -> goingTopSizeButton.dp
             else -> info.width.dp
+//            else -> if () info.width.dp
         }
     }
 
     AnimatedVisibility(
         visible = visibleElements,
-        enter = if (from == info.buttonId)
-            slideInVertically(
-                animationSpec = tween(goingTopTiming)
-//                animationSpec = tween(800)
-            )
-        else
-            fadeIn(
-                initialAlpha = 0.2F,
-//                animationSpec = tween(800)
-            )
-        ,
-//        exit = if (buttonState == ButtonState.OnTop) {
+        enter = enterTransitionByFrom(info.buttonId, from) ,
         exit = exitTransitionByState(buttonState, info.buttonId)
         ) {
         Card(
@@ -100,18 +90,32 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
 enum class ButtonState {
     OnPlace, OnTop, OnLeftSide, OnRightSide, OnBottom, Fade
 }
-
-enum class ButtonSelected(value: Int) {
-    None(-1),
-    ButtonProfile(0),
-    Button1(1),
-    Button2(2),
-    Button3(3),
-    Button4(4),
-    Button5(5),
-    ButtonCreator(6),
-    ButtonDonation(7),
-    ButtonConfig(8)
+@ExperimentalAnimationApi
+fun enterTransitionByFrom(id: Int, from: Int): EnterTransition {
+    return when (from) {
+        ButtonId.None.key -> {
+            when (id) {
+                0 -> { slideInHorizontally( initialOffsetX = { +500 }, animationSpec = tween(400) ) }
+                in 1..5 -> { slideInHorizontally( initialOffsetX = {if (id == 4 || id == 2) +500 else -500 }, animationSpec = tween (500) ) }
+                6 -> { slideInHorizontally( initialOffsetX = { -200 }, animationSpec = tween(400) ) }
+                7 -> { slideInVertically( initialOffsetY = { -200 }, animationSpec = tween(400) ) }
+                8 -> { slideInHorizontally( initialOffsetX = { +200 }, animationSpec = tween(400) ) }
+                else -> {fadeIn()}
+            }
+        }
+        else -> {
+            when {
+                id == from -> { slideInVertically(animationSpec = tween (300)) + fadeIn(animationSpec = tween(300))}
+                id in (from + 1)..5 -> {
+                    slideInHorizontally(
+                        initialOffsetX = {if (id == 4 || id == 2) +500 else -500 },
+                        animationSpec = tween (300)
+                    ) + fadeIn(animationSpec = tween(300))
+                }
+                else -> fadeIn(animationSpec = tween(500))
+            }
+        }
+    }
 }
 
 @ExperimentalAnimationApi
@@ -130,7 +134,7 @@ fun exitTransitionByState(buttonState: ButtonState, id : Int): ExitTransition {
                 ButtonId.LevelDiff5.key -> -1100
                 else -> -500
             }
-                                                                }, animationSpec = tween(500))
+        }, animationSpec = tween(500))
         ButtonState.OnRightSide -> slideOutHorizontally(targetOffsetX = { +500 }, animationSpec = tween(400)) + fadeOut(animationSpec = tween(400))
         ButtonState.OnLeftSide -> slideOutHorizontally(targetOffsetX = { -500 }, animationSpec = tween(400)) + fadeOut(animationSpec = tween(400))
 //        ButtonState.OnLeftSide -> fadeOut()

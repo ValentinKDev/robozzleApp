@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
@@ -16,12 +17,13 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
 @Composable
-fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int) {
+fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, vm: LevelsScreenByDifficultyViewModel) {
     Card(
         modifier = Modifier
             .height(100.dp)
             .fillMaxWidth()
             .clickable {
+//                vm.setListVisible()
                 NavViewModel(navigator).navigateTo(
                     Screens.MainMenu,
                     argStr = levelDifficulty.toString()

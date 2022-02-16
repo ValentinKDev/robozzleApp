@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,10 +25,12 @@ import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 @ExperimentalAnimationApi
 @Composable
 fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: MainScreenViewModel = viewModel()) {
+    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     infoLog("MainScreen", "launch")
 
     LaunchedEffect(key1 = "Launch MainScreen") {
         vm.changeVisibility()
+        vm.updateButtonSelected(ButtonId.None.key)
     }
 
     Column(
@@ -43,11 +46,13 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                 .weight(0.2F)
                 .padding(vertical = 10.dp, horizontal = 10.dp)
         ) {
-            Box( modifier = Modifier .align(CenterVertically)
-            ) {
-                UserDataStoreViewModel(LocalContext.current).getName()?.let {
-                    Text(text = "player : $it")
-                }?: Text(text = "Not registered")
+            AnimatedVisibility(visible = visibleElements) {
+                Box( modifier = Modifier .align(CenterVertically)
+                ) {
+                    UserDataStoreViewModel(LocalContext.current).getName()?.let {
+                        Text(text = "player : $it")
+                    }?: Text(text = "Not registered")
+                }
             }
             Box( modifier = Modifier .align(CenterVertically) )
             {
@@ -74,7 +79,8 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     .fillMaxWidth()
                 ,
             ) {
-                Column( Modifier
+                Column(
+                    Modifier
 //                    .background(Color.Gray)
                         .align(CenterHorizontally)
                         .weight(1F),
@@ -85,7 +91,10 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty1.type, fromButton, vm)
                     VerticalSpace(10)
                 }
-                Column( Modifier.align(CenterHorizontally).weight(1F)
+                Column(
+                    Modifier
+                        .align(CenterHorizontally)
+                        .weight(1F)
 //                    .background(Color.Green)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,7 +103,10 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty2.type, fromButton, vm)
                     VerticalSpace(10)
                 }
-                Column( Modifier.align(CenterHorizontally).weight(1F)
+                Column(
+                    Modifier
+                        .align(CenterHorizontally)
+                        .weight(1F)
 //                    .background(Color.Red)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,7 +115,10 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty3.type, fromButton, vm)
                     VerticalSpace(10)
                 }
-                Column( Modifier.align(CenterHorizontally).weight(1F)
+                Column(
+                    Modifier
+                        .align(CenterHorizontally)
+                        .weight(1F)
 //                    .background(Color.DarkGray)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,7 +127,10 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty4.type, fromButton, vm)
                     VerticalSpace(10)
                 }
-                Column( Modifier.align(CenterHorizontally).weight(1F)
+                Column(
+                    Modifier
+                        .align(CenterHorizontally)
+                        .weight(1F)
 //                    .background(Color.Yellow)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,

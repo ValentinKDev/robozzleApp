@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.data.store.DataStoreService
 import kotlinx.coroutines.*
 
-@InternalCoroutinesApi
 class AppConfigDataStoreViewModel (
     context: Context
 ): ViewModel() {
