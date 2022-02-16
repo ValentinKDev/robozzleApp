@@ -18,6 +18,8 @@ class MainScreenViewModel(): ViewModel() {
         _buttonSelected.value = buttonSelected
     }
 
+    private var animationEnd =false
+
     fun updateButtonStates(buttonStateById: Int): ButtonState {
         return when (buttonStateById) {
             ButtonId.LevelDiff1.key -> { stateFunctionOfSelectedButton(buttonStateById) }
@@ -31,16 +33,15 @@ class MainScreenViewModel(): ViewModel() {
     fun stateFunctionOfSelectedButton(button: Int): ButtonState {
         return when {
             buttonSelected.value == ButtonId.None.key -> ButtonState.OnPlace
-            button == buttonSelected.value -> ButtonState.OnTop
+//            button == buttonSelected.value -> ButtonState.OnTop
             button < buttonSelected.value -> ButtonState.Fade
-//            button > buttonSelected.value -> ButtonState.OnBottom
             button > buttonSelected.value -> {
                 if (button == 2 || button == 4)
                     ButtonState.OnRightSide
                 else
                     ButtonState.OnLeftSide
             }
-            else -> ButtonState.Fade
+            else -> ButtonState.OnTop
         }
     }
 }

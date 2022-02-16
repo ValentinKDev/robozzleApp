@@ -13,12 +13,12 @@ import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
 @Composable
 fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int) {
     Card(
         modifier = Modifier
-
             .height(100.dp)
             .fillMaxWidth()
             .clickable {
@@ -32,23 +32,16 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int) {
         elevation = 50.dp,
         backgroundColor = Color.Gray
     ) {
-        Column( modifier = Modifier.fillMaxSize()
-        ) {
-            Row( modifier = Modifier.fillMaxHeight().align(CenterHorizontally)
-            ) {
-                Box( modifier = Modifier.align(CenterVertically)
-                ) {
-//                    when (levelDifficulty) {
-//                        ButtonId.LevelDiff1.key -> Text("difficulty 1")
-//                        ButtonId.LevelDiff2.key -> Text("difficulty 2")
-//                        ButtonId.LevelDiff3.key -> Text("difficulty 3")
-//                        ButtonId.LevelDiff4.key -> Text("difficulty 4")
-//                        ButtonId.LevelDiff5.key -> Text("difficulty 5")
-//                        else -> Text(text = "butt")
-//                    }
-                      Text(text = "button $levelDifficulty")
-                }
-            }
-        }
+//        Column( modifier = Modifier.fillMaxSize()
+//        ) {
+//            Row( modifier = Modifier.fillMaxHeight().align(CenterHorizontally)
+//            ) {
+//                Box( modifier = Modifier.align(CenterVertically)
+//                ) {
+//                      Text(text = "button $levelDifficulty")
+//                }
+//            }
+//        }
+        CenterText(str = "difficulty $levelDifficulty")
     }
 }

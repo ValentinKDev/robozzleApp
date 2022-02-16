@@ -1,16 +1,16 @@
 package com.mobilegame.robozzle.presentation.ui
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,28 +23,47 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyHeader
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
+@ExperimentalAnimationApi
 @Composable
 fun LevelsScreenByDifficulty(
     navigator: Navigator,
     levelsDifficulty: Int,
     levelScreenVM: LevelsScreenByDifficultyViewModel = viewModel(),
 ) {
+//    var listVisible by remember { mutableStateOf(false) }
+//    var headerVisible by remember { mutableStateOf(true) }
+    val listVisible by remember(levelScreenVM){ levelScreenVM.listVisible}.collectAsState()
+    val headerVisible by remember(levelScreenVM) { levelScreenVM.headerVisible}.collectAsState()
+
     Log.e("LevelsScreen", "Start")
     LaunchedEffect(key1 = "Launch LevelsScreenByDifficulty") {
+        levelScreenVM.setVisibilityAtLaunch()
         levelScreenVM.loadLevelListById(levelsDifficulty)
     }
 
     //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
 
-    Box(modifier = Modifier.fillMaxSize().background(gray6)) {
-        LevelsScreenByDifficultyList(
-            navigator = navigator,
-            vm = levelScreenVM
-        )
-        LevelsScreenByDifficultyHeader(
-            navigator = navigator,
-            levelDifficulty = levelsDifficulty
-        )
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(gray6)) {
+        AnimatedVisibility(
+            visible = listVisible,
+            enter = slideInVertically()
+        ) {
+            LevelsScreenByDifficultyList(
+                navigator = navigator,
+                vm = levelScreenVM
+            )
+        }
+        AnimatedVisibility(
+            visible = headerVisible,
+            enter = slideInVertically()
+        ) {
+            LevelsScreenByDifficultyHeader(
+                navigator = navigator,
+                levelDifficulty = levelsDifficulty
+            )
+        }
     }
 //        }
 //    }

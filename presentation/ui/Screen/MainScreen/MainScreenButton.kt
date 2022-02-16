@@ -5,22 +5,25 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
+import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
 const val goingTopTiming = 450
 const val goingBottomTiming = goingTopTiming - 150
 const val goingTopSizeButton = 360
+//@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel) {
@@ -64,26 +67,32 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
 //        exit = if (buttonState == ButtonState.OnTop) {
         exit = exitTransitionByState(buttonState, info.buttonId)
         ) {
-        Button(
+        Card(
             modifier = Modifier
                 .background(info.color)
 //                .width(info.width.dp)
                 .width(animWidth)
-                .height(info.height.dp),
-            onClick = {
-//                vm.changeButtonState(info.buttonId)
-                vm.updateButtonSelected(info.buttonId)
-                vm.changeVisibility()
-                NavViewModel(navigator).navigateTo(
-                    destination = info.destination,
-                    argStr = info.arg,
-                    delayTiming = 400
-//                    delayTiming = goingTopTiming.toLong()
-                )
-            },
-            enabled = info.enable
+                .height(info.height.dp)
+                .clickable(enabled = info.enable) {
+                    vm.updateButtonSelected(info.buttonId)
+                    buttonState = ButtonState.OnTop
+                    vm.changeVisibility()
+                    NavViewModel(navigator).navigateTo(
+                        destination = info.destination,
+                        argStr = info.arg,
+                        delayTiming = 400
+                    )
+                }
+            ,
+            elevation = 15.dp,
+            shape = MaterialTheme.shapes.medium,
+            backgroundColor = Color.Gray,
+//            onClick = {
+//            },
+//            enabled = info.enable
         ) {
-            Text(text = info.text)
+//            Text(text = info.text)
+            CenterText(str = info.text)
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.spacer
+package com.mobilegame.robozzle.presentation.ui.utils.spacer
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
