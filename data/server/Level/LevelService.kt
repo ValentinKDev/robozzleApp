@@ -30,7 +30,8 @@ interface LevelService {
             client = HttpClient(Android) {
                 install(HttpTimeout) {
 //                    requestTimeoutMillis = 300
-                    requestTimeoutMillis = 1500
+//                    requestTimeoutMillis = 1500
+                    requestTimeoutMillis = 200
                 }
                 install(JsonFeature) {
                     serializer = KotlinxSerializer(kotlinx.serialization.json.Json {

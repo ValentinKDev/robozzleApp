@@ -2,43 +2,26 @@ package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.DonationScreenViewModel
 import com.mobilegame.robozzle.presentation.res.gray5
-import com.mobilegame.robozzle.presentation.ui.DisplayLevelOverView
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.TestShared
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButtonStyle
-import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
-import kotlinx.coroutines.flow.*
 
 @ExperimentalAnimationApi
 @Composable
@@ -61,7 +44,7 @@ fun DonationScreen() {
 fun FoldableScrollingBar(screenVM: DonationScreenViewModel) {
     val unfold by remember(screenVM) {screenVM.unfold}.collectAsState(false)
     val transition = updateTransition(targetState = unfold, label = "")
-    val sizeList by transition.animateDp( label = "", ) { _unfold ->
+    val sizeList by transition.animateDp( label = "") { _unfold ->
         when (_unfold) {
             false -> 0.dp
             true -> 400.dp

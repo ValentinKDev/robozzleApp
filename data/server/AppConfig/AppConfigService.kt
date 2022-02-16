@@ -23,7 +23,8 @@ interface AppConfigService {
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
 //                        requestTimeoutMillis = 300
-                        requestTimeoutMillis = 1500
+//                        requestTimeoutMillis = 1500
+                        requestTimeoutMillis = 200
                     }
                     defaultRequest {
                         host = HttpRoutes.HOST

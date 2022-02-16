@@ -24,8 +24,8 @@ interface JWTTokenService {
             return JWTTokenImplementation(
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
-                        requestTimeoutMillis = 1500
-//                        requestTimeoutMillis = 300
+//                        requestTimeoutMillis = 1500
+                        requestTimeoutMillis = 200
                     }
                     install(JsonFeature) {
                         acceptContentTypes = acceptContentTypes + ContentType("application","json+hal")

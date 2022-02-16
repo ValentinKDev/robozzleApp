@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
 
 data class NavigationButtonInfo(
+    val buttonId: Int,
     val text: String,
     val width: Int,
     val height: Int,

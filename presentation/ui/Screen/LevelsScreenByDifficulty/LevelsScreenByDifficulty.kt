@@ -6,11 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,32 +16,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenViewModel
+import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
+import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyHeader
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import kotlinx.coroutines.InternalCoroutinesApi
 
 @Composable
 fun LevelsScreenByDifficulty(
     navigator: Navigator,
-    difficulty: Int,
-    levelScreenVM: LevelsScreenViewModel = viewModel(),
+    levelsDifficulty: Int,
+    levelScreenVM: LevelsScreenByDifficultyViewModel = viewModel(),
 ) {
-    //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
-    val levelsList: List<LevelOverView> by levelScreenVM.levelOverViewList.collectAsState()
-    Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
-    levelScreenVM.loadLevelListById(difficulty)
+    Log.e("LevelsScreen", "Start")
+    LaunchedEffect(key1 = "Launch LevelsScreenByDifficulty") {
+        levelScreenVM.loadLevelListById(levelsDifficulty)
+    }
 
-    if (levelsList.isNotEmpty()) {
-    //todo: Use a normal Column and make it scrollable using modifier and state so the fckning UI won t recompose for nothing ???
-        LazyColumn {
-            itemsIndexed(levelsList) { index, level ->
-                DisplayLevelOverView(level, navigator)
-            }
-        }
-    } else { Text(text = "Can't access the server and no level in the phone internal storage") }
+    //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
+
+    Box(modifier = Modifier.fillMaxSize().background(gray6)) {
+        LevelsScreenByDifficultyList(
+            navigator = navigator,
+            vm = levelScreenVM
+        )
+        LevelsScreenByDifficultyHeader(
+            navigator = navigator,
+            levelDifficulty = levelsDifficulty
+        )
+    }
+//        }
+//    }
 }
+
+@Composable
+fun LevelsScreenByDifficultyList(
+    navigator: Navigator,
+    vm: LevelsScreenByDifficultyViewModel,
+) {
+    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
+    Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
+
+    Column() {
+        Spacer(modifier = Modifier.height(100.dp))
+        if (levelsList.isNotEmpty()) {
+            LazyColumn {
+                itemsIndexed(levelsList) { index, level ->
+                    DisplayLevelOverView(level, navigator)
+                }
+            }
+        } else { Text(text = "Can't access the server and no level in the phone internal storage") }
+    }
+}
+
 
 @Composable
 fun DisplayLevelOverView(level: LevelOverView, navigator: Navigator) {
@@ -59,21 +85,13 @@ fun DisplayLevelOverView(level: LevelOverView, navigator: Navigator) {
             .fillMaxWidth()
             .height(100.dp)
             .clickable {
+                NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
             }
         ,
         elevation = 8.dp,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxHeight()
-                .clickable {
-//                    Log.v("OnClick", "route = ${Screens.InGameScreen.route + "/" + level.id} ")
-//                    navController.navigate(Screens.InGameScreen.route + "/" + level.id)
-//                    LevelsScreenByDifficultyViewModel(navigator).navigateTo(level.id)
-//                    NavViewModel(navigator).navigateTo(Screens.LevelsByID, level.id.toString())
-                    NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
-                }
-        ) {
+        Row( modifier = Modifier.fillMaxSize() )
+        {
             Box(Modifier.weight(1.0f)) { DisplayLevelImage() }
             Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level) }
             Box(Modifier.weight(1.0f)) { DisplayLevelState(level, navigator) }

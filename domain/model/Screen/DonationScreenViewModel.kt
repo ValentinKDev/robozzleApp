@@ -32,9 +32,6 @@ class DonationScreenViewModel(): ViewModel() {
 
     private val _snackShared = MutableSharedFlow<Int>()
     val snackShared = _snackShared.asSharedFlow()
-//    private val _snackShared = MutableStateFlow<Int>(0)
-//    val snackShared: StateFlow<Int> = _snackShared
-    
 
     val list = listOf<String>("one", "two", "tree", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fithteen", "sixteen", "seventeen", "eighteen", "nineteenl", "twenty")
 

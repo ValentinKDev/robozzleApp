@@ -33,7 +33,8 @@ interface RankingService {
             return RankingImplementation (
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
-                        requestTimeoutMillis = 1500
+//                        requestTimeoutMillis = 1500
+                        requestTimeoutMillis = 200
 //                        requestTimeoutMillis = 300
                     }
                     install(JsonFeature) {

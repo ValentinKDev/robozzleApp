@@ -3,7 +3,6 @@ package com.mobilegame.robozzle.presentation.ui
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -13,13 +12,9 @@ import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.Animator
+import com.mobilegame.robozzle.presentation.ui.Screen.Creator.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.CreatorScreen
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.TestScreen
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.TestShared
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.Tab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
@@ -46,14 +41,46 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
     NavHost(
         navController = navController,
         startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Creator.route
     ) {
         composable( route = Screens.MainMenu.route )        { MainScreen(navigator) }
         composable( route = Screens.Config.route )          { ConfigScreen() }
         composable( route = Screens.Donation.route)         { DonationScreen() }
-        composable( route = Screens.Creator.route )         { CreatorScreen(navigator) }
         composable( route = Screens.UserInfo.route )        { UserInfoScreen(navigator) }
         composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
+        composable(
+            route = Screens.MainMenu.route + "/{${Arguments.Button.key}}",
+            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType})
+        ) { entry ->
+            entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
+                MainScreen(
+                    navigator = navigator,
+                    fromButton = _buttonId
+                )
+            }
+        }
+        composable(
+            route = Screens.LevelByDifficulty.route + "/{${Arguments.Button.key}}",
+            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType}),
+        ) { entry ->
+//            LevelsScreenByDifficulty(navigator, difficulty = entry.arguments?.getInt(Arguments.LevelDifficulty.key)!!)
+            entry.arguments?.getInt(Arguments.Button.key)?.let {
+                LevelsScreenByDifficulty(
+                    navigator = navigator,
+                    levelsDifficulty = it
+                )
+            }
+        }
+        composable(
+            route = Screens.MainMenu.route + "/{${Arguments.Button.key}}",
+            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType})
+        ) { entry ->
+            entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
+                MainScreen(
+                    navigator = navigator,
+                    fromButton = _buttonId
+                )
+            }
+        }
         composable(
             route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})
@@ -63,12 +90,6 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
                     RanksLevelScreen(levelId = _levelId, levelName = _level.name)
                 }
             }
-        }
-        composable(
-            route = Screens.LevelByDifficulty.route + "/{${Arguments.LevelDifficulty.key}}",
-            arguments = listOf(navArgument(Arguments.LevelDifficulty.key) {type = NavType.IntType}),
-        ) { entry ->
-            LevelsScreenByDifficulty(navigator, difficulty = entry.arguments?.getInt(Arguments.LevelDifficulty.key)!!)
         }
         composable(
             route = Screens.Playing.route + "/{${Arguments.LevelId.key}}",
@@ -81,25 +102,23 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
             }
         }
         composable(
-            route = Screens.Test.route + "/{${Arguments.LevelDifficulty.key}}",
-            arguments = listOf(navArgument(Arguments.LevelDifficulty.key) {type = NavType.IntType}),
+            route = Screens.Creator.route + "/{${Arguments.Button.key}}",
+            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType})
         ) { entry ->
-            entry.arguments?.getInt(Arguments.LevelDifficulty.key)?.let {
+            entry.arguments?.getString(Arguments.Button.key)?.let { _fromButton ->
+                CreatorScreen(
+                    navigator = navigator,
+                    from = _fromButton
+                )
+            }
+        }
+
+        composable(
+            route = Screens.Test.route + "/{${Arguments.Button.key}}",
+            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType}),
+        ) { entry ->
+            entry.arguments?.getString(Arguments.Button.key)?.let {
                 TestScreen(navigator, Animator(), it) }
             }
     }
-}
-@ExperimentalAnimationApi
-fun EnterAnimation(content: @Composable () -> Unit) {
-//    AnimatedVisibility(
-//        visible = true,
-//        enter = slideInVertically(
-//            initialOffsetY = { -40 }
-//        ) + expandVertically(
-//            expandFrom = Alignment.Top
-//        ) + fadeIn(initialAlpha = 0.3f),
-//        exit = slideOutVertically() + shrinkVertically() + fadeOut(),
-////        content = content,
-////        initiallyVisible = false
-//    )
 }
