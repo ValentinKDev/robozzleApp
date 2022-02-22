@@ -105,7 +105,12 @@ fun enterTransitionByFrom(id: Int, from: Int): EnterTransition {
         }
         else -> {
             when {
-                id == from -> { slideInVertically(animationSpec = tween (300)) + fadeIn(animationSpec = tween(300))}
+                id == from -> {
+                    slideInVertically(
+                        animationSpec = tween (500),
+                        initialOffsetY = { -150 }
+                    ) + fadeIn(animationSpec = tween(300))
+                }
                 id in (from + 1)..5 -> {
                     slideInHorizontally(
                         initialOffsetX = {if (id == 4 || id == 2) +500 else -500 },

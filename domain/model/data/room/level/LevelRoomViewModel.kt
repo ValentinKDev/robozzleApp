@@ -62,6 +62,7 @@ class LevelRoomViewModel(context: Context): ViewModel() {
     }
 
     fun getAllLevelOverViewFromDifficulty(diff: Int): List<LevelOverView> = runBlocking(Dispatchers.IO) {
+        //todo : Bad coroutine design
         val listId: List<Int> = repo.getIdByDifficulty(diff)
         val listName: List<String> = repo.getNamesByDifficulty(diff)
         val listMapJson: List<String> = repo.getMapJsonByDifficulty(diff)
