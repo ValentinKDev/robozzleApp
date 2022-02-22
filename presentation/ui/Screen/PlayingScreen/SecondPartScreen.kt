@@ -35,7 +35,6 @@ fun SecondScreenPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, s
     val recomposeSecondPart: Boolean by gameDataViewModel.triggerRecompostion.collectAsState(false)
     if (recomposeSecondPart) gameDataViewModel.triggerRecompostionToFalse()
 
-
     Box(
     ) {
         Box(

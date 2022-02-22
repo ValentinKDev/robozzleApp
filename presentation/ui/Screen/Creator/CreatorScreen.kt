@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -38,6 +39,9 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.goingTopSizeBut
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIcon
+import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import kotlinx.coroutines.flow.*
 
 
@@ -46,12 +50,43 @@ import kotlinx.coroutines.flow.*
 fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
     infoLog("launch", "CreatorScreen()")
 
-    Column {
-        Neon()
-        RankingIcon(100)
-        RankingIcon(50)
-        RankingIcon(25)
+    Row(Modifier.background(gray6)) {
+        HorizontalSpace(widthDp = 20)
+        Column(modifier = Modifier.weight(1F)) {
+            VerticalSpace(height = 50)
+            RankingIcon(25)
+            VerticalSpace(height = 50)
+            RankingIcon(75)
+            VerticalSpace(height = 50)
+            RankingIcon(sizeAtt = 120)
+            VerticalSpace(height = 50)
+            Neon()
+            VerticalSpace(height = 50)
+            RankingIconBouncing(sizeAtt = 50)
+
+        }
+        HorizontalSpace(widthDp = 40)
+        Column(modifier = Modifier.weight(1F)) {
+            VerticalSpace(height = 50)
+//            RankingIcon2(sizeAtt = 25)
+            VerticalSpace(height = 50)
+//            RankingIcon2(sizeAtt = 75)
+            VerticalSpace(height = 50)
+//            RankingIcon2(sizeAtt = 120)
+            VerticalSpace(height = 50)
+            RankingIconBouncing(sizeAtt = 120)
+        }
     }
+}
+
+@Composable
+fun mapDraw(map: List<String>) {
+    Canvas(
+        modifier = Modifier
+    ) {
+//        drawRect()
+    }
+
 }
 
 
@@ -73,7 +108,6 @@ fun Neon() {
         )
         drawCircle(
             brush = Brush.radialGradient(
-//                colors = listOf(gray0, gray9)
                 colors = listOf(green0, green9)
             ),
             radius = canvasWidth / 2,

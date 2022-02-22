@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HorizontalSpace(width: Int) {
+fun HorizontalSpace(widthDp: Int) {
     Spacer( modifier = Modifier
         .fillMaxHeight()
-        .width(width.dp) )
+        .width(widthDp.dp) )
 }

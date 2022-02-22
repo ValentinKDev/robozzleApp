@@ -23,12 +23,11 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 const val goingTopTiming = 450
 const val goingBottomTiming = goingTopTiming - 150
 const val goingTopSizeButton = 360
-//@ExperimentalMaterialApi
+
 @ExperimentalAnimationApi
 @Composable
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel) {
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
-//    val buttonSelected by vm.buttonSelected.collectAsState()
     var buttonState by remember { mutableStateOf(ButtonState.OnPlace)}
 
     buttonState = vm.updateButtonStates(info.buttonId)
