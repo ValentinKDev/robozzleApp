@@ -24,7 +24,8 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     object Config: MainScreenButtonStyle(
         NavigationButtonInfo( ButtonId.Config.key, "config",100,100, Color.Gray, Screens.Config , "",true) )
     object Creator: MainScreenButtonStyle(
-        NavigationButtonInfo(ButtonId.Creator.key, "creator",100,100, Color.Gray, Screens.Creator , ButtonId.Creator.key.toString(), true) )
+        NavigationButtonInfo(ButtonId.Creator.key, "creator",100,100, Color.Gray, Screens.Creator , "", true) )
+//    NavigationButtonInfo(ButtonId.Creator.key, "creator",100,100, Color.Gray, Screens.Creator , ButtonId.Creator.key.toString(), true) )
     object Donation: MainScreenButtonStyle(
         NavigationButtonInfo( ButtonId.Donation.key, "donation",100,100, Color.Gray, Screens.Donation,"", true ) )
 }

@@ -29,8 +29,6 @@ fun LevelsScreenByDifficulty(
     levelsDifficulty: Int,
     levelScreenVM: LevelsScreenByDifficultyViewModel = viewModel(),
 ) {
-//    var listVisible by remember { mutableStateOf(false) }
-//    var headerVisible by remember { mutableStateOf(true) }
     val listVisible by remember(levelScreenVM){ levelScreenVM.listVisible}.collectAsState()
     val headerVisible by remember(levelScreenVM) { levelScreenVM.headerVisible}.collectAsState()
 
@@ -57,7 +55,7 @@ fun LevelsScreenByDifficulty(
         }
         AnimatedVisibility(
             visible = headerVisible,
-            enter = slideInVertically(initialOffsetY = { -70 }),
+            enter = slideInVertically(initialOffsetY = { -70 }, animationSpec = tween(200)),
             exit = slideOutVertically(targetOffsetY = { +70 })
         ) {
             LevelsScreenByDifficultyHeader(

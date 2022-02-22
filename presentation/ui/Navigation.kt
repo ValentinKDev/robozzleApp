@@ -39,11 +39,13 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
     val context = LocalContext.current
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Creator.route
     ) {
         composable( route = Screens.MainMenu.route )        { MainScreen(navigator) }
         composable( route = Screens.Config.route )          { ConfigScreen() }
         composable( route = Screens.Donation.route)         { DonationScreen() }
+        composable( route = Screens.Creator.route)          { CreatorScreen(navigator) }
         composable( route = Screens.UserInfo.route )        { UserInfoScreen(navigator) }
         composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
         composable(
@@ -100,17 +102,17 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
                 PlayingScreen(level = LevelVM(context).getRobuzzleLevel(it))
             }
         }
-        composable(
-            route = Screens.Creator.route + "/{${Arguments.Button.key}}",
-            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType})
-        ) { entry ->
-            entry.arguments?.getString(Arguments.Button.key)?.let { _fromButton ->
-                CreatorScreen(
-                    navigator = navigator,
-                    from = _fromButton
-                )
-            }
-        }
+//        composable(
+//            route = Screens.Creator.route + "/{${Arguments.Button.key}}",
+//            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType})
+//        ) { entry ->
+//            entry.arguments?.getString(Arguments.Button.key)?.let { _fromButton ->
+//                CreatorScreen(
+//                    navigator = navigator,
+//                    from = _fromButton
+//                )
+//            }
+//        }
 
         composable(
             route = Screens.Test.route + "/{${Arguments.Button.key}}",
