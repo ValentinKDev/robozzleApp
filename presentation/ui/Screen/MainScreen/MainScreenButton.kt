@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
+import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
@@ -59,7 +60,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
         ) {
         Card(
             modifier = Modifier
-                .background(info.color)
+//                .background(info.color)
 //                .width(info.width.dp)
                 .width(animWidth)
                 .height(info.height.dp)
@@ -76,9 +77,9 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
             ,
             elevation = 15.dp,
             shape = MaterialTheme.shapes.medium,
-            backgroundColor = Color.Gray,
+            backgroundColor = info.color,
         ) {
-            CenterText(text = info.text)
+            CenterText(text = info.text, color = whiteDark4)
         }
     }
 }

@@ -33,3 +33,12 @@ fun Modifier.gradientBackground(colors: List<Color>, angle: Float) = this.then(
         )
     }
 )
+
+fun Modifier.backColor(color: Color) = this.then(
+    Modifier.drawBehind {
+        drawRect(
+            size = size,
+            color = color
+        )
+    }
+)

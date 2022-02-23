@@ -13,6 +13,7 @@ import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewM
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.presentation.res.grayDark2
 import com.mobilegame.robozzle.presentation.res.grayDark3
+import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -37,6 +38,6 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
 //        backgroundColor = Color.Gray
         backgroundColor = grayDark3
     ) {
-        CenterText(text = "difficulty $levelDifficulty")
+        CenterText(text = "difficulty $levelDifficulty", color = whiteDark4)
     }
 }

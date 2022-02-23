@@ -17,6 +17,8 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.res.gray6
+import com.mobilegame.robozzle.presentation.res.grayDark5
+import com.mobilegame.robozzle.presentation.res.grayDark6
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButtonStyle
@@ -36,7 +38,7 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(gray6)
+            .background(grayDark6)
         ,
     ){
         Row(
@@ -64,24 +66,14 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                 )
             }
         }
-//        Row(
-//            horizontalArrangement = Arrangement.Center,
-//            modifier = Modifier
-//                .weight(0.6F)
-//                .fillMaxWidth()
-//        ){
             Column(
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .weight(0.6F)
-//                    .width(MainScreenButtonStyle.LevelDifficulty1.type.width.dp)
                     .fillMaxWidth()
                 ,
             ) {
                 Column(
                     Modifier
-//                    .background(Color.Gray)
                         .align(CenterHorizontally)
                         .weight(1F),
 
@@ -95,7 +87,6 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     Modifier
                         .align(CenterHorizontally)
                         .weight(1F)
-//                    .background(Color.Green)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -107,7 +98,6 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     Modifier
                         .align(CenterHorizontally)
                         .weight(1F)
-//                    .background(Color.Red)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -119,7 +109,6 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     Modifier
                         .align(CenterHorizontally)
                         .weight(1F)
-//                    .background(Color.DarkGray)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -131,7 +120,6 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
                     Modifier
                         .align(CenterHorizontally)
                         .weight(1F)
-//                    .background(Color.Yellow)
                     ,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -144,7 +132,6 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .background(gray6)
                 .padding(
                     horizontal = 10.dp,
                     vertical = 15.dp

@@ -93,14 +93,32 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
         Row( modifier = Modifier.fillMaxSize() )
         {
             Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 100, map = level.map) }
-            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level) }
+            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, vm, navigator) }
             Box(Modifier.weight(1.0f)) { DisplayLevelState(level, vm, navigator) }
         }
     }
 }
 
 @Composable
-fun DisplayLevelDescription(level: LevelOverView) {
+fun DisplayLevelDescription(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    var pressed by remember { mutableStateOf(false) }
+
+    val clickable = Modifier.clickable (
+        interactionSource = interactionSource,
+        indication = rememberRipple(color = Color.Transparent)
+        ,
+    ) {
+        infoLog("clickable", "ranking icon")
+        NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = level.id.toString(), delayTiming = 500)
+    }
+
+//    when (isPressed) {
+    when (pressed) {
+        true -> vm.rankingIconIsPressed()
+        false -> vm.rankingIconIsReleased()
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,74 +131,50 @@ fun DisplayLevelDescription(level: LevelOverView) {
                 .align(Alignment.CenterHorizontally)
             ,
         )
+
+        Box(
+            modifier = Modifier
+//                        .then(clickable)
+                .fillMaxWidth()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress = {
+                            val minute = Calendar.getInstance().time
+                            val millisStart = Calendar.getInstance().timeInMillis
+                            errorLog("time ", "start $millisStart")
+//                                vm.rankingIconIsPressed()
+                            pressed = true
+                            tryAwaitRelease()
+                            pressed = false
+                            val millisEnd = Calendar.getInstance().timeInMillis
+                            errorLog("time ", "end $millisStart")
+//                                    vm.rankingIconIsReleased()
+                            val diff = millisEnd - millisStart
+                            errorLog("diff ", "$diff")
+                            NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = level.id.toString(), delayTiming = if (diff < 150) diff * 5 else if (diff < 300) diff * 4 else if (diff < 600) diff * 2 else 600)
+                        }
+                    )
+                }
+            ,
+            contentAlignment = Alignment.Center
+        ) {
+            Box( modifier = Modifier .align(Alignment.Center)
+            ) {
+//                        RankingIconBouncing(sizeAtt = 40, vm = vm, isPressed = isPressed)
+                RankingIconBouncing(sizeAtt = 40, vm = vm, isPressed = pressed)
+            }
+        }
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayLevelState(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    var pressed by remember { mutableStateOf(false) }
-
-    val clickable = Modifier.clickable (
-        interactionSource = interactionSource,
-        indication = rememberRipple(color = Color.Transparent)
-    ,
-    ) {
-        infoLog("clickable", "ranking icon")
-        NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = level.id.toString(), delayTiming = 500)
-    }
-
-//    when (isPressed) {
-    when (pressed) {
-        true -> vm.rankingIconIsPressed()
-        false -> vm.rankingIconIsReleased()
-    }
-
-    var timer: Long = 0
-
     Box(Modifier.fillMaxSize()){
         Row(
             modifier = Modifier.fillMaxSize() ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Column(modifier = Modifier.weight(1f)
-            ) {
-                Box(
-                    modifier = Modifier
-//                        .then(clickable)
-                        .fillMaxWidth()
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onPress = {
-                                val minute = Calendar.getInstance().time
-                                val millisStart = Calendar.getInstance().timeInMillis
-                                errorLog("time ", "start $millisStart")
-//                                vm.rankingIconIsPressed()
-                                    pressed = true
-                                    tryAwaitRelease()
-                                    pressed = false
-                                val millisEnd = Calendar.getInstance().timeInMillis
-                                errorLog("time ", "end $millisStart")
-//                                    vm.rankingIconIsReleased()
-                                val diff = millisEnd - millisStart
-                                errorLog("diff ", "$diff")
-                                NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = level.id.toString(), delayTiming = if (diff < 150) diff * 5 else if (diff < 300) diff * 4 else if (diff < 600) diff * 2 else 600)
-                                }
-                            )
-                        }
-                    ,
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box( modifier = Modifier .align(Alignment.Center)
-                    ) {
-//                        RankingIconBouncing(sizeAtt = 40, vm = vm, isPressed = isPressed)
-                        RankingIconBouncing(sizeAtt = 40, vm = vm, isPressed = pressed)
-                    }
-                }
-            }
             Column(Modifier.weight(1f)) {
                 Text(text = "X", modifier = Modifier.align(Alignment.CenterHorizontally))
             }
