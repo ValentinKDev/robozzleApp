@@ -23,7 +23,7 @@ import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.res.normalInGameBackGround
 import kotlinx.coroutines.DelicateCoroutinesApi
 
-@DelicateCoroutinesApi
+//@DelicateCoroutinesApi
 @Composable
 fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = viewModel()) {
     val win: Int by gameDataViewModel.win.collectAsState(UNKNOWN)
@@ -51,7 +51,7 @@ fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = v
     PlayLevelCompose(level, gameDataViewModel)
 }
 
-@DelicateCoroutinesApi
+//@DelicateCoroutinesApi
 @Composable
 fun PlayLevelCompose(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel) {
     val context = LocalContext.current

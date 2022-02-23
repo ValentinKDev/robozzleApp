@@ -39,7 +39,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.goingTopSizeBut
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
-import com.mobilegame.robozzle.presentation.ui.elements.RankingIcon
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
@@ -55,7 +54,7 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
         HorizontalSpace(widthDp = 20)
         Column(modifier = Modifier.weight(1F)) {
             VerticalSpace(height = 50)
-            RankingIconBouncing(sizeAtt = 120)
+//            RankingIconBouncing(sizeAtt = 120)
             VerticalSpace(height = 50)
             MapView(widthInt = 200, map = mapTest)
             VerticalSpace(height = 50)
@@ -74,7 +73,7 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
         HorizontalSpace(widthDp = 40)
         Column(modifier = Modifier.weight(1F)) {
             VerticalSpace(height = 50)
-            RankingIconBouncing(sizeAtt = 50)
+//            RankingIconBouncing(sizeAtt = 50)
             VerticalSpace(height = 50)
             MapView(widthInt = 150, map = mapTest2)
             VerticalSpace(height = 50)

@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
+import com.mobilegame.robozzle.presentation.res.grayDark2
+import com.mobilegame.robozzle.presentation.res.grayDark3
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -32,18 +34,9 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
         ,
         shape = MaterialTheme.shapes.large,
         elevation = 50.dp,
-        backgroundColor = Color.Gray
+//        backgroundColor = Color.Gray
+        backgroundColor = grayDark3
     ) {
-//        Column( modifier = Modifier.fillMaxSize()
-//        ) {
-//            Row( modifier = Modifier.fillMaxHeight().align(CenterHorizontally)
-//            ) {
-//                Box( modifier = Modifier.align(CenterVertically)
-//                ) {
-//                      Text(text = "button $levelDifficulty")
-//                }
-//            }
-//        }
-        CenterText(str = "difficulty $levelDifficulty")
+        CenterText(text = "difficulty $levelDifficulty")
     }
 }

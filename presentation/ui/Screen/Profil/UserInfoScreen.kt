@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,7 +18,7 @@ import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import kotlinx.coroutines.*
+import com.mobilegame.robozzle.presentation.ui.elements.MapView
 
 @Composable
 fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = viewModel()) {
@@ -70,8 +69,12 @@ fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = vi
         ) {
             LazyColumn {
                 //todo : UI 2 columns
-                itemsIndexed(screenVM.levelWinList) { _, levelWin ->
-                    DisplayWinOverView(levelWin, navigator)
+                itemsIndexed(screenVM.levelWinList) { _, _levelWin ->
+                    DisplayWinOverView(
+                        _levelWin,
+                        navigator,
+                        screenVM.levelList.find { it.id == _levelWin.levelId }?.map ?: emptyList()
+                    )
                 }
             }
         }
@@ -79,7 +82,7 @@ fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = vi
 }
 
 @Composable
-fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator) {
+fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<String>) {
     Box(
         modifier = Modifier
             .background(Color.Yellow)
@@ -110,7 +113,8 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator) {
                 }
         ) {
             Box(Modifier.weight(1.0f)) {
-                DisplayLevelImage()
+//                DisplayLevelImage()
+                MapView(widthInt = 100, map = levelMap)
             }
             Box(Modifier.weight(1.0f)) {
                 Column() {

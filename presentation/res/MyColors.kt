@@ -7,6 +7,14 @@ import androidx.compose.ui.graphics.Color
 //sealed class MyColors(color: Color) {
 //}
 
+val whiteDark0 = Color(0xFFFFFFFF)
+val whiteDark1 = Color(0xFFEEEEEE)
+val whiteDark2 = Color(0xFFDDDDDD)
+val whiteDark3 = Color(0xFFCCCCCC)
+val whiteDark4 = Color(0xFFBBBBBB)
+val whiteDark5 = Color(0xFFAAAAAA)
+val whiteDark6 = Color(0xFF999999)
+
 val gray0 = Color(0xFF888888)
 val gray1 = Color(0xDF888888)
 val gray2 = Color(0xBF888888)

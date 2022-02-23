@@ -26,7 +26,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.*
 import kotlinx.coroutines.*
 
-@DelicateCoroutinesApi
+//@DelicateCoroutinesApi
 @Composable
 fun SecondScreenPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     Log.i("" , "call SecondScreenPart")
@@ -251,7 +251,7 @@ fun FunctionCase(color: String, gameDataViewModel: GameDataViewModel, screenConf
     }
 }
 
-@DelicateCoroutinesApi
+//@DelicateCoroutinesApi
 @Composable
 fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     val animationIsPlaying: Boolean by gameDataViewModel.animationIsPlaying.observeAsState(false)
@@ -358,8 +358,9 @@ fun BackButton(screenConfig: ScreenConfig, gameDataViewModel: GameDataViewModel,
     }
 }
 
-@DelicateCoroutinesApi
+//@DelicateCoroutinesApi
 fun StartAnimation(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel) {
+    //todo: lauchn this with a VM in a VMScope
     gameDataViewModel.gameLogicJob = GlobalScope.launch( Dispatchers.Default + CoroutineName( GAME_LOGIC_COROUTINE ) )
     {
         Log.e("", "call StartAnimation")

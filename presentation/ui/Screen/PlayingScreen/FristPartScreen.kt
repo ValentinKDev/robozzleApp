@@ -48,15 +48,7 @@ fun MapLayout(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenCo
             .then(clickable)
         ,
     ) {
-//todo : resize the map to smaller and give an effect oh pushing while buttonpressed
-//    Button(
-//        modifier = Modifier .background(Color.Transparent)
-//        ,
-//        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-//        onClick= {
-//        },
-//        interactionSource = interactionSource
-//    ) {
+        //todo : resize the map to smaller and give an effect oh pushing while buttonpressed
         when (isPressed) {
             true -> gameDataViewModel.mapLayoutPressedToTrue()
             false -> gameDataViewModel.mapLayoutPressedToFalse()

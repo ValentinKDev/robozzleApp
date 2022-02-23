@@ -48,8 +48,10 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
         composable( route = Screens.Creator.route)          { CreatorScreen(navigator) }
         composable( route = Screens.UserInfo.route )        { UserInfoScreen(navigator) }
         composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
+        /** Main Menu Screen */
         composable(
-            route = Screens.MainMenu.route + "/{${Arguments.Button.key}}",
+//            route = Screens.MainMenu.route + "/{" + ${Arguments.Button.key}"}"}",
+            route = Screens.MainMenu.route + "/{" + Arguments.Button.key + "}",
             arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType})
         ) { entry ->
             entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
@@ -59,8 +61,10 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
                 )
             }
         }
+        /** Level By Difficulty Screen */
         composable(
-            route = Screens.LevelByDifficulty.route + "/{${Arguments.Button.key}}",
+//            route = Screens.LevelByDifficulty.route + "/{${Arguments.Button.key}}",
+            route = Screens.LevelByDifficulty.route + "/{" + Arguments.Button.key + "}",
             arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType}),
         ) { entry ->
 //            LevelsScreenByDifficulty(navigator, difficulty = entry.arguments?.getInt(Arguments.LevelDifficulty.key)!!)
@@ -71,19 +75,10 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
                 )
             }
         }
+        /** Ranks Level Screen Screen */
         composable(
-            route = Screens.MainMenu.route + "/{${Arguments.Button.key}}",
-            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType})
-        ) { entry ->
-            entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
-                MainScreen(
-                    navigator = navigator,
-                    fromButton = _buttonId
-                )
-            }
-        }
-        composable(
-            route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}",
+            route = Screens.RanksLevel.route + "/{" + Arguments.LevelId.key + "}",
+//            route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _levelId ->
@@ -92,28 +87,17 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
                 }
             }
         }
+        /** Game Screen */
         composable(
-            route = Screens.Playing.route + "/{${Arguments.LevelId.key}}",
+            route = Screens.Playing.route + "/{" + Arguments.LevelId.key + "}",
+//            route = Screens.Playing.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
         ) { entry ->
-//            PlayingScreen(level = LevelRoomViewModel(context).getRobuzzle(entry.arguments?.getInt(Arguments.LevelId.key)!!)!!)
-//            PlayingScreen(level = LevelVM(context).getRobuzzleLevel(entry.arguments?.getInt(Arguments.LevelId.key)!!))
             entry.arguments?.getInt(Arguments.LevelId.key)?.let {
                 PlayingScreen(level = LevelVM(context).getRobuzzleLevel(it))
             }
         }
-//        composable(
-//            route = Screens.Creator.route + "/{${Arguments.Button.key}}",
-//            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType})
-//        ) { entry ->
-//            entry.arguments?.getString(Arguments.Button.key)?.let { _fromButton ->
-//                CreatorScreen(
-//                    navigator = navigator,
-//                    from = _fromButton
-//                )
-//            }
-//        }
-
+        /** Test Screen */
         composable(
             route = Screens.Test.route + "/{${Arguments.Button.key}}",
             arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType}),

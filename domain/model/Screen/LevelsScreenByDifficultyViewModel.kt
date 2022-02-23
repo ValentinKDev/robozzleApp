@@ -1,23 +1,33 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
+import com.mobilegame.robozzle.presentation.ui.elements.OnTouchBounceState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewModel(application) {
     //todo: might be wise enough to create a specific class Level overview to manipulate only id, name, map
+
+    private val _rankingIconTouchState = MutableStateFlow(OnTouchBounceState.Released)
+    val rankingIconTouchState: MutableStateFlow<OnTouchBounceState> = _rankingIconTouchState
+    fun rankingIconIsPressed() {
+        infoLog("ispressed", "true")
+        _rankingIconTouchState.value = OnTouchBounceState.Pressed}
+    fun rankingIconIsReleased() {_rankingIconTouchState.value = OnTouchBounceState.Released}
+
+//    fun getTimer(): Int = runBlocking(Dispatchers.IO) {
+//
+//    }
 
     private val _levelOverViewList = MutableStateFlow<List<LevelOverView>>(mutableListOf())
     val levelOverViewList: StateFlow<List<LevelOverView>> = _levelOverViewList

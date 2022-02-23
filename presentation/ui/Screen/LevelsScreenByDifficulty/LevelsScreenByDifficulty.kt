@@ -20,6 +20,7 @@ import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyHeader
+import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyList
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
 @ExperimentalAnimationApi
@@ -42,7 +43,8 @@ fun LevelsScreenByDifficulty(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(gray6)) {
+//        .background(gray6)) {
+        .background(grayDark6)) {
         AnimatedVisibility(
             visible = listVisible,
             enter = slideInVertically(),
@@ -65,111 +67,5 @@ fun LevelsScreenByDifficulty(
             )
         }
     }
-//        }
-//    }
 }
 
-@Composable
-fun LevelsScreenByDifficultyList(
-    navigator: Navigator,
-    vm: LevelsScreenByDifficultyViewModel,
-) {
-    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
-    Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
-
-    Column() {
-        Spacer(modifier = Modifier.height(100.dp))
-        if (levelsList.isNotEmpty()) {
-            LazyColumn {
-                itemsIndexed(levelsList) { index, level ->
-                    DisplayLevelOverView(level, navigator)
-                }
-            }
-        } else { Text(text = "Can't access the server and no level in the phone internal storage") }
-    }
-}
-
-
-@Composable
-fun DisplayLevelOverView(level: LevelOverView, navigator: Navigator) {
-    Card(
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
-            .padding(
-                bottom = 6.dp,
-                top = 6.dp,
-                start = 6.dp,
-                end = 6.dp,
-            )
-            .fillMaxWidth()
-            .height(100.dp)
-            .clickable {
-                NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
-            }
-        ,
-        elevation = 8.dp,
-    ) {
-        Row( modifier = Modifier.fillMaxSize() )
-        {
-            Box(Modifier.weight(1.0f)) { DisplayLevelImage() }
-            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level) }
-            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, navigator) }
-        }
-    }
-}
-
-@Composable
-fun DisplayLevelDescription(level: LevelOverView) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Row() {
-            Row(
-                modifier = Modifier
-                    .weight(2.0f)
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 5.dp)
-                    ,
-                    text = "${level.id} - "
-                )
-                Text(text = level.name)
-            }
-        }
-    }
-}
-
-@Composable
-fun DisplayLevelState(level: LevelOverView, navigator: Navigator) {
-    Box(modifier = Modifier
-        .width(100.dp)
-        .fillMaxHeight()
-        .background(Color.White)
-    ) {
-            Text(modifier = Modifier.align(Alignment.Center),text = "X")
-        Button(
-            modifier = Modifier
-                .height(15.dp)
-                .width(15.dp)
-        ,
-            onClick = {
-                NavViewModel(navigator).navigateTo(Screens.RanksLevel, level.id.toString())
-            }
-        ) {
-
-        }
-    }
-}
-
-
-@Composable
-fun DisplayLevelImage() {
-    Box(modifier = Modifier
-        .width(100.dp)
-        .fillMaxHeight()
-        .background(Color.Gray)) {
-        Text(modifier = Modifier.align(Alignment.Center),text = "image")
-    }
-}

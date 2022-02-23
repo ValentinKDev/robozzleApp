@@ -53,6 +53,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
 
     AnimatedVisibility(
         visible = visibleElements,
+        //todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
         enter = enterTransitionByFrom(info.buttonId, from) ,
         exit = exitTransitionByState(buttonState, info.buttonId)
         ) {
@@ -76,12 +77,8 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
             elevation = 15.dp,
             shape = MaterialTheme.shapes.medium,
             backgroundColor = Color.Gray,
-//            onClick = {
-//            },
-//            enabled = info.enable
         ) {
-//            Text(text = info.text)
-            CenterText(str = info.text)
+            CenterText(text = info.text)
         }
     }
 }

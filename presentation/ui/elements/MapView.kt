@@ -21,19 +21,22 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Star
 
 @Composable
 fun MapView(widthInt: Int, map: List<String>) {
+    //todo : make a function to trunc every full column and line of '.' (if it preserver symmetry)
+    //todo : put those calculs in a VM ?
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size
-    val caseSize: Float = widthInt.toFloat() / caseNumberWidth.toFloat()
+    val padingRatio: Float = 1.0f / 20.0f
+    val caseSize: Float = widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
     val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
     val mapWidthtDP: Dp = widthInt.dp
     val casePaddingDP: Dp = (caseSize / 20.0F).dp
-    errorLog("map size", "w $caseNumberWidth h $caseNumberHeight caseSize $caseSize")
+//    errorLog("map size", "w $caseNumberWidth h $caseNumberHeight caseSize $caseSize")
 
     Box( modifier = Modifier
         .height(mapHeightDP)
         .width(mapWidthtDP)
 //        .drawBehind {  }
-        .background(grayDark3)
+        .background(grayDark2)
     ) {
         Column(
             modifier = Modifier
@@ -42,18 +45,19 @@ fun MapView(widthInt: Int, map: List<String>) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             map.forEachIndexed { rowIndex, rowString ->
-                infoLog("rowIndex", "$rowIndex")
+//                infoLog("rowIndex", "$rowIndex")
                 Row {
                     rowString.forEachIndexed { columnIndex, char ->
                         val caseColor = char.toString()
                         Box(modifier = Modifier
                             .background(Color.Transparent)
                             .size(caseSize.dp)
-                            .padding(casePaddingDP)
+//                            .padding(casePaddingDP)
                         ) {
                             Box(
                                 Modifier
                                     .fillMaxSize()
+                                        //todo : might add clarity to augement the range of luminosity in the gradient so the difference between each case is clear and it compensate the fact that there is no padding
                                     .gradientBackground( ColorsList(caseColor), 135f )
                             ) { }
                         }
