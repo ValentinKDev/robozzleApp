@@ -60,19 +60,15 @@ fun RankingIconBouncing(sizeAtt: Int) {
     val width = height * (6.0F / 7.0F)
 
     var currentState: OnTouchBounceState by remember { mutableStateOf(OnTouchBounceState.Released) }
-    val transition = updateTransition(targetState = currentState, label = "animationOfRankingIcon")
-
 
     val heightGreenAnimated: Dp by animateDpAsState(
         when (currentState) {
             OnTouchBounceState.Released -> ((3.0F/5.0F) * height).dp
             OnTouchBounceState.Pressed -> (0.75 * (3.0F/5.0F) * height).dp
-//            OnTouchBounceState.None -> ((1.0F/3.0F) * height).dp
         },
         when (currentState) {
             OnTouchBounceState.Released -> {
                 spring(dampingRatio = Spring.DampingRatioHighBouncy, stiffness = (Spring.StiffnessLow + Spring.StiffnessMedium) / 2.0F)
-//                tween(150)
             }
             OnTouchBounceState.Pressed -> {
                 spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessVeryLow)
@@ -129,7 +125,6 @@ fun RankingIconBouncing(sizeAtt: Int) {
         ) { }
         Column( modifier = Modifier
             .height(YoffsetAnimationBlue)
-//            .height(height.dp)
             .weight(1.0F)
             .gradientBackground(listOf(blueDark0, blueDark6), 0F)
             .graphicsLayer { shadowElevation = 15.dp.toPx() }

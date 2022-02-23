@@ -38,6 +38,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.goingTopSizeButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIcon
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
@@ -54,39 +55,38 @@ fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
         HorizontalSpace(widthDp = 20)
         Column(modifier = Modifier.weight(1F)) {
             VerticalSpace(height = 50)
-            RankingIcon(25)
+            RankingIconBouncing(sizeAtt = 120)
             VerticalSpace(height = 50)
-            RankingIcon(75)
+            MapView(widthInt = 200, map = mapTest)
             VerticalSpace(height = 50)
-            RankingIcon(sizeAtt = 120)
+            MapView(widthInt = 150, map = mapTest)
             VerticalSpace(height = 50)
-            Neon()
-            VerticalSpace(height = 50)
-            RankingIconBouncing(sizeAtt = 50)
+            MapView(widthInt = 100, map = mapTest)
+//            RankingIcon(75)
+//            VerticalSpace(height = 50)
+//            RankingIcon(sizeAtt = 120)
+//            VerticalSpace(height = 50)
+//            Neon()
+//            VerticalSpace(height = 50)
+//            RankingIconBouncing(sizeAtt = 50)
 
         }
         HorizontalSpace(widthDp = 40)
         Column(modifier = Modifier.weight(1F)) {
             VerticalSpace(height = 50)
-//            RankingIcon2(sizeAtt = 25)
+            RankingIconBouncing(sizeAtt = 50)
             VerticalSpace(height = 50)
-//            RankingIcon2(sizeAtt = 75)
+            MapView(widthInt = 150, map = mapTest2)
             VerticalSpace(height = 50)
-//            RankingIcon2(sizeAtt = 120)
-            VerticalSpace(height = 50)
-            RankingIconBouncing(sizeAtt = 120)
+            MapView(widthInt = 100, map = mapTest2)
+//            VerticalSpace(height = 50)
+//            VerticalSpace(height = 50)
         }
     }
 }
 
 @Composable
 fun mapDraw(map: List<String>) {
-    Canvas(
-        modifier = Modifier
-    ) {
-//        drawRect()
-    }
-
 }
 
 
@@ -132,3 +132,35 @@ class MyDrawView @JvmOverloads constructor(
 class TestShared(): ViewModel() {
 
 }
+val mapTest2 = listOf(
+    /*                               1 1 1 1 1 1      */
+    /*           0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5      */
+    /*0*/". . . . . . . . . . . R R R . G".replace(" ", "") , /*0*/
+    ". R G G G R . . . . . R R R B G".replace(" ", "") ,
+    /*2*/". R G B G R G R G R . R R R B G".replace(" ", "") , /*2*/
+    ". R G B R B B B B . . . B B B G".replace(" ", "") ,
+    /*4*/". R G B B B B B B . . . B B B G".replace(" ", "") , /*4*/
+    ". R G B G B B B B R B B B B B G".replace(" ", "") ,
+    /*6*/". R R B R B B B B G B . . . B G".replace(" ", "") , /*6*/
+    ". B B B G R G R G R B . . . B G".replace(" ", "") ,
+    /*8*/". B B B B B B B B B B B B B B G".replace(" ", "") , /*8*/
+    "B B B B B B B B B G B G B G B G".replace(" ", "") ,
+    /*10*/"B R R R R R R R R R B R R R B R".replace(" ", "") , /*10*/
+    ". . . . . . . . . . . . . . . .".replace(" ", "") ,
+)
+val mapTest = listOf(
+/*                               1 1 1 1 1 1      */
+/*            0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5      */
+        /*0*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*0*/
+             ". . . . . . . . . . . . . . . .".replace(" ", "") ,
+        /*2*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*2*/
+             ". . . . . B . . B B B . . . . .".replace(" ", "") ,
+        /*4*/". . . . B R B . B B B B . . . .".replace(" ", "") , /*4*/
+             ". . . . B B R . B B B B . . . .".replace(" ", "") ,
+        /*6*/". . . . B B R B B B R B . . . .".replace(" ", "") , /*6*/
+             ". . . . B R B . B B B B . . . .".replace(" ", "") ,
+        /*8*/". . . . . B R . B B B . . . . .".replace(" ", "") , /*8*/
+             ". . . . . . . . . . . . . . . .".replace(" ", "") ,
+       /*10*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*10*/
+             ". . . . . . . . . . . . . . . .".replace(" ", "") ,
+)
