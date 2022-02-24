@@ -1,11 +1,15 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
 import android.app.Application
+import android.icu.util.Calendar
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.OnTouchBounceState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,14 +24,38 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
 
     private val _rankingIconTouchState = MutableStateFlow(OnTouchBounceState.Released)
     val rankingIconTouchState: MutableStateFlow<OnTouchBounceState> = _rankingIconTouchState
-    fun rankingIconIsPressed() {
-        infoLog("ispressed", "true")
-        _rankingIconTouchState.value = OnTouchBounceState.Pressed}
-    fun rankingIconIsReleased() {_rankingIconTouchState.value = OnTouchBounceState.Released}
 
-//    fun getTimer(): Int = runBlocking(Dispatchers.IO) {
-//
-//    }
+    private var onTouchStart = Calendar.getInstance().timeInMillis
+    private var onTouchEnd = Calendar.getInstance().timeInMillis
+
+    fun rankingIconIsPressed() {
+        if (_rankingIconTouchState.value == OnTouchBounceState.Released) {
+            onTouchStart = Calendar.getInstance().timeInMillis
+            _rankingIconTouchState.value = OnTouchBounceState.Pressed
+        }
+    }
+    fun rankingIconIsReleased(navigator: Navigator, levelId: Int) {
+        if (_rankingIconTouchState.value == OnTouchBounceState.Pressed) {
+            _rankingIconTouchState.value = OnTouchBounceState.Released
+            onTouchEnd = Calendar.getInstance().timeInMillis
+            val diff = onTouchEnd - onTouchStart
+            errorLog("diff ", "$diff")
+            NavViewModel(navigator).navigateTo(
+                destination = Screens.RanksLevel,
+                argStr = levelId.toString(),
+                delayTiming = when (diff) {
+                    in 0..20 -> 100
+                    in 21..50 -> 250
+                    in 51..80 -> 400
+                    in 81..120 -> 400
+                    in 121..180 -> 450
+                    in 181..300 -> 550
+                    in 301..600 -> 600
+                    else -> 650
+                }
+            )
+        }
+    }
 
     private val _levelOverViewList = MutableStateFlow<List<LevelOverView>>(mutableListOf())
     val levelOverViewList: StateFlow<List<LevelOverView>> = _levelOverViewList

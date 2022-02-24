@@ -45,7 +45,7 @@ fun LevelsScreenByDifficulty(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(grayDark6)
+//        .background(grayDark6)
 //        .backColor(grayDark6)
     )
     {

@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.Extensions.backColor
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
@@ -46,6 +47,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.NextButton
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
+import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 import kotlinx.coroutines.delay
 import java.util.*
 
@@ -92,7 +94,7 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
     ) {
         Row( modifier = Modifier.fillMaxSize() )
         {
-            Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 100, map = level.map) }
+            Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 80, map = level.map) }
             Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, vm, navigator) }
             Box(Modifier.weight(1.0f)) { DisplayLevelState(level, vm, navigator) }
         }
@@ -103,65 +105,51 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
 fun DisplayLevelDescription(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    var pressed by remember { mutableStateOf(false) }
 
-    val clickable = Modifier.clickable (
-        interactionSource = interactionSource,
-        indication = rememberRipple(color = Color.Transparent)
-        ,
-    ) {
-        infoLog("clickable", "ranking icon")
-        NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = level.id.toString(), delayTiming = 500)
-    }
-
-//    when (isPressed) {
-    when (pressed) {
+    when (isPressed) {
         true -> vm.rankingIconIsPressed()
-        false -> vm.rankingIconIsReleased()
+        false -> vm.rankingIconIsReleased(navigator, level.id)
     }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Text(
-            text = "${level.id} - ${level.name}",
-            color = whiteDark4,
-            modifier = Modifier
-                .padding(start = 5.dp)
-                .align(Alignment.CenterHorizontally)
-            ,
-        )
-
+        Box(modifier = Modifier.weight(4f)
+//            .background(Color.Red)
+        ){
+            CenterText(
+                text = "${level.id} - ${level.name}",
+                color = whiteDark4,
+                modifier = Modifier
+                    .padding(start = 5.dp)
+                ,
+            )
+        }
         Box(
-            modifier = Modifier
-//                        .then(clickable)
-                .fillMaxWidth()
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onPress = {
-                            val minute = Calendar.getInstance().time
-                            val millisStart = Calendar.getInstance().timeInMillis
-                            errorLog("time ", "start $millisStart")
-//                                vm.rankingIconIsPressed()
-                            pressed = true
-                            tryAwaitRelease()
-                            pressed = false
-                            val millisEnd = Calendar.getInstance().timeInMillis
-                            errorLog("time ", "end $millisStart")
-//                                    vm.rankingIconIsReleased()
-                            val diff = millisEnd - millisStart
-                            errorLog("diff ", "$diff")
-                            NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = level.id.toString(), delayTiming = if (diff < 150) diff * 5 else if (diff < 300) diff * 4 else if (diff < 600) diff * 2 else 600)
-                        }
-                    )
-                }
+            modifier = Modifier .weight(5f)
             ,
             contentAlignment = Alignment.Center
         ) {
-            Box( modifier = Modifier .align(Alignment.Center)
+            Column( modifier = Modifier.fillMaxSize()
             ) {
-//                        RankingIconBouncing(sizeAtt = 40, vm = vm, isPressed = isPressed)
-                RankingIconBouncing(sizeAtt = 40, vm = vm, isPressed = pressed)
+                Row(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Box( modifier = Modifier
+                        .wrapContentSize()
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = rememberRipple(color = Color.Transparent)
+                        ) {
+                            infoLog("clickable", "ranking icon")
+                        }
+                    ) {
+                        RankingIconBouncing(sizeAtt = 35, vm = vm, isPressed = isPressed)
+                    }
+                }
             }
         }
     }
@@ -190,7 +178,11 @@ fun DisplayLevelMap(widthInt: Int, map: List<String>) {
     ) {
         Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-                MapView(widthInt = widthInt, map = map)
+//                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
+                    Box(modifier = Modifier.padding(5.dp)) {
+                        MapView(widthInt = widthInt, map = map)
+                    }
+//                }
             }
         }
     }

@@ -38,7 +38,7 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(grayDark6)
+//            .background(grayDark6)
         ,
     ){
         Row(

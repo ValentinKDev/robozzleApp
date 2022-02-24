@@ -18,7 +18,8 @@ import com.mobilegame.robozzle.presentation.res.*
 
 @Composable
 fun RankingIconBouncing(sizeAtt: Int, vm: LevelsScreenByDifficultyViewModel, isPressed: Boolean) {
-    val height = sizeAtt * 0.7F
+//    val height = sizeAtt * 0.7F
+    val height = sizeAtt * 0.85F
     val width = height * (6.0F / 7.0F)
 
     val currentState by remember(vm) {vm.rankingIconTouchState}.collectAsState(OnTouchBounceState.Released)
