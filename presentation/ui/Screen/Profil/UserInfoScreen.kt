@@ -7,64 +7,66 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.Extensions.sizeBy
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
+import com.mobilegame.robozzle.domain.model.window.UserInfosWindowInfos
+import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.button.UserInfosButton
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Composable
-fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = viewModel()) {
+fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = viewModel(), w: UserInfosWindowInfos = viewModel()) {
     infoLog("Launch", "UserInfoScreen()")
     val ctxt = LocalContext.current
+    val dens = LocalDensity.current
 
     Column() {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1F)
-            ,
+        Column( modifier = Modifier
+            .fillMaxWidth()
+            .weight(w.firstPartScreenWeight)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(3F)
-                ,
+            Row( modifier = Modifier
+                .fillMaxHeight()
             ) {
-                Text(text = "UserInfoScreen")
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "user name ${screenVM.name}")
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1F)
-                ,
-            ) {
-                Button(
-                    modifier = Modifier
-                        .size(20.dp)
-                    ,
-                    onClick = {
-                        screenVM.logingOut()
-                        NavViewModel(navigator).navigateTo(Screens.MainMenu)
+                val size = w.userInfosButtonSize(UserInfosButton.LogOut, ctxt, dens)
+                Box() {
+                    Button( modifier = Modifier
+                        .sizeBy(size)
+                        .align(Alignment.CenterEnd)
+                        .padding(end = size.width.dp)
+                        ,
+                        onClick = {
+                            screenVM.logingOut()
+                            NavViewModel(navigator).navigateTo(Screens.MainMenu)
+                        }
+                    ) {
+                        Text(text = "Log out")
                     }
-                ) {
-                    Text(text = "Log out")
+                    CenterComposable {
+                        Row() {
+                            Text(text = "${screenVM.name}", color = whiteDark4)
+                        }
+                    }
                 }
             }
         }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(9F)
+                .weight(w.secondPartScreenWeight)
             ,
         ) {
             LazyColumn {

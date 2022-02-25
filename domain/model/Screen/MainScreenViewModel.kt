@@ -1,11 +1,9 @@
 package com.mobilegame.robozzle.domain.model.Screen
 
-import androidx.compose.animation.core.tween
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
+import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonState
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +13,7 @@ class MainScreenViewModel(): ViewModel() {
     val visibleElements: StateFlow<Boolean> = _visibleElements.asStateFlow()
     fun changeVisibility() {_visibleElements.value = !_visibleElements.value}
 
-    private val _buttonSelected = MutableStateFlow<Int>(ButtonId.None.key)
+    private val _buttonSelected = MutableStateFlow<Int>(MainMenuButton.None.key)
     val buttonSelected: StateFlow<Int> = _buttonSelected.asStateFlow()
     fun updateButtonSelected(buttonSelected: Int) {
         _buttonSelected.value = buttonSelected
@@ -25,11 +23,11 @@ class MainScreenViewModel(): ViewModel() {
     val animationTime: StateFlow<Long> = _animationTime
     fun setAnimationTime(buttonId: Int) {
         _animationTime.value = when (buttonId) {
-            ButtonId.LevelDiff1.key -> 450
-            ButtonId.LevelDiff2.key -> 520
-            ButtonId.LevelDiff3.key -> 600
-            ButtonId.LevelDiff4.key -> 680
-            ButtonId.LevelDiff5.key -> 730
+            MainMenuButton.LevelDiff1.key -> 450
+            MainMenuButton.LevelDiff2.key -> 520
+            MainMenuButton.LevelDiff3.key -> 600
+            MainMenuButton.LevelDiff4.key -> 680
+            MainMenuButton.LevelDiff5.key -> 730
             else -> 500
         }
     }
@@ -43,17 +41,17 @@ class MainScreenViewModel(): ViewModel() {
 
     fun updateButtonStates(buttonStateById: Int): ButtonState {
         return when (buttonStateById) {
-            ButtonId.LevelDiff1.key -> { stateFunctionOfSelectedButton(buttonStateById) }
-            ButtonId.LevelDiff2.key -> { stateFunctionOfSelectedButton(buttonStateById) }
-            ButtonId.LevelDiff3.key-> { stateFunctionOfSelectedButton(buttonStateById) }
-            ButtonId.LevelDiff4.key -> { stateFunctionOfSelectedButton(buttonStateById) }
-            ButtonId.LevelDiff5.key -> { stateFunctionOfSelectedButton(buttonStateById) }
-            else -> if (buttonSelected.value == ButtonId.None.key) ButtonState.OnPlace else  ButtonState.Fade
+            MainMenuButton.LevelDiff1.key -> { stateFunctionOfSelectedButton(buttonStateById) }
+            MainMenuButton.LevelDiff2.key -> { stateFunctionOfSelectedButton(buttonStateById) }
+            MainMenuButton.LevelDiff3.key-> { stateFunctionOfSelectedButton(buttonStateById) }
+            MainMenuButton.LevelDiff4.key -> { stateFunctionOfSelectedButton(buttonStateById) }
+            MainMenuButton.LevelDiff5.key -> { stateFunctionOfSelectedButton(buttonStateById) }
+            else -> if (buttonSelected.value == MainMenuButton.None.key) ButtonState.OnPlace else  ButtonState.Fade
         }
     }
     fun stateFunctionOfSelectedButton(button: Int): ButtonState {
         return when {
-            buttonSelected.value == ButtonId.None.key -> ButtonState.OnPlace
+            buttonSelected.value == MainMenuButton.None.key -> ButtonState.OnPlace
 //            button == buttonSelected.value -> ButtonState.OnTop
             button < buttonSelected.value -> ButtonState.Fade
             button > buttonSelected.value -> {

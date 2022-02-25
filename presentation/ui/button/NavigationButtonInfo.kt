@@ -1,12 +1,10 @@
 package com.mobilegame.robozzle.presentation.ui.button
 
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
 data class NavigationButtonInfo(
-    val button: ButtonId,
+    val button: MainMenuButton,
     val buttonKey: Int = button.key,
     val text: String,
 //    val explicitTargetWidthRatio: Float? = null,

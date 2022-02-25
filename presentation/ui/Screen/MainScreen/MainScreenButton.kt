@@ -24,6 +24,7 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
+import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
@@ -73,8 +74,8 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
         AnimatedVisibility(
             visible = visibleElements,
             //todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
-            enter = enterTransitionByFrom(info.buttonKey, from) ,
-            exit = exitTransitionByState(buttonState, info.buttonKey, vm.getOffset(info.buttonKey), vm.animationTime.value)
+            enter = MainMenuAnimationViewModel().enterTransitionByFrom(info.buttonKey, from) ,
+            exit = MainMenuAnimationViewModel().exitTransitionByState(buttonState, info.buttonKey, vm.getOffset(info.buttonKey), vm.animationTime.value)
         ) {
             Card(
                 modifier = Modifier
@@ -84,7 +85,6 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
                         vm.setAnimationTime(info.buttonKey)
                         buttonState = ButtonState.OnTop
                         vm.changeVisibility()
-                        infoLog("vm.animationTime", "${vm.animationTime.value}")
                         NavViewModel(navigator).navigateTo(
                             destination = info.destination,
                             argStr = info.arg,
@@ -102,96 +102,6 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
     }
 }
 
-class SizeRatio(widhtRatio: Float, heightRatio: Float) {
-
-}
-
 enum class ButtonState {
     OnPlace, OnTop, OnLeftSide, OnRightSide, OnBottom, Fade
 }
-
-@ExperimentalAnimationApi
-fun enterTransitionByFrom(id: Int, from: Int): EnterTransition {
-    return when (from) {
-        ButtonId.None.key -> {
-            when (id) {
-                0 -> { slideInHorizontally( initialOffsetX = { +500 }, animationSpec = tween(400) ) }
-                in 1..5 -> { slideInHorizontally( initialOffsetX = {if (id == 4 || id == 2) +500 else -500 }, animationSpec = tween (500) ) }
-                6 -> { slideInHorizontally( initialOffsetX = { -200 }, animationSpec = tween(400) ) }
-                7 -> { slideInVertically( initialOffsetY = { -200 }, animationSpec = tween(400) ) }
-                8 -> { slideInHorizontally( initialOffsetX = { +200 }, animationSpec = tween(400) ) }
-                else -> {fadeIn()}
-            }
-        }
-        else -> {
-            when {
-                id == from -> {
-                    slideInVertically(
-                        animationSpec = tween (500),
-                        initialOffsetY = {
-                            -150 }
-                    ) + fadeIn(animationSpec = tween(300))
-                }
-                id in (from + 1)..5 -> {
-                    slideInHorizontally(
-                        initialOffsetX = {if (id == 4 || id == 2) +500 else -500 },
-                        animationSpec = tween (300)
-                    ) + fadeIn(animationSpec = tween(300))
-                }
-                else -> fadeIn(animationSpec = tween(500))
-            }
-        }
-    }
-}
-
-@ExperimentalAnimationApi
-fun exitTransitionByState(buttonState: ButtonState, id: Int, offset: Offset, animationTime: Long): ExitTransition {
-    return when (buttonState) {
-        ButtonState.OnBottom -> slideOutVertically(
-            targetOffsetY = {it + 50},
-            animationSpec = tween(
-                when (id) {
-                    in ButtonId.LevelDiff1.key..ButtonId.LevelDiff5.key -> animationTime
-                    else -> -500
-                }.toInt()
-            )
-        )
-        ButtonState.OnTop -> slideOutVertically(
-            targetOffsetY = {
-                verbalLog("offset", "$offset")
-                when (id) {
-                    in ButtonId.LevelDiff1.key..ButtonId.LevelDiff5.key -> offset.y.toInt() * -1
-                    else -> -500
-                }
-            },
-            animationSpec = tween(
-                when (id) {
-                    in ButtonId.LevelDiff1.key..ButtonId.LevelDiff5.key -> animationTime
-                    else -> -500
-                }.toInt()
-            )
-        )
-        ButtonState.OnRightSide -> slideOutHorizontally(targetOffsetX = { +500 }, animationSpec = tween(400)) + fadeOut(animationSpec = tween(400))
-        ButtonState.OnLeftSide -> slideOutHorizontally(targetOffsetX = { -500 }, animationSpec = tween(400)) + fadeOut(animationSpec = tween(400))
-        else -> fadeOut(animationSpec = tween(250))
-    }
-}
-
-//    val animWidth by transition.animateDp(
-//        label = "",
-//        transitionSpec = {
-//            when (buttonState) {
-//                ButtonState.OnTop -> tween(goingTopTiming)
-//                ButtonState.OnLeftSide -> tween(300)
-//                ButtonState.OnRightSide -> tween(300)
-//                ButtonState.Fade -> tween(200)
-//                else -> tween(250)
-//            }
-//        }
-//    ) { state ->
-//        when (state) {
-//            ButtonState.OnTop -> goingTopSizeButton.dp
-//            else -> info.width.dp
-//        }
-//    }
-//    val animWidthRatio by transition.(

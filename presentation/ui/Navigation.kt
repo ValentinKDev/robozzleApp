@@ -20,13 +20,14 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.Tab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
+import com.mobilegame.robozzle.presentation.ui.Screen.ScreenData
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
 import kotlinx.coroutines.flow.*
 
 @ExperimentalAnimationApi
 @Composable
-fun Navigation(navigator: Navigator) {
+fun Navigation(navigator: Navigator, screenData: ScreenData) {
     infoLog("navigatgion", "...")
     val navController = rememberNavController()
 
@@ -50,7 +51,6 @@ fun Navigation(navigator: Navigator) {
         composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
         /** Main Menu Screen */
         composable(
-//            route = Screens.MainMenu.route + "/{" + ${Arguments.Button.key}"}"}",
             route = Screens.MainMenu.route + "/{" + Arguments.Button.key + "}",
             arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType})
         ) { entry ->
@@ -63,11 +63,9 @@ fun Navigation(navigator: Navigator) {
         }
         /** Level By Difficulty Screen */
         composable(
-//            route = Screens.LevelByDifficulty.route + "/{${Arguments.Button.key}}",
             route = Screens.LevelByDifficulty.route + "/{" + Arguments.Button.key + "}",
             arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType}),
         ) { entry ->
-//            LevelsScreenByDifficulty(navigator, difficulty = entry.arguments?.getInt(Arguments.LevelDifficulty.key)!!)
             entry.arguments?.getInt(Arguments.Button.key)?.let {
                 LevelsScreenByDifficulty(
                     navigator = navigator,
@@ -78,7 +76,6 @@ fun Navigation(navigator: Navigator) {
         /** Ranks Level Screen Screen */
         composable(
             route = Screens.RanksLevel.route + "/{" + Arguments.LevelId.key + "}",
-//            route = Screens.RanksLevel.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _levelId ->
@@ -90,7 +87,6 @@ fun Navigation(navigator: Navigator) {
         /** Game Screen */
         composable(
             route = Screens.Playing.route + "/{" + Arguments.LevelId.key + "}",
-//            route = Screens.Playing.route + "/{${Arguments.LevelId.key}}",
             arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let {

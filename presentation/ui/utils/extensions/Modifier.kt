@@ -2,11 +2,13 @@ package com.mobilegame.robozzle.Extensions
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +44,15 @@ fun Modifier.gradientBackground(colors: List<Color>, angle: Float) = this.then(
     }
 )
 
+fun Modifier.backColor(color: Color) = this.then(
+    Modifier.drawBehind {
+        drawRect(
+            color = color,
+            size = size
+        )
+    }
+)
+
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.mediaQuery(
     comparator: Dimensions.DimensionComparator,
@@ -65,4 +76,8 @@ fun Modifier.heightRatio(ratio: Float): Modifier = composed {
     val screenHeightPixel = LocalContext.current.resources.displayMetrics.heightPixels
     this.then(Modifier.height(((ratio * screenHeightPixel).dp / LocalDensity.current.density)))
 }
-//fun Modifer.
+
+fun Modifier.sizeBy(size: Size): Modifier = composed {
+    val modifier = Modifier.size(width = size.width.dp, height = size.width.dp)
+    this.then(Modifier.size(width = size.width.dp, height = size.width.dp))
+}

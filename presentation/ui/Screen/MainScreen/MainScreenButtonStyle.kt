@@ -1,15 +1,13 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
 
-import androidx.compose.ui.graphics.Color
-import com.mobilegame.robozzle.domain.model.data.general.LevelVM
-import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
 
     object UserInfos: MainScreenButtonStyle(
         NavigationButtonInfo(
-            button = ButtonId.Profile,
+            button = MainMenuButton.Profile,
             text = "profile",
             destination = Screens.UserInfo,
             arg = "",
@@ -18,7 +16,7 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     )
     object RegisterLogin: MainScreenButtonStyle(
         NavigationButtonInfo(
-            button = ButtonId.Profile,
+            button = MainMenuButton.Profile,
             text = "profile",
             destination = Screens.RegisterLogin,
             arg = "",
@@ -27,7 +25,7 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     )
     object Config: MainScreenButtonStyle(
         NavigationButtonInfo(
-            button= ButtonId.Config,
+            button= MainMenuButton.Config,
             text = "config",
             destination = Screens.Config ,
             arg = "",
@@ -35,7 +33,7 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     )
     object Creator: MainScreenButtonStyle(
         NavigationButtonInfo(
-            button = ButtonId.Creator,
+            button = MainMenuButton.Creator,
             text = "creator",
             destination = Screens.Creator ,
             arg = "",
@@ -43,29 +41,29 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     )
     object Donation: MainScreenButtonStyle(
         NavigationButtonInfo(
-            button= ButtonId.Donation,
+            button= MainMenuButton.Donation,
             text = "donation",
             destination = Screens.Donation,
             arg = "",
             enable = true
         )
     )
-    object LevelDifficulty1: MainScreenButtonStyle( LevelButtonInfos(ButtonId.LevelDiff1) )
-    object LevelDifficulty2: MainScreenButtonStyle( LevelButtonInfos(ButtonId.LevelDiff2) )
-    object LevelDifficulty3: MainScreenButtonStyle( LevelButtonInfos(ButtonId.LevelDiff3) )
-    object LevelDifficulty4: MainScreenButtonStyle( LevelButtonInfos(ButtonId.LevelDiff4) )
-    object LevelDifficulty5: MainScreenButtonStyle( LevelButtonInfos(ButtonId.LevelDiff5) )
+    object LevelDifficulty1: MainScreenButtonStyle( LevelButtonInfos(MainMenuButton.LevelDiff1) )
+    object LevelDifficulty2: MainScreenButtonStyle( LevelButtonInfos(MainMenuButton.LevelDiff2) )
+    object LevelDifficulty3: MainScreenButtonStyle( LevelButtonInfos(MainMenuButton.LevelDiff3) )
+    object LevelDifficulty4: MainScreenButtonStyle( LevelButtonInfos(MainMenuButton.LevelDiff4) )
+    object LevelDifficulty5: MainScreenButtonStyle( LevelButtonInfos(MainMenuButton.LevelDiff5) )
 }
 
-private fun LevelButtonInfos(button: ButtonId): NavigationButtonInfo {
+private fun LevelButtonInfos(button: MainMenuButton): NavigationButtonInfo {
     return NavigationButtonInfo(
         button= button,
         text = when (button) {
-            is ButtonId.LevelDiff1 -> "Difficulty 1"
-            is ButtonId.LevelDiff2 -> "Difficulty 2"
-            is ButtonId.LevelDiff3 -> "Difficulty 3"
-            is ButtonId.LevelDiff4 -> "Difficulty 4"
-            is ButtonId.LevelDiff5 -> "Difficulty 5"
+            is MainMenuButton.LevelDiff1 -> "Difficulty 1"
+            is MainMenuButton.LevelDiff2 -> "Difficulty 2"
+            is MainMenuButton.LevelDiff3 -> "Difficulty 3"
+            is MainMenuButton.LevelDiff4 -> "Difficulty 4"
+            is MainMenuButton.LevelDiff5 -> "Difficulty 5"
             else -> "error"
         },
         destination = Screens.LevelByDifficulty,

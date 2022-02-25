@@ -16,17 +16,18 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.*
+import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 @ExperimentalAnimationApi
 @Composable
-fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, w: MainScreenWindowsInfos = MainScreenWindowsInfos(), vm: MainScreenViewModel = viewModel()) {
+fun MainScreen(navigator: Navigator, fromButton: Int = MainMenuButton.None.key, w: MainScreenWindowsInfos = MainScreenWindowsInfos(), vm: MainScreenViewModel = viewModel()) {
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     infoLog("MainScreen", "launch")
 
     LaunchedEffect(key1 = "Launch MainScreen") {
         vm.changeVisibility()
-        vm.updateButtonSelected(ButtonId.None.key)
+        vm.updateButtonSelected(MainMenuButton.None.key)
     }
 
     Column( modifier = Modifier.fillMaxSize() ) {
