@@ -19,6 +19,8 @@ class UserInfosScreenViewModel(application: Application): AndroidViewModel(appli
 
     val name = UserDataStoreViewModel(getApplication()).getName()
     val levelWinList = LevelWinRoomViewModel(getApplication()).getAllLevelWins()
+    val levelWinList1 = LevelWinRoomViewModel(getApplication()).getAllLevelWins().filterIndexed {index, levelWin -> index % 2 == 0}
+    val levelWinList2 = LevelWinRoomViewModel(getApplication()).getAllLevelWins().filterIndexed {index, levelWin -> index % 2 == 1}
     val levelList: List<LevelOverView> = LevelRoomViewModel(getApplication()).getLevelOverViewInList(levelWinList)
 
     init {

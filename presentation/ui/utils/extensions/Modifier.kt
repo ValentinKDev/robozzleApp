@@ -81,6 +81,10 @@ fun Modifier.sizeBy(size: Size): Modifier = composed {
     this.then(Modifier.size(width = size.width.dp, height = size.height.dp))
 }
 
+//fun Modifier.weightIf(enable: Boolean, weight: Float) {
+//    this.then(Modifier)
+//}
+
 //fun Modifier.paddingRatio(ratio: Float): Modifier = composed {
 //    val screenHeightPixel = LocalContext.current.resources.displayMetrics.heightPixels
 //

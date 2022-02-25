@@ -23,6 +23,7 @@ import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.domain.model.window.UserInfosWindowInfos
+import com.mobilegame.robozzle.presentation.res.grayDark3
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -39,9 +40,10 @@ fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = vi
     val dens = LocalDensity.current
 
     Column() {
-        Box( Modifier
-            .fillMaxWidth()
-            .weight(w.firstPartScreenWeight)
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(w.firstPartScreenWeight)
         ) {
             PaddingComposable(
                 topPaddingRatio = 1f/3f,
@@ -73,20 +75,41 @@ fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = vi
                 )
             }
         }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(w.secondPartScreenWeight)
-            ,
+        Row( modifier = Modifier
+            .fillMaxWidth()
+            .weight(w.secondPartScreenWeight)
         ) {
-            LazyColumn {
-                //todo : UI 2 columns
-                itemsIndexed(screenVM.levelWinList) { _, _levelWin ->
-                    DisplayWinOverView(
-                        _levelWin,
-                        navigator,
-                        screenVM.levelList.find { it.id == _levelWin.levelId }?.map ?: emptyList()
-                    )
+            Column(Modifier.weight(1F)) {
+                PaddingComposable(
+                    horizontalPadding = 0.25f,
+                ) {
+                    LazyColumn( Modifier
+                        .fillMaxHeight()
+                    ) {
+                        itemsIndexed(screenVM.levelWinList1) { _, _levelWin ->
+                            DisplayWinOverView(
+                                _levelWin,
+                                navigator,
+                                screenVM.levelList.find { it.id == _levelWin.levelId }?.map ?: emptyList()
+                            )
+                        }
+                    }
+                }
+            }
+            Column(Modifier.weight(1F)) {
+                PaddingComposable(
+                    horizontalPadding = 0.25f,
+                ) {
+                    LazyColumn( Modifier.fillMaxHeight()
+                    ) {
+                        itemsIndexed(screenVM.levelWinList2) { _, _levelWin ->
+                            DisplayWinOverView(
+                                _levelWin,
+                                navigator,
+                                screenVM.levelList.find { it.id == _levelWin.levelId }?.map ?: emptyList()
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -116,22 +139,21 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
             .height(100.dp)
         ,
         elevation = 8.dp,
+        backgroundColor = grayDark3
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxHeight()
-                .clickable {
-                }
+        Column( modifier = Modifier.fillMaxSize()
         ) {
-            Box(Modifier.weight(1.0f)) {
-//                DisplayLevelImage()
+            Text("level ${levelWin.levelId}", color = whiteDark4)
+            Box(Modifier) {
                 MapView(widthInt = 100, map = levelMap)
             }
-            Box(Modifier.weight(1.0f)) {
+            Box(Modifier) {
                 Column() {
-                    Text("level ${levelWin.levelId}")
-                    Text("${levelWin.points}")
+                    Text("${levelWin.points}", color = whiteDark4)
                 }
+            }
+            BoxWithConstraints() {
+                
             }
         }
     }
