@@ -18,6 +18,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
+fun CenterComposable(content: @Composable () -> Unit) {
+    Column( modifier = Modifier.fillMaxSize() ) {
+        Row( modifier = Modifier .fillMaxHeight().align(Alignment.CenterHorizontally) ) {
+            Box( modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                content.invoke()
+            }
+        }
+    }
+}
+
+@Composable
 fun CenterText(
     text: String,
     modifier: Modifier = Modifier,

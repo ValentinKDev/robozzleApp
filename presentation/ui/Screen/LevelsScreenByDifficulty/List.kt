@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.Extensions.backColor
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel

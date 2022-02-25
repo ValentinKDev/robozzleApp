@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.Extensions.backColor
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView

@@ -14,6 +14,7 @@ import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.*
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.Tab
@@ -21,12 +22,11 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @ExperimentalAnimationApi
 @Composable
-fun Navigation(navigator: Navigator, testShared: TestShared) {
+fun Navigation(navigator: Navigator) {
     infoLog("navigatgion", "...")
     val navController = rememberNavController()
 
@@ -57,7 +57,7 @@ fun Navigation(navigator: Navigator, testShared: TestShared) {
             entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
                 MainScreen(
                     navigator = navigator,
-                    fromButton = _buttonId
+                    fromButton = _buttonId,
                 )
             }
         }

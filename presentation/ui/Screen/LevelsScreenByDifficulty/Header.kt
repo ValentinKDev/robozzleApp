@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
 @Composable
@@ -38,6 +39,9 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
 //        backgroundColor = Color.Gray
         backgroundColor = grayDark3
     ) {
-        CenterText(text = "difficulty $levelDifficulty", color = whiteDark4)
+//        CenterText(text = "difficulty $levelDifficulty", color = whiteDark4)
+        CenterComposable {
+            Text(text = "difficulty $levelDifficulty", color = whiteDark4)
+        }
     }
 }

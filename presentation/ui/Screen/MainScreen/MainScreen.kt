@@ -2,7 +2,6 @@ package com.mobilegame.robozzle.presentation.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -16,17 +15,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
-import com.mobilegame.robozzle.presentation.res.gray6
-import com.mobilegame.robozzle.presentation.res.grayDark5
-import com.mobilegame.robozzle.presentation.res.grayDark6
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonId
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButton
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenButtonStyle
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.*
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 @ExperimentalAnimationApi
 @Composable
-fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: MainScreenViewModel = viewModel()) {
+fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, w: MainScreenWindowsInfos = MainScreenWindowsInfos(), vm: MainScreenViewModel = viewModel()) {
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     infoLog("MainScreen", "launch")
 
@@ -35,121 +29,94 @@ fun MainScreen(navigator: Navigator, fromButton: Int = ButtonId.None.key, vm: Ma
         vm.updateButtonSelected(ButtonId.None.key)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-//            .background(grayDark6)
-        ,
-    ){
-        Row(
+    Column( modifier = Modifier.fillMaxSize() ) {
+        Row( modifier = Modifier.fillMaxWidth().weight(w.firstPartScreenWeight),
             horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.2F)
-                .padding(vertical = 10.dp, horizontal = 10.dp)
         ) {
             AnimatedVisibility(visible = visibleElements) {
-                Box( modifier = Modifier .align(CenterVertically)
-                ) {
+                Box( modifier = Modifier.align(CenterVertically) ) {
                     UserDataStoreViewModel(LocalContext.current).getName()?.let {
                         Text(text = "player : $it")
                     }?: Text(text = "Not registered")
                 }
             }
-            Box( modifier = Modifier .align(CenterVertically) )
-            {
+            Box( modifier = Modifier
+                .align(CenterVertically)
+                .padding(vertical = 10.dp, horizontal = 10.dp)
+            ) {
                 MainScreenButton( navigator,
-                    UserDataStoreViewModel(LocalContext.current).getName()?.let
-                    { MainScreenButtonStyle.UserInfos.type } ?: MainScreenButtonStyle.RegisterLogin.type,
+                    UserDataStoreViewModel(LocalContext.current).getName()?.let { MainScreenButtonStyle.UserInfos.type } ?: MainScreenButtonStyle.RegisterLogin.type,
                     fromButton,
-                    vm
+                    vm,
+                    w
                 )
             }
         }
-            Column(
-                modifier = Modifier
-                    .weight(0.6F)
-                    .fillMaxWidth()
-                ,
+        Column( modifier = Modifier.fillMaxWidth().weight(w.secondPartScreenWeight) ) {
+            Column( Modifier
+                    .align(CenterHorizontally)
+                    .weight(1F),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
-                    Modifier
-                        .align(CenterHorizontally)
-                        .weight(1F),
-
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty1.type, fromButton, vm)
-                    VerticalSpace(10)
-                }
-                Column(
-                    Modifier
-                        .align(CenterHorizontally)
-                        .weight(1F)
-                    ,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty2.type, fromButton, vm)
-                    VerticalSpace(10)
-                }
-                Column(
-                    Modifier
-                        .align(CenterHorizontally)
-                        .weight(1F)
-                    ,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty3.type, fromButton, vm)
-                    VerticalSpace(10)
-                }
-                Column(
-                    Modifier
-                        .align(CenterHorizontally)
-                        .weight(1F)
-                    ,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty4.type, fromButton, vm)
-                    VerticalSpace(10)
-                }
-                Column(
-                    Modifier
-                        .align(CenterHorizontally)
-                        .weight(1F)
-                    ,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty5.type, fromButton, vm)
-                    VerticalSpace(10)
-                }
+                MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty1.type, fromButton, vm, w)
+                VerticalSpace(10)
             }
-//        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 10.dp,
-                    vertical = 15.dp
-                )
-                .weight(0.2F)
+            Column( Modifier
+                    .align(CenterHorizontally)
+                    .weight(1F),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty2.type, fromButton, vm, w)
+                VerticalSpace(10)
+            }
+            Column( Modifier
+                    .align(CenterHorizontally)
+                    .weight(1F),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty3.type, fromButton, vm, w)
+                VerticalSpace(10)
+            }
+            Column( Modifier
+                .align(CenterHorizontally)
+                .weight(1F) ,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty4.type, fromButton, vm, w)
+                VerticalSpace(10)
+            }
+            Column( Modifier
+                .align(CenterHorizontally)
+                .weight(1F)
+                ,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty5.type, fromButton, vm, w)
+                VerticalSpace(10)
+            }
+        }
+        Row( modifier = Modifier
+            .fillMaxWidth()
+            .padding( horizontal = 10.dp, vertical = 15.dp )
+            .weight(w.thirdPartScreenWeight)
         ) {
             Row(horizontalArrangement = Arrangement.Start, modifier = Modifier
                 .weight(0.3F)
                 .align(CenterVertically)) {
-                MainScreenButton(navigator, info = MainScreenButtonStyle.Creator.type, fromButton, vm)
+                MainScreenButton(navigator, info = MainScreenButtonStyle.Creator.type, fromButton, vm, w)
             }
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.align(CenterVertically)) {
-                MainScreenButton(navigator, info = MainScreenButtonStyle.Donation.type, fromButton, vm)
+                MainScreenButton(navigator, info = MainScreenButtonStyle.Donation.type, fromButton, vm, w)
             }
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier
                 .weight(0.3F)
                 .align(CenterVertically)) {
-                MainScreenButton(navigator, info = MainScreenButtonStyle.Config.type, fromButton, vm)
+                MainScreenButton(navigator, info = MainScreenButtonStyle.Config.type, fromButton, vm, w)
             }
         }
     }

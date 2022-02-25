@@ -1,14 +1,10 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -18,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.Extensions.heightRatio
+import com.mobilegame.robozzle.Extensions.widthRatioTotalWidth
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
@@ -33,13 +31,13 @@ const val goingTopSizeButton = 360
 
 @ExperimentalAnimationApi
 @Composable
-fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel) {
+fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel, w: MainScreenWindowsInfos) {
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     var buttonState by remember { mutableStateOf(ButtonState.OnPlace)}
 
-    buttonState = vm.updateButtonStates(info.buttonId)
+    buttonState = vm.updateButtonStates(info.buttonKey)
     val transition = updateTransition(targetState = buttonState, label = "")
-    val animWidth by transition.animateDp(
+    val animWidthRatio by transition.animateFloat(
         label = "",
         transitionSpec = {
             when (buttonState) {
@@ -52,32 +50,43 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
         }
     ) { state ->
         when (state) {
-            ButtonState.OnTop -> goingTopSizeButton.dp
-            else -> info.width.dp
+            ButtonState.OnTop -> info.targetWidthRatio
+            else -> info.widthRatio
         }
     }
+//    val animHeightRatio by transition.animateFloat(
+//        label = "",
+//    ) { state ->
+//        when (state) {
+//            ButtonState.OnTop -> info.targetHeightRatio
+//            else -> info.heightRatio
+//        }
+//    }
 
     Box(Modifier
         .wrapContentSize()
         .background(Color.Transparent)
         .onGloballyPositioned { _layoutCoordinates ->
             val offset = _layoutCoordinates.boundsInRoot().topLeft
-            vm.setOffset(info.buttonId, offset)
+            vm.setOffset(info.buttonKey, offset)
         }
     ) {
         AnimatedVisibility(
             visible = visibleElements,
             //todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
-            enter = enterTransitionByFrom(info.buttonId, from) ,
-            exit = exitTransitionByState(buttonState, info.buttonId, vm.getOffset(info.buttonId), vm.animationTime.value)
+            enter = enterTransitionByFrom(info.buttonKey, from) ,
+            exit = exitTransitionByState(buttonState, info.buttonKey, vm.getOffset(info.buttonKey), vm.animationTime.value)
         ) {
             Card(
                 modifier = Modifier
-                    .width(animWidth)
-                    .height(info.height.dp)
+//                    .width(animWidth)
+//                    .height(info.height.dp)
+                    .widthRatioTotalWidth(animWidthRatio)
+//                    .heightRatio(animHeightRatio)
+                    .heightRatio(info.heightRatio)
                     .clickable(enabled = info.enable) {
-                        vm.updateButtonSelected(info.buttonId)
-                        vm.setAnimationTime(info.buttonId)
+                        vm.updateButtonSelected(info.buttonKey)
+                        vm.setAnimationTime(info.buttonKey)
                         buttonState = ButtonState.OnTop
                         vm.changeVisibility()
                         infoLog("vm.animationTime", "${vm.animationTime.value}")
@@ -182,3 +191,22 @@ fun exitTransitionByState(buttonState: ButtonState, id: Int, offset: Offset, ani
         else -> fadeOut(animationSpec = tween(250))
     }
 }
+
+//    val animWidth by transition.animateDp(
+//        label = "",
+//        transitionSpec = {
+//            when (buttonState) {
+//                ButtonState.OnTop -> tween(goingTopTiming)
+//                ButtonState.OnLeftSide -> tween(300)
+//                ButtonState.OnRightSide -> tween(300)
+//                ButtonState.Fade -> tween(200)
+//                else -> tween(250)
+//            }
+//        }
+//    ) { state ->
+//        when (state) {
+//            ButtonState.OnTop -> goingTopSizeButton.dp
+//            else -> info.width.dp
+//        }
+//    }
+//    val animWidthRatio by transition.(
