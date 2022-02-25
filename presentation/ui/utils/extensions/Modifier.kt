@@ -1,9 +1,7 @@
 package com.mobilegame.robozzle.Extensions
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
@@ -13,6 +11,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.Dimensions
 import java.lang.Math.*
@@ -79,5 +78,24 @@ fun Modifier.heightRatio(ratio: Float): Modifier = composed {
 
 fun Modifier.sizeBy(size: Size): Modifier = composed {
     val modifier = Modifier.size(width = size.width.dp, height = size.width.dp)
-    this.then(Modifier.size(width = size.width.dp, height = size.width.dp))
+    this.then(Modifier.size(width = size.width.dp, height = size.height.dp))
 }
+
+//fun Modifier.paddingRatio(ratio: Float): Modifier = composed {
+//    val screenHeightPixel = LocalContext.current.resources.displayMetrics.heightPixels
+//
+//    this.then(
+//        PaddingModifier(
+//            start = horizontal,
+//            top = vertical,
+//            end = horizontal,
+//            bottom = vertical,
+//            rtlAware = true,
+//            inspectorInfo = debugInspectorInfo {
+//                name = "padding"
+//                properties["horizontal"] = horizontal
+//                properties["vertical"] = vertical
+//            }
+//        )
+//    )
+//}

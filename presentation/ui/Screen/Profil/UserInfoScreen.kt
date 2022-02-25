@@ -10,8 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.Extensions.sizeBy
@@ -26,6 +29,8 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.UserInfosButton
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
+
 
 @Composable
 fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = viewModel(), w: UserInfosWindowInfos = viewModel()) {
@@ -34,33 +39,38 @@ fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = vi
     val dens = LocalDensity.current
 
     Column() {
-        Column( modifier = Modifier
+        Box( Modifier
             .fillMaxWidth()
             .weight(w.firstPartScreenWeight)
         ) {
-            Row( modifier = Modifier
-                .fillMaxHeight()
+            PaddingComposable(
+                topPaddingRatio = 1f/3f,
+                bottomPaddingRatio = 1f/3f,
+                startPaddingRatio = 0.8f,
+                endPaddingRatio = 0.1f,
             ) {
-                val size = w.userInfosButtonSize(UserInfosButton.LogOut, ctxt, dens)
-                Box() {
-                    Button( modifier = Modifier
-                        .sizeBy(size)
-                        .align(Alignment.CenterEnd)
-                        .padding(end = size.width.dp)
-                        ,
-                        onClick = {
-                            screenVM.logingOut()
-                            NavViewModel(navigator).navigateTo(Screens.MainMenu)
-                        }
-                    ) {
-                        Text(text = "Log out")
+                Button(
+                    onClick = {
+                        screenVM.logingOut()
+                        NavViewModel(navigator).navigateTo(Screens.MainMenu)
                     }
-                    CenterComposable {
-                        Row() {
-                            Text(text = "${screenVM.name}", color = whiteDark4)
-                        }
-                    }
-                }
+                ) { Text(text = "Log out") }
+            }
+            PaddingComposable(
+                topPaddingRatio = 0.1f,
+                bottomPaddingRatio = 0.1f,
+                startPaddingRatio = 0.3f,
+                endPaddingRatio = 0.3f,
+//                enableColor = true
+            ) {
+                Card(
+                    shape = MaterialTheme.shapes.medium,
+                    backgroundColor = w.cardNameColor,
+                    elevation = w.cardNameElevation,
+                    modifier = Modifier
+                    ,
+                    content = { CenterComposable { Text(text = "${screenVM.name}", color = whiteDark4) } }
+                )
             }
         }
         Column(
@@ -87,7 +97,6 @@ fun UserInfoScreen(navigator: Navigator, screenVM: UserInfosScreenViewModel = vi
 fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<String>) {
     Box(
         modifier = Modifier
-            .background(Color.Yellow)
             .clickable {
                 infoLog("click on card", "start")
                 NavViewModel(navigator).navigateTo(Screens.RanksLevel, levelWin.levelId.toString())
