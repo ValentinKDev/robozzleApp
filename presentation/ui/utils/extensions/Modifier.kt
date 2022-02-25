@@ -80,26 +80,3 @@ fun Modifier.sizeBy(size: Size): Modifier = composed {
     val modifier = Modifier.size(width = size.width.dp, height = size.width.dp)
     this.then(Modifier.size(width = size.width.dp, height = size.height.dp))
 }
-
-//fun Modifier.weightIf(enable: Boolean, weight: Float) {
-//    this.then(Modifier)
-//}
-
-//fun Modifier.paddingRatio(ratio: Float): Modifier = composed {
-//    val screenHeightPixel = LocalContext.current.resources.displayMetrics.heightPixels
-//
-//    this.then(
-//        PaddingModifier(
-//            start = horizontal,
-//            top = vertical,
-//            end = horizontal,
-//            bottom = vertical,
-//            rtlAware = true,
-//            inspectorInfo = debugInspectorInfo {
-//                name = "padding"
-//                properties["horizontal"] = horizontal
-//                properties["vertical"] = vertical
-//            }
-//        )
-//    )
-//}

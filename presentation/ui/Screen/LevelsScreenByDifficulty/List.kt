@@ -32,10 +32,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.gray6
@@ -53,9 +55,10 @@ import java.util.*
 @Composable
 fun LevelsScreenByDifficultyList(
     navigator: Navigator,
-    vm: LevelsScreenByDifficultyViewModel,
+    screenVM: LevelsScreenByDifficultyViewModel,
+    rankingIconVM: RankingIconViewModel = viewModel()
 ) {
-    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
+    val levelsList: List<LevelOverView> by screenVM.levelOverViewList.collectAsState()
     Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
 
     Column() {
@@ -63,7 +66,7 @@ fun LevelsScreenByDifficultyList(
         if (levelsList.isNotEmpty()) {
             LazyColumn {
                 itemsIndexed(levelsList) { index, level ->
-                    DisplayLevelOverView(level, vm, navigator)
+                    DisplayLevelOverView(level, screenVM, rankingIconVM, navigator)
                 }
             }
         } else { Text(text = "Can't access the server and no level in the phone internal storage") }
@@ -71,7 +74,7 @@ fun LevelsScreenByDifficultyList(
 }
 
 @Composable
-fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) {
+fun DisplayLevelOverView(level: LevelOverView, screenVM: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) {
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
@@ -94,20 +97,22 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
         Row( modifier = Modifier.fillMaxSize() )
         {
             Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 80, map = level.map) }
-            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, vm, navigator) }
-            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, vm, navigator) }
+            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, screenVM, rankingIconVM,  navigator) }
+            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, screenVM, navigator) }
         }
     }
 }
 
 @Composable
-fun DisplayLevelDescription(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) {
+fun DisplayLevelDescription(level: LevelOverView, screenVM: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     when (isPressed) {
-        true -> vm.rankingIconIsPressed()
-        false -> vm.rankingIconIsReleased(navigator, level.id)
+//        true -> screenVM.rankingIconIsPressed()
+//        false -> screenVM.rankingIconIsReleased(navigator, level.id)
+        true -> rankingIconVM.rankingIconIsPressed()
+        false -> rankingIconVM.rankingIconIsReleased(navigator, level.id)
     }
 
     Column(
@@ -146,7 +151,7 @@ fun DisplayLevelDescription(level: LevelOverView, vm: LevelsScreenByDifficultyVi
                             infoLog("clickable", "ranking icon")
                         }
                     ) {
-                        RankingIconBouncing(sizeAtt = 35, vm = vm, isPressed = isPressed)
+                        RankingIconBouncing(sizeAtt = 35, rankingIconVM = rankingIconVM, isPressed = isPressed)
                     }
                 }
             }

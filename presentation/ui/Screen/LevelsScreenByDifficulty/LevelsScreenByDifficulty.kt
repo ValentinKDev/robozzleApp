@@ -55,7 +55,7 @@ fun LevelsScreenByDifficulty(
         ) {
             LevelsScreenByDifficultyList(
                 navigator = navigator,
-                vm = levelScreenVM
+                screenVM = levelScreenVM
             )
         }
         AnimatedVisibility(

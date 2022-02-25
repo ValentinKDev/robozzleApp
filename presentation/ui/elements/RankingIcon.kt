@@ -14,15 +14,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.gradientBackground
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
+import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.presentation.res.*
 
 @Composable
-fun RankingIconBouncing(sizeAtt: Int, vm: LevelsScreenByDifficultyViewModel, isPressed: Boolean) {
-//    val height = sizeAtt * 0.7F
+fun RankingIconBouncing(sizeAtt: Int, rankingIconVM: RankingIconViewModel, isPressed: Boolean) {
     val height = sizeAtt * 0.85F
     val width = height * (6.0F / 7.0F)
 
-    val currentState by remember(vm) {vm.rankingIconTouchState}.collectAsState(OnTouchBounceState.Released)
+//    val currentState by remember(screenVM) {screenVM.rankingIconTouchState}.collectAsState(OnTouchBounceState.Released)
+    val currentState by remember(rankingIconVM) {rankingIconVM.rankingIconTouchState}.collectAsState(OnTouchBounceState.Released)
 
     val animatedHeightGreen: Dp by animateDpAsState(
         when {
@@ -65,14 +66,6 @@ fun RankingIconBouncing(sizeAtt: Int, vm: LevelsScreenByDifficultyViewModel, isP
         modifier = Modifier
             .width(width.dp)
             .height(sizeAtt.dp)
-//            .pointerInput(Unit) { detectTapGestures(
-//                    onPress = {
-//                        currentState = OnTouchBounceState.Pressed
-//                        tryAwaitRelease()
-//                        currentState = OnTouchBounceState.Released
-//                        NavViewModel(navigator).navigateTo(destination = Screens.RanksLevel, argStr = levelId.toString())
-//                    }
-//            ) }
         ,
         verticalAlignment = Alignment.Bottom
     ) {

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
 
-class UserInfosWindowInfos(): ViewModel() {
+class UserInfoScreenData(): ViewModel() {
 
     /** Parts */
     val firstPartScreenWeight = 0.1f
