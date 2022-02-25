@@ -5,6 +5,8 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -13,6 +15,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.Extensions.heightRatio
 import com.mobilegame.robozzle.Extensions.widthRatioTotalWidth
@@ -32,12 +36,15 @@ const val goingTopSizeButton = 360
 @ExperimentalAnimationApi
 @Composable
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel, w: MainScreenWindowsInfos) {
+    val ctxt = LocalContext.current
+    val dens = LocalDensity.current
+
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     var buttonState by remember { mutableStateOf(ButtonState.OnPlace)}
 
     buttonState = vm.updateButtonStates(info.buttonKey)
     val transition = updateTransition(targetState = buttonState, label = "")
-    val animWidthRatio by transition.animateFloat(
+    val animSize by transition.animateSize(
         label = "",
         transitionSpec = {
             when (buttonState) {
@@ -50,26 +57,18 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
         }
     ) { state ->
         when (state) {
-            ButtonState.OnTop -> info.targetWidthRatio
-            else -> info.widthRatio
+            ButtonState.OnTop -> MainScreenWindowsInfos().getButtonSizeTarget(info.button, ctxt, dens)
+            else -> MainScreenWindowsInfos().getButtonSize(info.button, ctxt, dens)
         }
     }
-//    val animHeightRatio by transition.animateFloat(
-//        label = "",
-//    ) { state ->
-//        when (state) {
-//            ButtonState.OnTop -> info.targetHeightRatio
-//            else -> info.heightRatio
-//        }
-//    }
-
-    Box(Modifier
-        .wrapContentSize()
-        .background(Color.Transparent)
-        .onGloballyPositioned { _layoutCoordinates ->
-            val offset = _layoutCoordinates.boundsInRoot().topLeft
-            vm.setOffset(info.buttonKey, offset)
-        }
+    Box(
+        Modifier
+            .wrapContentSize()
+            .background(Color.Transparent)
+            .onGloballyPositioned { _layoutCoordinates ->
+                val offset = _layoutCoordinates.boundsInRoot().topLeft
+                vm.setOffset(info.buttonKey, offset)
+            }
     ) {
         AnimatedVisibility(
             visible = visibleElements,
@@ -79,11 +78,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
         ) {
             Card(
                 modifier = Modifier
-//                    .width(animWidth)
-//                    .height(info.height.dp)
-                    .widthRatioTotalWidth(animWidthRatio)
-//                    .heightRatio(animHeightRatio)
-                    .heightRatio(info.heightRatio)
+                    .size(width = animSize.width.dp, height = animSize.height.dp)
                     .clickable(enabled = info.enable) {
                         vm.updateButtonSelected(info.buttonKey)
                         vm.setAnimationTime(info.buttonKey)
@@ -93,7 +88,6 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
                         NavViewModel(navigator).navigateTo(
                             destination = info.destination,
                             argStr = info.arg,
-//                            delayTiming = 400
                             delayTiming = vm.animationTime.value
                         )
                     }
@@ -106,6 +100,10 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
             }
         }
     }
+}
+
+class SizeRatio(widhtRatio: Float, heightRatio: Float) {
+
 }
 
 enum class ButtonState {
@@ -162,24 +160,12 @@ fun exitTransitionByState(buttonState: ButtonState, id: Int, offset: Offset, ani
             targetOffsetY = {
                 verbalLog("offset", "$offset")
                 when (id) {
-//                    ButtonId.LevelDiff1.key -> -400
-//                    ButtonId.LevelDiff2.key -> -550
-//                    ButtonId.LevelDiff3.key -> -700
-//                    ButtonId.LevelDiff4.key -> -900
-//                    ButtonId.LevelDiff5.key -> -1100
                     in ButtonId.LevelDiff1.key..ButtonId.LevelDiff5.key -> offset.y.toInt() * -1
                     else -> -500
                 }
             },
-//            animationSpec = tween()
             animationSpec = tween(
                 when (id) {
-            //                ButtonId.LevelDiff1.key -> tween(500)
-            //                ButtonId.LevelDiff2.key -> tween(500)
-            //                ButtonId.LevelDiff3.key -> tween(500)
-            //                ButtonId.LevelDiff4.key -> tween(500)
-            //                ButtonId.LevelDiff5.key -> tween(500)
-            //                else -> tween(500)
                     in ButtonId.LevelDiff1.key..ButtonId.LevelDiff5.key -> animationTime
                     else -> -500
                 }.toInt()
@@ -187,7 +173,6 @@ fun exitTransitionByState(buttonState: ButtonState, id: Int, offset: Offset, ani
         )
         ButtonState.OnRightSide -> slideOutHorizontally(targetOffsetX = { +500 }, animationSpec = tween(400)) + fadeOut(animationSpec = tween(400))
         ButtonState.OnLeftSide -> slideOutHorizontally(targetOffsetX = { -500 }, animationSpec = tween(400)) + fadeOut(animationSpec = tween(400))
-//        ButtonState.OnLeftSide -> fadeOut()
         else -> fadeOut(animationSpec = tween(250))
     }
 }
