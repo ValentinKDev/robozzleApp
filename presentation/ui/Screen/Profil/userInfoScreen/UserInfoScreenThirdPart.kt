@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import com.mobilegame.robozzle.domain.model.Screen.userInfoScreen.UserInfoScreenData
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
@@ -17,27 +21,28 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 @ExperimentalAnimationApi
 @Composable
 fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) {
+//    val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
+    val context = LocalContext.current
+
     Row(Modifier.fillMaxSize()) {
-        Column(
-            Modifier
-                .weight(1F)
-        ) {
+        Column( Modifier.weight(1F) ) {
             PaddingComposable(
                 startPaddingRatio = 0.1F,
                 endPaddingRatio = 0.025F
             ) {
-                Column(
-                    Modifier.onGloballyPositioned { vm.dimension.setWinOverViewDimensions(it) }
+                Column( Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { vm.dimension.setWinOverViewDimensions(it, context) }
                 ) {
                     LazyColumn( Modifier.fillMaxHeight()) {
-                        itemsIndexed(vm.data.levelWinList1.value) { _, _levelWin ->
+                        itemsIndexed(vm.data.levelWinList1.value) { _index, _levelWin ->
 //                            AnimatedVisibility(
 //                                visible = listVisible,
-//                                enter = slideInVertically(),
-//                                exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(
-//                                    animationSpec = tween(
-//                                        300
-//                                    )
+//                                enter = slideInVertically(
+//                                   animationSpec = tween( 200 + _index * 100 )
+//                                ),
+//                                exit = slideOutVertically(animationSpec = tween(300))
+//                                        + fadeOut( animationSpec = tween( 300 )
 //                                )
 //                            ) {
                                 DisplayWinOverView(

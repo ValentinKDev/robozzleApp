@@ -2,17 +2,22 @@ package com.mobilegame.robozzle.presentation.ui.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.presentation.res.*
 
 @Composable
-fun MapView(widthInt: Int, map: List<String>) {
+fun MapView(widthInt: Int, map: List<String>, modifier: Modifier = Modifier) {
     //todo : make a function to trunc every full column and line of '.' (if it preserver symmetry)
     //todo : put those calculs in a VM ?
     val caseNumberWidth = map[0].length
@@ -22,13 +27,12 @@ fun MapView(widthInt: Int, map: List<String>) {
     val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
     val mapWidthtDP: Dp = widthInt.dp
     val casePaddingDP: Dp = (caseSize / 20.0F).dp
-//    errorLog("map size", "w $caseNumberWidth h $caseNumberHeight caseSize $caseSize")
 
     Box( modifier = Modifier
         .height(mapHeightDP)
         .width(mapWidthtDP)
-//        .drawBehind {  }
-        .background(grayDark2)
+        .background(grayDark3)
+        .then(modifier)
     ) {
         Column(
             modifier = Modifier
@@ -37,7 +41,6 @@ fun MapView(widthInt: Int, map: List<String>) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             map.forEachIndexed { rowIndex, rowString ->
-//                infoLog("rowIndex", "$rowIndex")
                 Row {
                     rowString.forEachIndexed { columnIndex, char ->
                         val caseColor = char.toString()
@@ -45,12 +48,14 @@ fun MapView(widthInt: Int, map: List<String>) {
                             .background(Color.Transparent)
                             .size(caseSize.dp)
 //                            .padding(casePaddingDP)
+                            ,
                         ) {
+//                           todo : might add clarity to augement the range of luminosity in the gradient so the difference between each case is clear and it compensate the fact that there is no padding
                             Box(
                                 Modifier
                                     .fillMaxSize()
-                                        //todo : might add clarity to augement the range of luminosity in the gradient so the difference between each case is clear and it compensate the fact that there is no padding
-                                    .gradientBackground( ColorsList(caseColor), 135f )
+                                    .gradientBackground(ColorsList(caseColor), 135f)
+                                    .graphicsLayer { shadowElevation = if (caseColor != ".") 7.dp.toPx() else 0.dp.toPx() }
                             ) { }
                         }
                     }

@@ -30,6 +30,18 @@ fun CenterComposable(content: @Composable () -> Unit) {
 }
 
 @Composable
+fun CenterComposableVertically(content: @Composable () -> Unit) {
+    Column( modifier = Modifier.fillMaxWidth() ) {
+        Row( modifier = Modifier .wrapContentHeight().align(Alignment.CenterHorizontally) ) {
+            Box( modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                content.invoke()
+            }
+        }
+    }
+}
+
+@Composable
 fun CenterText(
     text: String,
     modifier: Modifier = Modifier,

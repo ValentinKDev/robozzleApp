@@ -108,15 +108,18 @@ fun MainScreen(navigator: Navigator, fromButton: Int = MainMenuButton.None.key, 
         ) {
             Row(horizontalArrangement = Arrangement.Start, modifier = Modifier
                 .weight(0.3F)
-                .align(CenterVertically)) {
+                .align(CenterVertically))
+            {
                 MainScreenButton(navigator, info = MainScreenButtonStyle.Creator.type, fromButton, vm, w)
             }
-            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.align(CenterVertically)) {
+            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.align(CenterVertically))
+            {
                 MainScreenButton(navigator, info = MainScreenButtonStyle.Donation.type, fromButton, vm, w)
             }
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier
                 .weight(0.3F)
-                .align(CenterVertically)) {
+                .align(CenterVertically))
+            {
                 MainScreenButton(navigator, info = MainScreenButtonStyle.Config.type, fromButton, vm, w)
             }
         }

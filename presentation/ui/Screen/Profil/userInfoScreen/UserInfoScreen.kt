@@ -23,7 +23,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.User
 @ExperimentalAnimationApi
 @Composable
 fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), screenData: UserInfoScreenData = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
-//    val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
+    val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
 
     val ctxt = LocalContext.current
     val dens = LocalDensity.current
@@ -53,23 +53,24 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
             UserInfoScreenSecondPart(vm = vm)
         }
         Column( Modifier
+//        Box( Modifier
             .weight(vm.dimension.thirdPartScreenWeight)
             .fillMaxWidth()
         ) {
-//            AnimatedVisibility(
-//                visible = listVisible,
-//                enter = slideInVertically(),
-//                exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(
-//                    animationSpec = tween(
-//                        300
-//                    )
-//                )
-//            ) {
+            AnimatedVisibility(
+                visible = listVisible,
+                enter = slideInVertically(),
+                exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(
+                    animationSpec = tween(
+                        300
+                    )
+                )
+            ) {
                 UserInfoScreenThirdPart(
                     vm = vm,
                     navigator = navigator
                 )
-//            }
+            }
         }
     }
 }

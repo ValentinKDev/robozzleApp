@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
@@ -28,36 +29,21 @@ import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 fun CreatorScreen(navigator: Navigator, testShared: TestShared = viewModel()) {
     infoLog("launch", "CreatorScreen()")
 
-    Row(Modifier.background(gray6)) {
-        HorizontalSpace(widthDp = 20)
-        Column(modifier = Modifier.weight(1F)) {
-            VerticalSpace(height = 50)
-//            RankingIconBouncing(sizeAtt = 120)
-            VerticalSpace(height = 50)
-            MapView(widthInt = 200, map = mapTest)
-            VerticalSpace(height = 50)
-            MapView(widthInt = 150, map = mapTest)
-            VerticalSpace(height = 50)
-            MapView(widthInt = 100, map = mapTest)
-//            RankingIcon(75)
-//            VerticalSpace(height = 50)
-//            RankingIcon(sizeAtt = 120)
-//            VerticalSpace(height = 50)
-//            Neon()
-//            VerticalSpace(height = 50)
-//            RankingIconBouncing(sizeAtt = 50)
+    Column(
+        Modifier
+            .height(400.dp)
+            .width(100.dp)
+            .background(Color.Red)
+    ) {
+//        Column(Modifier.weight(1F), verticalArrangement = Arrangement.Top) {
+        Box(Modifier){
+            Box(Modifier.size(5.dp).background(Color.Yellow))
+        }
+        Column() {
 
         }
-        HorizontalSpace(widthDp = 40)
-        Column(modifier = Modifier.weight(1F)) {
-            VerticalSpace(height = 50)
-//            RankingIconBouncing(sizeAtt = 50)
-            VerticalSpace(height = 50)
-            MapView(widthInt = 150, map = mapTest2)
-            VerticalSpace(height = 50)
-            MapView(widthInt = 100, map = mapTest2)
-//            VerticalSpace(height = 50)
-//            VerticalSpace(height = 50)
+        Column(Modifier.weight(1F), verticalArrangement = Arrangement.Bottom) {
+            Box(Modifier.size(5.dp).background(Color.Yellow))
         }
     }
 }
