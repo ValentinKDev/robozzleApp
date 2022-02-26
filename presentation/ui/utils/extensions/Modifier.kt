@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.Extensions
+package com.mobilegame.robozzle.presentation.ui.utils.extensions
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.Dimensions
 import java.lang.Math.*

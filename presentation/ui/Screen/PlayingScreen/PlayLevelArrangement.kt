@@ -9,11 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.Extensions.gradientBackground
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.ColorsList
-import kotlinx.coroutines.DelicateCoroutinesApi
 
 //todo : use the navigation to avoid the recall of the function DisplayGameScreen 3 times
 //@DelicateCoroutinesApi

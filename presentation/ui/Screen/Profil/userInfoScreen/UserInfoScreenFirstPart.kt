@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
-import com.mobilegame.robozzle.domain.model.window.UserInfoScreenData
+import com.mobilegame.robozzle.domain.model.Screen.userInfoScreen.UserInfoScreenData
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -16,7 +16,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
-fun UserInfoScreenFirstPart(screenVM: UserInfosScreenViewModel, w: UserInfoScreenData, navigator: Navigator) {
+fun UserInfoScreenFirstPart(vm: UserInfosScreenViewModel, screenData: UserInfoScreenData, navigator: Navigator) {
     PaddingComposable(
         topPaddingRatio = 1f/3f,
         bottomPaddingRatio = 1f/3f,
@@ -25,7 +25,7 @@ fun UserInfoScreenFirstPart(screenVM: UserInfosScreenViewModel, w: UserInfoScree
     ) {
         Button(
             onClick = {
-                screenVM.logingOut()
+                vm.logic.logingOut()
                 NavViewModel(navigator).navigateTo(Screens.MainMenu)
             }
         ) { Text(text = "Log out") }
@@ -39,11 +39,9 @@ fun UserInfoScreenFirstPart(screenVM: UserInfosScreenViewModel, w: UserInfoScree
     ) {
         Card(
             shape = MaterialTheme.shapes.medium,
-            backgroundColor = w.cardNameColor,
-            elevation = w.cardNameElevation,
-            modifier = Modifier
-            ,
-            content = { CenterComposable { Text(text = "${screenVM.name}", color = whiteDark4) } }
+            backgroundColor = vm.data.cardNameColor,
+            elevation = vm.dimension.cardNameElevation,
+            content = { CenterComposable { Text(text = "${vm.data.name}", color = vm.data.textColor) } }
         )
     }
 }

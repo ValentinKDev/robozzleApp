@@ -7,4 +7,7 @@ internal sealed class KeyProvider(val key: String) {
     object ConnectionState: KeyProvider("connection_State_key_datastore")
     object Version: KeyProvider("version_key_datastore")
     object Token: KeyProvider("token_key_datastore")
+    object WidthPixels: KeyProvider("widht_pixels_key_datastore")
+    object HeigthPixel: KeyProvider("height_pixels_key_datastore")
+    object Density: KeyProvider("density_key_datastore")
 }

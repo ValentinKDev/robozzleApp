@@ -11,6 +11,7 @@ import com.mobilegame.robozzle.domain.model.data.store.AppConfigDataStoreViewMod
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.appConfig.AppConfigServerViewModel
 import com.mobilegame.robozzle.domain.model.data.server.level.LevelServerViewModel
+import com.mobilegame.robozzle.domain.model.data.store.ScreenDimensionsDataStoreViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,12 +25,16 @@ class LaunchingViewModel(context: Context): ViewModel() {
     private val levelServerVM = LevelServerViewModel()
     private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
     private val appConfigServerVM = AppConfigServerViewModel()
+    private val screenDimensionDataStore = ScreenDimensionsDataStoreViewModel(context)
     private val rankVM = RankVM(context)
 
         fun launch() {
 
             viewModelScope.launch {
                 Log.e("init", "MainMenuViewModel()")
+
+                //store screenDimension
+                screenDimensionDataStore.storeDimensionDensity()
 
                 //load version
                 infoLog("get version", "local")

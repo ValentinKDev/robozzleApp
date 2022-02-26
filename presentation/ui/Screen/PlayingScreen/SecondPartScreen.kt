@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.Extensions.gradientBackground
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.InGame.AnimationLogic
 import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel

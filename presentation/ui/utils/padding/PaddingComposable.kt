@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.mobilegame.robozzle.Extensions.backColor
-import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 import com.mobilegame.robozzle.presentation.res.*
 
 @Composable
