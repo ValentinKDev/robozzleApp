@@ -5,11 +5,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
-import com.mobilegame.robozzle.domain.model.Screen.userInfoScreen.UserInfoScreenData
-import com.mobilegame.robozzle.presentation.res.whiteDark4
+import com.mobilegame.robozzle.domain.model.Screen.userInfo.UserInfoScreenData
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
@@ -25,7 +23,7 @@ fun UserInfoScreenFirstPart(vm: UserInfosScreenViewModel, screenData: UserInfoSc
     ) {
         Button(
             onClick = {
-                vm.logic.logingOut()
+//                vm.logic.logingOut()
                 NavViewModel(navigator).navigateTo(Screens.MainMenu)
             }
         ) { Text(text = "Log out") }

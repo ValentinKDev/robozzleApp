@@ -1,19 +1,12 @@
-package com.mobilegame.robozzle.domain.model.Screen.userInfoScreen
+package com.mobilegame.robozzle.domain.model.Screen.userInfo
 
 import android.content.Context
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.data.store.ScreenDimensionsDataStoreViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark3
-import com.mobilegame.robozzle.presentation.ui.utils.Dimensions
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class UserInfoScreenDimensions(): ViewModel() {

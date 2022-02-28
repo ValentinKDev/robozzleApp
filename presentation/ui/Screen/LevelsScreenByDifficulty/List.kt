@@ -92,7 +92,7 @@ fun DisplayLevelOverView(level: LevelOverView, screenVM: LevelsScreenByDifficult
         ,
 //        elevation = 8.dp,
         elevation = 18.dp,
-        backgroundColor = grayDark2
+        backgroundColor = grayDark3
     ) {
         Row( modifier = Modifier.fillMaxSize() )
         {
@@ -151,7 +151,7 @@ fun DisplayLevelDescription(level: LevelOverView, screenVM: LevelsScreenByDiffic
                             infoLog("clickable", "ranking icon")
                         }
                     ) {
-                        RankingIconBouncing(sizeAtt = 35, rankingIconVM = rankingIconVM, isPressed = isPressed)
+                        RankingIconBouncing(sizeAtt = 35, rankingIconVM = rankingIconVM, isPressed = isPressed, enableShadow = true)
                     }
                 }
             }

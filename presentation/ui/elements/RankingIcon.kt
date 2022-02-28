@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -13,7 +14,7 @@ import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.presentation.res.*
 
 @Composable
-fun RankingIconBouncing(sizeAtt: Int, rankingIconVM: RankingIconViewModel, isPressed: Boolean) {
+fun RankingIconBouncing(sizeAtt: Int, rankingIconVM: RankingIconViewModel, isPressed: Boolean, enableShadow: Boolean) {
     val height = sizeAtt * 0.85F
     val width = height * (6.0F / 7.0F)
 
@@ -66,23 +67,27 @@ fun RankingIconBouncing(sizeAtt: Int, rankingIconVM: RankingIconViewModel, isPre
     ) {
         Column( modifier = Modifier
             .height(animatedHeightGreen)
-            .weight(1.0F)
-            .gradientBackground(listOf(greendark3, greendark9), 0F)
-            .graphicsLayer { shadowElevation = 15.dp.toPx() }
+            .weight(1F)
+            .gradientBackground(listOf(greendark4, greendark9), 0F)
+//            .gradientBackground(listOf(greendark3, greendark9), 180F)
+            .graphicsLayer { if (enableShadow) shadowElevation = 15.dp.toPx() }
             ,
         ) { }
         Column( modifier = Modifier
             .height(animatedHeightBlue)
-            .weight(1.0F)
-            .gradientBackground(listOf(blueDark0, blueDark6), 0F)
-            .graphicsLayer { shadowElevation = 15.dp.toPx() }
+            .weight(1.1F)
+            .gradientBackground(listOf(blueDark1, blueDark5), 0F)
+//            .gradientBackground(listOf(blueDark0, blueDark6), 180F)
+//            .graphicsLayer { if (enableShadow) shadowElevation = 15.dp.toPx() }
+            .graphicsLayer { if (enableShadow) shadowElevation = 25.dp.toPx() }
             ,
         ) { }
         Column( modifier = Modifier
             .height(animatedHeightRed)
-            .weight(1.0F)
-            .gradientBackground(listOf(redDark3, redDark9), 0F)
-            .graphicsLayer { shadowElevation = 15.dp.toPx() }
+            .weight(1F)
+            .gradientBackground(listOf(Color(0xAAAF0000), redDark8), 0F)
+//            .gradientBackground(listOf(redDark3, redDark9), 180F)
+            .graphicsLayer { if (enableShadow) shadowElevation = 15.dp.toPx() }
             ,
         ) { }
     }

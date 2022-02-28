@@ -1,13 +1,11 @@
-package com.mobilegame.robozzle.domain.model.Screen.userInfoScreen
+package com.mobilegame.robozzle.domain.model.Screen.userInfo
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +18,10 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
     private val _doubleListVisible = MutableStateFlow<Boolean>(false)
     val doubleListVisible: StateFlow<Boolean> = _doubleListVisible.asStateFlow()
     fun setDoubleListVisible(value: Boolean) {_doubleListVisible.value = value}
+
+//    private val _doubleListVisible = MutableStateFlow<Boolean>(false)
+//    val doubleListVisible: StateFlow<Boolean> = _doubleListVisible.asStateFlow()
+//    fun setDoubleListVisible(value: Boolean) {_doubleListVisible.value = value}
 
     init {
         //launch levelwin list from room

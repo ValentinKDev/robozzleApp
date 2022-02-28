@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -12,28 +11,20 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
-import com.mobilegame.robozzle.domain.model.Screen.userInfoScreen.UserInfoScreenDimensions
-import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
+import com.mobilegame.robozzle.domain.model.Screen.userInfo.UserInfoScreenDimensions
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
+import com.mobilegame.robozzle.presentation.ui.utils.TextWithShadow
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
@@ -52,12 +43,9 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
             .padding(
                 top = vm.dimension.winOverViewDimensions[UserInfoScreenDimensions.WinOverViewDimensions.PaddingTop]?.dp
                     ?: 0.dp,
-//                bottom = 6.dp,
-//                start = 6.dp,
-//                end = 6.dp,
             )
             .fillMaxWidth()
-            .height(150.dp)
+//            .height(150.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(color = Color.Transparent)
@@ -72,26 +60,15 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
         ) {
             Box( modifier = Modifier
                 .fillMaxWidth()
-//                .wrapContentHeight()
                 .weight(0.1F)
             ) {
                 TextWithShadow(text = "level ${levelWin.levelId}", modifier = Modifier.align(Center))
-//                Text(
-//                    text ="level ${levelWin.levelId}",
-//                    color = whiteDark4,
-//                    modifier = Modifier
-//                        .align(Alignment.Center)
-//                        .shadow(elevation = 2.dp)
-//                )
             }
-            Row(
-                Modifier
+            Row( Modifier
 //                    .wrapContentHeight()
                     .wrapContentWidth()
                     .weight(0.3F)
-                ,
             ) {
-//                CenterComposableVertically {
                 CenterComposable {
                     MapView(
                         widthInt = vm.dimension.mapOverViewSize,
@@ -99,12 +76,9 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                     )
                 }
             }
-//            Box(Modifier.fillMaxWidth()) {
-            Column(
-                Modifier
+            Column( Modifier
                     .fillMaxWidth()
                     .weight(0.2F)
-//                .background(greendark7)
                 ,
                 verticalArrangement = Arrangement.Bottom
             ) {
@@ -112,12 +86,9 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                     verticalPadding = 0.07F,
                     horizontalPadding = 0.05F,
                 ) {
-                    Row(Modifier
-                        .fillMaxWidth()
+                    Row(Modifier .fillMaxWidth()
                     ) {
-                        Row (
-                            Modifier
-//                        .wrapContentSize()
+                        Row ( Modifier
                                 .wrapContentHeight()
                                 .weight(6F)
                             ,
@@ -144,7 +115,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                             ,
                             horizontalArrangement = Arrangement.End
                         ) {
-                            RankingIconBouncing(sizeAtt = 35, rankingIconVM = vm.logic.rankingIconVM, isPressed = isPressed)
+                            RankingIconBouncing(sizeAtt = 35, rankingIconVM = vm.logic.rankingIconVM, isPressed = isPressed, enableShadow = false)
                         }
                     }
                 }
