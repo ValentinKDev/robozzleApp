@@ -20,21 +20,36 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenRatios
 import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewModel
 import com.mobilegame.robozzle.presentation.res.gray5
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.noRippleClickable
+import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @ExperimentalAnimationApi
 @Composable
 fun DonationScreen(vm: DonationScreenViewModel = viewModel()) {
-    Column( Modifier.fillMaxSize() )
-    {
-        Box( modifier = Modifier.fillMaxWidth().weight(vm.dimensions.fistPartWeigth) )
-        {
-            DonationScreenFirstPart()
+    Box( Modifier.fillMaxSize()
+        .noRippleClickable { vm.logic.fold() }
+    ) {
+        Column(Modifier.fillMaxSize()) {
+            PaddingComposable(
+                bottomPaddingRatio = vm.data.ratios.firstPartBottomPadding
+            ) {
+                Box( modifier = Modifier
+                    .fillMaxWidth()
+//                    .weight(vm.data.ratios.fistPartWeigth) )
+                )
+                {
+                    DonationScreenFirstPart(vm)
+                }
+            }
         }
-        Box( modifier = Modifier.fillMaxWidth().weight(vm.dimensions.secondtPartWeight) )
-        {
-            DonationScreenSecondPart(vm)
+        Column(Modifier.fillMaxSize()) {
+                Box( modifier = Modifier.fillMaxWidth() )
+                {
+                    DonationScreenSecondPart(vm)
+                }
         }
     }
 }

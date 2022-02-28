@@ -83,21 +83,21 @@ fun TestScreen(navigator: Navigator, animator: Animator, from: String) {
 //                initiallyVisible = false,
             ) {
             LazyColumn {
-                itemsIndexed(DonationScreenViewModel().list) { _, _element ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp)
-                            .clickable {
-                            }
-                    ) { Text(text = _element) }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(2.dp)
-                            .background(Color.Black)
-                    ) { }
-                }
+//                itemsIndexed(DonationScreenViewModel().list) { _, _element ->
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(60.dp)
+//                            .clickable {
+//                            }
+//                    ) { Text(text = _element) }
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(2.dp)
+//                            .background(Color.Black)
+//                    ) { }
+//                }
             }
             }
         }

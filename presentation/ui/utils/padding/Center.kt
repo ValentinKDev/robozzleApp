@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.TextUnit
 @Composable
 fun CenterComposable(content: @Composable () -> Unit) {
     Column( modifier = Modifier.fillMaxSize() ) {
-        Row( modifier = Modifier .fillMaxHeight().align(Alignment.CenterHorizontally) ) {
+        Row( modifier = Modifier
+            .fillMaxHeight()
+            .align(Alignment.CenterHorizontally) ) {
             Box( modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 content.invoke()
@@ -31,8 +33,24 @@ fun CenterComposable(content: @Composable () -> Unit) {
 
 @Composable
 fun CenterComposableVertically(content: @Composable () -> Unit) {
+    Row( modifier = Modifier.fillMaxHeight() ) {
+        Column( modifier = Modifier
+            .wrapContentSize()
+            .align(Alignment.CenterVertically) ) {
+            Box( modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                content.invoke()
+            }
+        }
+    }
+}
+
+@Composable
+fun CenterComposableHorizontally(content: @Composable () -> Unit) {
     Column( modifier = Modifier.fillMaxWidth() ) {
-        Row( modifier = Modifier .wrapContentHeight().align(Alignment.CenterHorizontally) ) {
+        Row( modifier = Modifier
+            .wrapContentHeight()
+            .align(Alignment.CenterHorizontally) ) {
             Box( modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 content.invoke()

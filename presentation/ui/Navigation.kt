@@ -40,7 +40,8 @@ fun Navigation(navigator: Navigator, screenData: ScreenData) {
     val context = LocalContext.current
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Donation.route
 //        startDestination = Screens.Creator.route
     ) {
         composable( route = Screens.MainMenu.route )        { MainScreen(navigator) }

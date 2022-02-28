@@ -18,6 +18,5 @@ class DonationScreenViewModel(): ViewModel() {
 
     val logic = DonationScreenLogic()
     val data = DonationScreenData()
-    val dimensions = DonationScreenDimensions()
-
+//    val dimensions = DonationScreenRatios
 }
