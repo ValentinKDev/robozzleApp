@@ -72,7 +72,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                 CenterComposable {
                     MapView(
                         widthInt = vm.dimension.mapOverViewSize,
-                        map = levelMap,
+                        mapParam = levelMap,
                     )
                 }
             }

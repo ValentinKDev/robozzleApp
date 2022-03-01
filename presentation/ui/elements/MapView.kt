@@ -15,15 +15,25 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.ui.Screen.Creator.MapCleaner
 
 @Composable
-fun MapView(widthInt: Int, map: List<String>, modifier: Modifier = Modifier) {
+fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier) {
     //todo : make a function to trunc every full column and line of '.' (if it preserver symmetry)
     //todo : put those calculs in a VM ?
+    val map = MapCleaner() clean mapParam
+
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size
+
+    val calulByWidth = if (caseNumberWidth > caseNumberHeight) true else false
+
     val padingRatio: Float = 1.0f / 20.0f
-    val caseSize: Float = widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
+
+//    val caseSize: Float = widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
+    val caseSize: Float =
+        if (calulByWidth) widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
+        else widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))
     val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
     val mapWidthtDP: Dp = widthInt.dp
     val casePaddingDP: Dp = (caseSize / 20.0F).dp

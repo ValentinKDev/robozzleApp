@@ -184,7 +184,7 @@ fun DisplayLevelMap(widthInt: Int, map: List<String>) {
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
 //                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
                     Box(modifier = Modifier.padding(5.dp)) {
-                        MapView(widthInt = widthInt, map = map)
+                        MapView(widthInt = widthInt, mapParam = map)
                     }
 //                }
             }

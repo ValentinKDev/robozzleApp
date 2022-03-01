@@ -41,8 +41,8 @@ fun Navigation(navigator: Navigator, screenData: ScreenData) {
     NavHost(
         navController = navController,
 //        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Donation.route
-//        startDestination = Screens.Creator.route
+//        startDestination = Screens.Donation.route
+        startDestination = Screens.Creator.route
     ) {
         composable( route = Screens.MainMenu.route )        { MainScreen(navigator) }
         composable( route = Screens.Config.route )          { ConfigScreen() }
