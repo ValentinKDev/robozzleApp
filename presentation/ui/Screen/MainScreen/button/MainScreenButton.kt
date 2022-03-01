@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
+package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -16,11 +16,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.domain.model.Screen.MainScreenViewModel
+import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 

@@ -6,17 +6,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import com.mobilegame.robozzle.data.configuration.RobuzzleConfiguration
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation
 import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.ScreenData
+import com.mobilegame.robozzle.data.configuration.ScreenConfig
 
 @Suppress("EXPERIMENTAL_ANNOTATION_ON_OVERRIDE_WARNING")
 class MainActivity : ComponentActivity() {
@@ -24,20 +26,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val context = LocalContext.current
-            val density = LocalDensity.current
+            val screenConfig = ScreenConfig()
+
             val window: Window = this.window
             window.statusBarColor = grayDark5.toArgb()
 
-            LaunchingViewModel(LocalContext.current).launch()
-            val screenData = ScreenData()
-            screenData.init(context, density)
+            val context = LocalContext.current
+            val density = LocalDensity.current
+
+            LaunchingViewModel(context).launch(screenConfig)
 
             Box( Modifier
-                    .fillMaxWidth()
-                    .backColor(grayDark6)
+                    .fillMaxSize()
+                    .backColor(RobuzzleConfiguration.applicationBackgroundColor)
             ) {
-                Navigation(Navigator(), ScreenData())
+                Navigation(Navigator(), screenConfig)
             }
         }
     }

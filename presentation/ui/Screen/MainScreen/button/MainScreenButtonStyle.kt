@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
+package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button
 
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton

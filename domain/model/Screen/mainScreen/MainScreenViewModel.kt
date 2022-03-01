@@ -1,14 +1,17 @@
-package com.mobilegame.robozzle.domain.model.Screen
+package com.mobilegame.robozzle.domain.model.Screen.mainScreen
 
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonState
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MainScreenViewModel(): ViewModel() {
+    val popup = MainScreenPopupViewModel()
+    val data = MainScreenData()
+
     private val _visibleElements = MutableStateFlow<Boolean>(false)
     val visibleElements: StateFlow<Boolean> = _visibleElements.asStateFlow()
     fun changeVisibility() {_visibleElements.value = !_visibleElements.value}

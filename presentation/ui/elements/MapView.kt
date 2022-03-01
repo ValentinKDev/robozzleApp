@@ -19,9 +19,9 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Creator.MapCleaner
 
 @Composable
 fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier) {
-    //todo : make a function to trunc every full column and line of '.' (if it preserver symmetry)
     //todo : put those calculs in a VM ?
-    val map = MapCleaner() clean mapParam
+//    val map = MapCleaner() clean mapParam
+    val map = mapParam
 
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size

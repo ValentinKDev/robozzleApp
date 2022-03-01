@@ -4,8 +4,8 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.ButtonState
 import kotlinx.coroutines.runBlocking
 
 class MainMenuAnimationViewModel(): ViewModel() {
