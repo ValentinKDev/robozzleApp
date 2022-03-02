@@ -27,29 +27,25 @@ class InGameData {
         set(value) { if (field == null) field = value }
     var functionsNumber: Int? = null
         set(value) { if (field == null) field = value }
-    var maxCasesNumber: Int = null
-        set(value) { if (field == null) field = value else if (value!! > field!!) field = value}
+    private val minimumCaseNumberPerRow = 6
+    var maxCasesNumber: Int = minimumCaseNumberPerRow
+        set(value) { if (value > field) field = value }
     private var functionCaseSize: Int? = null
     fun getFunctionCaseSize(): Int = functionCaseSize ?: run {
         secondPartWidth?.let { _width ->
-            maxCasesNumber?.let { caseNumber ->
-//                functionCaseSize = ((_width * ratios.maxFunctionWidth) / caseNumber).toInt()
-                functionCaseSize = ((_width * ratios.maxFunctionWidth) / caseNumber).toInt()
-                functionCaseSize?.let {
-                    density?. let { _densisty ->
-                        val size = (((_width * ratios.maxFunctionWidth) / caseNumber) / _densisty).toInt()
-                        functionCaseSize = size
-                    }
+            functionCaseSize = ((_width * ratios.maxFunctionWidth) / maxCasesNumber).toInt()
+            functionCaseSize?.let {
+                density?. let { _densisty ->
+                    val size = (((_width * ratios.maxFunctionWidth) / maxCasesNumber) / _densisty).toInt()
+                    functionCaseSize = size
                 }
-                errorLog("mapCaseNumber", "${caseNumber}")
-                errorLog("secondPartWidht", "${_width}")
-                errorLog("funnctionCaseSize", "${functionCaseSize}")
-
-                functionCaseSize
             }
-//            functionCaseSize ?: 0
+            errorLog("mapCaseNumber", "${maxCasesNumber}")
+            errorLog("secondPartWidht", "${_width}")
+            errorLog("funnctionCaseSize", "${functionCaseSize}")
+
+            functionCaseSize
         }
-//        functionCaseSize = ((secondPartWidth!! * ratios.maxFunctionWidth) / (maxCasesNumber!!)).toInt()
         functionCaseSize ?: 0
     }
     var functionCasePadding: Int? = null
