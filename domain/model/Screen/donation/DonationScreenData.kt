@@ -5,8 +5,9 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.data.store.ScreenDimensionsDataStoreViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
+import com.mobilegame.robozzle.data.configuration.donation.DonationScreenColors
+import com.mobilegame.robozzle.data.configuration.donation.DonationScreenRatios
+import com.mobilegame.robozzle.data.configuration.donation.DonationScreenText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 

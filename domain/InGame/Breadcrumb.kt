@@ -263,7 +263,8 @@ class Breadcrumb (
         return ((this == mapCaseColor) || (this == 'g'))
     }
 
-    private fun Char.isMoving(): Boolean { return (this == 'U') }
+    private fun Char.isMoving(): Boolean { return (this == 'u') }
+//    private fun Char.isMoving(): Boolean { return (this == 'U') }
 
     private fun Char.isColorChange(): Boolean { return (this.toString().matches("[RGBg]".toRegex())) }
 

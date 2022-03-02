@@ -1,14 +1,17 @@
-package com.mobilegame.robozzle.domain.model.Screen
+package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.Extensions.clone
 import com.mobilegame.robozzle.Extensions.copy
 import com.mobilegame.robozzle.Extensions.replaceAt
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.InGame.ColorSwitch
+import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
@@ -17,15 +20,19 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenConfig
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
 //class GameDataViewModel(lvl: RobuzzleLevel): ViewModel() {
-//class GameDataViewModel(val context: Context): ViewModel() {
+//class GameDataViewModel(context: Context): ViewModel() {
 //class GameDataViewModel(): ViewModel() {
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
+//val context: Context = getApplication<Application>()
+//    val context: Context = context
+    val data = InGameData()
     /*
     Faire un objet qui regroupe toute les infos sur l animation en cours ?
      */
@@ -54,8 +61,21 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     fun mapLayoutPressedToTrue() {_mapLayoutPressed.value = true}
     fun mapLayoutPressedToFalse() {_mapLayoutPressed.value = false}
 
+    var emptyLevel = RobuzzleLevel(
+        name = "",
+        id = -42,
+        difficulty = -42,
+        map = emptyList(),
+        instructionsMenu = mutableListOf(),
+        funInstructionsList = mutableListOf(),
+        playerInitial = PlayerInGame(Position(0,0), Direction(0,0)),
+        starsList = mutableListOf(),
+    )
+//    var screenConfig = ScreenConfig(context, emptyLevel)
 
     fun init(lvl: RobuzzleLevel) {
+//        level = lvl
+//        screenConfig = ScreenConfig(context, lvl)
 //        Log.e("", "gameData.init")
         errorLog("init original stars list", "${originalStarsList}")
 

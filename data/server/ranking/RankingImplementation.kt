@@ -31,6 +31,7 @@ class RankingImplementation(
         )
     }
 
+    //todo: badlyformated, crashing the server
     override suspend fun postLevelWinListJson(listJson: String, user: User): String {
         infoLog("postPlayerWinJson", "send")
         return client.tryPostAndCatchErrors<String>(

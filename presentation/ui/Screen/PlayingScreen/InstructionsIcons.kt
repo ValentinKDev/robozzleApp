@@ -14,13 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
-import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 
 @Composable
-fun InstructionsIconsFunction(instruction: Char, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
-    InstructionIcons(instruction, gameDataViewModel, screenConfig.instructionFunctionCase, screenConfig.instructionFunctionIcon)
+fun InstructionsIconsFunction(instruction: Char, gameDataViewModel: GameDataViewModel) {
+    InstructionIcons(instruction, gameDataViewModel, 40, 40)
 }
 
 @Composable
@@ -39,19 +42,36 @@ fun InstructionIcons(instruction: Char, gameDataViewModel: GameDataViewModel, si
         //todo: resize shape of the colored square inside the black square in the actionsRow
 //        MyIconCaseColoring(instruction, sizeIcon, sizeCase, gameDataViewModel)
         MyIconCaseColoring(instruction, sizeCase, gameDataViewModel)
+        infoLog("checker", "1")
     }
-    else if (instruction == 'n') { return }
-    else { SelectGoogleIcons(instruction, sizeIcon) }
+    else if (instruction == 'n') {
+        infoLog("checker", "2")
+        return
+    } else if (instruction.toString().matches("[url0-6]".toRegex())) {
+        infoLog("checker", "3")
+        SelectGoogleIcons(instruction, sizeIcon)
+    }
+    else {
+        errorLog("checker", "4")
+    }
+
+//    else {
+//        infoLog("checker", "3")
+//        SelectGoogleIcons(instruction, sizeIcon) }
 }
 
 @Composable
 fun SelectGoogleIcons(instruction: Char, sizeIcon: Int) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()
+//        .backColor(Color.Black)
+    ) {
+//        infoLog("inst", "$instruction" )
         Icon(
             imageVector = when (instruction) {
                 'r' -> Icons.Outlined.Redo
                 'l' -> Icons.Outlined.Undo
-                'U' -> Icons.Outlined.ArrowUpward
+//                'U' -> Icons.Outlined.ArrowUpward
+                'u' -> Icons.Outlined.ArrowUpward
 //                    'R' ->
                 //todo: function to get the function number in icon
                 '0' -> Icons.Outlined.ExposureZero

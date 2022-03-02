@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.Extensions.isDirection
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel

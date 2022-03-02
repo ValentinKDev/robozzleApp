@@ -15,13 +15,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.Print_List_Position
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.res.normalInGameBackGround
-import kotlinx.coroutines.DelicateCoroutinesApi
 
 //@DelicateCoroutinesApi
 @Composable
@@ -44,6 +43,7 @@ fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = v
         TRUE -> { Log.e("", "win trigger recompostion of LaunchLevel") }
         FALSE -> { Log.e("", "lost trigger recompostion of LaunchLevel") }
     }
+    //todo init the the launchEffect?
     gameDataViewModel.init(level)
 
     level.breadcrumb.CreateBreadcrumb()
@@ -68,7 +68,7 @@ fun PlayLevelCompose(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel)
     Box(
         modifier = Modifier
 //            .background(Color.DarkGray)
-            .background(normalInGameBackGround)
+//            .background(normalInGameBackGround)
     ) {
         DisplayGameScreen(level, gameDataViewModel, screenConfig)
         //todo: still an issue with this recomposition to display the Instruction Menu find a safer way to triger it ?

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
-import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 
@@ -21,11 +21,11 @@ fun DisplayGameScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel
     Column(modifier = Modifier
         .fillMaxSize()
     ) {
-        Row(){
+        Row(Modifier.weight(2F)){
             MapLayout(level, gameDataViewModel, screenConfig)
         }
         Row(modifier = Modifier
-//            .weight(screenConfig.weight_second_part)
+            .weight(3F)
         ) {
             SecondScreenPart(level, gameDataViewModel, screenConfig,)
         }

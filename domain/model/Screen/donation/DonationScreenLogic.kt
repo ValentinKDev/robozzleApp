@@ -7,9 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.data.configuration.donation.DonationScreenText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

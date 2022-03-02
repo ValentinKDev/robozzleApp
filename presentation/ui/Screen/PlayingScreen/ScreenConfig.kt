@@ -5,7 +5,9 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 
 
 class ScreenConfig(localContext: Context, level: RobuzzleLevel) {
+//class ScreenConfig(level: RobuzzleLevel) {
 
+//    get
     val density = localContext.resources.displayMetrics.density
     val dpi_valor = localContext.resources.displayMetrics.densityDpi
 
@@ -38,14 +40,14 @@ class ScreenConfig(localContext: Context, level: RobuzzleLevel) {
 
     val functionBoxSize = 40
     val functionBoxPadd = 4
+    val instructionFunctionCase = 40
+    val instructionFunctionIcon = 40
     val directionIconSize = 30
     val playButtonsWidth = 40
     val playButtonsHeight = 30
     val maxActionDisplayedActionRow = 7
     val instructionActionRowCase = 45
     val instructionActionRowIcon = 30
-    val instructionFunctionCase = 40
-    val instructionFunctionIcon = 40
     val instructionMenuCase = 35
     val instructionMenuCaseWidth = widhtDp/(level.instructionsMenu[0].instructions.length)
     val instructionMenuCaseBorder = instructionMenuCaseWidth/15

@@ -10,4 +10,5 @@ internal sealed class KeyProvider(val key: String) {
     object WidthPixels: KeyProvider("widht_pixels_key_datastore")
     object HeigthPixel: KeyProvider("height_pixels_key_datastore")
     object Density: KeyProvider("density_key_datastore")
+    object DensityDpi: KeyProvider("density_key_datastore")
 }

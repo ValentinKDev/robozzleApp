@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.MapCleaner
 
 @Composable
 fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier) {

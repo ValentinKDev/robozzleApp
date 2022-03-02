@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.model.Screen.donation
+package com.mobilegame.robozzle.data.configuration.donation
 
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.res.whiteDark5

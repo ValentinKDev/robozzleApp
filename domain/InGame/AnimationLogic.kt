@@ -11,8 +11,7 @@ import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
-import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.Dispatchers

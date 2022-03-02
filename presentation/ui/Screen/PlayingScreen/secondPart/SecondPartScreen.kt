@@ -20,42 +20,39 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.InGame.AnimationLogic
-import com.mobilegame.robozzle.domain.model.Screen.GameDataViewModel
-import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.secondPart.DisplayFunctionsPart
 import kotlinx.coroutines.*
 
-//@DelicateCoroutinesApi
 @Composable
 fun SecondScreenPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
-    Log.i("" , "call SecondScreenPart")
-    infoLog("->${lvl.breadcrumb.actionList}", "actionList.IsEmpty() ${lvl.breadcrumb.actionList.isEmpty()}")
+    Log.i("" , "SecondScreenPart")
+//    infoLog("->${lvl.breadcrumb.actionList}", "actionList.IsEmpty() ${lvl.breadcrumb.actionList.isEmpty()}")
 
     val recomposeSecondPart: Boolean by gameDataViewModel.triggerRecompostion.collectAsState(false)
     if (recomposeSecondPart) gameDataViewModel.triggerRecompostionToFalse()
 
-    Box(
-    ) {
-        Box(
-            modifier = Modifier
-//                .background(Color(0xdd080808))
-                .fillMaxSize()
+    Column(Modifier.fillMaxSize()) {
+        Column( Modifier
+            .weight(1.0f)
         ) {
-            Column {
-                ActionRowSurronder(screenConfig = screenConfig)
-                Column(modifier = Modifier .weight(1.0f)) {
-                    if (lvl.breadcrumb.actionList.isNotEmpty())
-                        DisplayActionsRow(lvl, gameDataViewModel, screenConfig)
-                }
-                ActionRowSurronder(screenConfig = screenConfig)
-                Row(modifier = Modifier.weight(5.0f, false)) {
-                    DisplayFunctionsPart(lvl = lvl, gameDataViewModel, screenConfig)
-                }
-                Row(modifier = Modifier.weight(1.0f, false)) {
-                    GameButtons(lvl, gameDataViewModel, screenConfig)
-                }
-            }
+            ActionRowSurronder(screenConfig = screenConfig)
+            if (lvl.breadcrumb.actionList.isNotEmpty())
+                DisplayActionsRow(lvl, gameDataViewModel, screenConfig)
+            ActionRowSurronder(screenConfig = screenConfig)
+        }
+        Row( Modifier
+            .weight(5.0F)
+        ) {
+            DisplayFunctionsPart(lvl = lvl, gameDataViewModel)
+        }
+        Row(Modifier
+//            .weight(1.0f, false)
+            .weight(1.0F)
+        ) {
+            GameButtons(lvl, gameDataViewModel, screenConfig)
         }
     }
 }
@@ -139,119 +136,8 @@ fun CalculateActionToDiplay(lvl: RobuzzleLevel, currentAction: Int, nextActions:
     return (if (actionToDisplay >= actionListSize) actionListSize - 1 else actionToDisplay)
 }
 
-@Composable
-fun DisplayFunctionsPart(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
-    val currentAction: Int by gameDataViewModel.actionToRead.observeAsState(0)
 
-    val animationIsPlaying: Boolean by gameDataViewModel.animationIsPlaying.observeAsState(false)
-    val animationIsOnPause: Boolean by gameDataViewModel.animationIsOnPause.observeAsState(false)
-    val animationRunningInBackground = animationIsPlaying || animationIsOnPause
 
-    Column() {
-        lvl.funInstructionsList.forEachIndexed { functionNumber, function ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.5f, true),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-//                horizontalArrangement = Alignment.Center
-            ) {
-                Text(text = "f${functionNumber}")
-                Row(
-//                    horizontalArrangement = Alignment.Center
-                ) {
-                    function.instructions.toList().forEachIndexed { index, c ->
-                        val caseColor = function.colors[index].toString()
-//                        var caseColor = function.colors[index]
-                        Box(
-                            modifier = Modifier
-                                .background(Color.Black)
-                                .size(40.dp)
-                                .padding(4.dp)
-                                .clickable {
-                                    if (!animationRunningInBackground) {
-                                        gameDataViewModel.ChangeInstructionMenuState()
-//                                        gameDataViewModel.DisplayInstructionsMenuToTrue()
-                                        lvl.SetSelectedFunctionCase(functionNumber, index)
-                                    }
-                                }
-                        ) {
-                            val instructionChar = function.instructions[index]
-                            if (
-                                lvl.breadcrumb.currentInstructionList.isNotEmpty()
-                                && ( (currentAction == 0 && functionNumber == 0 && index == 0)
-                                        || lvl.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, index) )
-                                        )
-                                && animationRunningInBackground
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .background(Color.White)
-                                        .size(screenConfig.functionBoxSize.dp)
-                                        .padding(screenConfig.functionBoxPadd.dp)
-                                ) { }
-                                Box(
-                                    modifier = Modifier
-                                        .testTag(TAG_FUNCTION_CASE(functionNumber, index))
-                                        .align(Alignment.Center)
-//                                        .background(RecognizeColor(caseColor, false))
-                                        .gradientBackground(
-                                            ColorsList(
-                                                caseColor,
-                                                gameDataViewModel.displayInstructionsMenu.value == true
-                                            ),
-                                            175f
-//                                            45f
-                                        )
-                                        .size((screenConfig.functionBoxSize - 12).dp)
-                                        .padding((screenConfig.functionBoxPadd).dp)
-                                ){
-                                    if (instructionChar != '.'){
-                                        InstructionsIconsFunction(instructionChar, gameDataViewModel, screenConfig)
-                                    }
-                                }
-                            }
-                            else {
-                                Box() {
-                                    FunctionCase(
-                                        caseColor,
-                                        gameDataViewModel,
-                                        screenConfig,
-                                        instructionChar
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun FunctionCase(color: String, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig, instructionChar: Char) {
-    Box(
-        modifier = Modifier
-            .gradientBackground(
-                ColorsList(
-                    color,
-                    gameDataViewModel.displayInstructionsMenu.value == true
-                ),
-                175f
-            )
-            .size(screenConfig.functionBoxSize.dp)
-            .padding(screenConfig.functionBoxPadd.dp)
-    ){
-        if (instructionChar != '.'){
-            InstructionsIconsFunction(instructionChar, gameDataViewModel, screenConfig)
-        }
-    }
-}
-
-//@DelicateCoroutinesApi
 @Composable
 fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
     val animationIsPlaying: Boolean by gameDataViewModel.animationIsPlaying.observeAsState(false)
