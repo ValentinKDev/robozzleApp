@@ -31,6 +31,12 @@ class InGameData {
     var maxCasesNumber: Int = minimumCaseNumberPerRow
         set(value) { if (value > field) field = value }
     private var functionCaseSize: Int? = null
+    private var functionCaseHalfSize: Int? = null
+    fun getFunctionCaseHalfSize(bigger: Boolean = false): Int = functionCaseHalfSize ?: run {
+        density?.let {
+            (getFunctionCaseSize(bigger) * it).toInt() / 2
+        } ?: getFunctionCaseSize(bigger)
+    }
     fun getFunctionCaseSize(bigger: Boolean = false): Int = functionCaseSize ?: run {
         secondPartWidth?.let { _width ->
             functionCaseSize = ((_width * ratios.maxFunctionWidth) / maxCasesNumber).toInt()
@@ -45,7 +51,6 @@ class InGameData {
             errorLog("funnctionCaseSize", "${functionCaseSize}")
 
             functionCaseSize?.let { if (bigger) (it * ratios.functionCaseBiggerRatio).toInt() else it}
-//            functionCaseSize
         }
 //        functionCaseSize ?: 0
         functionCaseSize?.let { if (bigger) (it * ratios.functionCaseBiggerRatio).toInt() else it} ?: 0

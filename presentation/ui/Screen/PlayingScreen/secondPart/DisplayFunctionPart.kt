@@ -3,9 +3,11 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.secondPart
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -30,27 +32,48 @@ import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackgrou
 @Composable
 fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
     val density = LocalDensity.current.density
-    Column( Modifier
+
+    val animationIsPlaying: Boolean by vm.animationIsPlaying.observeAsState(false)
+    val animationIsOnPause: Boolean by vm.animationIsOnPause.observeAsState(false)
+    val animationRunningInBackground = animationIsPlaying || animationIsOnPause
+
+    val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
+//    errorLog("DISPLAY FUNCTION PART", "launch dragged $draggedStart")
+    val functions =
+        if ( draggedStart )
+            vm.dragAndDrop.elements.onHoldItem(lvl.funInstructionsList)
+        else
+            lvl.funInstructionsList
+
+    Column(Modifier
         .fillMaxSize()
         .onGloballyPositioned {
             vm.data.secondPartHeight = it.size.height
             vm.data.secondPartWidth = it.size.width
             vm.data.density = density
 
-//            vm.dragAndDrop.setDragListnerRect(it)
             vm.dragAndDrop.elements.setDraggableParentOffset(it)
         }
 //        .backColor(greendark10)
         .pointerInput(Unit) {
+//            detectTapGestures {
+//                if (!animationRunningInBackground) {
+//                    vm.ChangeInstructionMenuState()
+//                    lvl.SetSelectedFunctionCase(functionNumber, _index)
+//                }
+//            }
+
+//            }
             detectDragGesturesAfterLongPress(
-                onDrag = { change, _offset ->
+                onDrag = { change, _ ->
                     infoLog("onDrag", "position ${change.position}")
-                    vm.dragAndDrop.setTouchOffset(change.position)
+                    vm.dragAndDrop.onDrag(change, functions)
+//                    vm.dragAndDrop.setTouchOffset(change.position)
                 },
                 onDragStart = { _offset ->
                     infoLog("onDragStart", "started")
-                    infoLog("onDrag", "_offsetStart $_offset")
-                    vm.dragAndDrop.onDragStart(_offset)
+//                    vm.dragAndDrop.onDragStart(_offset, lvl.funInstructionsList)
+                    vm.dragAndDrop.onDragStart(_offset, functions)
                 },
                 onDragEnd = {
                     vm.dragAndDrop.onDragEnd()
@@ -58,13 +81,14 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
                 },
                 onDragCancel = {
                     vm.dragAndDrop.onDragCancel()
-                    errorLog( "onDragCanceled", "cancel" )
+                    errorLog("onDragCanceled", "cancel")
                 }
             )
         }
     ) {
         CenterComposable {
-            lvl.funInstructionsList.forEachIndexed { functionNumber, function ->
+//            lvl.funInstructionsList.forEachIndexed { functionNumber, function ->
+            functions.forEachIndexed { functionNumber, function ->
                 DisplayFunctionRow(lvl, functionNumber, function, vm)
             }
         }
@@ -78,6 +102,7 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
     val animationIsPlaying: Boolean by vm.animationIsPlaying.observeAsState(false)
     val animationIsOnPause: Boolean by vm.animationIsOnPause.observeAsState(false)
     val animationRunningInBackground = animationIsPlaying || animationIsOnPause
+
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -106,7 +131,7 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
 //                        .size(40.dp)
                         .padding(vm.data.getFunctionCasePadding().dp)
                         .onGloballyPositioned {
-                            errorLog("$functionNumber ${_index}", "${it.boundsInRoot().topLeft}")
+//                            errorLog("$functionNumber ${_index}", "${it.boundsInRoot().topLeft}")
                             vm.dragAndDrop.elements.addDroppableCase(
                                 rowIndex = functionNumber,
                                 columnIndex = _index,
@@ -114,7 +139,7 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
                             )
                         }
                         .clickable {
-                            if (!animationRunningInBackground) {
+                            if (!animationRunningInBackground && !vm.dragAndDrop.dragStart.value) {
                                 vm.ChangeInstructionMenuState()
                                 lvl.SetSelectedFunctionCase(functionNumber, _index)
                             }
