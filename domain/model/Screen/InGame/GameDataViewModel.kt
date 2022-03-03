@@ -1,11 +1,9 @@
 package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.Extensions.clone
 import com.mobilegame.robozzle.Extensions.copy
 import com.mobilegame.robozzle.Extensions.replaceAt
@@ -20,7 +18,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenConfig
+import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +31,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 //val context: Context = getApplication<Application>()
 //    val context: Context = context
     val data = InGameData()
+    val dragAndDrop = DragAndDropState()
     /*
     Faire un objet qui regroupe toute les infos sur l animation en cours ?
      */

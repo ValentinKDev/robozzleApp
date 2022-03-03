@@ -12,6 +12,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.configuration.ScreenConfig
+import com.mobilegame.robozzle.domain.InGame.Direction
+import com.mobilegame.robozzle.domain.InGame.PlayerInGame
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
+import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
@@ -41,21 +46,22 @@ fun Navigation(navigator: Navigator, screenConfig: ScreenConfig) {
     val context = LocalContext.current
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
 //        startDestination = Screens.Donation.route
 //        startDestination = Screens.Creator.route
 //        startDestination = Screens.Playing.route + "/{" + 1.toString() + "}",
     ) {
-        composable( route = Screens.MainMenu.route )        { MainScreen(navigator, screenConfig) }
-        composable( route = Screens.Config.route )          { ConfigScreen() }
-        composable( route = Screens.Donation.route)         { DonationScreen() }
-        composable( route = Screens.Creator.route)          { CreatorScreen(navigator) }
-        composable( route = Screens.UserInfo.route )        { UserInfoScreen(navigator) }
-        composable( route = Screens.RegisterLogin.route )   { RegisterLoginScreen(navigator, Tab()) }
+        composable(route = Screens.MainMenu.route) { MainScreen(navigator, screenConfig) }
+        composable(route = Screens.Config.route) { ConfigScreen() }
+        composable(route = Screens.Donation.route) { DonationScreen() }
+        composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
+        composable(route = Screens.UserInfo.route) { UserInfoScreen(navigator) }
+        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator, Tab()) }
         /** Main Menu Screen */
         composable(
             route = Screens.MainMenu.route + "/{" + Arguments.Button.key + "}",
-            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType})
+            arguments = listOf(navArgument(Arguments.Button.key) { type = NavType.IntType })
         ) { entry ->
             entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
                 MainScreen(
@@ -68,7 +74,7 @@ fun Navigation(navigator: Navigator, screenConfig: ScreenConfig) {
         /** Level By Difficulty Screen */
         composable(
             route = Screens.LevelByDifficulty.route + "/{" + Arguments.Button.key + "}",
-            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.IntType}),
+            arguments = listOf(navArgument(Arguments.Button.key) { type = NavType.IntType }),
         ) { entry ->
             entry.arguments?.getInt(Arguments.Button.key)?.let {
                 LevelsScreenByDifficulty(
@@ -80,7 +86,7 @@ fun Navigation(navigator: Navigator, screenConfig: ScreenConfig) {
         /** Ranks Level Screen Screen */
         composable(
             route = Screens.RanksLevel.route + "/{" + Arguments.LevelId.key + "}",
-            arguments = listOf(navArgument(Arguments.LevelId.key) {type = NavType.IntType})
+            arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _levelId ->
                 LevelRoomViewModel(context).getLevel(_levelId)?.let { _level ->
@@ -99,11 +105,49 @@ fun Navigation(navigator: Navigator, screenConfig: ScreenConfig) {
         }
         /** Test Screen */
         composable(
-            route = Screens.Test.route + "/{${Arguments.Button.key}}",
-            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType}),
-        ) { entry ->
-            entry.arguments?.getString(Arguments.Button.key)?.let {
-                TestScreen(navigator, Animator(), it) }
-            }
+            route = Screens.Test.route,
+//            route = Screens.Test.route + "/{${Arguments.Button.key}}",
+//            arguments = listOf(navArgument(Arguments.Button.key) {type = NavType.StringType}),
+//        ) { entry ->
+//            entry.arguments?.getString(Arguments.Button.key)?.let {
+//                TestScreen(navigator, Animator(), it) }
+//            }
+        ) {
+            PlayingScreen(
+                level = RobuzzleLevel(
+                    name = "zipline",
+                    id = 3,
+                    difficulty = 1,
+                    map = listOf(
+                        "..........",
+                        "..........",
+                        "..........",
+                        "..........",
+                        "BRRRRRRRRG",
+                        "B........G",
+                        "..........",
+                        "..........",
+                        "..........",
+                        "..........",
+                    ),
+                    instructionsMenu = mutableListOf(
+                        FunctionInstructions("urlRBGg.0123n", "g"),
+                        FunctionInstructions("urlRBGg.0123n", "R"),
+                        FunctionInstructions("urlRBGg.0123n", "B"),
+                        FunctionInstructions("urlRBGg.0123n", "G"),
+                    ),
+                    funInstructionsList = mutableListOf(
+                        FunctionInstructions("u0r0", "gRgg"),
+                    ),
+                    playerInitial = PlayerInGame(
+                        Position(5, 0),
+                        Direction(0, 1)
+                    ),
+                    starsList = mutableListOf(
+                        Position(5, 9),
+                    ),
+                )
+            )
+        }
     }
 }

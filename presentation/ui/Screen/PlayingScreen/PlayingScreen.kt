@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,6 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntOffset
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.Print_List_Position
 import com.mobilegame.robozzle.analyse.infoLog
@@ -21,6 +24,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.res.normalInGameBackGround
+import com.mobilegame.robozzle.presentation.res.whiteDark4
 
 //@DelicateCoroutinesApi
 @Composable
@@ -51,41 +55,23 @@ fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = v
     PlayLevelCompose(level, gameDataViewModel)
 }
 
-//@DelicateCoroutinesApi
 @Composable
-fun PlayLevelCompose(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel) {
+fun PlayLevelCompose(level: RobuzzleLevel, vm: GameDataViewModel) {
     val context = LocalContext.current
     val screenConfig = ScreenConfig(context, level)
+    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.observeAsState( false )
 
-    val displayInstructionMenu: Boolean by gameDataViewModel.displayInstructionsMenu.observeAsState(
-        false
-    )
-    Log.i(
-        "PlayLevelCompose",
-        "displayInstuction ${gameDataViewModel.displayInstructionsMenu.value!!}"
-    )
+    Box(Modifier.fillMaxSize()) {
+        DisplayGameScreen(level, vm, screenConfig)
 
-    Box(
-        modifier = Modifier
-//            .background(Color.DarkGray)
-//            .background(normalInGameBackGround)
-    ) {
-        DisplayGameScreen(level, gameDataViewModel, screenConfig)
-        //todo: still an issue with this recomposition to display the Instruction Menu find a safer way to triger it ?
+        DragAndDropOverlay(level, vm)
         if (displayInstructionMenu) {
             Box(
-                modifier = Modifier
+                Modifier
                     .fillMaxSize()
-                    .clickable {
-                        gameDataViewModel.ChangeInstructionMenuState()
-                    }
+                    .clickable { vm.ChangeInstructionMenuState() }
             ) {
-                Box(
-                    modifier = Modifier
-                        .background(Color.Transparent)
-                ) {
-                    DisplayInstuctionMenu(level, gameDataViewModel, screenConfig)
-                }
+                DisplayInstuctionMenu(level, vm, screenConfig)
             }
         }
     }

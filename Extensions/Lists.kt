@@ -6,6 +6,8 @@ import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 
+fun <T> MutableList<T>.containsNot(element: T): Boolean = !this.contains(element)
+
 fun MutableList<Position>.Contains(pos: Position): Boolean{
     var ret = false
     forEachIndexed { index, position ->

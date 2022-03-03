@@ -42,17 +42,17 @@ fun InstructionIcons(instruction: Char, gameDataViewModel: GameDataViewModel, si
         //todo: resize shape of the colored square inside the black square in the actionsRow
 //        MyIconCaseColoring(instruction, sizeIcon, sizeCase, gameDataViewModel)
         MyIconCaseColoring(instruction, sizeCase, gameDataViewModel)
-        infoLog("checker", "1")
-    }
-    else if (instruction == 'n') {
-        infoLog("checker", "2")
-        return
+//        infoLog("checker", "1")
+//    }
+//    else if (instruction == 'n') {
+//        infoLog("checker", "2")
+//        return
     } else if (instruction.toString().matches("[url0-6]".toRegex())) {
-        infoLog("checker", "3")
+//        infoLog("checker", "3")
         SelectGoogleIcons(instruction, sizeIcon)
     }
     else {
-        errorLog("checker", "4")
+//        errorLog("checker", "4")
     }
 
 //    else {

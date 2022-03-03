@@ -12,14 +12,11 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Instructions
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 
 @Composable
-fun FunctionCase(color: String, vm: GameDataViewModel, instructionChar: Char) {
+fun FunctionCase(color: String, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false) {
     Box( Modifier
-        .gradientBackground(
-            ColorsList( color, vm.displayInstructionsMenu.value == true ),
-            175f
-        )
-        .size(vm.data.getFunctionCaseSize().dp)
-        .padding(vm.data.getFunctionCasePadding().dp)
+        .gradientBackground( ColorsList( color, vm.displayInstructionsMenu.value == true ), 175f )
+        .size( vm.data.getFunctionCaseSize(bigger = bigger).dp)
+        .padding( vm.data.getFunctionCasePadding().dp )
     ){
         if (instructionChar != '.'){
             InstructionsIconsFunction(instructionChar, vm)
