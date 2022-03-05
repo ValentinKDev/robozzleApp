@@ -56,7 +56,6 @@ class Breadcrumb (
 
     fun CreateNewBeadcrumb(addActions: Int, newfunInstructionsList: MutableList<FunctionInstructions>) {
         funInstructionsList = newfunInstructionsList
-//        Print_FunInstructionList(funInstructionsList)
         ResetVars(addActions)
 
         CreateBreadcrumb()
@@ -65,7 +64,7 @@ class Breadcrumb (
     //todo : make action 0 initial postion then start the count at 1
     fun CreateBreadcrumb() {
         Log.v("CREATEBREADCRUMB", "STARTING")
-        ResetVars(2)
+        ResetVars(0)
 
         this.StartLogic()
 //        if (IsWin() == false) { win = FALSE; lost = TRUE }

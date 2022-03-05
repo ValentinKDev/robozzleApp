@@ -42,7 +42,7 @@ class DragAndDropElements {
     var itemUnder: FunctionInstructions? = null
     var itemUnderTopLeftOffset: Offset? = null
     fun clearItemUnder() {
-        infoLog("clear", "item Under")
+        errorLog("clear", "item Under")
         _itemUnderVisible.value = false
         itemUnderPosition = null
         itemUnder = null
@@ -114,6 +114,7 @@ class DragAndDropElements {
                         visible = true
                         val position = Position(rowIndex, columnIndex)
                         if (itemUnderPosition != position) {
+                            infoLog("condition same ", "$itemUnderPosition $position")
                             itemUnderPosition = position
                             itemUnderPosition?.let {
                                 itemUnder = FunctionInstructions(
@@ -132,10 +133,10 @@ class DragAndDropElements {
                     }
                 }
             }
-            if (found not true) {
-                itemUnderPosition = null
-                itemUnder = null
-            }
+//            if (found not true) {
+//                itemUnderPosition = null
+//                itemUnder = null
+//            }
             if (visible not true)
                 clearItemUnder()
             verbalLog("visible", "${_itemUnderVisible.value}")

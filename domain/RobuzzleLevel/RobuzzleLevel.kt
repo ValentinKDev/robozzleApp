@@ -25,24 +25,9 @@ data class RobuzzleLevel(
     val playerInitial: PlayerInGame,
     val starsList: MutableList<Position>,
 ) {
-    private val _instructionRows = MutableStateFlow<List<FunctionInstructions>>(emptyList())
-    val instructionRows: StateFlow<List<FunctionInstructions>> = _instructionRows.asStateFlow()
-    private fun setInstructionRows() {
-        _instructionRows.value = funInstructionsList
-    }
-    fun replaceInstruction(pos: Position, case: FunctionInstructions) {
-        _instructionRows.value[pos.line].colors =
-            funInstructionsList[pos.line].colors.replaceAt(pos.column, case.colors.first())
-        _instructionRows.value[pos.line].instructions =
-            funInstructionsList[pos.line].instructions.replaceAt(pos.column, case.instructions.first())
-    }
 
-    lateinit var selected: Position
-    init {
-        setInstructionRows()
-    }
+    var preloadActions = 3
 
-    var preloadActions = 2
     var breadcrumb: Breadcrumb = Breadcrumb(
         playerInitial,
         map.toMutableList(),
@@ -51,21 +36,29 @@ data class RobuzzleLevel(
         funInstructionsList
     )
 
-    fun SetSelectedFunctionCase(row: Int, column: Int) {
-        selected = Position(row, column)
+    private val _instructionRows = MutableStateFlow<List<FunctionInstructions>>(emptyList())
+    val instructionRows: StateFlow<List<FunctionInstructions>> = _instructionRows.asStateFlow()
+
+    fun replaceInstruction(pos: Position, case: FunctionInstructions) {
+        infoLog("lvl", "${_instructionRows.value}")
+        _instructionRows.value[pos.line].colors =
+            _instructionRows.value[pos.line].colors.replaceAt(pos.column, case.colors.first())
+        _instructionRows.value[pos.line].instructions =
+            _instructionRows.value[pos.line].instructions.replaceAt(pos.column, case.instructions.first())
+        infoLog("lvl", "${_instructionRows.value}")
+        infoLog("lvl", "${instructionRows.value}")
+        breadcrumb.CreateBreadcrumb()
     }
 
-    fun replaceCaseColor(pos: Position, color: String){
-        funInstructionsList[pos.line].colors =
-            funInstructionsList[pos.line].colors.replaceAt(pos.column, color.first())
+    private fun setInstructionRows() {
+        _instructionRows.value = funInstructionsList
     }
-    fun replaceCaseInstruction(pos: Position, newInstruction: String){
-        if (newInstruction != "n") {
-            funInstructionsList[pos.line].instructions =
-                funInstructionsList[pos.line].instructions.replaceAt(pos.column, newInstruction.first())
-        }
-    }
-    fun CheckPlayerAtPoint(row: Int, column: Int, plyr: PlayerInGame):Boolean {
-        return (plyr.pos.column == column && plyr.pos.line == row)
+
+    init { setInstructionRows() }
+
+    lateinit var selected: Position
+
+    fun SetSelectedFunctionCase(row: Int, column: Int) {
+        selected = Position(row, column)
     }
 }

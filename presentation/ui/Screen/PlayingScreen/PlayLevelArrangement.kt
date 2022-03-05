@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
@@ -58,12 +59,16 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewM
                         modifier = Modifier
                             .gradientBackground(ColorsList(instructions.colors, false), 175f)
                             .clickable {
-                                level.replaceCaseColor(
+//                                level.replaceCaseColor(
+//                                    level.selected,
+//                                    instructions.colors.first().toString()
+//                                )
+//                                level.replaceCaseInstruction(level.selected, c.toString())
+//                                level.breadcrumb.CreateNewBeadcrumb(0, level.funInstructionsList)
+                                level.replaceInstruction(
                                     level.selected,
-                                    instructions.colors.first().toString()
+                                    FunctionInstructions(instructions = c.toString(), colors = instructions.colors)
                                 )
-                                level.replaceCaseInstruction(level.selected, c.toString())
-                                level.breadcrumb.CreateNewBeadcrumb(0, level.funInstructionsList)
                                 Log.i("ON CLICK actionList", level.breadcrumb.actionList)
                                 gameDataViewModel.ChangeInstructionMenuState()
                             }

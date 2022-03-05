@@ -86,7 +86,6 @@ fun DisplayActionsRow(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, 
 
     Row(modifier = Modifier.padding(start = 5.dp, end = 5.dp)) {
 //Todo: delay the disparition of the last action in actionList
-//        if (currentAction != lvl.guideline.actionList.length - 1) {
         if (currentAction != lvl.breadcrumb.actionList.length - 1) {
             DisplayActionRowCase(currentAction, lvl, gameDataViewModel, screenConfig)
         }

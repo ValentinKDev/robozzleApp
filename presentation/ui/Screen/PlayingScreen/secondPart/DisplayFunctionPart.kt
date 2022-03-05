@@ -42,15 +42,20 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
     val animationRunningInBackground = animationIsPlaying || animationIsOnPause
 
     val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
-    val levelFunctions: List<FunctionInstructions> by lvl.instructionRows.collectAsState()
+//    val levelFunctions: List<FunctionInstructions> by lvl.instructionRows.collectAsState()
+    val levelFunctions = lvl.instructionRows.value
+    infoLog("lvl", "${lvl.instructionRows.value}")
+    infoLog("levelFucntions", "$levelFunctions")
+    infoLog("draggedStart", "$draggedStart")
 
+//    levelFunctions =
     val functions =
         if ( draggedStart )
-//            vm.dragAndDrop.elements.onHoldItem(lvl.funInstructionsList)
             vm.dragAndDrop.elements.onHoldItem(levelFunctions.toMutableList())
         else
             levelFunctions
-//            lvl.funInstructionsList
+
+    verbalLog("functions", "display $functions")
 
     Column(Modifier
         .fillMaxSize()
