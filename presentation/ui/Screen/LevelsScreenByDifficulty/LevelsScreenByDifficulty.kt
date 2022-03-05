@@ -24,7 +24,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.L
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyList
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LevelsScreenByDifficulty(
     navigator: Navigator,

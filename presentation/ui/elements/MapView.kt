@@ -29,7 +29,6 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
 
     val padingRatio: Float = 1.0f / 20.0f
 
-//    val caseSize: Float = widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
     val caseSize: Float =
         if (calulByWidth) widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
         else widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))
@@ -37,15 +36,14 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
     val mapWidthtDP: Dp = widthInt.dp
     val casePaddingDP: Dp = (caseSize / 20.0F).dp
 
-    Box( modifier = Modifier
+    Box(Modifier
         .height(mapHeightDP)
         .width(mapWidthtDP)
         .background(grayDark3)
         .then(modifier)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            Modifier.fillMaxWidth()
             ,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -53,10 +51,9 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
                 Row {
                     rowString.forEachIndexed { columnIndex, char ->
                         val caseColor = char.toString()
-                        Box(modifier = Modifier
+                        Box(Modifier
                             .background(Color.Transparent)
                             .size(caseSize.dp)
-//                            .padding(casePaddingDP)
                             ,
                         ) {
 //                           todo : might add clarity to augement the range of luminosity in the gradient so the difference between each case is clear and it compensate the fact that there is no padding

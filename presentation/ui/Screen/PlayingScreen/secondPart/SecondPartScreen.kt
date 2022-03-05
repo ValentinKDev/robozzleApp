@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.InGame.AnimationLogic
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.*
@@ -80,24 +81,20 @@ fun DisplayActionsRow(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, 
     val currentAction: Int by gameDataViewModel.actionToRead.observeAsState(0)
     var actionDisplayed: Int
 
-
-//    errorLog("$currentAction", "")
+    val instructionsRows: List<FunctionInstructions> by lvl.instructionRows.collectAsState()
+    lvl.breadcrumb.CreateNewBeadcrumb(0, instructionsRows.toMutableList())
 
     Row(modifier = Modifier.padding(start = 5.dp, end = 5.dp)) {
 //Todo: delay the disparition of the last action in actionList
 //        if (currentAction != lvl.guideline.actionList.length - 1) {
         if (currentAction != lvl.breadcrumb.actionList.length - 1) {
-//            errorLog("check", "")
             DisplayActionRowCase(currentAction, lvl, gameDataViewModel, screenConfig)
         }
         var nextAction = 1
-//        errorLog("check $nextAction / ${screenConfig.maxActionDisplayedActionRow}", "")
-//        errorLog("check $currentAction + $nextAction / ${lvl.breadcrumb.actionList.length}", "")
         while (nextAction < screenConfig.maxActionDisplayedActionRow &&
             nextAction + currentAction < lvl.breadcrumb.actionList.length) {
             actionDisplayed = CalculateActionToDiplay(lvl, currentAction, nextAction)
 
-//            errorLog("check", "")
             DisplayActionRowCase(actionDisplayed, lvl, gameDataViewModel, screenConfig)
             nextAction++
         }

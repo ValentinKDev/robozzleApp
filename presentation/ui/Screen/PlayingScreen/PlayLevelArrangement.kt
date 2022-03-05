@@ -37,22 +37,16 @@ fun DisplayGameScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel
 @Composable
 fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig ) {
 
-
-
     Column(
         modifier = Modifier
-//            .fillMaxSize()
             .height(300.dp)
-//            .width(800.dp)
         ,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
-//            val instructionCol: Color = RecognizeColor(instructions.colors, false)
             Row(
                 modifier = Modifier
-//                    .fillMaxWidth()
                     .width(800.dp)
                 ,
                 verticalAlignment = Alignment.CenterVertically,
@@ -62,18 +56,14 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewM
                     //todo: InstructionMenuCase()
                     Box(
                         modifier = Modifier
-//                            .background(instructionColor)
                             .gradientBackground(ColorsList(instructions.colors, false), 175f)
                             .clickable {
-                                // enlever level.selected des parametre ???
-                                level.ReplaceInstructionCaseColor(
+                                level.replaceCaseColor(
                                     level.selected,
-                                    instructions.colors.first()
+                                    instructions.colors.first().toString()
                                 )
-                                level.ReplaceInstructionInCase(level.selected, c)
+                                level.replaceCaseInstruction(level.selected, c.toString())
                                 level.breadcrumb.CreateNewBeadcrumb(0, level.funInstructionsList)
-//                                level.guideline.CreateNewGuideline(0, level.funInstructionsList)
-//                                Log.i("ON CLICK actionList", "${level.guideline.actionList}")
                                 Log.i("ON CLICK actionList", level.breadcrumb.actionList)
                                 gameDataViewModel.ChangeInstructionMenuState()
                             }
@@ -82,31 +72,6 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewM
                             .border(width = screenConfig.instructionMenuCaseBorder.dp, color = Color.Black)
                     ) {
                         InstructionIconsMenu(c, gameDataViewModel, screenConfig)
-                        /*
-
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Icon(
-                                imageVector = when (c) {
-                                    'r' -> Icons.Outlined.Redo
-                                    'l' -> Icons.Outlined.Undo
-                                    'U' -> Icons.Outlined.ArrowUpward
-                                    '0' -> Icons.Outlined.ExposureZero
-                                    '1' -> Icons.Outlined.LooksOne
-                                    '2' -> Icons.Outlined.LooksTwo
-                                    '3' -> Icons.Outlined.Looks3
-                                    '4' -> Icons.Outlined.Looks4
-                                    '5' -> Icons.Outlined.Looks5
-                                    '6' -> Icons.Outlined.Looks6
-                                    else -> Icons.Default.Home
-                                },
-                                contentDescription = "instruction",
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .align(Alignment.Center)
-                            )
-                        }
-//                        Text(text = "${c}")
-                         */
                     }
                 }
             }

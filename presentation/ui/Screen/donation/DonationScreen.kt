@@ -9,7 +9,6 @@ import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewMo
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.noRippleClickable
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
-@ExperimentalAnimationApi
 @Composable
 fun DonationScreen(vm: DonationScreenViewModel = viewModel()) {
     Box( Modifier.fillMaxSize()
@@ -21,18 +20,16 @@ fun DonationScreen(vm: DonationScreenViewModel = viewModel()) {
             ) {
                 Box( modifier = Modifier
                     .fillMaxWidth()
-//                    .weight(vm.data.ratios.fistPartWeigth) )
-                )
-                {
+                ) {
                     DonationScreenFirstPart(vm)
                 }
             }
         }
         Column(Modifier.fillMaxSize()) {
-                Box( modifier = Modifier.fillMaxWidth() )
-                {
-                    DonationScreenSecondPart(vm)
-                }
+            Box( modifier = Modifier.fillMaxWidth() )
+            {
+                DonationScreenSecondPart(vm)
+            }
         }
     }
 }

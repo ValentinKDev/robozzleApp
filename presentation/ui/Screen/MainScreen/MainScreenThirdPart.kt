@@ -12,7 +12,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScre
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 
-@ExperimentalAnimationApi
 @Composable
 fun MainScreenThirdPart(
     navigator: Navigator,

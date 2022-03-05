@@ -23,7 +23,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.donation.secondPart.Networ
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
-@ExperimentalAnimationApi
 @Composable
 fun DonationScreenSecondPart(vm: DonationScreenViewModel) {
     val ctxt = LocalContext.current

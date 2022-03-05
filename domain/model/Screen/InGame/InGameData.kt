@@ -2,8 +2,6 @@ package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.data.configuration.inGame.*
-import com.mobilegame.robozzle.domain.model.data.store.ScreenDimensionsDataStoreViewModel
-import com.mobilegame.robozzle.presentation.ui.utils.Dimensions
 
 class InGameData {
     val text = InGameText
@@ -27,15 +25,15 @@ class InGameData {
         set(value) { if (field == null) field = value }
     var functionsNumber: Int? = null
         set(value) { if (field == null) field = value }
-    private val minimumCaseNumberPerRow = 6
+    private val minimumCaseNumberPerRow = 7
+//    var maxCasesNumber: Int = minimumCaseNumberPerRow
     var maxCasesNumber: Int = minimumCaseNumberPerRow
         set(value) { if (value > field) field = value }
     private var functionCaseSize: Int? = null
-    private var functionCaseHalfSize: Int? = null
-    fun getFunctionCaseHalfSize(bigger: Boolean = false): Int = functionCaseHalfSize ?: run {
-        density?.let {
-            (getFunctionCaseSize(bigger) * it).toInt() / 2
-        } ?: getFunctionCaseSize(bigger)
+    private var functionCaseHalfSize: Float? = null
+    fun getFunctionCaseHalfSize(bigger: Boolean = false): Float = functionCaseHalfSize ?: run {
+        functionCaseHalfSize = getFunctionCaseSize(bigger).toFloat() / 2F
+        functionCaseHalfSize ?: 0F
     }
     fun getFunctionCaseSize(bigger: Boolean = false): Int = functionCaseSize ?: run {
         secondPartWidth?.let { _width ->

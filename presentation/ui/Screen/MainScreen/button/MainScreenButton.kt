@@ -26,10 +26,8 @@ import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
 const val goingTopTiming = 450
-const val goingBottomTiming = goingTopTiming - 150
-const val goingTopSizeButton = 360
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel, w: MainScreenWindowsInfos) {
     val ctxt = LocalContext.current

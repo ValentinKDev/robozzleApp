@@ -41,7 +41,6 @@ fun PlayingScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel = v
     infoLog("player position ", "${level.playerInitial.pos.line}, ${level.playerInitial.pos.column}")
     Print_List_Position("stars", level.starsList)
 //    Print_List_String(level.map)
-
 //        todo: Display a card with a bit of a delay to explain clearly the player has won this level
     when (win) {
         TRUE -> { Log.e("", "win trigger recompostion of LaunchLevel") }
@@ -64,7 +63,7 @@ fun PlayLevelCompose(level: RobuzzleLevel, vm: GameDataViewModel) {
     Box(Modifier.fillMaxSize()) {
         DisplayGameScreen(level, vm, screenConfig)
 
-        DragAndDropOverlay(level, vm)
+        DragAndDropOverlay(vm)
         if (displayInstructionMenu) {
             Box(
                 Modifier

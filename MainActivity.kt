@@ -20,9 +20,7 @@ import com.mobilegame.robozzle.presentation.ui.Navigation
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.data.configuration.ScreenConfig
 
-@Suppress("EXPERIMENTAL_ANNOTATION_ON_OVERRIDE_WARNING")
 class MainActivity : ComponentActivity() {
-    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

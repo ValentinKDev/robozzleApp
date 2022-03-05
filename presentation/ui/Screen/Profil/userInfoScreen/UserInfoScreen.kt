@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,7 +18,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.User
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenThirdPart
 
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), screenData: UserInfoScreenData = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
     val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
@@ -53,20 +54,20 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
             .weight(vm.dimension.thirdPartScreenWeight)
             .fillMaxWidth()
         ) {
-//            AnimatedVisibility(
-//                visible = listVisible,
-//                enter = slideInVertically(),
-//                exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(
-//                    animationSpec = tween(
-//                        300
-//                    )
-//                )
-//            ) {
+            AnimatedVisibility(
+                visible = listVisible,
+                enter = slideInVertically(),
+                exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(
+                    animationSpec = tween(
+                        300
+                    )
+                )
+            ) {
                 UserInfoScreenThirdPart(
                     vm = vm,
                     navigator = navigator
                 )
-//            }
+            }
         }
     }
 }

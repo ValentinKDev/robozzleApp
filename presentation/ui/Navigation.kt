@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui
 
-import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -30,8 +29,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
 import kotlinx.coroutines.flow.*
 
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
 @Composable
 fun Navigation(navigator: Navigator, screenConfig: ScreenConfig) {
     infoLog("navigatgion", "...")
@@ -46,11 +43,7 @@ fun Navigation(navigator: Navigator, screenConfig: ScreenConfig) {
     val context = LocalContext.current
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
         startDestination = Screens.Test.route
-//        startDestination = Screens.Donation.route
-//        startDestination = Screens.Creator.route
-//        startDestination = Screens.Playing.route + "/{" + 1.toString() + "}",
     ) {
         composable(route = Screens.MainMenu.route) { MainScreen(navigator, screenConfig) }
         composable(route = Screens.Config.route) { ConfigScreen() }

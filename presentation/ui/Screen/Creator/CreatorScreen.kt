@@ -11,31 +11,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.material.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.secondPart.FunctionCase
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
 @Composable
 fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAndDropState(), itemList: List<String> = itemListval) {
-//    infoLog("launch", "CreatorScreen()")
-
-    val offsetTouch by dragAndDropVM.touchOffSet.collectAsState()
-//    val dragStart by dragAndDropVM.dragStart.collectAsState()
-//    infoLog("dragStart", "$dragStart")
-//    val selectedItem by dragAndDropVM.selectedItem.collectAsState()
 
     Box(Modifier.fillMaxSize()) {
         Column(
@@ -45,37 +41,30 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAn
                 .background(gray9)
         ) {
             VerticalSpace(height = 50)
-            val rowIndex = 0
-            Column( Modifier
-                    .wrapContentSize()
-                    .background(grayDark5)
-                    .onGloballyPositioned {
-//                        dragAndDropVM.addDroppableRow(rowIndex, it)
-                    }
-            ) {
-                itemList.forEachIndexed { _columnIndex, _str ->
-                    var empty = ""
-                    for (i in _str.indices) empty += " "
-//                    val item = if (dragStart && selectedItem.equals(Position(rowIndex, _columnIndex))) empty  else _str
-//                    val item = if (dragStart && dragAndDropVM.selectedItem == Position(rowIndex, _columnIndex)) empty  else _str
-//                    Handle(0, _columnIndex, item, dragAndDropVM)
-                }
-            }
+            EmptySquare(40, 0.15F, whiteDark4)
             VerticalSpace(height = 50)
+            EmptyRect(height = 100.dp, 100.dp, 10F, whiteDark4)
         }
-//        if (dragStart) {
-//            Box(Modifier.offset {
-//                    IntOffset(offsetTouch.x.toInt(), offsetTouch.y.toInt())
-//                }
-//            ) {
-//                Text(text = itemList[selectedItem.column], color = whiteDark4)
-//                Text(text = itemList[dragAndDropVM.selectedItem.column], color = whiteDark4)
-//            }
-//        }
     }
 }
 
-@ExperimentalComposeUiApi
+@Composable
+fun EmptyRect(height: Dp, width: Dp, stroke: Float, color: Color) {
+    Canvas(modifier = Modifier.height(height).width(width)) {
+        val canvasHeight = size.height
+        val canvasWidth = size.width
+        drawRect(
+            color = color,
+            style = Stroke(stroke)
+        )
+    }
+}
+
+@Composable
+fun EmptySquare(size: Int, ratio: Float, color: Color) {
+    EmptyRect(height = size.dp, width = size.dp, stroke = size.times(ratio), color = color)
+}
+
 @Composable
 fun Handle(rowIndex: Int, columnIndex: Int, s: String, dragAndDropVM: DragAndDropState) {
     var selectColor: Color = remember { gray7 }
@@ -84,13 +73,6 @@ fun Handle(rowIndex: Int, columnIndex: Int, s: String, dragAndDropVM: DragAndDro
         Modifier
             .wrapContentSize()
             .background(selectColor)
-            .onGloballyPositioned {
-//                dragAndDropVM.addDroppableCase(
-//                    rowIndex = rowIndex,
-//                    columnIndex = columnIndex,
-//                    it
-//                )
-            }
     ) {
         Text(text = s, color = whiteDark4)
     }

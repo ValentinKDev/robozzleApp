@@ -34,14 +34,13 @@ import com.mobilegame.robozzle.presentation.res.gray5
 import com.mobilegame.robozzle.presentation.res.grayDark3
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun FoldableScrollingBar(vm: DonationScreenViewModel) {
     val unfold by remember(vm) {vm.logic.unfold}.collectAsState(false)
     val transition = updateTransition(targetState = unfold, label = "")
 
     val input by vm.logic.input.collectAsState()
-    infoLog("input", "${input}")
 
     val sizeList by transition.animateDp(
         label = "",
@@ -57,7 +56,6 @@ fun FoldableScrollingBar(vm: DonationScreenViewModel) {
         .fillMaxWidth()
     ) {
         AnimatedVisibility(
-//            AnimatedContent(
             visible = unfold,
             enter = expandVertically(
                 initialHeight = { it + (vm.data.listSize!! * 0.5F).toInt() }
@@ -75,7 +73,6 @@ fun FoldableScrollingBar(vm: DonationScreenViewModel) {
         ) {
             if (unfold) {
                 LazyColumn(Modifier.background(grayDark3)) {
-//                    itemsIndexed(vm.data.text.listNetworkCoin) { _, _element ->
                     itemsIndexed(vm.logic.showList()) { _, _element ->
                         Row(
                             modifier = Modifier

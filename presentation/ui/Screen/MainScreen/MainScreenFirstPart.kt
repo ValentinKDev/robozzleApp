@@ -20,7 +20,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScre
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreenFirstPart(
     navigator: Navigator,
@@ -30,7 +30,6 @@ fun MainScreenFirstPart(
 ) {
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
 
-//    Column(modifier = Modifier.fillMaxSize()) {
         Row( Modifier .fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
         ) {

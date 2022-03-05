@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.model.gesture.dragAndDrop
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
@@ -11,10 +12,14 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 typealias DragAndDropRow = Pair<Rect, DragAndDropCaseList>
 typealias DragAndDropCaseList = MutableList<Rect>
+
+infix fun Boolean.not(check: Boolean) = this != check
 
 class DragAndDropElements {
     var parentOffset: Offset = Offset.Zero
@@ -26,6 +31,23 @@ class DragAndDropElements {
 
     var itemSelectedPosition: Position? = null
     var itemSelected: FunctionInstructions? = null
+    var itemSelectedSize: Size? = null
+    var itemSelectedHalfHeight: Float? = null
+    var itemSelectedOneThirdHeight: Float? = null
+    var itemSelectedTwoThirdHeight: Float? = null
+
+    private val _itemUnderVisible = MutableStateFlow<Boolean>(false)
+    val itemUnderVisible: StateFlow<Boolean> = _itemUnderVisible.asStateFlow()
+    var itemUnderPosition: Position? = null
+    var itemUnder: FunctionInstructions? = null
+    var itemUnderTopLeftOffset: Offset? = null
+    fun clearItemUnder() {
+        infoLog("clear", "item Under")
+        _itemUnderVisible.value = false
+        itemUnderPosition = null
+        itemUnder = null
+        itemUnderTopLeftOffset = null
+    }
 
     var rowsList: MutableList<DragAndDropRow> = mutableListOf()
     private var allreadyIn: MutableList<Position> = mutableListOf()
@@ -41,12 +63,9 @@ class DragAndDropElements {
     fun addDroppableCase(rowIndex: Int, columnIndex: Int, layoutCoordinates: LayoutCoordinates) {
         val item = Position(rowIndex, columnIndex)
         val case = layoutCoordinates.boundsInRoot()
-        val row = rowsList[rowIndex].first
         val casesList = rowsList[rowIndex].second
 
-//        infoLog("infos", "${case.isValid()} && ${allreadyIn.containsNot(item)}")
         if (allreadyIn.containsNot(item) && case.isValid()) {
-//            verbalLog("add", "\t${case}")
             casesList += case
             allreadyIn.add(item)
             verbalLog("add", "\tdroppable case $rowIndex, $columnIndex")
@@ -57,17 +76,22 @@ class DragAndDropElements {
         var found = false
         rowsList.forEachIndexed { rowIndex, row ->
             if (row.first.contains(offset)) {
-                row.second.forEachIndexed { columIndex, case ->
+                row.second.forEachIndexed { columnIndex, case ->
                     if (case.contains(offset)) {
-                        itemSelectedPosition = Position(rowIndex, columIndex)
+                        itemSelectedPosition = Position(rowIndex, columnIndex)
                         itemSelectedPosition?.let {
                             itemSelected = FunctionInstructions(
                                 instructions = list[it.line].instructions[it.column].toString(),
                                 colors = list[it.line].colors[it.column].toString()
                             )
+                            itemSelectedSize = case.size
+                            itemSelectedHalfHeight = case.height / 2F
+                            itemSelectedOneThirdHeight = case.height / 3F
+                            itemSelectedTwoThirdHeight = (2F * case.height) / 3F
                         }
                         verbalLog("itemSelected Postion", "$itemSelectedPosition")
                         verbalLog("itemSelected", "$itemSelected")
+                        verbalLog("itemSelectedSize", "$itemSelectedSize")
                         found = true
                     }
                 }
@@ -78,8 +102,46 @@ class DragAndDropElements {
             errorLog("error", "not found, offSet $offset")
             errorLog("conditions", "${rowsList[0].first.contains(offset)} ${rowsList[0].second[0].contains(offset)}${rowsList[0].second[1].contains(offset)}${rowsList[0].second[2].contains(offset)}${rowsList[0].second[3].contains(offset)}")
         }
-
     }
+
+    fun findItemUnderItem(offset: Offset, list: List<FunctionInstructions>) {
+        var found = false
+        var visible = false
+        rowsList.forEachIndexed { rowIndex, row ->
+            if (row.first.contains(offset)) {
+                row.second.forEachIndexed { columnIndex, case ->
+                    if (case.contains(offset)) {
+                        visible = true
+                        val position = Position(rowIndex, columnIndex)
+                        if (itemUnderPosition != position) {
+                            itemUnderPosition = position
+                            itemUnderPosition?.let {
+                                itemUnder = FunctionInstructions(
+                                    instructions = list[it.line].instructions[it.column].toString(),
+                                    colors = list[it.line].colors[it.column].toString()
+                                )
+                                if (it != itemSelectedPosition)  {
+                                    _itemUnderVisible.value = true
+                                    itemUnderTopLeftOffset = case.topLeft
+                                }
+                                found = true
+                                verbalLog("itemUnder Postion", "$itemUnderPosition")
+                                verbalLog("itemUnder", "$itemUnder")
+                            }
+                        }
+                    }
+                }
+            }
+            if (found not true) {
+                itemUnderPosition = null
+                itemUnder = null
+            }
+            if (visible not true)
+                clearItemUnder()
+            verbalLog("visible", "${_itemUnderVisible.value}")
+        }
+    }
+    infix fun not(uoi: Boolean): Boolean = uoi.not()
 
     fun onHoldItem(list: MutableList<FunctionInstructions>): MutableList<FunctionInstructions> {
         val ret: MutableList<FunctionInstructions> = list.map { it.copy() }.toMutableList()
@@ -87,26 +149,14 @@ class DragAndDropElements {
             val line = it.line
             val column = it.column
             ret[line].instructions = ret[line].instructions.replaceRange(column..column, ".")
-//            ret[line].colors = ret[line].colors.replaceRange(column..column+1, "g")
             ret[line].colors = ret[line].colors.replaceRange(column..column, "g")
             errorLog("${ret}", ".")
             errorLog("${list}", ".")
         }
         return ret
     }
-    private fun Rect.isValid(): Boolean = !this.isEmpty && !this.center.isUnspecified
-    fun getColor(list: List<FunctionInstructions>): String? = itemSelected?.colors
-    fun getInstruction(list: List<FunctionInstructions>): Char? = itemSelected?.instructions?.get(0)
-//        list[itemSelectedPosition.line].colors[itemSelectedPosition.column].toString()
-//    } catch (e: ArrayIndexOutOfBoundsException) {
-//        errorLog("ERROR", "${e.message}")
-//        null
-//    }
-//    fun getInstruction(list: List<FunctionInstructions>): Char? = try {
-//        list[itemSelectedPosition.line].instructions[itemSelectedPosition.column]
-//    } catch (e: ArrayIndexOutOfBoundsException) {
-//        errorLog("ERROR", "${e.message}")
-//        null
-//    }
 
+    private fun Rect.isValid(): Boolean = !this.isEmpty && !this.center.isUnspecified
+    fun getColor(): String? = itemSelected?.colors
+    fun getInstruction(): Char? = itemSelected?.instructions?.get(0)
 }

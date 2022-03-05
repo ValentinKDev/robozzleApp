@@ -2,8 +2,8 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.secondPart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,19 +14,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
+import com.mobilegame.robozzle.presentation.res.greendark10
+import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptySquare
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionsIconsFunction
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
+import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 
 @Composable
@@ -38,12 +42,15 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
     val animationRunningInBackground = animationIsPlaying || animationIsOnPause
 
     val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
-//    errorLog("DISPLAY FUNCTION PART", "launch dragged $draggedStart")
+    val levelFunctions: List<FunctionInstructions> by lvl.instructionRows.collectAsState()
+
     val functions =
         if ( draggedStart )
-            vm.dragAndDrop.elements.onHoldItem(lvl.funInstructionsList)
+//            vm.dragAndDrop.elements.onHoldItem(lvl.funInstructionsList)
+            vm.dragAndDrop.elements.onHoldItem(levelFunctions.toMutableList())
         else
-            lvl.funInstructionsList
+            levelFunctions
+//            lvl.funInstructionsList
 
     Column(Modifier
         .fillMaxSize()
@@ -54,33 +61,26 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
 
             vm.dragAndDrop.elements.setDraggableParentOffset(it)
         }
-//        .backColor(greendark10)
         .pointerInput(Unit) {
-//            detectTapGestures {
-//                if (!animationRunningInBackground) {
-//                    vm.ChangeInstructionMenuState()
-//                    lvl.SetSelectedFunctionCase(functionNumber, _index)
-//                }
-//            }
-
-//            }
-            detectDragGesturesAfterLongPress(
+            detectDragGestures(
                 onDrag = { change, _ ->
                     infoLog("onDrag", "position ${change.position}")
-                    vm.dragAndDrop.onDrag(change, functions)
-//                    vm.dragAndDrop.setTouchOffset(change.position)
+                    vm.dragAndDrop.onDrag(
+                        change,
+                        vm.data.getFunctionCaseHalfSize(),
+                        functions
+                    )
                 },
                 onDragStart = { _offset ->
                     infoLog("onDragStart", "started")
-//                    vm.dragAndDrop.onDragStart(_offset, lvl.funInstructionsList)
                     vm.dragAndDrop.onDragStart(_offset, functions)
                 },
                 onDragEnd = {
-                    vm.dragAndDrop.onDragEnd()
+                    vm.dragAndDrop.onDragEnd(lvl)
                     errorLog("onDragEnd", "end")
                 },
                 onDragCancel = {
-                    vm.dragAndDrop.onDragCancel()
+                    vm.dragAndDrop.onDragCancel(lvl.funInstructionsList)
                     errorLog("onDragCanceled", "cancel")
                 }
             )
@@ -109,11 +109,8 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
         .onGloballyPositioned {
             vm.data.functionsNumber = lvl.funInstructionsList.size
             vm.data.maxCasesNumber = function.instructions.length
-
-//            vm.dragAndDrop.addDroppableRow(functionNumber, it)
             vm.dragAndDrop.elements.addDroppableRow(functionNumber, it)
-        }
-        ,
+        } ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
@@ -121,69 +118,54 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
             text = vm.data.text.functionText(functionNumber),
             color = vm.data.colors.functionTextColor
         )
-        Row() {
-            function.instructions.forEachIndexed { _index, c ->
-                val caseColor = function.colors[_index].toString()
-                Box(
-                    Modifier
-                        .background(vm.data.colors.functionBorderColor)
-                        .size(vm.data.getFunctionCaseSize().dp)
-//                        .size(40.dp)
-                        .padding(vm.data.getFunctionCasePadding().dp)
-                        .onGloballyPositioned {
-//                            errorLog("$functionNumber ${_index}", "${it.boundsInRoot().topLeft}")
-                            vm.dragAndDrop.elements.addDroppableCase(
-                                rowIndex = functionNumber,
-                                columnIndex = _index,
-                                it
-                            )
-                        }
-                        .clickable {
-                            if (!animationRunningInBackground && !vm.dragAndDrop.dragStart.value) {
-                                vm.ChangeInstructionMenuState()
-                                lvl.SetSelectedFunctionCase(functionNumber, _index)
-                            }
-                        }
+        Row(
+            Modifier
+                .height((vm.data.getFunctionCaseSize() + (2 * vm.data.getFunctionCasePadding())).dp)
+                .width(((function.instructions.length * (vm.data.getFunctionCaseSize() + vm.data.getFunctionCasePadding())) + vm.data.getFunctionCasePadding()).dp)
+                .background(vm.data.colors.functionBorderColor)
+            ,
+        ) {
+            CenterComposableVertically {
+                Row( Modifier.fillMaxWidth()
+                    ,
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    val instructionChar = function.instructions[_index]
-                    if ( lvl.breadcrumb.currentInstructionList.isNotEmpty()
-                        && ( (currentAction == 0 && functionNumber == 0 && _index == 0)
-                                || lvl.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, _index) ) )
-                        && animationRunningInBackground )
-                    {
-                        Box(
-                            modifier = Modifier
-                                .background(Color.White)
-                                .size(40.dp)
-                                .padding(40.dp)
-                        ) { }
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .gradientBackground(
-                                    ColorsList(
-                                        caseColor,
-                                        vm.displayInstructionsMenu.value == true
-                                    ), 175f
+                    function.instructions.forEachIndexed { _index, c ->
+//                        if ( vm.dragAndDrop.isSwitchingCase(functionNumber, _index)) {
+//                        }
+                        val caseColor = function.colors[_index].toString()
+                        Box(Modifier
+                            .size(vm.data.getFunctionCaseSize().dp)
+//                            .size((vm.data.getFunctionCaseSize() + vm.data.getFunctionCasePadding()).dp)
+                            .onGloballyPositioned {
+                                vm.dragAndDrop.elements.addDroppableCase(
+                                    rowIndex = functionNumber,
+                                    columnIndex = _index,
+                                    it
                                 )
-                                .size((40 - 12).dp)
-                                .padding((4).dp)
-                        ){
-                            if (instructionChar != '.') {
-                                InstructionsIconsFunction(instructionChar, vm)
+                            }
+                            .clickable {
+                                if (!animationRunningInBackground && !vm.dragAndDrop.dragStart.value) {
+                                    vm.ChangeInstructionMenuState()
+                                    lvl.SetSelectedFunctionCase(functionNumber, _index)
+                                }
+                            }
+                        ) {
+                            val instructionChar = function.instructions[_index]
+                            Box( Modifier .fillMaxSize()
+                            ) {
+                                FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm)
+                                if ( lvl.breadcrumb.currentInstructionList.isNotEmpty()
+                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || lvl.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, _index) ) )
+                                    && animationRunningInBackground
+                                ) {
+//                                    EmptySquare()
+                                }
                             }
                         }
-                    }
-                    else {
-                        FunctionCase(
-                            caseColor,
-                            vm,
-                            instructionChar
-                        )
                     }
                 }
             }
-
         }
     }
 }

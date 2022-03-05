@@ -38,26 +38,17 @@ fun InstructionIconsMenu(instruction: Char, gameDataViewModel: GameDataViewModel
 
 @Composable
 fun InstructionIcons(instruction: Char, gameDataViewModel: GameDataViewModel, sizeCase: Int, sizeIcon: Int) {
-    if (instruction.toString().matches("[RGBg]".toRegex())) {
-        //todo: resize shape of the colored square inside the black square in the actionsRow
-//        MyIconCaseColoring(instruction, sizeIcon, sizeCase, gameDataViewModel)
-        MyIconCaseColoring(instruction, sizeCase, gameDataViewModel)
-//        infoLog("checker", "1")
-//    }
-//    else if (instruction == 'n') {
-//        infoLog("checker", "2")
-//        return
-    } else if (instruction.toString().matches("[url0-6]".toRegex())) {
-//        infoLog("checker", "3")
-        SelectGoogleIcons(instruction, sizeIcon)
+    when {
+        instruction.toString().matches("[RGBg]".toRegex()) -> {
+            //todo: resize shape of the colored square inside the black square in the actionsRow
+            MyIconCaseColoring(instruction, sizeCase, gameDataViewModel)
+        }
+        instruction.toString().matches("[url0-6]".toRegex()) -> {
+            SelectGoogleIcons(instruction, sizeIcon)
+        }
+        else -> {
+        }
     }
-    else {
-//        errorLog("checker", "4")
-    }
-
-//    else {
-//        infoLog("checker", "3")
-//        SelectGoogleIcons(instruction, sizeIcon) }
 }
 
 @Composable

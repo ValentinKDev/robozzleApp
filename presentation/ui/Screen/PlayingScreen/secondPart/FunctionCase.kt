@@ -16,7 +16,6 @@ fun FunctionCase(color: String, vm: GameDataViewModel, instructionChar: Char, bi
     Box( Modifier
         .gradientBackground( ColorsList( color, vm.displayInstructionsMenu.value == true ), 175f )
         .size( vm.data.getFunctionCaseSize(bigger = bigger).dp)
-        .padding( vm.data.getFunctionCasePadding().dp )
     ){
         if (instructionChar != '.'){
             InstructionsIconsFunction(instructionChar, vm)

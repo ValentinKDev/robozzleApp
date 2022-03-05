@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.Extensions
 
 
 
+
 fun String.notEqual(str: String): Boolean {
     return !this.equals(str)
 }
@@ -29,5 +30,5 @@ fun String.containLetter(): Boolean {
 }
 
 fun String.replaceAt(index: Int, char: Char): String {
-    return this.replaceRange(index, index + 1, char.toString())
+    return this.replaceRange(index..index, char.toString())
 }
