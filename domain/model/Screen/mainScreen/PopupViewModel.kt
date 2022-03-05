@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class MainScreenPopupViewModel(): ViewModel() {
+class PopupViewModel(): ViewModel() {
 
     private val _visiblePopup = MutableStateFlow<Boolean>(true)
     val visiblePopup: StateFlow<Boolean> = _visiblePopup.asStateFlow()

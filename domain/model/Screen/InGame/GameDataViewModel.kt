@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
+import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import kotlinx.coroutines.*
@@ -31,6 +32,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 //val context: Context = getApplication<Application>()
 //    val context: Context = context
     val data = InGameData()
+    val popup = PopupViewModel()
     val dragAndDrop = DragAndDropState()
     /*
     Faire un objet qui regroupe toute les infos sur l animation en cours ?
@@ -73,16 +75,16 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 //    var screenConfig = ScreenConfig(context, emptyLevel)
 
     fun init(lvl: RobuzzleLevel) {
-//        level = lvl
-//        screenConfig = ScreenConfig(context, lvl)
-//        Log.e("", "gameData.init")
-        errorLog("init original stars list", "${originalStarsList}")
+        errorLog("Init", "GameDataViewModel")
 
+        lvlId = lvl.id
+        lvlDifficulty = lvl.difficulty
+        lvlName = lvl.name
         originalStarsList = lvl.starsList.clone()
         playerInital = lvl.playerInitial
-//        ChangePlayerAnimatedStatus(playerInital)
-//        SetAnimatedStars(originalStarsList.clone())
+//        lvl.breadcrumb.CreateBreadcrumb()
         ResetAnimation(lvl)
+        //todo: init data: InGameData() here
     }
 
     private val _triggerRecompostion = MutableStateFlow<Boolean>(false)

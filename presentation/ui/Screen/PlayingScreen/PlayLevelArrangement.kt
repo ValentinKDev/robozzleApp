@@ -37,7 +37,6 @@ fun DisplayGameScreen(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel
 //todo : il manque la touche supprimer l'instruction selectionnée
 @Composable
 fun DisplayInstuctionMenu(level: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig ) {
-
     Column(
         modifier = Modifier
             .height(300.dp)

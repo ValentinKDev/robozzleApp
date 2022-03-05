@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MainScreenViewModel(): ViewModel() {
-    val popup = MainScreenPopupViewModel()
+    val popup = PopupViewModel()
     val data = MainScreenData()
 
     private val _visibleElements = MutableStateFlow<Boolean>(false)

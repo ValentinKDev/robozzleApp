@@ -8,8 +8,12 @@ class InGameData {
     val ratios = InGameRatios
     val colors = InGameColors
 
+    private val maximumCaseNumberActionRow = 10
+    private val minimumCaseNumberPerRow = 7
+
     var density: Float? = null
         set(value) { if (field == null) field = value }
+
     var fistPartWidth: Int? = null
         set(value) { if (field == null) field = value }
     var fistPartHeight: Int? = null
@@ -25,8 +29,6 @@ class InGameData {
         set(value) { if (field == null) field = value }
     var functionsNumber: Int? = null
         set(value) { if (field == null) field = value }
-    private val minimumCaseNumberPerRow = 7
-//    var maxCasesNumber: Int = minimumCaseNumberPerRow
     var maxCasesNumber: Int = minimumCaseNumberPerRow
         set(value) { if (value > field) field = value }
     private var functionCaseSize: Int? = null
@@ -60,5 +62,17 @@ class InGameData {
             functionCasePadding = (it * ratios.functionCasePadding).toInt()
             functionCasePadding
         } ?: 0
+    }
+    private var actionRowCaseSize: Int? = null
+    fun getActionRowCaseSize(): Int = actionRowCaseSize ?: run {
+        secondPartWidth?.let { _width ->
+            density?.let { _density ->
+                val size = ((_width / maximumCaseNumberActionRow) / _density).toInt()
+                functionCaseSize = size
+            }
+
+            functionCaseSize
+        }
+        functionCaseSize ?: 0
     }
 }

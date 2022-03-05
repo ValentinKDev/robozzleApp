@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
 
-//class DragAndDropState {
 class DragAndDropState(): ViewModel() {
     val elements = DragAndDropElements()
 

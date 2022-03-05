@@ -103,23 +103,21 @@ fun DisplayActionsRow(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, 
 //todo : est ce que la barre d'action s'affiche uniquement lors du lancement ? est ce que je peux animer les action qui se stack au fur et a mesure que le joueur selectionne des instructions
 //todo : bug affichage quand la fonction 0 ne fait que rappeller la fonction 0
 @Composable
-fun DisplayActionRowCase(action: Int, lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
+fun DisplayActionRowCase(action: Int, lvl: RobuzzleLevel, vm: GameDataViewModel, screenConfig: ScreenConfig) {
     Box(
         modifier = Modifier
-            .size(screenConfig.instructionActionRowCase.dp)
+//            .size(screenConfig.instructionActionRowCase.dp)
+            .size(vm.data.getActionRowCaseSize().dp)
             .gradientBackground(
                 ColorsList(
-//                    lvl.funInstructionsList[lvl.guideline.currentInstructionList[action].line].colors[lvl.guideline.currentInstructionList[action].column].toString(),
                     lvl.funInstructionsList[lvl.breadcrumb.currentInstructionList[action].line].colors[lvl.breadcrumb.currentInstructionList[action].column].toString(),
-                    gameDataViewModel.displayInstructionsMenu.value == true
+                    vm.displayInstructionsMenu.value == true
                 ), 45f
             )
             .border(width = 2.dp, color = Color.Black)
     ) {
-//        verbalLog("check", "")
         Box(Modifier.align(Alignment.Center)) {
-//            InstructionIconsActionRow(lvl.guideline.actionList[action], gameDataViewModel, screenConfig )
-            InstructionIconsActionRow(lvl.breadcrumb.actionList[action], gameDataViewModel, screenConfig )
+            InstructionIconsActionRow(lvl.breadcrumb.actionList[action], vm, screenConfig )
         }
     }
 }
