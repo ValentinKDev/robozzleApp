@@ -15,7 +15,11 @@ import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackgrou
 fun FunctionCase(color: String, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false) {
     Box( Modifier
         .gradientBackground( ColorsList( color, vm.displayInstructionsMenu.value == true ), 175f )
-        .size( vm.data.getFunctionCaseSize(bigger = bigger).dp)
+//        .size( vm.data.getFunctionCaseSize(bigger = bigger).dp)
+        .size(
+            if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
+            else vm.data.layout.secondPart.size.functionCase.dp
+        )
     ){
         if (instructionChar != '.'){
             InstructionsIconsFunction(instructionChar, vm)

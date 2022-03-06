@@ -32,8 +32,14 @@ fun InstructionIconsActionRow(instruction: Char, gameDataViewModel: GameDataView
 }
 
 @Composable
-fun InstructionIconsMenu(instruction: Char, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
-    InstructionIcons(instruction, gameDataViewModel, screenConfig.instructionMenuCase, screenConfig.instructionMenuIcon)
+fun InstructionIconsMenu(instruction: Char, vm: GameDataViewModel) {
+//    InstructionIcons(instruction, vm, screenConfig.instructionMenuCase, screenConfig.instructionMenuIcon)
+    InstructionIcons(
+        instruction,
+        vm,
+        vm.data.layout.menu.size.case.toInt(),
+        vm.data.layout.menu.size.icon.toInt()
+    )
 }
 
 @Composable
@@ -54,17 +60,12 @@ fun InstructionIcons(instruction: Char, gameDataViewModel: GameDataViewModel, si
 @Composable
 fun SelectGoogleIcons(instruction: Char, sizeIcon: Int) {
     Box(modifier = Modifier.fillMaxSize()
-//        .backColor(Color.Black)
     ) {
-//        infoLog("inst", "$instruction" )
         Icon(
             imageVector = when (instruction) {
                 'r' -> Icons.Outlined.Redo
                 'l' -> Icons.Outlined.Undo
-//                'U' -> Icons.Outlined.ArrowUpward
                 'u' -> Icons.Outlined.ArrowUpward
-//                    'R' ->
-                //todo: function to get the function number in icon
                 '0' -> Icons.Outlined.ExposureZero
                 '1' -> Icons.Outlined.LooksOne
                 '2' -> Icons.Outlined.LooksTwo

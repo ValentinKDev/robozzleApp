@@ -45,7 +45,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                         y = it.y.toInt(),
                                     )
                                 }
-                            ) { EmptySquare(size =  vm.data.getFunctionCaseSize(true), ratio = 0.15F, color = whiteDark4)}
+//                            ) { EmptySquare(size =  vm.data.getFunctionCaseSize(true), ratio = 0.15F, color = whiteDark4)}
+                            ) { EmptySquare(size =  vm.data.layout.secondPart.size.functionCase, ratio = 0.15F, color = whiteDark4)}
                         }
                     }
                     Box(Modifier

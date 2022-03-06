@@ -60,9 +60,9 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
     Column(Modifier
         .fillMaxSize()
         .onGloballyPositioned {
-            vm.data.secondPartHeight = it.size.height
-            vm.data.secondPartWidth = it.size.width
-            vm.data.density = density
+//            vm.data.secondPartHeight = it.size.height
+//            vm.data.secondPartWidth = it.size.width
+//            vm.data.density = density
 
             vm.dragAndDrop.elements.setDraggableParentOffset(it)
         }
@@ -72,7 +72,8 @@ fun DisplayFunctionsPart(lvl: RobuzzleLevel, vm: GameDataViewModel) {
                     infoLog("onDrag", "position ${change.position}")
                     vm.dragAndDrop.onDrag(
                         change,
-                        vm.data.getFunctionCaseHalfSize(),
+//                        vm.data.getFunctionCaseHalfSize(),
+                        vm.data.layout.secondPart.size.halfFunctionCase.toFloat(),
                         functions
                     )
                 },
@@ -112,8 +113,8 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
     Row(modifier = Modifier
         .fillMaxWidth()
         .onGloballyPositioned {
-            vm.data.functionsNumber = lvl.funInstructionsList.size
-            vm.data.maxCasesNumber = function.instructions.length
+//            vm.data.functionsNumber = lvl.funInstructionsList.size
+//            vm.data.maxCasesNumber = function.instructions.length
             vm.dragAndDrop.elements.addDroppableRow(functionNumber, it)
         } ,
         verticalAlignment = Alignment.CenterVertically,
@@ -123,11 +124,12 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
             text = vm.data.text.functionText(functionNumber),
             color = vm.data.colors.functionTextColor
         )
-        Row(
-            Modifier
-                .height((vm.data.getFunctionCaseSize() + (2 * vm.data.getFunctionCasePadding())).dp)
-                .width(((function.instructions.length * (vm.data.getFunctionCaseSize() + vm.data.getFunctionCasePadding())) + vm.data.getFunctionCasePadding()).dp)
-                .background(vm.data.colors.functionBorderColor)
+        Row( Modifier
+//            .height((vm.data.getFunctionCaseSize() + (2 * vm.data.getFunctionCasePadding())).dp)
+//            .width(((function.instructions.length * (vm.data.getFunctionCaseSize() + vm.data.getFunctionCasePadding())) + vm.data.getFunctionCasePadding()).dp)
+            .height((vm.data.layout.secondPart.size.functionCase + (2 * vm.data.layout.secondPart.size.functionCasePadding)).dp)
+            .width(((function.instructions.length * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
+            .background(vm.data.colors.functionBorderColor)
             ,
         ) {
             CenterComposableVertically {
@@ -140,7 +142,8 @@ fun DisplayFunctionRow(lvl: RobuzzleLevel, functionNumber: Int, function: Functi
 //                        }
                         val caseColor = function.colors[_index].toString()
                         Box(Modifier
-                            .size(vm.data.getFunctionCaseSize().dp)
+//                            .size(vm.data.getFunctionCaseSize().dp)
+                            .size(vm.data.layout.secondPart.size.functionCase.dp)
 //                            .size((vm.data.getFunctionCaseSize() + vm.data.getFunctionCasePadding()).dp)
                             .onGloballyPositioned {
                                 vm.dragAndDrop.elements.addDroppableCase(

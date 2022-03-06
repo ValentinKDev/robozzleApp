@@ -1,78 +1,36 @@
 package com.mobilegame.robozzle.domain.model.Screen.InGame
 
+import android.content.Context
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.unit.Density
+import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.configuration.inGame.*
+import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameLayout
+import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 
-class InGameData {
+
+class InGameData(): ViewModel() {
+    private var notInitialized = true
+
     val text = InGameText
-    val ratios = InGameRatios
     val colors = InGameColors
+    val layout = InGameLayout()
 
-    private val maximumCaseNumberActionRow = 10
-    private val minimumCaseNumberPerRow = 7
+    fun init(lvl: RobuzzleLevel, context: Context, dens: Density, layoutCoordinates: LayoutCoordinates) {
+        verbalLog("init", "InGameData")
+        if (notInitialized) {
+            infoLog("init", "density")
+            layout.setDensity(dens)
+            infoLog("init", "layoutCoor")
+            layout.setLayoutCoordinates(layoutCoordinates)
+            infoLog("init", "all layouts")
+            layout.setAllLayouts(lvl)
 
-    var density: Float? = null
-        set(value) { if (field == null) field = value }
 
-    var fistPartWidth: Int? = null
-        set(value) { if (field == null) field = value }
-    var fistPartHeight: Int? = null
-        set(value) { if (field == null) field = value }
-    var thirdPartWidth: Int? = null
-        set(value) { if (field == null) field = value }
-    var thirdPartHeight: Int? = null
-        set(value) { if (field == null) field = value }
-
-    var secondPartWidth: Int? = null
-        set(value) { if (field == null) field = value }
-    var secondPartHeight: Int? = null
-        set(value) { if (field == null) field = value }
-    var functionsNumber: Int? = null
-        set(value) { if (field == null) field = value }
-    var maxCasesNumber: Int = minimumCaseNumberPerRow
-        set(value) { if (value > field) field = value }
-    private var functionCaseSize: Int? = null
-    private var functionCaseHalfSize: Float? = null
-    fun getFunctionCaseHalfSize(bigger: Boolean = false): Float = functionCaseHalfSize ?: run {
-        functionCaseHalfSize = getFunctionCaseSize(bigger).toFloat() / 2F
-        functionCaseHalfSize ?: 0F
-    }
-    fun getFunctionCaseSize(bigger: Boolean = false): Int = functionCaseSize ?: run {
-        secondPartWidth?.let { _width ->
-            functionCaseSize = ((_width * ratios.maxFunctionWidth) / maxCasesNumber).toInt()
-            functionCaseSize?.let {
-                density?. let { _densisty ->
-                    val size = (((_width * ratios.maxFunctionWidth) / maxCasesNumber) / _densisty).toInt()
-                    functionCaseSize = size
-                }
-            }
-            errorLog("mapCaseNumber", "${maxCasesNumber}")
-            errorLog("secondPartWidht", "${_width}")
-            errorLog("funnctionCaseSize", "${functionCaseSize}")
-
-            functionCaseSize?.let { if (bigger) (it * ratios.functionCaseBiggerRatio).toInt() else it}
+            notInitialized= false
         }
-//        functionCaseSize ?: 0
-        functionCaseSize?.let { if (bigger) (it * ratios.functionCaseBiggerRatio).toInt() else it} ?: 0
-//        functionCaseSize ?: 0
-    }
-    var functionCasePadding: Int? = null
-    fun getFunctionCasePadding(): Int = functionCasePadding ?: run {
-        functionCaseSize?.let {
-            functionCasePadding = (it * ratios.functionCasePadding).toInt()
-            functionCasePadding
-        } ?: 0
-    }
-    private var actionRowCaseSize: Int? = null
-    fun getActionRowCaseSize(): Int = actionRowCaseSize ?: run {
-        secondPartWidth?.let { _width ->
-            density?.let { _density ->
-                val size = ((_width / maximumCaseNumberActionRow) / _density).toInt()
-                functionCaseSize = size
-            }
-
-            functionCaseSize
-        }
-        functionCaseSize ?: 0
     }
 }

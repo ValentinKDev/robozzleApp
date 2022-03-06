@@ -23,10 +23,10 @@ fun PlayingScreenPopupWin(vm: GameDataViewModel) {
         ,
         content = {
             PaddingComposable(
-                topPaddingRatio = vm.data.ratios.popup_topPaddingRatio,
-                bottomPaddingRatio = vm.data.ratios.popup_bottomPaddingRatio,
-                startPaddingRatio = vm.data.ratios.popup_startPaddingRatio,
-                endPaddingRatio = vm.data.ratios.popup_endPaddingRatio,
+                topPaddingRatio = vm.data.layout.popup.ratios.topPadding,
+                bottomPaddingRatio = vm.data.layout.popup.ratios.bottomPadding,
+                startPaddingRatio = vm.data.layout.popup.ratios.startPadding,
+                endPaddingRatio = vm.data.layout.popup.ratios.endPadding,
             ) {
                 Card(
                     backgroundColor = vm.data.colors.popupMainColor,

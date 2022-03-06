@@ -13,4 +13,6 @@ object InGameColors {
 
     val functionTextColor = whiteDark4
     val functionBorderColor = Color.Black
+
+    val menuCaseBorder = Color.Black
 }
