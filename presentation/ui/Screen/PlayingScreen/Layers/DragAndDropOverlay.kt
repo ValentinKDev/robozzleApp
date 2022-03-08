@@ -11,9 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.res.yellow0
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptyRect
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptySquare
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.secondPart.FunctionCase
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 
 @Composable
@@ -46,7 +45,13 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                     )
                                 }
 //                            ) { EmptySquare(size =  vm.data.getFunctionCaseSize(true), ratio = 0.15F, color = whiteDark4)}
-                            ) { EmptySquare(size =  vm.data.layout.secondPart.size.functionCase, ratio = 0.15F, color = whiteDark4)}
+                            ) {
+                                EmptySquare(
+                                    size =  vm.data.layout.secondPart.size.functionCase,
+                                    ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
+                                    color = vm.data.colors.functionCaseSelection
+                                )
+                            }
                         }
                     }
                     Box(Modifier

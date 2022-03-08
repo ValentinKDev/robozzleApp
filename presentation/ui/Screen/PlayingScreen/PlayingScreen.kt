@@ -14,50 +14,45 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.WinDetails.WinDetails
+import com.mobilegame.robozzle.domain.model.Screen.InGame.InGameData
+import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
 
 @Composable
-fun PlayingScreen(level: RobuzzleLevel, vm: GameDataViewModel = viewModel()) {
-    val context = LocalContext.current
-    val density = LocalDensity.current
-    var layoutCoordinates: LayoutCoordinates
-
-    Box(Modifier.fillMaxSize().onGloballyPositioned {
-        vm.data.init(level, context, density, it)
-    }
-    )
-
+fun PlayingScreen(vm: GameDataViewModel) {
     LaunchedEffect(key1 = "PlayingScreenStart") {
-        Log.i("", "_"); Log.e("LAUNCH LEVEL", "${level.id} - ${level.name}"); Log.i("", "_")
-        vm.init(level, context, density)
+        Log.i("", "_"); Log.e("LAUNCH LEVEL", "${vm.level.id} - ${vm.level.name}"); Log.i("", "_")
     }
+//    val data: InGameData? = getLayoutCoordinates()?.let { InGameData(vm.level, LocalDensity.current, it) }
 
-    PlayingScreenLayers(level, vm)
+    PlayingScreenLayers(vm)
 }
 
 @Composable
-fun PlayingScreenLayers(level: RobuzzleLevel, vm: GameDataViewModel) {
+fun PlayingScreenLayers(vm: GameDataViewModel) {
     val context = LocalContext.current
-    val screenConfig = ScreenConfig(context, level)
 
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.observeAsState( false )
-    val win: Int by vm.win.collectAsState(UNKNOWN)
+    val win: Int by vm.animationLogicVM.win.collectAsState(UNKNOWN)
 
-    Box(Modifier
-        .fillMaxSize()
-        .onGloballyPositioned {
-        }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .onGloballyPositioned {
+            }
     ) {
-        DisplayGameScreen(level, vm, screenConfig)
+        DisplayAllParts(vm)
 
         DragAndDropOverlay(vm)
 
         if (displayInstructionMenu) {
-            DisplayInstuctionMenu(level, vm)
+            DisplayInstuctionMenu(vm)
         } else if (win == TRUE) {
             PlayingScreenPopupWin(vm = vm)
         }

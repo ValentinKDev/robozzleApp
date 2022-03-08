@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.analyse
 import android.util.Log
 import com.mobilegame.robozzle.Extensions.Contains
 import com.mobilegame.robozzle.domain.InGame.Breadcrumb
+import com.mobilegame.robozzle.domain.InGame.BreadcrumbViewModel
 import com.mobilegame.robozzle.domain.InGame.DivineGuideLine
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -18,20 +19,22 @@ fun infoLog(firstpart: String = "", secondpart: String) = Log.i(firstpart, secon
 
 fun Print_breadcrumb(breadcrumb: Breadcrumb) {
     var playerStateList = breadcrumb.playerStateList
-    var actionList = breadcrumb.actionList
+//    var actionList = breadcrumb.actionList
+    var actionList = breadcrumb.actions
     var actionTriggerStarRemove = breadcrumb.actionsTriggerStarRemoveList
     var actionTriggerRemoveStr : String = ""
     var actionTriggerPutStr : String = ""
     var starStr = ""
     var colorSw = ""
 
-    Log.i("","playerStateList.size ${playerStateList.size} // actionList.lenght ${actionList.length}")
+    verbalLog("resume", "BreadCrumb")
+    Log.i("","playerStateList.size ${playerStateList.size} // actionList.lenght i ${actionList.instructions.length} c ${actionList.colors.length}")
     Log.v("","\t\t\t  -Position-\t\t-Direction-\t\t-Apply-")
 //    for (index in playerStateList.indices ) {
     for (index in 0 until playerStateList.size) {
         if (breadcrumb.colorChangeMap.containsKey(index)) colorSw = "c"
         if (actionTriggerStarRemove.Contains(index)) starStr += "*" else starStr = " "
-        Log.i("","action ${index} -> \t(${playerStateList[index].pos.line}, ${playerStateList[index].pos.column})\t\t\t'${playerStateList[index].direction.ToChar()}'\t\t\t\t'${actionList[index]}'     $starStr $colorSw" )
+        Log.i("","action ${index} -> \t(${playerStateList[index].pos.line}, ${playerStateList[index].pos.column})\t\t\t'${playerStateList[index].direction.ToChar()}'\t\t\t\t'${actionList.instructions[index]}'     $starStr $colorSw" )
         Log.i("","\n")
         starStr = ""
         colorSw = ""
@@ -42,7 +45,11 @@ fun Print_breadcrumb(breadcrumb: Breadcrumb) {
         for (index in 0 until actionTriggerStarRemove.size) { actionTriggerRemoveStr += "/ " +actionTriggerStarRemove[index].toString() + " " }
         Log.i("actionsTriggerStarRemoveList", "${actionTriggerRemoveStr}/")
     }
-    Log.i("Print_Pos_Dir_Inst", "END")
+    infoLog("Color Change Map", "${breadcrumb.colorChangeMap}")
+    infoLog("actions i", actionList.instructions)
+    infoLog("actions c", actionList.colors)
+//    infoLog("actionList ", breadcrumb.actionsList.value.toString())
+    errorLog("breadcrumb", "resume stop")
 }
 
 fun Print_Pos_Dir_Inst(guideLine: DivineGuideLine) {

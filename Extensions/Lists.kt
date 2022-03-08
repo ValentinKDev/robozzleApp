@@ -3,11 +3,60 @@ package com.mobilegame.robozzle.Extensions
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.InGame.Direction
+import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import kotlinx.coroutines.runBlocking
+import java.lang.IndexOutOfBoundsException
 
 fun <T> MutableList<T>.containsNot(element: T): Boolean = !this.contains(element)
 
+//fun List<String>.countCha(exclude: Char? = null): Int {
+//    val number = 0
+//    this.toMutableList()
+//    return number
+//}
+
+fun List<FunctionInstructions>.countInstructions(): Int {
+    var number: Int = 0
+
+    this.forEach {
+        number += it.instructions.replace("[.]".toRegex(), "").length
+    }
+    return number
+}
+
+fun MutableList<String>.replaceInMatrice(replace: Char, position: Position): MutableList<String> {
+    val newMatrice = this.copy()
+    //todo : add a try catch
+    this[position.line].let {
+        this[position.column].let {
+            newMatrice[position.line] = this[position.line].replaceAt(position.column, replace)
+            return newMatrice
+        }
+    }
+    return newMatrice
+}
+
+fun MutableList<String>.switchInMatrice(position1: Position, c1: Char, position2: Position, c2: Char): MutableList<String> {
+    var newMatrice = this.copy()
+    return try {
+        newMatrice = this.replaceInMatrice(c1, position2)
+        newMatrice = newMatrice.replaceInMatrice(c2, position1)
+        newMatrice
+    } catch (e: IndexOutOfBoundsException) {
+        errorLog("ERROR", "e:")
+        this
+    }
+}
+
+fun List<Position>.toPlayerInGame(): PlayerInGame {
+    return if (this.size == 2) {
+        PlayerInGame(this[0], Direction(this[1].line, this[1].column))
+    } else
+        PlayerInGame(Position(-42, -42), Direction(-42, -42))
+}
 
 fun MutableList<Position>.Contains(pos: Position): Boolean{
     var ret = false

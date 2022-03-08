@@ -1,32 +1,19 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.analyse.infoLog
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.material.Text
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.secondPart.FunctionCase
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 

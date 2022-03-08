@@ -2,7 +2,7 @@ package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
 import androidx.compose.ui.geometry.Rect
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.model.level.Level
 
 object InGameSecondPart {
     var size = Sizes
@@ -10,9 +10,19 @@ object InGameSecondPart {
 
     object Ratios {
         const val height: Float = 6F
+
+        const val actionRowHeight = 1F
+        const val actionRowSurronderHeight = 0.15F
+        const val actionRowSurronderBlackLineHeight = 0.05F
+        const val actionRowSurronderEmptyLineHeight = 0.08F
+        const val actionRowBorder = 0.08F
+
+        const val functionsRowHeight = 5F
         const val maxFunctionWidth = 0.8F
         const val functionCasePadding = 0.1F
         const val biggerFunctionCaseRatio = 0.3F
+        const val selectionCaseHalo = 0.15F
+
     }
 
     object Sizes {
@@ -26,6 +36,7 @@ object InGameSecondPart {
         var twoThirdFunctionCase: Int = 0
 
         var actionRowCase: Int = 0
+        var actionRowCaseBorder: Int = 0
     }
 
     private var functionsNumber: Int = 0
@@ -34,7 +45,7 @@ object InGameSecondPart {
     private var minimumCaseNumberPerRow = 7
 
 
-    fun init(window: Rect, density: Float, level: RobuzzleLevel) {
+    fun init(window: Rect, density: Float, level: Level) {
         size.width = (window.width).toInt()
         size.height = (window.width * Ratios.height).toInt()
 
@@ -43,8 +54,9 @@ object InGameSecondPart {
     }
     fun initActionRow(density: Float) {
         size.actionRowCase = ((size.width / maximumCaseNumberActionRow) / density).toInt()
+        size.actionRowCaseBorder = ( size.actionRowCase * ratios.actionRowBorder ).toInt()
     }
-    fun initFunctionInstructionsRows(level: RobuzzleLevel, density: Float) {
+    fun initFunctionInstructionsRows(level: Level, density: Float) {
         functionsNumber = level.funInstructionsList.size
         maxCasesNumber = minimumCaseNumberPerRow
         level.funInstructionsList.forEach {

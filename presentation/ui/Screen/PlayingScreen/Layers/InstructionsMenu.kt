@@ -19,7 +19,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 //todo : highlight in background only the instruction you selected ?
 //todo : il manque la touche supprimer l'instruction selectionnée
 @Composable
-fun DisplayInstuctionMenu(level: RobuzzleLevel, vm: GameDataViewModel) {
+fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     Box(
         Modifier
             .fillMaxSize()
@@ -31,7 +31,7 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, vm: GameDataViewModel) {
             startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
             endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
         ) {
-                level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
+                vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
                     Row(
                         modifier = Modifier
                             .width(800.dp)
@@ -41,7 +41,7 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, vm: GameDataViewModel) {
                     ) {
                         instructions.instructions.toList().forEachIndexed { index, c ->
                             //todo: InstructionMenuCase()
-                            InstructionCase(level, vm, FunctionInstructions(c.toString(), instructions.colors))
+                            InstructionCase(vm, FunctionInstructions(c.toString(), instructions.colors))
                         }
                     }
                 }
@@ -50,7 +50,7 @@ fun DisplayInstuctionMenu(level: RobuzzleLevel, vm: GameDataViewModel) {
 }
 
 @Composable
-fun InstructionCase(level: RobuzzleLevel, vm: GameDataViewModel, case: FunctionInstructions) {
+fun InstructionCase(vm: GameDataViewModel, case: FunctionInstructions) {
     Box(
         modifier = Modifier
             .gradientBackground(
@@ -58,8 +58,9 @@ fun InstructionCase(level: RobuzzleLevel, vm: GameDataViewModel, case: FunctionI
                 175f
             )
             .clickable {
-                level.replaceInstruction( level.selected, case )
-                Log.i("ON CLICK actionList", level.breadcrumb.actionList)
+                vm.replaceInstruction(vm.selectedCase, case)
+//                level.replaceInstruction( level.selected, case )
+//                Log.i("ON CLICK actionList", level.breadcrumb.actionList)
                 vm.ChangeInstructionMenuState()
             }
 //            .size(screenConfig.instructionMenuCaseWidth.dp)

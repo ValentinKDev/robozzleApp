@@ -4,11 +4,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,8 +75,8 @@ class DragAndDropState(): ViewModel() {
         return (dragStart.value.not() && ((elements.itemUnderPosition?.Match(Position(row, column)) ?: false) || (elements.itemSelectedPosition?.Match(Position(row, column) ) ?: false )) )
     }
 
-    fun onDrag(change: PointerInputChange, boxOffset: Float, list: List<FunctionInstructions>) {
-        setOffsets(change.position)
+    fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) {
+        setOffsets(pointerInputChange.position)
         elements.findItemUnderItem(underPointerOffset, list)
     }
 
@@ -89,7 +88,7 @@ class DragAndDropState(): ViewModel() {
         setDragStart(true)
     }
 
-    fun onDragCancel(list: List<FunctionInstructions>) = runBlocking {
+    fun onDragCancel() = runBlocking {
 //        switch(lvl)
 //        switchCases(list)
 
@@ -100,8 +99,8 @@ class DragAndDropState(): ViewModel() {
     }
 
 
-    fun onDragEnd(lvl: RobuzzleLevel) = runBlocking {
-        switch(lvl)
+    fun onDragEnd(vm: GameDataViewModel) = runBlocking {
+        switch(vm)
 
         setDragStart(false)
         elements.itemSelectedPosition = null
@@ -109,13 +108,13 @@ class DragAndDropState(): ViewModel() {
         touchOffSetStart = null
     }
 
-    private fun switch(lvl: RobuzzleLevel) {
+    private fun switch(vm: GameDataViewModel) {
         elements.itemSelectedPosition?.let { _selectedP ->
             elements.itemUnder?.let { _underD ->
                 elements.itemUnderPosition?.let { _underP ->
                     elements.itemSelected?.let { _selectedD ->
-                        lvl.replaceInstruction(_selectedP, _underD)
-                        lvl.replaceInstruction(_underP, _selectedD)
+                        vm.replaceInstruction(_selectedP, _underD)
+                        vm.replaceInstruction(_underP, _selectedD)
                     } ?: errorLog("ERROR", "dragAndDropState.elements.itemSelected == null")
                 } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnderPosition == null")
             } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnder == null")

@@ -43,7 +43,6 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.gray6
 import com.mobilegame.robozzle.presentation.res.grayDark2
 import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.NextButton
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing

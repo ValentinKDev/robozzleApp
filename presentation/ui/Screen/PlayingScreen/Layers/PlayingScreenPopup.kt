@@ -7,6 +7,8 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
@@ -14,6 +16,16 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun PlayingScreenPopupWin(vm: GameDataViewModel) {
+    vm.animationLogicVM.AddWin( LocalContext.current )
+//    vm.SetWinTo(
+//        value = result,
+//        winDetails = WinDetails(
+//            instructionsNumber = breadcrumb.funInstructionsList.countInstruction(),
+//            actionsNumber = breadcrumb.actionsCount,
+//            solutionFound = breadcrumb.funInstructionsList.toList()
+//        ),
+//        context = LocalContext.current
+//    )
     Column(
         modifier = Modifier
             .fillMaxSize()

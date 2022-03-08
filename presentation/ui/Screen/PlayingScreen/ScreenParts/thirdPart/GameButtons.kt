@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.thirdPart
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.thirdPart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +7,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -14,16 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_PLAY
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_RESET
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.*
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.BackButton
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.NextButton
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.StartAnimation
 
 @Composable
-fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
-    val animationIsPlaying: Boolean by gameDataViewModel.animationIsPlaying.observeAsState(false)
-    val animationIsOnPause: Boolean by gameDataViewModel.animationIsOnPause.observeAsState(false)
+fun GameButtons(lvl: RobuzzleLevel, vm: GameDataViewModel, screenConfig: ScreenConfig) {
+    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.playerAnimationState.collectAsState()
+
+    val animationIsPlaying: Boolean by vm.animationIsPlaying.observeAsState(false)
+    val animationIsOnPause: Boolean by vm.animationIsOnPause.observeAsState(false)
     val animationRunningInBackground = animationIsPlaying || animationIsOnPause
 
     Column(
@@ -40,11 +47,11 @@ fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screen
                     .width(screenConfig.playButtonsWidth.dp)
                     .background(Color.Gray)
                     .clickable {
-                        gameDataViewModel.AnimationIsPlayingChangeStatus()
+                        vm.AnimationIsPlayingChangeStatus()
                         if (animationRunningInBackground) {
-                            gameDataViewModel.AnimationIsOnPauseChangeStatus()
+                            vm.AnimationIsOnPauseChangeStatus()
                         } else if (animationIsPlaying) {
-                            StartAnimation(lvl, gameDataViewModel)
+                            StartAnimation(lvl, vm)
                         }
                     }
             ) {
@@ -59,7 +66,7 @@ fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screen
                     .height(screenConfig.playButtonsHeight.dp)
                     .width(screenConfig.playButtonsWidth.dp)
                     .clickable {
-                        gameDataViewModel.ResetAnimation(lvl)
+                        vm.ResetAnimation(lvl)
                     }
             ) {
                 //todo : define clearly steps so you can t have 2 different actions in the row while player still is the same position by clicking quickly on the play/pause button
@@ -67,9 +74,9 @@ fun GameButtons(lvl: RobuzzleLevel, gameDataViewModel: GameDataViewModel, screen
                     Icon(imageVector = Icons.Default.Stop, contentDescription = "stop")
                 }
             }
-            BackButton(screenConfig, gameDataViewModel, animationIsOnPause)
+            BackButton(vm)
 
-            NextButton(screenConfig, lvl,  gameDataViewModel, animationIsOnPause)
+            NextButton(vm)
         }
     }
 }
