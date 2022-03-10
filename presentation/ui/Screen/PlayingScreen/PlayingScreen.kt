@@ -34,20 +34,21 @@ fun PlayingScreen( vm: GameDataViewModel = viewModel()) {
 //        vm.init(level)
     }
 
-    PlayingScreenLayers(vm)
-    DisplayAllParts(vm)
+    PlayingScreenLayers(vm) {
+        DisplayAllParts(vm)
+    }
 }
 
 @Composable
-//fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) {
-fun PlayingScreenLayers(vm: GameDataViewModel) {
+fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) {
+//fun PlayingScreenLayers(vm: GameDataViewModel) {
     Box(
         Modifier
             .fillMaxSize()
             .onGloballyPositioned {
             }
     ) {
-//        content.invoke()
+        content.invoke()
 
         DragAndDropOverlay(vm)
 //        if (displayInstructionMenu) {

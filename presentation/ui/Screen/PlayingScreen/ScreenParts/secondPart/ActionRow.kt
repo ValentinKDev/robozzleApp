@@ -54,30 +54,31 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 
 @Composable
 fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction) {
-    Card(Modifier
-        .size(vm.data.layout.secondPart.size.actionRowCase.dp)
-        .border(
-            border = BorderStroke(
-                width = 2.dp,
-                color = Color.Black
-            ),
-            shape = RoundedCornerShape(corner = CornerSize(5.dp))
-        )
-        ,
-        shape = RoundedCornerShape(corner= CornerSize(5.dp)),
-        elevation = vm.data.colors.actionRowCaseElevation
-    ) {
-        Box( Modifier.gradientBackground(
-                    colors = ColorsList(
-                        case.color,
-                        vm.displayInstructionsMenu.value == true
+    Card(
+            Modifier
+                .size(vm.data.layout.secondPart.size.actionRowCase.dp)
+                .border(
+                    border = BorderStroke(
+                        width = 2.dp,
+                        color = Color.Black
                     ),
-                    angle = 45f
+                    shape = RoundedCornerShape(corner = CornerSize(5.dp))
                 )
+            ,
+            shape = RoundedCornerShape(corner= CornerSize(5.dp)),
+            elevation = vm.data.colors.actionRowCaseElevation
         ) {
-            InstructionIconsActionRow(case.instruction, vm)
+            Box( Modifier.gradientBackground(
+                colors = ColorsList(
+                    case.color,
+                    vm.displayInstructionsMenu.value == true
+                ),
+                angle = 45f
+            )
+            ) {
+                InstructionIconsActionRow(case.instruction, vm)
+            }
         }
-    }
 }
 @Composable
 fun ActionRowSurronder(vm: GameDataViewModel) {

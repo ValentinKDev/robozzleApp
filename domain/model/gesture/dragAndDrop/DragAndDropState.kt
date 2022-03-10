@@ -1,9 +1,13 @@
 package com.mobilegame.robozzle.domain.model.gesture.dragAndDrop
 
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
@@ -19,9 +23,9 @@ import kotlinx.coroutines.runBlocking
 class DragAndDropState() {
     val elements = DragAndDropElements()
 
-//    val dragStart: Boolean by vm.dragStart.collectAsState()
-//    private val _dragStart = MutableLiveData<Bo>()
-//    val dragStart : MutableLiveData<Bo> = _dragStart
+    private val _visibleDragDropOverlay = MutableStateFlow<Boolean>(false)
+    val visibleDragDropOverlay: StateFlow<Boolean> = _visibleDragDropOverlay.asStateFlow()
+
     private val _dragStart = MutableStateFlow<Boolean>(false)
     val dragStart: StateFlow<Boolean> = _dragStart.asStateFlow()
     //    val _dragStartP = MutableStateFlow<Boolean>(false)
@@ -86,13 +90,13 @@ class DragAndDropState() {
         return (dragStart.value.not() && ((elements.itemUnderPosition?.Match(Position(row, column)) ?: false) || (elements.itemSelectedPosition?.Match(Position(row, column) ) ?: false )) )
     }
 
-    fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) {
+    fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
         setOffsets(pointerInputChange.position)
         elements.findItemUnderItem(underPointerOffset, list)
 //        setDragStart(true)
     }
 
-    fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.Default) {
+    fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
         setTouchOffSetStart(offset)
         touchOffSetStart ?: setTouchOffSetStart(offset)
         setOffsets(offset)

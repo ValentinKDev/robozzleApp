@@ -78,17 +78,19 @@ fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
                 Row {
                     rowString.forEachIndexed { _columnIndex, _color ->
                         val casePosition = Position(_rowIndex, _columnIndex)
-                        DrawMapCase(caseSize = caseSize, caseColor = _color) {
+//                        DrawMapCase(caseSize = caseSize, caseColor = _color) {
                             if (playerInGame.pos match casePosition) {
                                 PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
-                            } else if (stars contain casePosition) {
+                            }
+//                            else if (stars contain casePosition) {
+                            if (stars contain casePosition) {
                                 StarIcon()
                             }
-                        }
-//                        if (playerInGame.pos match casePosition) {
-//                            errorLog("postion", "$casePosition")
-//                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
 //                        }
+                        if (playerInGame.pos match casePosition) {
+                            errorLog("postion", "$casePosition")
+                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                        }
                     }
                 }
             }

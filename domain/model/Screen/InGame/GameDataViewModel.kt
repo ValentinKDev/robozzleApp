@@ -38,40 +38,22 @@ import kotlinx.coroutines.flow.asStateFlow
 //}
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-//class GameDataViewModel( val level: Level, context: Context): ViewModel() {
-//class GameDataViewModel( context: Context): ViewModel() {
-//    val level = myleveltest
-//    lateinit var level: Level
-//val level = LevelVM(getApplication()).getLevelArgument()
-//    val level = LevelVM(context).getLevelArgument()
-//    val data = InGameData(level, context)
-
-
-//    val lvl: Level? = LevelRoomViewModel(context).getLevel(ArgumentsDataStoreViewModel(context).getLevelNumberArg())
-//    val lvl: Level? = LevelRoomViewModel(getApplication()).getLevel(ArgumentsDataStoreViewModel(getApplication()).getLevelNumberArg())
-//var level: Level = lvl ?: myleveltest
     var level: Level = myleveltest
-    //    lateinit var data: InGameData
     val data = InGameData(level, getApplication() )
-//val data = InGameData(level, context)
     val popup = PopupViewModel()
     val dragAndDrop = DragAndDropState()
 
     var breadcrumb = BreadcrumbViewModel(level, level.funInstructionsList).getBreadCrumb()
-//    lateinit var breadcrumb: Breadcrumb
 
     var animationLogicVM = AnimationLogicViewModel(level)
-//    lateinit var animationLogicVM: AnimationLogicViewModel
     var animationJob: Job? = null
 
-//    lateinit var selectedCase: Position
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {
         selectedCase = Position(row, column)
     }
 
     private val _instructionsRows = MutableStateFlow(level.funInstructionsList)
-//    private val _instructionsRows = MutableStateFlow<List<FunctionInstructions>>(emptyList())
     val instructionsRows: StateFlow<List<FunctionInstructions>> = _instructionsRows.asStateFlow()
     fun setInstructionsRows(list: List<FunctionInstructions>) {_instructionsRows.value = list}
     fun getInstructionsRows(): List<FunctionInstructions> = instructionsRows.value

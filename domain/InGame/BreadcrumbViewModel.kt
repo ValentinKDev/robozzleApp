@@ -15,7 +15,7 @@ import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-internal const val initialPreloadActionsNumber = 4
+internal const val initialPreloadActionsNumber = 15
 
 class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructions>, addActions: Int = 0): ViewModel() {
     var numberActionToLoad = initialPreloadActionsNumber
