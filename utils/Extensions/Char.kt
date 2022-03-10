@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.Extensions
+package com.mobilegame.robozzle.utils.Extensions
 
 fun Char.ToInt(): Int { return (this.toString().toInt()) }
 

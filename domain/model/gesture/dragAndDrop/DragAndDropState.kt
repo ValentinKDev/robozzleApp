@@ -1,7 +1,10 @@
 package com.mobilegame.robozzle.domain.model.gesture.dragAndDrop
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.verbalLog
@@ -9,17 +12,24 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
-class DragAndDropState(): ViewModel() {
+//class DragAndDropState(): ViewModel() {
+class DragAndDropState() {
     val elements = DragAndDropElements()
 
+//    val dragStart: Boolean by vm.dragStart.collectAsState()
+//    private val _dragStart = MutableLiveData<Bo>()
+//    val dragStart : MutableLiveData<Bo> = _dragStart
     private val _dragStart = MutableStateFlow<Boolean>(false)
     val dragStart: StateFlow<Boolean> = _dragStart.asStateFlow()
-    fun setDragStart(value: Boolean) { _dragStart.value = value }
+    //    val _dragStartP = MutableStateFlow<Boolean>(false)
+//    val dragStart = _dragStart.stateIn
+    fun setDragStart(value: Boolean) {
+//        _dragStart.tryEmit(value)
+        _dragStart.value = value
+    }
 
     private var touchOffSetStart: Offset? = null
     fun setTouchOffSetStart(localOffset: Offset) {
@@ -47,6 +57,7 @@ class DragAndDropState(): ViewModel() {
     }
 
     private val _dragRepresentationOffset = MutableStateFlow<Offset>(Offset.Zero)
+//    val dragRepresentationOffset = _dragRepresentationOffset
     val dragRepresentationOffset: StateFlow<Offset> = _dragRepresentationOffset.asStateFlow()
     fun setDraggedRepresentationOffset() {
         val elementHalfHeight: Float = elements.itemSelectedHalfHeight ?: 0F
@@ -78,6 +89,7 @@ class DragAndDropState(): ViewModel() {
     fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) {
         setOffsets(pointerInputChange.position)
         elements.findItemUnderItem(underPointerOffset, list)
+//        setDragStart(true)
     }
 
     fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.Default) {
@@ -129,14 +141,14 @@ class DragAndDropState(): ViewModel() {
 
                     elements.itemSelected?.let { _selectedD ->
                         list[_selectedP.line].instructions =
-                            list[_selectedP.line].instructions.replaceRange(_selectedP.column.._selectedP.column, _underD.instructions)
+                            list[_selectedP.line].instructions.replaceRange(_selectedP.column.._selectedP.column, _underD.instruction.toString())
                         list[_selectedP.line].colors =
-                            list[_selectedP.line].colors.replaceRange(_selectedP.column.._selectedP.column, _underD.colors)
+                            list[_selectedP.line].colors.replaceRange(_selectedP.column.._selectedP.column, _underD.color.toString())
 
                         list[_underP.line].instructions =
-                            list[_underP.line].instructions.replaceRange(_underP.column.._underP.column, _selectedD.instructions)
+                            list[_underP.line].instructions.replaceRange(_underP.column.._underP.column, _selectedD.instruction.toString())
                         list[_underP.line].colors =
-                            list[_underP.line].colors.replaceRange(_underP.column.._underP.column, _selectedD.colors)
+                            list[_underP.line].colors.replaceRange(_underP.column.._underP.column, _selectedD.color.toString())
                     }
                     verbalLog("list", "$list")
                 }

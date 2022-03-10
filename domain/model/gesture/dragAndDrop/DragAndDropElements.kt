@@ -6,10 +6,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
-import com.mobilegame.robozzle.Extensions.containsNot
+import com.mobilegame.robozzle.utils.Extensions.containsNot
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,7 @@ class DragAndDropElements {
     }
 
     var itemSelectedPosition: Position? = null
-    var itemSelected: FunctionInstructions? = null
+    var itemSelected: FunctionInstruction? = null
     var itemSelectedSize: Size? = null
     var itemSelectedHalfHeight: Float? = null
     var itemSelectedOneThirdHeight: Float? = null
@@ -39,7 +40,7 @@ class DragAndDropElements {
     private val _itemUnderVisible = MutableStateFlow<Boolean>(false)
     val itemUnderVisible: StateFlow<Boolean> = _itemUnderVisible.asStateFlow()
     var itemUnderPosition: Position? = null
-    var itemUnder: FunctionInstructions? = null
+    var itemUnder: FunctionInstruction? = null
     var itemUnderTopLeftOffset: Offset? = null
     fun clearItemUnder() {
         errorLog("clear", "item Under")
@@ -80,9 +81,9 @@ class DragAndDropElements {
                     if (case.contains(offset)) {
                         itemSelectedPosition = Position(rowIndex, columnIndex)
                         itemSelectedPosition?.let {
-                            itemSelected = FunctionInstructions(
-                                instructions = list[it.line].instructions[it.column].toString(),
-                                colors = list[it.line].colors[it.column].toString()
+                            itemSelected = FunctionInstruction(
+                                instruction = list[it.line].instructions[it.column],
+                                color = list[it.line].colors[it.column]
                             )
                             itemSelectedSize = case.size
                             itemSelectedHalfHeight = case.height / 2F
@@ -117,9 +118,9 @@ class DragAndDropElements {
                             infoLog("condition same ", "$itemUnderPosition $position")
                             itemUnderPosition = position
                             itemUnderPosition?.let {
-                                itemUnder = FunctionInstructions(
-                                    instructions = list[it.line].instructions[it.column].toString(),
-                                    colors = list[it.line].colors[it.column].toString()
+                                itemUnder = FunctionInstruction(
+                                    instruction = list[it.line].instructions[it.column],
+                                    color = list[it.line].colors[it.column]
                                 )
                                 if (it != itemSelectedPosition)  {
                                     _itemUnderVisible.value = true
@@ -139,7 +140,7 @@ class DragAndDropElements {
 //            }
             if (visible not true)
                 clearItemUnder()
-            verbalLog("visible", "${_itemUnderVisible.value}")
+            verbalLog("visibleUnder", "${_itemUnderVisible.value}")
         }
     }
     infix fun not(uoi: Boolean): Boolean = uoi.not()
@@ -158,6 +159,6 @@ class DragAndDropElements {
     }
 
     private fun Rect.isValid(): Boolean = !this.isEmpty && !this.center.isUnspecified
-    fun getColor(): String? = itemSelected?.colors
-    fun getInstruction(): Char? = itemSelected?.instructions?.get(0)
+    fun getColor(): Char? = itemSelected?.color
+    fun getInstruction(): Char? = itemSelected?.instruction
 }

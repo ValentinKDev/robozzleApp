@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
+import android.content.Context
 import androidx.compose.ui.geometry.Rect
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.Level
@@ -29,6 +30,7 @@ object InGameSecondPart {
         var width: Int = 0
         var height: Int = 0
         var functionCase: Int = 0
+        var functionCaseIcon: Int = 0
         var functionCasePadding: Int = 0
         var bigFunctionCase: Int = 0
         var halfFunctionCase: Int = 0
@@ -36,6 +38,7 @@ object InGameSecondPart {
         var twoThirdFunctionCase: Int = 0
 
         var actionRowCase: Int = 0
+        var actionRowIcon: Int = 0
         var actionRowCaseBorder: Int = 0
     }
 
@@ -45,9 +48,13 @@ object InGameSecondPart {
     private var minimumCaseNumberPerRow = 7
 
 
-    fun init(window: Rect, density: Float, level: Level) {
-        size.width = (window.width).toInt()
-        size.height = (window.width * Ratios.height).toInt()
+    fun init(context: Context, level: Level) {
+        val widthFull = context.resources.displayMetrics.widthPixels
+        val heightFull = context.resources.displayMetrics.heightPixels
+        val density = context.resources.displayMetrics.density
+
+        size.width = (widthFull).toInt()
+        size.height = (heightFull * Ratios.height).toInt()
 
         initFunctionInstructionsRows(level, density)
         initActionRow(density)
@@ -55,6 +62,7 @@ object InGameSecondPart {
     fun initActionRow(density: Float) {
         size.actionRowCase = ((size.width / maximumCaseNumberActionRow) / density).toInt()
         size.actionRowCaseBorder = ( size.actionRowCase * ratios.actionRowBorder ).toInt()
+        size.actionRowIcon = size.actionRowCase
     }
     fun initFunctionInstructionsRows(level: Level, density: Float) {
         functionsNumber = level.funInstructionsList.size
@@ -66,8 +74,9 @@ object InGameSecondPart {
 
 
         //todo : take the number of row in the calcul
-        size.functionCase = ((size.width * ratios.maxFunctionWidth) / maxCasesNumber).toInt()
+//        size.functionCase = ((size.width * ratios.maxFunctionWidth) / maxCasesNumber).toInt()
         size.functionCase = (((size.width * ratios.maxFunctionWidth) / maxCasesNumber) / density).toInt()
+        size.functionCaseIcon = size.functionCase
         size.bigFunctionCase = (size.functionCase * ( 1F + ratios.biggerFunctionCaseRatio )).toInt()
         size.halfFunctionCase = (size.functionCase / 2F).toInt()
         size.oneThirdFunctionCase = (size.functionCase * (1F/3F)).toInt()

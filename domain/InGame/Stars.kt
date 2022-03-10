@@ -1,6 +1,6 @@
 package com.mobilegame.robozzle.domain.InGame
 
-import com.mobilegame.robozzle.Extensions.copy
+import com.mobilegame.robozzle.utils.Extensions.copy
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog

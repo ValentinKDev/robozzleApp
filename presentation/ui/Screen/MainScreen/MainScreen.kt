@@ -6,16 +6,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.configuration.PopUpState
-import com.mobilegame.robozzle.data.configuration.ScreenConfig
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
+import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.*
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 
 @Composable
 fun MainScreen(
     navigator: Navigator,
-    screenConfig: ScreenConfig,
+//    screenConfig: ScreenConfig,
     fromButton: Int = MainMenuButton.None.key,
     w: MainScreenWindowsInfos = MainScreenWindowsInfos(),
     vm: MainScreenViewModel = viewModel(),
@@ -51,8 +50,11 @@ fun MainScreen(
                 content = { MainScreenThirdPart(navigator = navigator, w = w, vm = vm) }
             )
         }
-        if (screenConfig.popUp != PopUpState.None && visiblePopup) {
-            MainScreenPopup(vm, screenConfig)
+//        if (screenConfig.popUp != PopUpState.None && visiblePopup) {
+//            MainScreenPopup(vm, screenConfig)
+//        }
+        if (vm.popupState != PopUpState.None && visiblePopup) {
+            MainScreenPopup(vm)
         }
     }
 }

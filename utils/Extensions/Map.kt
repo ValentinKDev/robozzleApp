@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.Extensions
+package com.mobilegame.robozzle.utils.Extensions
 
 
 //fun MutableMap<Int, Position>.copy(): MutableMap<Int, Position> {

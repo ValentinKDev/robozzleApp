@@ -1,15 +1,16 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsMenu
@@ -20,17 +21,19 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 //todo : il manque la touche supprimer l'instruction selectionnée
 @Composable
 fun DisplayInstuctionMenu(vm: GameDataViewModel) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .clickable { vm.ChangeInstructionMenuState() }
-    ) {
-        PaddingComposable(
-            topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
-            bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
-            startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
-            endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
+    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.observeAsState( false )
+    if (displayInstructionMenu) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .clickable { vm.ChangeInstructionMenuState() }
         ) {
+            PaddingComposable(
+                topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
+                bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
+                startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
+                endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
+            ) {
                 vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
                     Row(
                         modifier = Modifier
@@ -41,20 +44,21 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
                     ) {
                         instructions.instructions.toList().forEachIndexed { index, c ->
                             //todo: InstructionMenuCase()
-                            InstructionCase(vm, FunctionInstructions(c.toString(), instructions.colors))
+                            InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
                         }
                     }
                 }
             }
         }
+    }
 }
 
 @Composable
-fun InstructionCase(vm: GameDataViewModel, case: FunctionInstructions) {
+fun InstructionCase(vm: GameDataViewModel, case: FunctionInstruction) {
     Box(
         modifier = Modifier
             .gradientBackground(
-                ColorsList(case.colors, false),
+                ColorsList(case.color, false),
                 175f
             )
             .clickable {
@@ -74,6 +78,6 @@ fun InstructionCase(vm: GameDataViewModel, case: FunctionInstructions) {
                 color = vm.data.colors.menuCaseBorder
             )
     ) {
-        InstructionIconsMenu(case.instructions.first(), vm)
+        InstructionIconsMenu(case.instruction, vm)
     }
 }

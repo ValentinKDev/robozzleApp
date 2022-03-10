@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -12,6 +14,8 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
@@ -22,18 +26,17 @@ import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
 
 @Composable
-fun InstructionsIconsFunction(instruction: Char, gameDataViewModel: GameDataViewModel) {
-    InstructionIcons(instruction, gameDataViewModel, 40, 40)
+fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel) {
+    InstructionIcons(instruction, vm, vm.data.layout.secondPart.size.functionCase, vm.data.layout.secondPart.size.functionCaseIcon)
 }
 
 @Composable
-fun InstructionIconsActionRow(instruction: Char, gameDataViewModel: GameDataViewModel, screenConfig: ScreenConfig) {
-    InstructionIcons(instruction, gameDataViewModel, screenConfig.instructionActionRowCase, screenConfig.instructionActionRowIcon)
+fun InstructionIconsActionRow(instruction: Char, vm: GameDataViewModel) {
+    InstructionIcons(instruction, vm, vm.data.layout.secondPart.size.actionRowCase, vm.data.layout.secondPart.size.actionRowIcon)
 }
 
 @Composable
 fun InstructionIconsMenu(instruction: Char, vm: GameDataViewModel) {
-//    InstructionIcons(instruction, vm, screenConfig.instructionMenuCase, screenConfig.instructionMenuIcon)
     InstructionIcons(
         instruction,
         vm,
@@ -86,9 +89,8 @@ fun SelectGoogleIcons(instruction: Char, sizeIcon: Int) {
 @Composable
 fun MyIconCaseColoring(
     instruction: Char,
-//    sizeIcon: Int,
     sizeCase: Int,
-    gameDataViewModel: GameDataViewModel
+    vm: GameDataViewModel
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -105,8 +107,8 @@ fun MyIconCaseColoring(
                 Modifier
                     .gradientBackground(
                         ColorsList(
-                            instruction.toString(),
-                            gameDataViewModel.displayInstructionsMenu.value == true
+                            instruction,
+                            vm.displayInstructionsMenu.value == true
                         ), 145f
                     )
                     .size((sizeCase - 20).dp)

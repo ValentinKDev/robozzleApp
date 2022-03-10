@@ -1,7 +1,7 @@
 package com.mobilegame.robozzle.domain.InGame
 
 import androidx.lifecycle.ViewModel
-import com.mobilegame.robozzle.Extensions.*
+import com.mobilegame.robozzle.utils.Extensions.*
 import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.domain.InGame.res.ON_MAP_PATH
 import com.mobilegame.robozzle.domain.InGame.res.OUT_OF_MAP_BORDER
@@ -96,6 +96,7 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
     private fun updateActions(action: FunctionInstruction) {
         bd.actions.instructions += action.instruction
         bd.actions.colors += action.color
+        bd.actionsList += action
 //        actionListAdd(action)
     }
 

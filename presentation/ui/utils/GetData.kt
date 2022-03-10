@@ -4,17 +4,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import com.mobilegame.robozzle.analyse.errorLog
 
 @Composable
-fun getLayoutCoordinates(): LayoutCoordinates? {
-    var layoutCoordinates: LayoutCoordinates? = null
+fun getWindowCoordinates(): Rect? {
+    var windowCoordinates: Rect? = null
     Box( Modifier
         .fillMaxSize()
         .onGloballyPositioned {
-            layoutCoordinates = it
+            windowCoordinates= it.boundsInRoot()
+//            errorLog("getLayoutCoordinates() 1", "${it}")
         }
     )
-    return layoutCoordinates
+//    errorLog("getLayoutCoordinates() 2", "${windowCoordinates}")
+    return windowCoordinates
 }

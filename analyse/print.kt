@@ -1,9 +1,8 @@
 package com.mobilegame.robozzle.analyse
 
 import android.util.Log
-import com.mobilegame.robozzle.Extensions.Contains
+import com.mobilegame.robozzle.utils.Extensions.Contains
 import com.mobilegame.robozzle.domain.InGame.Breadcrumb
-import com.mobilegame.robozzle.domain.InGame.BreadcrumbViewModel
 import com.mobilegame.robozzle.domain.InGame.DivineGuideLine
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position

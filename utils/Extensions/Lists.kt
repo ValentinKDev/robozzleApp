@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.Extensions
+package com.mobilegame.robozzle.utils.Extensions
 
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -7,7 +7,6 @@ import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import kotlinx.coroutines.runBlocking
 import java.lang.IndexOutOfBoundsException
 
 fun <T> MutableList<T>.containsNot(element: T): Boolean = !this.contains(element)

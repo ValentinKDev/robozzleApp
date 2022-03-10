@@ -12,28 +12,24 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
-import com.mobilegame.robozzle.Extensions.isDirection
-import com.mobilegame.robozzle.Extensions.toPlayerInGame
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.res.ColorsList
-import com.mobilegame.robozzle.presentation.ui.elements.MapView
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.firstPart.MapViewInGame
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
 
 @Composable
 fun MapLayout(vm: GameDataViewModel) {
-    val map: MutableList<String> by vm.animationLogicVM.map.collectAsState()
-    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.playerAnimationState.collectAsState()
+//    val map: MutableList<String> by vm.animationLogicVM.data.map.collectAsState()
+//    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.data.playerAnimationState.collectAsState()
 //    val mapVM: MutableList<String> by vm.map.collectAsState()
 
 //    val animationIsPlaying: Boolean by vm.animationIsPlaying.observeAsState(false)
@@ -58,7 +54,14 @@ fun MapLayout(vm: GameDataViewModel) {
             true -> vm.mapLayoutPressedToTrue()
             false -> vm.mapLayoutPressedToFalse()
         }
-        MapView(widthInt = (0.8F * vm.data.layout.firstPart.size.width).toInt(), mapParam = map)
+//        MapView(widthInt = (200).toInt(), mapParam = map)
+        CenterComposable {
+
+            MapViewInGame(
+                vm = vm,
+                widthInt = (0.8F * vm.data.layout.firstPart.size.mapWidth).toInt()
+            )
+        }
 //        Column(
 //            modifier = Modifier
 //                .fillMaxWidth()
@@ -120,7 +123,7 @@ fun MapCase(color: Char, vm: GameDataViewModel){
         Modifier
             .gradientBackground(
                 ColorsList(
-                    color.toString(),
+                    color,
                     vm.displayInstructionsMenu.value == true
                 ), 135f
             )

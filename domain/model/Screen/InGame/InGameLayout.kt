@@ -1,13 +1,15 @@
 package com.mobilegame.robozzle.domain.model.Screen.InGame
 
+import android.content.Context
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.unit.Density
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.*
 import com.mobilegame.robozzle.domain.model.level.Level
 
-class InGameLayout(level: Level, dens: Density, layoutCoordinates: LayoutCoordinates) {
+class InGameLayout(level: Level, context: Context) {
     val firstPart = InGameFirstPart
     val secondPart = InGameSecondPart
     val thirdPart = InGameThirdPart
@@ -18,16 +20,17 @@ class InGameLayout(level: Level, dens: Density, layoutCoordinates: LayoutCoordin
     private var layoutCoordinates: LayoutCoordinates? = null
 
     init {
-        density = dens.density
-        val rect = layoutCoordinates.boundsInRoot()
-        infoLog("init", "first Part")
-        InGameFirstPart.init(rect)
-        infoLog("init", "second Part")
-        InGameSecondPart.init(rect, density, level)
-        infoLog("init", "third Part")
-        InGameThirdPart.init(rect)
-        infoLog("init", "initMenu")
-        InGameInstructionMenu.init(rect, level)
+//        density = dens.density
+        infoLog("density", "$density ")
+//        val rect = layoutCoordinates.boundsInRoot()
+        verbalLog("init", "first Part")
+        InGameFirstPart.init(context)
+        verbalLog("init", "second Part")
+        InGameSecondPart.init(context , level)
+        verbalLog("init", "third Part")
+        InGameThirdPart.init(context)
+        verbalLog("init", "initMenu")
+        InGameInstructionMenu.init(context , level)
     }
 //    fun setDensity(dens: Density) {density = dens.density}
 //    fun setLayoutCoordinates(newLayoutCoordinates: LayoutCoordinates) { layoutCoordinates ?: run { layoutCoordinates = newLayoutCoordinates } }

@@ -50,7 +50,7 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
             map.forEachIndexed { rowIndex, rowString ->
                 Row {
                     rowString.forEachIndexed { columnIndex, char ->
-                        val caseColor = char.toString()
+                        val caseColor = char
                         Box(Modifier
                             .background(Color.Transparent)
                             .size(caseSize.dp)
@@ -61,7 +61,7 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
                                 Modifier
                                     .fillMaxSize()
                                     .gradientBackground(ColorsList(caseColor), 135f)
-                                    .graphicsLayer { shadowElevation = if (caseColor != ".") 7.dp.toPx() else 0.dp.toPx() }
+                                    .graphicsLayer { shadowElevation = if (caseColor != '.') 7.dp.toPx() else 0.dp.toPx() }
                             ) { }
                         }
                     }

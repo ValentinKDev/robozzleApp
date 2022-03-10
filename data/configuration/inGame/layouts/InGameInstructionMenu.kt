@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
+import android.content.Context
 import androidx.compose.ui.geometry.Rect
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
@@ -27,9 +28,13 @@ object InGameInstructionMenu {
         var icon = 0F
     }
 
-    fun init(window: Rect, level: Level) {
+    fun init(context: Context, level: Level) {
+        val widthFull = context.resources.displayMetrics.widthPixels
+        val heightFull = context.resources.displayMetrics.heightPixels
+        val density = context.resources.displayMetrics.density
+
         maxCases = level.instructionsMenu.first().instructions.length
-        size.width = ((window.width * (1F - Ratios.startPadding - Ratios.endPadding)))
+        size.width = ((widthFull * (1F - Ratios.startPadding - Ratios.endPadding)))
         size.caseWithPadding = ((Sizes.width / maxCases) - (maxCases))
         size.case = Sizes.casePadding - 2F * Sizes.casePadding
         size.icon = ratios.iconBiggerThanCase * size.case

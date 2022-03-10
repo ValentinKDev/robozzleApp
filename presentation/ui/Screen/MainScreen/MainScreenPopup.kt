@@ -13,7 +13,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
-fun MainScreenPopup(vm: MainScreenViewModel, screenConfig: ScreenConfig) {
+fun MainScreenPopup(vm: MainScreenViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()

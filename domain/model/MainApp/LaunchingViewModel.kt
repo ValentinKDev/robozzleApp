@@ -1,24 +1,22 @@
 package com.mobilegame.robozzle.domain.model
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.configuration.PopUpState
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.configuration.RobuzzleConfiguration
-import com.mobilegame.robozzle.data.configuration.ScreenConfig
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.data.store.AppConfigDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.appConfig.AppConfigServerViewModel
 import com.mobilegame.robozzle.domain.model.data.server.level.LevelServerViewModel
-import com.mobilegame.robozzle.domain.model.data.store.ScreenDimensionsDataStoreViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.ScreenData
+import com.mobilegame.robozzle.domain.model.data.store.KeyProvider
+import com.mobilegame.robozzle.domain.model.data.store.PopUpState
+import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 
 //class LaunchingViewModel(application: Application): AndroidViewModel(application) {
 class LaunchingViewModel(context: Context): ViewModel() {
@@ -27,16 +25,18 @@ class LaunchingViewModel(context: Context): ViewModel() {
     private val levelServerVM = LevelServerViewModel()
     private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
     private val appConfigServerVM = AppConfigServerViewModel()
-    private val screenDimensionDataStore = ScreenDimensionsDataStoreViewModel(context)
+    private val screenDataStore = ScreenDataStoreViewModel(context)
     private val rankVM = RankVM(context)
 
-        fun launch(screenConfig: ScreenConfig) {
+        fun launch(layoutCoordinates: LayoutCoordinates) {
 
             viewModelScope.launch {
-                Log.e("init", "MainMenuViewModel()")
+                Log.e("init", "LaunchingViewModel::launch")
 
                 //store screenDimension
-                screenDimensionDataStore.storeDimensionDensity()
+//                screenDataStore.storeDimensionDensity()
+//                screenDataStore.configure()
+                screenDataStore.configure(layoutCoordinates)
 
                 //load version
                 infoLog("get version", "local")
@@ -47,11 +47,22 @@ class LaunchingViewModel(context: Context): ViewModel() {
                 val serverVersion: String? = appConfigServerVM.getVersion()
                 infoLog("-> sever version", "$serverVersion")
 
-                screenConfig.popUp = serverVersion?.let {
+                val popupState = serverVersion?.let {
                     if (localVersion == serverVersion)
                         PopUpState.None
                     else PopUpState.Update
                 } ?: PopUpState.UnreachableServer
+                screenDataStore.storePopUpState( popupState )
+                when (popupState) {
+                    PopUpState.None -> verbalLog("popupState", "None")
+                    PopUpState.UnreachableServer -> verbalLog("popupState", "UnreachableServer")
+                    PopUpState.Update -> verbalLog("popupState", "Update")
+                }
+//                screenConfig.popUp = serverVersion?.let {
+//                    if (localVersion == serverVersion)
+//                        PopUpState.None
+//                    else PopUpState.Update
+//                } ?: PopUpState.UnreachableServer
 
                 infoLog("get list level Id", "local")
                 val localListLevelsId: List<Int> = levelRoomVM.getLevelIds()
@@ -97,6 +108,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
                         //if it does load the wins from the server for this player
                             //compare them
                                 //add the ones from room to server
-        infoLog("Main Menu View Model", "init end")
+            Log.e("END init", "LaunchingViewModel::launch")
+//            infoLog("Main Menu View Model", "init end")
     }
 }

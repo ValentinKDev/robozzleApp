@@ -9,6 +9,7 @@ val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name =
 val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Token.pref)
 val Context.appPrefDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.App.pref)
 val Context.screenDimensionsDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Screen.pref)
+val Context.argumentsDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Arg.pref)
 
 interface DataStoreService {
     suspend fun getString(key: String): String?
@@ -38,6 +39,10 @@ interface DataStoreService {
 
         fun createScreenDataService(context: Context): DataStoreService {
             return DataStoreImplementation(context.screenDimensionsDataStore)
+        }
+
+        fun createArgumentsService(context: Context): DataStoreService {
+            return DataStoreImplementation(context.argumentsDataStore)
         }
     }
 }

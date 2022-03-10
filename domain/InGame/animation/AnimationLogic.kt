@@ -3,70 +3,75 @@ package com.mobilegame.robozzle.domain.InGame
 import android.content.Context
 import android.graphics.Point
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilegame.robozzle.Extensions.*
+import com.mobilegame.robozzle.utils.Extensions.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayActionRowCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
+//class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
+//class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
+class AnimationLogicViewModel(private val level: Level): ViewModel() {
     private var actionAdded = 5
 
-    private var breadcrumb = mainVM.breadcrumb
-    private var stars: Stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
-    private var colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
+    lateinit var breadcrumb: Breadcrumb
+    lateinit var stars: Stars
+    lateinit var colorSwitches: ColorsMaps
+    var actionIndexEnd: Int = UNKNOWN
+//    private var actionIndexEnd = breadcrumb.actionsCount
+    //    private var stars: Stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
+//    private var colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
     private var starsRemovedMap = mutableMapOf<Int, Point>()
-    private var actionIndexEnd = mainVM.breadcrumb.actionsCount
 //    private var actionToRead = 0
     private var addAction = initialPreloadActionsNumber
 
-    val data: AnimationData = AnimationData(mainVM.level.map.toMutableList(), mainVM.level.playerInitial.toPlayerInGame(), breadcrumb)
+//    lateinit var data: AnimationData
+//    val data: AnimationData = AnimationData(level, breadcrumb)
+    var data: AnimationData = AnimationData(level)
 
     fun initialize(bd: Breadcrumb) {
         breadcrumb = bd
+        data  = AnimationData(level, breadcrumb)
+        actionAdded = 5
         stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
         colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
-        actionIndexEnd = mainVM.breadcrumb.actionsCount
+        actionIndexEnd = breadcrumb.actionsCount
     }
 
-    fun start(bd: Breadcrumb): Job = runBlocking {
+    fun start(bd: Breadcrumb): Job = runBlocking(Dispatchers.IO) {
         viewModelScope.launch(Dispatchers.IO) {
             initialize(bd)
             infoLog("stars at", "${breadcrumb.actionsTriggerStarRemoveList}")
             infoLog("stars Map", "${breadcrumb.starsRemovalMap}")
             infoLog("win", "${breadcrumb.win}")
             Log.v(Thread.currentThread().name,"Start - actionIndexEnd $actionIndexEnd")
-//            while (actionToRead < actionIndexEnd) {
 
             while (data.actionInBounds() == true) {
                 infoLog("action to read ${data.getActionToRead()}" , "->")
                 UpdateMoveLogic(FORWARD)
-//                if (actionToRead < actionIndexEnd) DeleteThis(Dispatchers.Main) { mainVM.SetActionTo(actionToRead) }
                 data.actionInBounds()?.let {
                     HandleAnimationOnPauseLogic()
 
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
-//                    if (actionToRead.triggerExpancBreadCrumb()) {RecalculateBreadCrumb()}
                     if (data.triggerExpandBreadcrumb()) {RecalculateBreadCrumb()}
                     AnimationDelay()
 
-//                    actionToRead++
                     data.incrementActionToRead()
                 }
             }
@@ -94,7 +99,13 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             actionAdded += 5
-            breadcrumb = BreadcrumbViewModel(mainVM.level, mainVM.getInstructionsRows(), actionAdded).getBreadCrumb()
+//            breadcrumb = BreadcrumbViewModel(mainVM.level, mainVM.getInstructionsRows(), actionAdded).getBreadCrumb()
+//            breadcrumb = BreadcrumbViewModel(level, breadcrumb.funInstructionsList, actionAdded).getBreadCrumb()
+            /** update here the action row ????
+             *
+             *
+             *
+             * */
         }
         actionIndexEnd = breadcrumb.playerStateList.size
 
@@ -104,8 +115,6 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
         colorSwitches.Expand(breadcrumb.colorChangeMap)
         stars.Expand(breadcrumb.starsRemovalMap)
 
-//        DeleteThis(Dispatchers.Main) { mainVM.triggerRecompostionToTrue() }
-
         verbalLog("after ", "recalculation")
         infoLog("star.toRemove", "${stars.toRemove}")
         infoLog("star.removed", "${stars.removed}")
@@ -114,7 +123,7 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
         stars.removed.forEach { infoLog("", "${it.key}") }
     }
 
-    private fun StepByStep(direction: Int) {
+    private suspend fun StepByStep(direction: Int) {
         UpdateMoveLogic(direction)
         if (direction == BACKWARD) data.decrementActionToRead()
         if (direction == FORWARD) data.incrementActionToRead()
@@ -128,7 +137,7 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
     }
 
 
-    private fun UpdateMoveLogic(direction: Int) {
+    private suspend fun UpdateMoveLogic(direction: Int) {
         when {
             //todo lambda for this when expression
             data.getActionToRead().trigerStar(direction) -> {
@@ -194,35 +203,20 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
         }
         colorSwitch?.let {
            data.ChangeCaseColorMap(colorSwitch, direction)
-//            DeleteThis(Dispatchers.Main) { mainVM.ChangeCaseColorMap(colorSwitch, direction) }
         }
     }
 
-    private fun UpdatePlayerUI() {
+    private suspend fun UpdatePlayerUI() {
         data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead()])
-//        DeleteThis(Dispatchers.Main) { mainVM.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[actionToRead]) }
     }
 
     private suspend fun EndGame() {
         setWinTo(if (breadcrumb.win) TRUE else FALSE)
-//        when {
-//            breadcrumb.IsWin() -> ProcessResult(TRUE)
-//            breadcrumb.IsLost() -> ProcessResult(FALSE)
 //      todo: isJustNotFinished ???
-//            else -> {
-//                Log.e("not suposed to be finished", "--???--")
-//            }
-//        }
-//        ProcessResult( if ( breadcrumb.win ) TRUE else FALSE)
     }
 
     private fun ProcessResult(result: Int) {
             setWinTo(result)
-//            AddWin(
-//                value = result,
-//                context
-//            )
-//        }
         Log.e("END animation", "--${result}--")
     }
 
@@ -238,17 +232,21 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
             solutionFound = breadcrumb.funInstructionsList.toList()
         )
         rankVM.registerANewWin(
-            levelId = mainVM.level.id,
-            levelName = mainVM.level.name,
-            levelDifficulty = mainVM.level.difficulty,
+            levelId = level.id,
+            levelName = level.name,
+            levelDifficulty = level.difficulty,
             winDetails = winDetails
         )
     }
 
+    private val _animationDelay = MutableStateFlow<Long>(200)
+    val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
+
 
     private suspend fun AnimationDelay() {
-        if (mainVM.mapLayoutPressed.value) delay(50)
-        else delay(200)
+//        if (mainVM.mapLayoutPressed.value) delay(50)
+//        else
+            delay(animationDelay.value)
     }
 
     private fun Int.trigerColorChange(direction: Int): Boolean {
@@ -266,18 +264,4 @@ class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel(
            else -> { errorLog("Triger Star", "Error"); false }
        }
     }
-
-//    private fun Int.triggerExpancBreadCrumb(): Boolean = this == actionIndexEnd - 2 && breadcrumb.NotFinished()
-//    private fun IsGoingBackward(): Boolean = getPlayerAnimationState() == PlayerAnimationState.GoBack && data.getActionToRead() > 0
-//    private fun IsGoingForward(): Boolean = getPlayerAnimationState() == PlayerAnimationState.GoNext && data.getActionToRead() < actionIndexEnd - 1
-//    private fun IsGoingBackward(): Boolean = screenVM.animationGoBack.value == true && actionToRead > 0
-//    private fun IsGoingForward(): Boolean = screenVM.animationGoNext.value == true && actionToRead < actionIndexEnd - 1
-
-//    fun IsLost(): Boolean {return (lost >= TRUE)}
-//    fun IsWin(): Boolean {return (win >= TRUE)}
-//    fun IsLostAt(action: Int): Boolean {return (IsLost() && lost == action)}
-//    fun IsWinAt(action: Int): Boolean {return (IsWin() && win == action)}
-    /*
-    diviser le timer en une multitude de timers qui loop pour intercaler un handlerEvent
-     */
 }

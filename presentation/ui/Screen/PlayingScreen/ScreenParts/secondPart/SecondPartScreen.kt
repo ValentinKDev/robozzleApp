@@ -11,9 +11,10 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.ActionRowSurronder
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayActionsRow
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayFunctionsPart
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 
 @Composable
-fun SecondScreenPart(lvl: RobuzzleLevel, vm: GameDataViewModel, screenConfig: ScreenConfig) {
+fun SecondScreenPart(vm: GameDataViewModel) {
     Log.i("" , "SecondScreenPart")
 
     val recomposeSecondPart: Boolean by vm.triggerRecompostion.collectAsState(false)
@@ -22,29 +23,25 @@ fun SecondScreenPart(lvl: RobuzzleLevel, vm: GameDataViewModel, screenConfig: Sc
     Column(Modifier.fillMaxSize()) {
         Column(
             Modifier
-//                .weight(1.0f)
                 .weight(vm.data.layout.secondPart.ratios.actionRowHeight)
-//                .background(Color.Gray)
         ) {
             Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurronderHeight),
                 verticalArrangement = Arrangement.Top) {
-                ActionRowSurronder(screenConfig = screenConfig, vm)
+                ActionRowSurronder(vm)
             }
             Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowHeight)) {
-//                if (lvl.breadcrumb.actions.instructions.isNotEmpty())
-                    DisplayActionsRow(lvl, vm, screenConfig)
-//                else
-//                    errorLog("action Row", "${lvl.breadcrumb.actionsList}")
+                CenterComposableVertically {
+                    DisplayActionsRow(vm)
+                }
             }
             Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurronderHeight),
                 verticalArrangement = Arrangement.Top) {
-                ActionRowSurronder(screenConfig = screenConfig, vm)
+                ActionRowSurronder(vm)
             }
         }
-        Row( Modifier
-            .weight(vm.data.layout.secondPart.ratios.functionsRowHeight)
+        Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowHeight)
         ) {
-            DisplayFunctionsPart(lvl = lvl, vm)
+            DisplayFunctionsPart(vm)
         }
     }
 }

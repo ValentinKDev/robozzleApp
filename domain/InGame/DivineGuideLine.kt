@@ -1,9 +1,9 @@
 package com.mobilegame.robozzle.domain.InGame
 
 import android.util.Log
-import com.mobilegame.robozzle.Extensions.Contains
-import com.mobilegame.robozzle.Extensions.ToInt
-import com.mobilegame.robozzle.Extensions.isInstruction
+import com.mobilegame.robozzle.utils.Extensions.Contains
+import com.mobilegame.robozzle.utils.Extensions.ToInt
+import com.mobilegame.robozzle.utils.Extensions.isInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.analyse.Print_FunInstructionList

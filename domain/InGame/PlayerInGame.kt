@@ -1,8 +1,8 @@
 package com.mobilegame.robozzle.domain.InGame
 
 import android.util.Log
-import com.mobilegame.robozzle.Extensions.toInt
-import com.mobilegame.robozzle.domain.InGame.res.OUT_OF_MAP_BORDER
+import androidx.compose.ui.geometry.Rect
+import com.mobilegame.robozzle.utils.Extensions.toInt
 import com.mobilegame.robozzle.domain.InGame.res.OUT_OF_MAP_PATH
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 
@@ -92,4 +92,7 @@ class PlayerInGame(var pos: Position, var direction: Direction = Direction(0, 0)
     }
 
     fun equals(playerInGame: PlayerInGame): Boolean = this.pos == playerInGame.pos && this.direction == playerInGame.direction
+    companion object{
+        val Unknown:PlayerInGame = PlayerInGame(Position(-42, -42), Direction(-42, -42))
+    }
 }

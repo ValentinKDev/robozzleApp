@@ -8,20 +8,24 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionsIconsFunction
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 
 @Composable
-fun FunctionCase(color: String, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false) {
-    Box( Modifier
-        .gradientBackground( ColorsList( color, vm.displayInstructionsMenu.value == true ), 175f )
+fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false) {
+    Box(
+        Modifier
+            .gradientBackground(ColorsList(color, vm.displayInstructionsMenu.value == true), 175f)
 //        .size( vm.data.getFunctionCaseSize(bigger = bigger).dp)
-        .size(
-            if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
-            else vm.data.layout.secondPart.size.functionCase.dp
-        )
+            .size(
+                if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
+                else vm.data.layout.secondPart.size.functionCase.dp
+            )
     ){
         if (instructionChar != '.'){
-            InstructionsIconsFunction(instructionChar, vm)
+            CenterComposable {
+                InstructionsIconsFunction(instructionChar, vm)
+            }
         }
     }
 }
