@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.logAnimLayoutSecondPart
 import com.mobilegame.robozzle.analyse.logLayoutSecondPart
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
@@ -37,17 +38,21 @@ import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackgrou
 @Composable
 fun DisplayActionsRow(vm: GameDataViewModel) {
     val actionsList: List<FunctionInstruction> by vm.animData.actionList.collectAsState()
-
-//    val dragStart2: Boolean by vm.dragStart.collectAsState()
-//    val dragStart1: Boolean by vm.dragAndDrop.dragStart.collectAsState()
+    val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
     logLayoutSecondPart?.let {
-        verbalLog("Display Actions i", vm.breadcrumb.actions.instructions)
-        verbalLog("Display Actions c", vm.breadcrumb.actions.colors)
-        verbalLog("Display vm.ActionsList ", "${vm.animData.actionList.value}")
-        verbalLog("Display ActionsList ", "$actionsList")
         infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
         infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
+    }
+    logAnimLayoutSecondPart?.let {
+        verbalLog("action to read", currentAction.toString())
+        verbalLog("action to read", vm.animData.actionToRead.value.toString())
+//        verbalLog("Actions list i", vm.breadcrumb.actions.instructions)
+//        verbalLog("Actions list c", vm.breadcrumb.actions.colors)
+        verbalLog("Display vm.ActionsList ", "${vm.animData.actionList.value}")
+        verbalLog("Display ActionsList ", "$actionsList")
+        verbalLog("Display ActionsList size", "${actionsList.size}")
+        verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
 
     Row() {
@@ -55,11 +60,18 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
             .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
             ,
         ) {
+            ActionRowCase(vm = vm, case = actionsList[currentAction])
         }
-        Box( Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
+        Box( Modifier
+            .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
         ) {
-            actionsList.forEachIndexed { index, functionInstruction ->
-                ActionRowCase(vm = vm, case = functionInstruction)
+            Row {
+                actionsList.subList(fromIndex = currentAction + 1, toIndex = vm.data.layout.secondPart.actionToDisplayNumber)
+                    .forEachIndexed {index, functionInstruction ->
+                        logAnimLayoutSecondPart?.let { verbalLog("Display Action", "index $index : $functionInstruction") }
+//                actionsList.forEachIndexed { index, functionInstruction ->
+                        ActionRowCase(vm = vm, case = functionInstruction)
+                    }
             }
         }
     }

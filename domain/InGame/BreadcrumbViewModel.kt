@@ -36,27 +36,16 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 
     private var currentPlayerState = PlayerInGame(Position(-42,-42), Direction(-42, -42))
 
-    init {
-        errorLog("Init", "BreadCrumb")
-        infoLog("playerInGame", "${level.playerInitial}")
-        settingVariables(level, instructionRows, addActions)
-        infoLog("playerInGame", "${level.playerInitial}")
-//        StartLogic()
-//        bd.actionsCount =
-    }
 
     fun getBreadCrumb(): Breadcrumb = runBlocking(Dispatchers.IO) {
         errorLog("Init", "getBreadCrumb")
         startLogic()
 //        Print_breadcrumb(bd)
-        errorLog("get breadcrumb first", "${bd.playerStateList.first().pos}")
-        errorLog("get breadcrumb last", "${bd.playerStateList.last().pos}")
         errorLog("lvl", "${level.playerInitial}")
         bd
     }
 
     private fun startLogic() {
-//        bd.playerStateList = list
         ReadFunction(0)
         if (IsWin()) bd.win = true
     }
@@ -305,24 +294,20 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
     }
 
     private fun settingVariables(level: Level, instructionRows: List<FunctionInstructions>, addActions: Int) {
-        infoLog("reset", "breadcrumb vars")
+    }
 
+    init {
+        logInit?.let { errorLog("Init", "BreadCrumb") }
         win = UNKNOWN
         loop = UNKNOWN
         lost = UNKNOWN
         oneMoreRound = false
         stop = false
-//        bd.actionsCount = 0
         numberActionToLoad += addActions
         currentPlayerState = level.playerInitial.toPlayerInGame()
-//        funInstructionsList = instructionRows
-
         bd = Breadcrumb.createABreadCrumb(
             instructionsRows = instructionRows,
             level = level
-//            map = level.map.toMutableList().copy(),
-//            starsNumberLeft = level.starsList.size,
-//            starsPositionLeftList = level.starsList.toMutableList().copy(),
         )
     }
 }

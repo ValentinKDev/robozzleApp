@@ -12,8 +12,10 @@ object InGameSecondPart {
     object Ratios {
         const val height: Float = 6F
 
-        const val actionRowFirstPart = 1F
+        const val actionRowFirstPart = 1.5F
         const val actionRowSecondPart = 9F
+        const val actionRowStartPadding = 0.025F
+        const val actionRowEndPadding = 0.005F
         const val actionRowHeight = 1F
         const val actionRowSurronderHeight = 0.15F
         const val actionRowSurronderBlackLineHeight = 0.05F
@@ -44,6 +46,7 @@ object InGameSecondPart {
         var actionRowCaseBorder: Int = 0
     }
 
+    const val actionToDisplayNumber = 9
     private var functionsNumber: Int = 0
     private var maxCasesNumber: Int = 0
     private var maximumCaseNumberActionRow = 10

@@ -12,6 +12,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayActionsRow
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayFunctionsPart
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
+import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun SecondScreenPart(vm: GameDataViewModel) {
@@ -30,8 +31,13 @@ fun SecondScreenPart(vm: GameDataViewModel) {
                 ActionRowSurronder(vm)
             }
             Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowHeight)) {
-                CenterComposableVertically {
-                    DisplayActionsRow(vm)
+                PaddingComposable(
+                    startPaddingRatio = vm.data.layout.secondPart.ratios.actionRowStartPadding,
+                    endPaddingRatio = vm.data.layout.secondPart.ratios.actionRowEndPadding
+                ) {
+                    CenterComposableVertically {
+                        DisplayActionsRow(vm)
+                    }
                 }
             }
             Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurronderHeight),
