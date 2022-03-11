@@ -2,7 +2,6 @@ package com.mobilegame.robozzle.domain.InGame.animation
 
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.logClick
 import com.mobilegame.robozzle.analyse.logInit
 import com.mobilegame.robozzle.domain.InGame.Breadcrumb
 import com.mobilegame.robozzle.domain.InGame.ColorSwitch
@@ -18,7 +17,6 @@ import com.mobilegame.robozzle.utils.Extensions.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
 
 class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb) {
     init {
@@ -35,6 +33,7 @@ class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb) {
     suspend fun setPlayerAnimationState(newState: PlayerAnimationState) {_playerAnimationState.emit(newState)}
 
     val maxAction = bd.actionsCount
+    val maxIndex = bd.actionsCount - 1
     private val _actionToRead = MutableStateFlow(0)
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
@@ -50,13 +49,22 @@ class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb) {
         _actionToRead.emit(getActionToRead() - 1)
         updateActionList()
     }
-    private val _actionList = MutableStateFlow(bd.actionsList)
-    val actionList: StateFlow<List<FunctionInstruction>> = _actionList.asStateFlow()
+    val maxNumberActionToDisplay = 9
+//    private val _actionRowList = MutableStateFlow(bd.actionsList.subList(0, if (bd.actionsList.lastIndex < maxIndex) bd.))
+    private val _actionRowList = MutableStateFlow(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
+    val actionRowList: StateFlow<List<FunctionInstruction>> = _actionRowList.asStateFlow()
     private suspend fun updateActionList() {
-        _actionList.emit( bd.actionsList.subList(fromIndex = getActionToRead(), toIndex = bd.actionsList.lastIndex) )
+        val actionToRead = getActionToRead()
+        _actionRowList.emit(
+            bd.actionsList.subListIfPossible(actionToRead, actionToRead + maxNumberActionToDisplay)
+//            bd.actionsList.subList(
+//                fromIndex = actionToRead,
+//                toIndex = if (actionToRead + maxNumberActionToDisplay < maxIndex) actionToRead + maxNumberActionToDisplay else maxIndex
+//            )
+        )
     }
 
-    var actionsList: List<FunctionInstruction> = emptyList()
+//    var actionsList: List<FunctionInstruction> = emptyList()
 
     private val _playerAnimated = MutableStateFlow<PlayerInGame>(level.playerInitial.clone().toPlayerInGame())
     val playerAnimated: StateFlow<PlayerInGame> = _playerAnimated.asStateFlow()

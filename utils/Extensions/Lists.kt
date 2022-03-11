@@ -7,6 +7,7 @@ import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import kotlinx.coroutines.runBlocking
 import java.lang.IndexOutOfBoundsException
 
 fun <T> MutableList<T>.containsNot(element: T): Boolean = !this.contains(element)
@@ -48,6 +49,17 @@ fun MutableList<String>.switchInMatrice(position1: Position, c1: Char, position2
         errorLog("ERROR", "e:")
         this
     }
+}
+
+fun <U> List<U>.subListIfPossible(fromIndex: Int, toIndex: Int? = null): List<U> {
+    return this.subList(
+        fromIndex = getSmallerInt(fromIndex, this.lastIndex),
+        toIndex = toIndex?.let { getSmallerInt(toIndex, this.lastIndex ) } ?: this.lastIndex
+    )
+}
+
+fun getSmallerInt(int1: Int, int2: Int): Int {
+    return if (int1 < int2) int1 else int2
 }
 
 fun List<Position>.toPlayerInGame(): PlayerInGame {
