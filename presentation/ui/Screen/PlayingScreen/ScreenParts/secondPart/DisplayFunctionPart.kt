@@ -75,9 +75,9 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
 
 @Composable
 fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel) {
-    val currentAction: Int by vm.animationLogicVM.data.actionToRead.collectAsState()
+    val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
-    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.data.playerAnimationState.collectAsState()
+    val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
 
     Row(modifier = Modifier
         .fillMaxWidth()

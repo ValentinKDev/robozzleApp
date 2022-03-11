@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.domain.model.data.general
 
 import android.content.Context
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
@@ -18,7 +19,9 @@ class LevelVM (
 
     fun getLevelArgument(): Level = runBlocking(Dispatchers.IO) {
         val id = argumentLevelDataStore.getLevelNumberArg()
-        levelRoomVM.getLevel(id)!!
+        val lvl = levelRoomVM.getLevel(id)!!
+        infoLog("getLevelargument()", "${lvl.playerInitial[0]}")
+        lvl
     }
 
     fun getLevel(id: Int): Level? = runBlocking(Dispatchers.IO) {

@@ -11,6 +11,14 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 //fun errorLog(secondpart: String, firstpart: String = "") = Log.e(firstpart, secondpart)
 //fun verbalLog(secondpart: String, firstpart: String = "") = Log.v(firstpart, secondpart)
 //fun infoLog(secondpart: String, firstpart: String = "") = Log.i(firstpart, secondpart)
+//var log = Logcat
+//fun logger(t: LogType?, firstpart: String = "", secondpart: String) {
+//    t?.let {
+//        when {
+//
+//        }
+//    }
+//}
 fun errorLog(firstpart: String = "", secondpart: String) = Log.e(firstpart, secondpart)
 fun verbalLog(firstpart: String = "", secondpart: String) = Log.v(firstpart, secondpart)
 fun infoLog(firstpart: String = "", secondpart: String) = Log.i(firstpart, secondpart)

@@ -4,6 +4,9 @@ import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.utils.Extensions.clone
+import com.mobilegame.robozzle.utils.Extensions.toPlayerInGame
 
 
 object Breadcrumb {
@@ -24,15 +27,14 @@ object Breadcrumb {
 
     fun createABreadCrumb(
         instructionsRows: List<FunctionInstructions>,
-        map: List<String>,
-        starsNumberLeft: Int,
-        starsPositionLeftList: MutableList<Position>
+        level: Level,
     ): Breadcrumb {
         val bd = Breadcrumb
         bd.funInstructionsList = instructionsRows
-        bd.map = map
-        bd.starsNumberLeft = starsNumberLeft
-        bd.starsPositionsLeft = starsPositionLeftList
+        bd.map = level.map
+        bd.playerStateList += level.playerInitial.clone().toPlayerInGame()
+        bd.starsNumberLeft = level.starsList.size
+        bd.starsPositionsLeft = level.starsList.clone().toMutableList()
         return bd
     }
 }

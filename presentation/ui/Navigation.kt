@@ -145,7 +145,6 @@ fun Navigation(navigator: Navigator) {
 //                )
 //                val vm: GameDataViewModel by viewModel { GameDataViewModel(myleveltest, context) }
 //                private val viewModel = ViewModelProvider(this, viewModelFactory).get(SheduleViewModel::class.java)
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(3)
 //                PlayingScreen(
 //                    GameDataViewModel( myleveltest, context )
 //                    GameDataViewModel(context as Application, myleveltest)
@@ -153,6 +152,7 @@ fun Navigation(navigator: Navigator) {
 //                )
 //            val lvl = LevelRoomViewModel(context).getLevel(10)?.let {
 //            LevelRoomViewModel(context).getLevel(10)?.let {
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(3)
             PlayingScreen(
 //            lvl
 //            it
@@ -190,7 +190,7 @@ val myleveltest = Level(
         FunctionInstructions("u0r0", "gRgg"),
     ),
     playerInitial = listOf(
-        Position(5, 0),
+        Position(5, 1),
         Position(0, 1)
     ),
     starsList = mutableListOf(

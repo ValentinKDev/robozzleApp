@@ -18,11 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.logLayoutSecondPart
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
+import com.mobilegame.robozzle.presentation.res.greendark3
+import com.mobilegame.robozzle.presentation.res.yellow0
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsActionRow
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenConfig
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
@@ -33,21 +36,31 @@ import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackgrou
 //Todo: delay the disparition of the last action in actionList
 @Composable
 fun DisplayActionsRow(vm: GameDataViewModel) {
-    val actionsList: List<FunctionInstruction> by vm.animationLogicVM.data.actionList.collectAsState()
+    val actionsList: List<FunctionInstruction> by vm.animData.actionList.collectAsState()
 
 //    val dragStart2: Boolean by vm.dragStart.collectAsState()
 //    val dragStart1: Boolean by vm.dragAndDrop.dragStart.collectAsState()
 
-    verbalLog("Display Actions i", vm.breadcrumb.actions.instructions)
-    verbalLog("Display Actions c", vm.breadcrumb.actions.colors)
-    verbalLog("Display vm.ActionsList ", "${vm.animationLogicVM.data.actionList.value}")
-    verbalLog("Display ActionsList ", "$actionsList")
-    infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
-    infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
+    logLayoutSecondPart?.let {
+        verbalLog("Display Actions i", vm.breadcrumb.actions.instructions)
+        verbalLog("Display Actions c", vm.breadcrumb.actions.colors)
+        verbalLog("Display vm.ActionsList ", "${vm.animData.actionList.value}")
+        verbalLog("Display ActionsList ", "$actionsList")
+        infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
+        infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
+    }
 
     Row() {
-        actionsList.forEachIndexed { index, functionInstruction ->
-            ActionRowCase(vm = vm, case = functionInstruction)
+        Box( Modifier
+            .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
+            ,
+        ) {
+        }
+        Box( Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
+        ) {
+            actionsList.forEachIndexed { index, functionInstruction ->
+                ActionRowCase(vm = vm, case = functionInstruction)
+            }
         }
     }
 }
@@ -55,15 +68,15 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 @Composable
 fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction) {
     Card(
-            Modifier
-                .size(vm.data.layout.secondPart.size.actionRowCase.dp)
-                .border(
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = Color.Black
-                    ),
-                    shape = RoundedCornerShape(corner = CornerSize(5.dp))
-                )
+        Modifier
+            .size(vm.data.layout.secondPart.size.actionRowCase.dp)
+            .border(
+                border = BorderStroke(
+                    width = 2.dp,
+                    color = Color.Black
+                ),
+                shape = RoundedCornerShape(corner = CornerSize(5.dp))
+            )
             ,
             shape = RoundedCornerShape(corner= CornerSize(5.dp)),
             elevation = vm.data.colors.actionRowCaseElevation

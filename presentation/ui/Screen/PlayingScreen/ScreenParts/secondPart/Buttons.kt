@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -20,9 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.GAME_LOGIC_COROUTINE
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_PLAY
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_PREV
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_RESET
@@ -95,7 +92,7 @@ fun PlayPauseButton(vm: GameDataViewModel) {
             }
     ) {
         Box(Modifier.align(Alignment.Center)) {
-            PlayPauseIcon(isPlaying = vm.animationLogicVM.data.isPlayeing())
+            PlayPauseIcon(isPlaying = vm.animData.isPlaying())
         }
     }
 }
@@ -108,7 +105,7 @@ fun ResetButton(vm: GameDataViewModel) {
             .height(vm.data.layout.thirdPart.size.buttonHeight.dp)
             .width(vm.data.layout.thirdPart.size.buttonWidth.dp)
             .clickable {
-                vm.ResetAnimation()
+                vm.clickResetButtonHandler()
             }
     ) {
         //todo : define clearly steps so you can t have 2 different actions in the row while player still is the same position by clicking quickly on the play/pause button

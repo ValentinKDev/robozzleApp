@@ -9,12 +9,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.utils.Extensions.replaceAt
 import com.mobilegame.robozzle.utils.Extensions.toPlayerInGame
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.*
+import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -31,21 +30,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-
-
-//class GameDataViewModelFactory(private val level: Level, val context: Context): ViewModelProvider.NewInstanceFactory() {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T = GameDataViewModel(level, context) as T
-//}
-
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-    var level: Level = myleveltest
+    var level: Level = LevelVM(getApplication()).getLevelArgument()
+//    var level: Level = myleveltest
+
     val data = InGameData(level, getApplication() )
+    var breadcrumb = BreadcrumbViewModel(level, level.funInstructionsList).getBreadCrumb()
+    var animData = AnimationData(level, breadcrumb)
+    var animationLogicVM = AnimationLogicViewModel(level, animData)
+
     val popup = PopupViewModel()
     val dragAndDrop = DragAndDropState()
-
-    var breadcrumb = BreadcrumbViewModel(level, level.funInstructionsList).getBreadCrumb()
-
-    var animationLogicVM = AnimationLogicViewModel(level)
     var animationJob: Job? = null
 
     var selectedCase = Position.Zero
@@ -64,13 +59,12 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
             _instructionsRows.value[pos.line].instructions.replaceAt(pos.column, case.instruction)
     }
 
-
     fun startAnimation() {
         animationLogicVM.start(breadcrumb)
     }
     fun updateAnimationLogic() {
 //        animationLogicVM = AnimationLogicViewModel(this)
-        animationLogicVM = AnimationLogicViewModel(level)
+        animationLogicVM = AnimationLogicViewModel(level, animData)
     }
     fun updateBreadcrumb() {
         verbalLog("GameDataViewModel", ":updateBreadcrumb")
@@ -126,36 +120,52 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         updateAnimationLogic()
     }
 
+    fun clickResetButtonHandler() = runBlocking(Dispatchers.Default) {
+        logClick?.let { errorLog("click reset vm handler", "start ${animData.getPlayerAnimationState().key}") }
+//        animData.setPlayerAnimationState(PlayerAnimationState.NotStarted)
+        animData = AnimationData(level, breadcrumb)
+        logClick?.let { errorLog("click reset vm handler", "end ${animData.getPlayerAnimationState().key}") }
+    }
+
     fun clickPlayPauseButtonHandler() = runBlocking(Dispatchers.Default) {
-        when (animationLogicVM.data.playerAnimationState.value) {
+        logClick?.let { errorLog("click play pause vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        when (animData.getPlayerAnimationState()) {
             PlayerAnimationState.IsPlaying -> {
-                animationLogicVM.data.setPlayerAnimationState(PlayerAnimationState.OnPause)
+                animData.setPlayerAnimationState(PlayerAnimationState.OnPause)
             }
             PlayerAnimationState.OnPause -> {
-                animationLogicVM.data.setPlayerAnimationState(PlayerAnimationState.IsPlaying)
+                animData.setPlayerAnimationState(PlayerAnimationState.IsPlaying)
+//                startPlayerAnimation()
+            }
+            PlayerAnimationState.NotStarted -> {
+                animData.setPlayerAnimationState(PlayerAnimationState.IsPlaying)
                 startPlayerAnimation()
             }
-            else -> { errorLog("ERROR", "GameButton playerAnimationState is neither IsPlaying or OnPause") }
+            else -> { logClick?.let { errorLog("ERROR", "GameButton playerAnimationState is neither IsPlaying or OnPause") } }
         }
+        logClick?.let { errorLog("click play pause vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
+
     fun clickNextButtonHandler() = runBlocking(Dispatchers.Default) {
-        if (animationLogicVM.data.isOnPause()) {
-            animationLogicVM.data.setPlayerAnimationState(PlayerAnimationState.GoNext)
+        logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
+        if (animData.isOnPause()) {
+            animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
         }
         else {
             infoLog("next", "else")
         }
+        logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun clickBackButtonHandler() = runBlocking(Dispatchers.Default) {
-        animationLogicVM.data.setPlayerAnimationState(PlayerAnimationState.GoNext)
+        logClick?.let { errorLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
+        logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
 //    fun AnimationGoingBackChangeStatus() { _animationGoBack.value = !_animationGoBack.value!! }
     }
 
     init {
-        errorLog("init", "GameDataViewModel")
-        infoLog("instructionsRows", "${getInstructionsRows()}")
+        logInit?.let { errorLog("init", "GameDataViewModel") }
         setInstructionsRows(level.funInstructionsList)
-        infoLog("instructionsRows", "${getInstructionsRows()}")
         updateBreadcrumb()
     }
 //    fun init(lvl: Level) {

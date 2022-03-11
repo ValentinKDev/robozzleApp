@@ -77,13 +77,19 @@ fun MutableList<Position>.IndexMatching(pos: Position): Int {
     return -1
 }
 
-fun MutableList<Position>.clone(): MutableList<Position> {
-    var clonePosList: MutableList<Position> = mutableListOf()
-    for (index in 0 until this.size) {
-        clonePosList.add(Position(this[index].line, this[index].column))
-    }
-    return clonePosList
+fun <T>List<T>.clone(): List<T> {
+    val mutableList: MutableList<T> = mutableListOf()
+    this.forEach { mutableList.add(it) }
+    return mutableList.toList()
 }
+
+//fun MutableList<Position>.clone(): MutableList<Position> {
+//    var clonePosList: MutableList<Position> = mutableListOf()
+//    for (index in 0 until this.size) {
+//        clonePosList.add(Position(this[index].line, this[index].column))
+//    }
+//    return clonePosList
+//}
 
 fun MutableList<Int>.Contains(int: Int): Boolean {
     var ret = false
@@ -94,7 +100,7 @@ fun MutableList<Int>.Contains(int: Int): Boolean {
 }
 
 fun <E> MutableList<E>.copy(): MutableList<E> {
-    val ret = emptyList<E>().toMutableList()
+    val ret = mutableListOf<E>()
     this.forEach {
         ret.add(it)
     }

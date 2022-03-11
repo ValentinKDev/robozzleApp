@@ -27,27 +27,24 @@ import kotlinx.coroutines.flow.asStateFlow
 
 //class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
 //class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
-class AnimationLogicViewModel(private val level: Level): ViewModel() {
+class AnimationLogicViewModel(private val level: Level, private val data: AnimationData): ViewModel() {
     private var actionAdded = 5
 
     lateinit var breadcrumb: Breadcrumb
     lateinit var stars: Stars
     lateinit var colorSwitches: ColorsMaps
     var actionIndexEnd: Int = UNKNOWN
-//    private var actionIndexEnd = breadcrumb.actionsCount
-    //    private var stars: Stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
-//    private var colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
     private var starsRemovedMap = mutableMapOf<Int, Point>()
-//    private var actionToRead = 0
     private var addAction = initialPreloadActionsNumber
 
-//    lateinit var data: AnimationData
-//    val data: AnimationData = AnimationData(level, breadcrumb)
-    var data: AnimationData = AnimationData(level)
-
+    init {
+        errorLog("init", "animation logic")
+        infoLog("playerInGame position lvl", "${level.playerInitial}")
+        infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
+        infoLog("action to read", "${data.getActionToRead()}")
+    }
     fun initialize(bd: Breadcrumb) {
         breadcrumb = bd
-        data  = AnimationData(level, breadcrumb)
         actionAdded = 5
         stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
         colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
@@ -99,8 +96,6 @@ class AnimationLogicViewModel(private val level: Level): ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             actionAdded += 5
-//            breadcrumb = BreadcrumbViewModel(mainVM.level, mainVM.getInstructionsRows(), actionAdded).getBreadCrumb()
-//            breadcrumb = BreadcrumbViewModel(level, breadcrumb.funInstructionsList, actionAdded).getBreadCrumb()
             /** update here the action row ????
              *
              *
@@ -135,7 +130,6 @@ class AnimationLogicViewModel(private val level: Level): ViewModel() {
             else -> { errorLog("ERROR", "AnimationLogic::StepbyStep [Wrong direction]") }
         }
     }
-
 
     private suspend fun UpdateMoveLogic(direction: Int) {
         when {

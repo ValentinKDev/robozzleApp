@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.logAnimMap
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
@@ -42,9 +43,10 @@ import com.mobilegame.robozzle.utils.infixStyle.match
 fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
     //todo : put those calculs in a VM ?
 //    val map = MapCleaner() clean mapParam
-    val map: List<String> by vm.animationLogicVM.data.map.collectAsState()
-    val stars: List<Position> by vm.animationLogicVM.data.animatedStarsMaped.collectAsState()
-    val playerInGame: PlayerInGame by vm.animationLogicVM.data.playerAnimated.collectAsState()
+    val map: List<String> by vm.animData.map.collectAsState()
+    val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
+    val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
+    logAnimMap?.let { infoLog("Map View In Game", "player pos ${playerInGame.pos}") }
     infoLog("stars", "$stars")
 //    val map = mapParam
 
@@ -65,7 +67,7 @@ fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
     val casePaddingDP: Dp = (caseSize / 20.0F).dp
     val playerIconSize: Int = (caseSize * vm.data.layout.firstPart.ratios.playerIcon).toInt()
 
-
+    var casePosition = Position.Zero
     Box(
         Modifier
             .height(mapHeightDP)
@@ -77,20 +79,45 @@ fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
             map.forEachIndexed { _rowIndex, rowString ->
                 Row {
                     rowString.forEachIndexed { _columnIndex, _color ->
-                        val casePosition = Position(_rowIndex, _columnIndex)
+                        casePosition = Position(_rowIndex, _columnIndex)
 //                        DrawMapCase(caseSize = caseSize, caseColor = _color) {
-                            if (playerInGame.pos match casePosition) {
-                                PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
-                            }
+                        Box(
+                            Modifier
+                                .background(Color.Transparent)
+                                .size(caseSize.dp),
+                        ) {
+                            if (_color != '.') {
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(1.dp),
+                                    shape = RectangleShape,
+                                    elevation = 7.dp,
+                                ) {
+                                    Box(
+                                        Modifier
+                                            .gradientBackground(ColorsList(_color), 135f)
+                                            .fillMaxSize()
+                                    ) {
+//                                        content.invoke()
+                                        if (playerInGame.pos == casePosition) {
+
+                                            errorLog("playerInGAme.pos", "${playerInGame.pos}")
+                                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                        }
 //                            else if (stars contain casePosition) {
-                            if (stars contain casePosition) {
-                                StarIcon()
-                            }
+//                                        if (stars contain casePosition) {
+//                                            StarIcon()
+//                                        }
 //                        }
-                        if (playerInGame.pos match casePosition) {
-                            errorLog("postion", "$casePosition")
-                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                    }
+                                }
+                            }
                         }
+//                        if (playerInGame.pos match casePosition) {
+//                            errorLog("postion", "$casePosition")
+//                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+//                        }
                     }
                 }
             }

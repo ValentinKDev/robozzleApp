@@ -12,6 +12,8 @@ object InGameSecondPart {
     object Ratios {
         const val height: Float = 6F
 
+        const val actionRowFirstPart = 1F
+        const val actionRowSecondPart = 9F
         const val actionRowHeight = 1F
         const val actionRowSurronderHeight = 0.15F
         const val actionRowSurronderBlackLineHeight = 0.05F

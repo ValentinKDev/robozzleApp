@@ -29,7 +29,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 
 @Composable
 fun GameButtons(vm: GameDataViewModel) {
-    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.data.playerAnimationState.collectAsState()
+    val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
 
     CenterComposableVertically {
         Row(

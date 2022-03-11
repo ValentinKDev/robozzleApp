@@ -17,7 +17,7 @@ import kotlinx.coroutines.runBlocking
 
 internal const val initialPreloadActionsNumber = 15
 
-class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructions>, addActions: Int = 0): ViewModel() {
+class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstructions>, addActions: Int = 0): ViewModel() {
     var numberActionToLoad = initialPreloadActionsNumber
 
 //    private var bd = Breadcrumb
@@ -25,27 +25,38 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
 
     private lateinit var bd: Breadcrumb
 
-    var stop = false
-    var win = UNKNOWN
-    var lost = UNKNOWN
-    var loop = UNKNOWN
-    var oneMoreRound = false
-    var currentPlayerState = PlayerInGame(Position(-42,-42), Direction(-42, -42))
+    //    private val printDetails: Int? = null
+    private val printDetails: Int? = 1
+
+    private var stop = false
+    private var win = UNKNOWN
+    private var lost = UNKNOWN
+    private var loop = UNKNOWN
+    private var oneMoreRound = false
+
+    private var currentPlayerState = PlayerInGame(Position(-42,-42), Direction(-42, -42))
 
     init {
+        errorLog("Init", "BreadCrumb")
+        infoLog("playerInGame", "${level.playerInitial}")
         settingVariables(level, instructionRows, addActions)
+        infoLog("playerInGame", "${level.playerInitial}")
 //        StartLogic()
 //        bd.actionsCount =
     }
 
-
     fun getBreadCrumb(): Breadcrumb = runBlocking(Dispatchers.IO) {
+        errorLog("Init", "getBreadCrumb")
         startLogic()
-        Print_breadcrumb(bd)
+//        Print_breadcrumb(bd)
+        errorLog("get breadcrumb first", "${bd.playerStateList.first().pos}")
+        errorLog("get breadcrumb last", "${bd.playerStateList.last().pos}")
+        errorLog("lvl", "${level.playerInitial}")
         bd
     }
 
-    fun startLogic() {
+    private fun startLogic() {
+//        bd.playerStateList = list
         ReadFunction(0)
         if (IsWin()) bd.win = true
     }
@@ -69,27 +80,27 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
                 errorLog("true", "stop && !oneMoreRound")
                 lost = bd.actionsCount
                 ; break }
-
+//            infoLog("playerS", "${bd.playerStateList}")
             caseIndex++
         }
     }
 
-    fun ReadFunctionCase(funIndex: Int, caseIndex: Int) {
+    private fun ReadFunctionCase(funIndex: Int, caseIndex: Int) {
         val instruction = bd.funInstructionsList[funIndex].instructions[caseIndex]
         val instructionColor = bd.funInstructionsList[funIndex].colors[caseIndex]
         val mapCaseColor = bd.map[currentPlayerState.pos.line][currentPlayerState.pos.column]
         val colorMatch = instructionColor.matchMapColor(mapCaseColor)
 
         //todo : check actions placement
-//        errorLog("action $actionsCount : $instruction", "${currentPlayerState.direction.ToChar()}(${currentPlayerState.pos.line}, ${currentPlayerState.pos.column})")
-
+        updateCurrentPlayerState()
         val action = FunctionInstruction(instruction, instructionColor)
         if (colorMatch) { ApplyAnInstruction(action, funIndex, caseIndex) }
         else {
+            printDetails?.let { verbalLog("", "${bd.actionsCount} stay") }
             UpdateActionCountInstructionList(funIndex, caseIndex)
             updateActions(action)
 //            actionList += instruction
-            AddElementToPlayerStateList(CloneLastPlayerState())
+            AddElementToPlayerStateList()
         }
     }
 
@@ -105,7 +116,7 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
 //        infoLog("ApplyAnInstruction", "${instruction}")
         when (action.instruction.getInstructionType()) {
             InstructionType.MOVE -> {
-//                verbalLog("", "move")
+                printDetails?.let { verbalLog("", "${bd.actionsCount} move") }
                 ApplyTheMouvement()
 //                actionList += instruction
                 updateActions(action)
@@ -113,26 +124,27 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
                 UpdateActionCountInstructionList(funIndex, caseIndex)
             }
             InstructionType.ROTATE -> {
-//                verbalLog("", "rotation")
+                printDetails?.let { verbalLog("", "${bd.actionsCount} rotation") }
                 AddTheRotationToTheList(action.instruction)
 //                actionList += instruction
                 updateActions(action)
                 UpdateActionCountInstructionList(funIndex, caseIndex)
             }
             InstructionType.CHANGE_FUNCTION -> {
+                printDetails?.let { verbalLog("", "${bd.actionsCount} change function") }
 //                actionList += instruction
                 updateActions(action)
-                AddElementToPlayerStateList(currentPlayerState.copy())
+                AddElementToPlayerStateList()
                 UpdateActionCountInstructionList(funIndex, caseIndex)
 //                verbalLog("win ${IsWin()}", "call function")
 //                if (actionsCount < 25)
                     ReadFunction(action.instruction.ToInt() )
             }
             InstructionType.COLOR_MAP -> {
-                verbalLog("", "color change")
+                printDetails?.let { verbalLog("", "${bd.actionsCount} color change") }
 //                actionList += instruction
                 updateActions(action)
-                AddElementToPlayerStateList(currentPlayerState.copy())
+                AddElementToPlayerStateList()
 
                 AddColorChange(funIndex, caseIndex, action.instruction)
                 ChangeMapCaseColor(action.instruction)
@@ -146,7 +158,6 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
 
 
     private fun ChangeMapCaseColor(instruction: Char) {
-
         bd.colorChangeMap.get(bd.actionsCount)?.let {
             bd.map = bd.map.toMutableList().replaceInMatrice(it.newColor , it.pos)
         }
@@ -171,14 +182,22 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
 
     private fun AddTheRotationToTheList(instruction: Char) {
         currentPlayerState.ChangeDirectionPlayer(instruction)
-        AddElementToPlayerStateList(currentPlayerState.copy())
+        AddElementToPlayerStateList()
     }
-    private fun AddElementToPlayerStateList(newPlayerState: PlayerInGame) {
-        bd.playerStateList.add(newPlayerState)
+    private fun AddElementToPlayerStateList() {
+        printDetails?.let {
+            infoLog("plyrStT", "\t\tsize ${bd.playerStateList.size}")
+            infoLog("add plyrStT", "\t\tfirst() ${bd.playerStateList.first().pos}")
+            infoLog("add plyrStT", "\t\tlast() ${bd.playerStateList.last().pos}")
+        }
+        bd.playerStateList.add(currentPlayerState)
+        printDetails?.let {
+            infoLog("add plyrStT", "\t\tlast() ${bd.playerStateList.last().pos}")
+        }
     }
 
     private fun ApplyTheMouvement() {
-        val newPlayerState: PlayerInGame = CloneLastPlayerState()
+//        val newPlayerState: PlayerInGame = CloneLastPlayerState()
 //        verbalLog("(${currentPlayerState.pos.line}, ${currentPlayerState.pos.column})", "currentPlayerState.pos")
 
         when (currentPlayerState.ApplyTheMovement(bd.map)) {
@@ -187,7 +206,8 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
             }
             OUT_OF_MAP_PATH -> {
                 stop = true
-                AddElementToPlayerStateList(currentPlayerState.copy())
+//                AddElementToPlayerStateList(currentPlayerState.copy())
+                AddElementToPlayerStateList()
 //                errorLog("ApplyTheMouvement", "Outside of the mapPath at action (${newPlayerState.pos.line}, ${newPlayerState.pos.column})")
             }
             OUT_OF_MAP_BORDER-> {
@@ -196,7 +216,8 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
 //                errorLog("ApplyTheMouvement", "Outside of the mapBorder")
             }
             ON_MAP_PATH -> {
-                AddElementToPlayerStateList(currentPlayerState.copy())
+                AddElementToPlayerStateList()
+//                AddElementToPlayerStateList(currentPlayerState.copy())
 //                infoLog("ApplyTheMouvement", "newPlayerState.ApplyTheMovement = ON_MAP_PATH")
             }
         }
@@ -255,6 +276,8 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
         return ret
     }
 
+    private fun updateCurrentPlayerState() { currentPlayerState = bd.playerStateList.last().copy() }
+
     private fun Char.matchMapColor(mapCaseColor: Char): Boolean {
         return ((this == mapCaseColor) || (this == 'g'))
     }
@@ -268,21 +291,21 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
         return ("[rl]".toRegex().matches(this.toString()))
     }
 
-    fun Int.isUnknown(): Boolean = this == UNKNOWN
+    private fun Int.isUnknown(): Boolean = this == UNKNOWN
 
-    fun IsLost(): Boolean {return (lost >= TRUE)}
-    fun IsWin(): Boolean {return (win >= TRUE)}
+    private fun IsLost(): Boolean {return (lost >= TRUE)}
+    private fun IsWin(): Boolean {return (win >= TRUE)}
 
 //    fun IsWin(): Boolean {return (win > -1)}
 //    fun NoEnd(): Boolean {return !(IsWin() || IsLost())}
-    fun NotFinished(): Boolean {return (win.isUnknown() && lost.isUnknown())}
+    private fun NotFinished(): Boolean {return (win.isUnknown() && lost.isUnknown())}
 
-    enum class InstructionType {
+    private enum class InstructionType {
         MOVE, ROTATE, CHANGE_FUNCTION, COLOR_MAP, UNKNOWN
     }
 
-    fun settingVariables(level: Level, instructionRows: List<FunctionInstructions>, addActions: Int) {
-        errorLog("reset", "breadcrumb vars")
+    private fun settingVariables(level: Level, instructionRows: List<FunctionInstructions>, addActions: Int) {
+        infoLog("reset", "breadcrumb vars")
 
         win = UNKNOWN
         loop = UNKNOWN
@@ -296,9 +319,10 @@ class BreadcrumbViewModel(level: Level, instructionRows: List<FunctionInstructio
 
         bd = Breadcrumb.createABreadCrumb(
             instructionsRows = instructionRows,
-            map = level.map.toMutableList().copy(),
-            starsNumberLeft = level.starsList.size,
-            starsPositionLeftList = level.starsList.toMutableList().copy(),
+            level = level
+//            map = level.map.toMutableList().copy(),
+//            starsNumberLeft = level.starsList.size,
+//            starsPositionLeftList = level.starsList.toMutableList().copy(),
         )
     }
 }
