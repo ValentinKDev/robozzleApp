@@ -40,14 +40,21 @@ import com.mobilegame.robozzle.utils.infixStyle.contain
 import com.mobilegame.robozzle.utils.infixStyle.match
 
 @Composable
-fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
+fun MapViewInGame(
+    vm: GameDataViewModel,
+    widthInt: Int,
+    playerInGame: PlayerInGame? = null,
+    stars: List<Position> = emptyList()
+) {
     //todo : put those calculs in a VM ?
 //    val map = MapCleaner() clean mapParam
     val map: List<String> by vm.animData.map.collectAsState()
-    val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
-    val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
-    logAnimMap?.let { infoLog("Map View In Game", "player pos ${playerInGame.pos}") }
-    infoLog("stars", "$stars")
+    infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
+    infoLog("action", "${vm.animData.getActionToRead()}")
+    logAnimMap?.let {
+        infoLog("stars", "$stars")
+//        infoLog("player", "${playerInGame.pos}")
+    }
 //    val map = mapParam
 
 //    val cleaner = MapCleaner()
@@ -68,6 +75,7 @@ fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
     val playerIconSize: Int = (caseSize * vm.data.layout.firstPart.ratios.playerIcon).toInt()
 
     var casePosition = Position.Zero
+
     Box(
         Modifier
             .height(mapHeightDP)
@@ -100,16 +108,17 @@ fun MapViewInGame(vm: GameDataViewModel, widthInt: Int) {
                                             .fillMaxSize()
                                     ) {
 //                                        content.invoke()
-                                        if (playerInGame.pos == casePosition) {
-
-                                            errorLog("playerInGAme.pos", "${playerInGame.pos}")
-                                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                        playerInGame?.let {
+                                            if (playerInGame.pos == casePosition) {
+                                                errorLog("playerInGAme.pos", "${playerInGame.pos}")
+                                                PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                            }
+                                            else if (stars contain casePosition) {
+                                                if (stars contain casePosition) {
+                                                    StarIcon()
+                                                }
+                                            }
                                         }
-//                            else if (stars contain casePosition) {
-//                                        if (stars contain casePosition) {
-//                                            StarIcon()
-//                                        }
-//                        }
                                     }
                                 }
                             }

@@ -51,7 +51,6 @@ class AnimationLogicViewModel(
         infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
         infoLog("action to read", "${data.getActionToRead()}")
     }
-
     fun initialize(bd: Breadcrumb) {
         breadcrumb = bd
 //        animLogicData = AnimationLogicData(bd)
@@ -60,14 +59,13 @@ class AnimationLogicViewModel(
         colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
     }
 
-    fun start(bd: Breadcrumb, actionStart: Int = 0): Job = runBlocking(Dispatchers.IO) {
+    fun start(bd: Breadcrumb): Job = runBlocking(Dispatchers.IO) {
         viewModelScope.launch(Dispatchers.IO) {
             initialize(bd)
             infoLog("stars at", "${breadcrumb.actionsTriggerStarRemoveList}")
             infoLog("stars Map", "${breadcrumb.starsRemovalMap}")
             infoLog("win", "${breadcrumb.win}")
             Log.v(Thread.currentThread().name,"Start - actionIndexEnd ${breadcrumb.lastActionNumber}")
-
             while (data.actionInBounds() == true) {
                 infoLog("action to read ${data.getActionToRead()}" , "->")
                 UpdateMoveLogic(FORWARD)
@@ -75,23 +73,22 @@ class AnimationLogicViewModel(
                     HandleAnimationOnPauseLogic()
 
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
-                    if (data.triggerExpandBreadcrumb()) {expandBreadcrumb()}
+                    if (triggerExpandBreadcrumb()) {expandBreadcrumb()}
                     AnimationDelay()
 
                     data.incrementActionToRead()
                 }
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
-            Log.v(Thread.currentThread().name,"Loop actions END at actionIndexEnd ${breadcrumb.lastActionNumber}")
-            EndGame()
+            Log.v(Thread.currentThread().name,"Loop END at actionIndexEnd ${breadcrumb.lastActionNumber}")
+            ProcessResult()
         }
     }
 
 
-    private suspend fun HandleAnimationOnPauseLogic() {
-        while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
+    private suspend fun HandleAnimationOnPauseLogic() { while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
             infoLog("Step ${data.getActionToRead()}", " ->")
-            if ( data.triggerExpandBreadcrumb() ) { expandBreadcrumb() }
+            if ( triggerExpandBreadcrumb() ) { expandBreadcrumb() }
             delay(50)
             when {
                 data.isGoingForward() -> StepByStep(FORWARD)
@@ -106,19 +103,21 @@ class AnimationLogicViewModel(
         actionAdded += 5
 
         val instructionRows = breadcrumb.funInstructionsList
-        val bd = BreadcrumbViewModel(level, instructionRows, addAction + actionAdded).getBreadCrumb()
-        val newData = AnimationData(level, bd, data.getActionToRead())
-        viewModelScope.launch(Dispatchers.Main) {
-            VM.updateBreadcrumb(bd)
-            VM.updateData(newData)
-        }
-        breadcrumb = bd
-        data = newData
+        val newBd = BreadcrumbViewModel(level, instructionRows, addAction + actionAdded).getBreadCrumb()
+
+        data.updateBreadCrumb(newBd)
+        breadcrumb = newBd.copy()
+
+        viewModelScope.launch(Dispatchers.Main) { VM.updateBreadcrumbAndData(newBd) }
 
         actionIndexEnd = breadcrumb.playerStateList.size
         stars.toRemove = breadcrumb.starsRemovalMap.copy()
         stars.expand(breadcrumb.starsRemovalMap)
         colorSwitches.expand(breadcrumb.colorChangeMap)
+        errorLog("action list size", "${breadcrumb.actionsList.size}")
+        errorLog("action lenght ", "${breadcrumb.actions.instructions.length}")
+        errorLog("action list size", "${breadcrumb.lastActionNumber}")
+
 
 //        logAnimData.let {
 //            verbalLog("after ", "recalculation")
@@ -161,7 +160,7 @@ class AnimationLogicViewModel(
             }
             data.getActionToRead().trigerColorChange(direction) -> {
                 when (direction) {
-                    FORWARD -> { colorSwitches.FromToRemoveMapToRemovedMap(data.getActionToRead()) }
+                FORWARD -> { colorSwitches.FromToRemoveMapToRemovedMap(data.getActionToRead()) }
                     BACKWARD -> { colorSwitches.FromRemovedMapToToRemoveMap(data.getActionToRead()) }
                     else -> { errorLog("Update Move Logic triger Color Change", "Error")}
                 }
@@ -212,22 +211,35 @@ class AnimationLogicViewModel(
     }
 
     private suspend fun UpdatePlayerUI() {
-        data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead()])
+//        infoLog("plr pos", "${data.getPlayer().pos}")
+//        infoLog("bd", "${breadcrumb.lastActionNumber}")
+//        infoLog("data action to read", "${data.getActionToRead()}")
+        breadcrumb.playerStateList.forEach {
+//            infoLog("plr state list", "${it.pos}")
+        }
+//        data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead()])
+        data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead() + 1])
+//        infoLog("plr pos", "${data.getPlayer().pos}")
     }
 
-    private suspend fun EndGame() {
-        setWinTo(if (breadcrumb.win) TRUE else FALSE)
-//      todo: isJustNotFinished ???
+//    private suspend fun EndGame() {
+//        erro
+//        setWinTo(if (breadcrumb.win Is TRUE) TRUE else FALSE)
+//        setWinTo(if (breadcrumb.win) TRUE else FALSE)
+//    }
+
+    private suspend fun ProcessResult() {
+        if (breadcrumb.win Is TRUE) {
+            data.setWinPopTo(true)
+//            setWinTo(TRUE)
+        }
+        Log.e("END animation win", "--${breadcrumb.win}--")
+        Log.e("END animation lost", "--${breadcrumb.lost}--")
     }
 
-    private fun ProcessResult(result: Int) {
-            setWinTo(result)
-        Log.e("END animation", "--${result}--")
-    }
-
-    private val _win = MutableStateFlow<Int>(UNKNOWN)
-    val win: StateFlow<Int> = _win
-    fun setWinTo(value: Int) {_win.value = value}
+//    private val _win = MutableStateFlow<Int>(UNKNOWN)
+//    val win: StateFlow<Int> = _win
+//    fun setWinTo(value: Int) {_win.value = value}
 
     fun AddWin( context: Context ) {
         val rankVM = RankVM(context)
@@ -268,5 +280,9 @@ class AnimationLogicViewModel(
            BACKWARD -> {stars.removed.containsKey(data.getActionToRead())}
            else -> { errorLog("Triger Star", "Error"); false }
        }
+    }
+
+    fun triggerExpandBreadcrumb(): Boolean = runBlocking {
+        data.getActionToRead() == breadcrumb.lastActionNumber - 2 && (breadcrumb.win Is UNKNOWN) && (breadcrumb.lost Is UNKNOWN)
     }
 }

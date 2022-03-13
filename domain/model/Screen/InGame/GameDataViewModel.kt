@@ -68,13 +68,15 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         animationLogicVM = AnimationLogicViewModel(level, animData, this)
     }
 //    fun updateBreadcrumb(addAction: Int = 0) {
-    fun updateData(data: AnimationData) {
-        animData = data
+    fun updateData() {
+        animData.updateBreadCrumb(breadcrumb)
+//        animData = data
     }
-    fun updateBreadcrumb(bd: Breadcrumb) {
+    fun updateBreadcrumbAndData(bd: Breadcrumb) {
         verbalLog("GameDataViewModel", ":updateBreadcrumb")
 //        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value, addAction).getBreadCrumb()
         breadcrumb = bd
+        animData.updateBreadCrumb(breadcrumb)
     }
 
     fun startPlayerAnimation() {
@@ -165,8 +167,8 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     init {
         logInit?.let { errorLog("init", "GameDataViewModel") }
-        setInstructionsRows(level.funInstructionsList)
-        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value).getBreadCrumb()
+//        setInstructionsRows(level.funInstructionsList)
+//        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value).getBreadCrumb()
     }
 //    fun init(lvl: Level) {
 //        level = lvl

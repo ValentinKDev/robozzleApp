@@ -15,7 +15,9 @@ import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-internal const val initialPreloadActionsNumber = 10
+//internal const val initialPreloadActionsNumber = 10
+internal const val initialPreloadActionsNumber = 14
+//internal const val initialPreloadActionsNumber = 30
 
 class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstructions>, addActions: Int = 0): ViewModel() {
     var numberActionToLoad = initialPreloadActionsNumber
@@ -29,22 +31,23 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 //    private val printDetails: Int? = 1
 
     private var stop = false
-    private var win = UNKNOWN
-    private var lost = UNKNOWN
+//    private var win = UNKNOWN
+//    private var lost = UNKNOWN
     private var loop = UNKNOWN
     private var oneMoreRound = false
 
     private var currentPlayerState = PlayerInGame(Position(-42,-42), Direction(-42, -42))
 
     init {
-        win = UNKNOWN
+//        win = UNKNOWN
         loop = UNKNOWN
-        lost = UNKNOWN
+//        lost = UNKNOWN
         oneMoreRound = false
         stop = false
         numberActionToLoad += addActions
         currentPlayerState = level.playerInitial.toPlayerInGame()
-        bd = Breadcrumb.createABreadCrumb(
+//        bd = Breadcrumb.createABreadCrumb(
+        bd = Breadcrumb().createABreadCrumb(
             instructionsRows = instructionRows,
             level = level
         )
@@ -60,6 +63,15 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
         logInit?.let { errorLog("Init", "getBreadCrumb") }
         startLogic()
         errorLog("actionCount", "${bd.lastActionNumber}")
+        infoLog("actionList.size", "${bd.actionsList.size}")
+        bd.playerStateList.forEachIndexed { _i, _plr ->
+            infoLog("$_i", "${_plr.pos}")
+        }
+        infoLog("stars number left", "${bd.starsNumberLeft}")
+        infoLog("stars left", "${bd.starsPositionsLeft}")
+        infoLog("stars removed left", "${bd.starsRemovalMap}")
+        infoLog("win", "${bd.win}")
+        infoLog("lose", "${bd.lost}")
         bd
     }
 
@@ -71,7 +83,8 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 
     private fun startLogic() {
         ReadFunction(0)
-        if (IsWin()) bd.win = true
+//        if (IsWin()) bd.win = true
+//        else if (IsLost()) bd.lost = lost
     }
 
     //todo : do i have to initiate the PlayerStateList in case the first instruciton is blanck so the CalculatePlayerState() can CloneLastPlayerstate()
@@ -90,7 +103,7 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
                 oneMoreRound = false}
             if (stop && !oneMoreRound) {
                 errorLog("true", "stop && !oneMoreRound")
-                lost = bd.lastActionNumber
+                bd.lost = bd.lastActionNumber
                 ; break }
 //            infoLog("playerS", "${bd.playerStateList}")
             caseIndex++
@@ -235,10 +248,7 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
     }
 
     private fun CheckStarOnNewPosition() {
-        if (bd.starsPositionsLeft.Contains(currentPlayerState.pos)){
-//            infoLog("action count", "${bd.actionsCount}")
-//            verbalLog("star at (${currentPlayerState.pos.line}, ${currentPlayerState.pos.column})", ".")
-//            verbalLog("","${starsRemovalMap}")
+        if (bd.starsPositionsLeft.contains(currentPlayerState.pos)){
 
             bd.starsRemovalMap.put(bd.lastActionNumber, Position(currentPlayerState.pos.line, currentPlayerState.pos.column))
             bd.actionsTriggerStarRemoveList.add(bd.playerStateList.lastIndex)
@@ -282,8 +292,8 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 
 
     private fun check_set_Win(): Boolean {
-        val ret =  if (win == UNKNOWN && bd.starsNumberLeft == 0) { win = bd.lastActionNumber; true } else false
-        infoLog("", "checkWin() actionCount ${bd.lastActionNumber} / ${win} / ${bd.starsNumberLeft}")
+        val ret =  if (bd.starsNumberLeft == 0) { bd.win = bd.lastActionNumber; true } else false
+//        infoLog("", "checkWin() actionCount ${bd.lastActionNumber} / ${bd.win} / ${bd.starsNumberLeft}")
         return ret
     }
 
@@ -304,12 +314,12 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 
     private fun Int.isUnknown(): Boolean = this == UNKNOWN
 
-    private fun IsLost(): Boolean {return (lost >= TRUE)}
-    private fun IsWin(): Boolean {return (win >= TRUE)}
+    private fun IsLost(): Boolean {return (bd.lost >= TRUE)}
+    private fun IsWin(): Boolean {return (bd.win >= TRUE)}
 
 //    fun IsWin(): Boolean {return (win > -1)}
 //    fun NoEnd(): Boolean {return !(IsWin() || IsLost())}
-    private fun NotFinished(): Boolean {return (win.isUnknown() && lost.isUnknown())}
+    private fun NotFinished(): Boolean {return (bd.win.isUnknown() && bd.lost.isUnknown())}
 
     private enum class InstructionType {
         MOVE, ROTATE, CHANGE_FUNCTION, COLOR_MAP, UNKNOWN
@@ -317,6 +327,4 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 
     private fun settingVariables(level: Level, instructionRows: List<FunctionInstructions>, addActions: Int) {
     }
-
-
 }

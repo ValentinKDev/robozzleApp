@@ -20,7 +20,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun PlayingScreenPopupWin(vm: GameDataViewModel) {
-    val win: Int by vm.animationLogicVM.win.collectAsState(UNKNOWN)
+    val win: Boolean by vm.animData.winPop.collectAsState(false)
 //    vm.SetWinTo(
 //        value = result,
 //        winDetails = WinDetails(
@@ -30,7 +30,7 @@ fun PlayingScreenPopupWin(vm: GameDataViewModel) {
 //        ),
 //        context = LocalContext.current
 //    )
-    if (win == TRUE) {
+    if (win) {
         vm.animationLogicVM.AddWin( LocalContext.current )
         Column(
             modifier = Modifier

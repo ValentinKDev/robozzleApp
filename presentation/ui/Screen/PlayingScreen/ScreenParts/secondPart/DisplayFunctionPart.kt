@@ -24,6 +24,7 @@ import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptySquare
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
+import com.mobilegame.robozzle.utils.Extensions.getSafe
 
 @Composable
 fun DisplayFunctionsPart(vm: GameDataViewModel) {
@@ -127,7 +128,8 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                             ) {
                                 FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm)
                                 if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
-                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, _index) ) )
+//                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, _index) ) )
+                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
                                     && playerAnimationState.runningInBackground()
                                 ) {
                                     EmptySquare(

@@ -51,6 +51,8 @@ fun MutableList<String>.switchInMatrice(position1: Position, c1: Char, position2
     }
 }
 
+fun List<Position>.getSafe(index: Int): Position = this[getSmallerInt(this.lastIndex, index)]
+
 fun <U> List<U>.subListIfPossible(fromIndex: Int, toIndex: Int? = null): List<U> {
     return if (this.isNotEmpty()) {
         this.subList(

@@ -18,16 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
+import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.firstPart.MapViewInGame
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
 
 @Composable
 fun MapLayout(vm: GameDataViewModel) {
+    val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
+    val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
 //    val map: MutableList<String> by vm.animationLogicVM.data.map.collectAsState()
 //    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.data.playerAnimationState.collectAsState()
 //    val mapVM: MutableList<String> by vm.map.collectAsState()
@@ -54,29 +55,14 @@ fun MapLayout(vm: GameDataViewModel) {
             true -> vm.mapLayoutPressedToTrue()
             false -> vm.mapLayoutPressedToFalse()
         }
-//        MapView(widthInt = (200).toInt(), mapParam = map)
         CenterComposable {
-
             MapViewInGame(
                 vm = vm,
-                widthInt = (0.8F * vm.data.layout.firstPart.size.mapWidth).toInt()
+                widthInt = (0.8F * vm.data.layout.firstPart.size.mapWidth).toInt() ,
+                playerInGame,
+                stars
             )
         }
-//        Column(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//            ,
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//        ) {
-//            mapVM.forEachIndexed { rowIndex, rowString ->
-//                Row(
-//                ) {
-//                    rowString.forEachIndexed { columnIndex, char ->
-//                        MapBox(rowIndex, columnIndex, lvl, vm, screenConfig)
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
