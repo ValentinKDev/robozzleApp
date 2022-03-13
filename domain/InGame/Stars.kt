@@ -42,7 +42,7 @@ open class MapElementTracker <T>(
         }
     }
 
-    open fun Expand(newToRemoveMap: MutableMap<Int, T>) {
+    open fun expand(newToRemoveMap: MutableMap<Int, T>) {
         verbalLog("Expand start", "${toRemove}")
         toRemove = newToRemoveMap.copy()
         verbalLog("Expand copy", "${toRemove}")

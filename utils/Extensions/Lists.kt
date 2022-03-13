@@ -52,10 +52,12 @@ fun MutableList<String>.switchInMatrice(position1: Position, c1: Char, position2
 }
 
 fun <U> List<U>.subListIfPossible(fromIndex: Int, toIndex: Int? = null): List<U> {
-    return this.subList(
-        fromIndex = getSmallerInt(fromIndex, this.lastIndex),
-        toIndex = toIndex?.let { getSmallerInt(toIndex, this.lastIndex ) } ?: this.lastIndex
-    )
+    return if (this.isNotEmpty()) {
+        this.subList(
+            fromIndex = getSmallerInt(fromIndex, this.lastIndex),
+            toIndex = toIndex?.let { getSmallerInt(toIndex, this.lastIndex) } ?: this.lastIndex
+        )
+    } else emptyList()
 }
 
 fun getSmallerInt(int1: Int, int2: Int): Int {

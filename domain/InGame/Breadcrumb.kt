@@ -12,7 +12,7 @@ import com.mobilegame.robozzle.utils.Extensions.toPlayerInGame
 object Breadcrumb {
     var map: List<String> = emptyList()
     var win: Boolean = false
-    var actionsCount: Int = 0
+    var lastActionNumber: Int = 0
     var actionsTriggerStarRemoveList: MutableList<Int> = mutableListOf()
     var starsNumberLeft: Int = UNKNOWN
     var funInstructionsList: List<FunctionInstructions> = emptyList()

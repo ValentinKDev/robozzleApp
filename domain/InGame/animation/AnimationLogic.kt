@@ -10,9 +10,9 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
+import com.mobilegame.robozzle.domain.InGame.animation.AnimationLogicData
 import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
-import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
@@ -27,10 +27,18 @@ import kotlinx.coroutines.flow.asStateFlow
 
 //class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
 //class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
-class AnimationLogicViewModel(private val level: Level, private val data: AnimationData): ViewModel() {
-    private var actionAdded = 5
+class AnimationLogicViewModel(
+    private val level: Level,
+    private var data: AnimationData,
+    private val VM: GameDataViewModel,
+//    private val bdVM: BreadcrumbViewModel
+): ViewModel() {
+    private var actionAdded = 0
 
     lateinit var breadcrumb: Breadcrumb
+//    lateinit var animLogicData : AnimationLogicData
+
+//    var actionIndexEnd = 0
     lateinit var stars: Stars
     lateinit var colorSwitches: ColorsMaps
     var actionIndexEnd: Int = UNKNOWN
@@ -43,21 +51,22 @@ class AnimationLogicViewModel(private val level: Level, private val data: Animat
         infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
         infoLog("action to read", "${data.getActionToRead()}")
     }
+
     fun initialize(bd: Breadcrumb) {
         breadcrumb = bd
-        actionAdded = 5
+//        animLogicData = AnimationLogicData(bd)
+        actionIndexEnd = breadcrumb.lastActionNumber
         stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
         colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
-        actionIndexEnd = breadcrumb.actionsCount
     }
 
-    fun start(bd: Breadcrumb): Job = runBlocking(Dispatchers.IO) {
+    fun start(bd: Breadcrumb, actionStart: Int = 0): Job = runBlocking(Dispatchers.IO) {
         viewModelScope.launch(Dispatchers.IO) {
             initialize(bd)
             infoLog("stars at", "${breadcrumb.actionsTriggerStarRemoveList}")
             infoLog("stars Map", "${breadcrumb.starsRemovalMap}")
             infoLog("win", "${breadcrumb.win}")
-            Log.v(Thread.currentThread().name,"Start - actionIndexEnd $actionIndexEnd")
+            Log.v(Thread.currentThread().name,"Start - actionIndexEnd ${breadcrumb.lastActionNumber}")
 
             while (data.actionInBounds() == true) {
                 infoLog("action to read ${data.getActionToRead()}" , "->")
@@ -66,13 +75,14 @@ class AnimationLogicViewModel(private val level: Level, private val data: Animat
                     HandleAnimationOnPauseLogic()
 
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
-                    if (data.triggerExpandBreadcrumb()) {RecalculateBreadCrumb()}
+                    if (data.triggerExpandBreadcrumb()) {expandBreadcrumb()}
                     AnimationDelay()
 
                     data.incrementActionToRead()
                 }
             }
-            Log.v(Thread.currentThread().name,"Loop actions END at actionIndexEnd $actionIndexEnd")
+            Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
+            Log.v(Thread.currentThread().name,"Loop actions END at actionIndexEnd ${breadcrumb.lastActionNumber}")
             EndGame()
         }
     }
@@ -81,7 +91,7 @@ class AnimationLogicViewModel(private val level: Level, private val data: Animat
     private suspend fun HandleAnimationOnPauseLogic() {
         while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
             infoLog("Step ${data.getActionToRead()}", " ->")
-            if ( data.triggerExpandBreadcrumb() ) { RecalculateBreadCrumb() }
+            if ( data.triggerExpandBreadcrumb() ) { expandBreadcrumb() }
             delay(50)
             when {
                 data.isGoingForward() -> StepByStep(FORWARD)
@@ -91,31 +101,32 @@ class AnimationLogicViewModel(private val level: Level, private val data: Animat
         }
     }
 
-    private suspend fun RecalculateBreadCrumb() {
+    private fun expandBreadcrumb() = runBlocking(Dispatchers.IO) {
         Log.e("breadcrumb", "Recalculate here")
+        actionAdded += 5
 
-        viewModelScope.launch(Dispatchers.IO) {
-            actionAdded += 5
-            /** update here the action row ????
-             *
-             *
-             *
-             * */
+        val instructionRows = breadcrumb.funInstructionsList
+        val bd = BreadcrumbViewModel(level, instructionRows, addAction + actionAdded).getBreadCrumb()
+        val newData = AnimationData(level, bd, data.getActionToRead())
+        viewModelScope.launch(Dispatchers.Main) {
+            VM.updateBreadcrumb(bd)
+            VM.updateData(newData)
         }
+        breadcrumb = bd
+        data = newData
+
         actionIndexEnd = breadcrumb.playerStateList.size
-
-        //todo : use the same Expand() logic to handle colorSwitch after recalculation ?
-
         stars.toRemove = breadcrumb.starsRemovalMap.copy()
-        colorSwitches.Expand(breadcrumb.colorChangeMap)
-        stars.Expand(breadcrumb.starsRemovalMap)
+        stars.expand(breadcrumb.starsRemovalMap)
+        colorSwitches.expand(breadcrumb.colorChangeMap)
 
-        verbalLog("after ", "recalculation")
-        infoLog("star.toRemove", "${stars.toRemove}")
-        infoLog("star.removed", "${stars.removed}")
-        stars.toRemove.forEach { infoLog("", "${it.key}") }
-        infoLog("star", "removed")
-        stars.removed.forEach { infoLog("", "${it.key}") }
+//        logAnimData.let {
+//            verbalLog("after ", "recalculation")
+//            infoLog("star.toRemove", "${stars.toRemove}")
+//            infoLog("star.removed", "${stars.removed}")
+//            stars.toRemove.forEach { infoLog("", "${it.key}") }
+//            stars.removed.forEach { infoLog("", "${it.key}") }
+//        }
     }
 
     private suspend fun StepByStep(direction: Int) {
@@ -222,7 +233,7 @@ class AnimationLogicViewModel(private val level: Level, private val data: Animat
         val rankVM = RankVM(context)
         val winDetails = WinDetails(
             instructionsNumber = breadcrumb.funInstructionsList.countInstructions(),
-            actionsNumber = breadcrumb.actionsCount,
+            actionsNumber = breadcrumb.lastActionNumber,
             solutionFound = breadcrumb.funInstructionsList.toList()
         )
         rankVM.registerANewWin(

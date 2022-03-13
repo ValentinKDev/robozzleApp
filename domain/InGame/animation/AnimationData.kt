@@ -1,7 +1,6 @@
 package com.mobilegame.robozzle.domain.InGame.animation
 
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logInit
 import com.mobilegame.robozzle.domain.InGame.Breadcrumb
 import com.mobilegame.robozzle.domain.InGame.ColorSwitch
@@ -18,7 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb) {
+class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb, actionToRead: Int = 0) {
     init {
         logInit?.let { errorLog("Animation Data", "init") }
     }
@@ -32,15 +31,17 @@ class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb) {
     fun isOnPause(): Boolean = playerAnimationState.value == PlayerAnimationState.OnPause
     suspend fun setPlayerAnimationState(newState: PlayerAnimationState) {_playerAnimationState.emit(newState)}
 
-    val maxAction = bd.actionsCount
-    val maxIndex = bd.actionsCount - 1
-    private val _actionToRead = MutableStateFlow(0)
+    val maxAction = bd.lastActionNumber
+    val maxIndex = bd.lastActionNumber - 1
+    private val _actionToRead = MutableStateFlow(actionToRead)
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
     fun actionInBounds(): Boolean? = if (actionToRead.value < maxAction) true else null
     fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
-    fun triggerExpandBreadcrumb() = getActionToRead() == maxAction && bd.win not true
+//    fun triggerExpandBreadcrumb() = getActionToRead() == maxAction && bd.win not true
+//    fun triggerExpandBreadcrumb() = getActionToRead() == maxAction - 1 && (bd.win not true)
+    fun triggerExpandBreadcrumb() = getActionToRead() == maxAction - 2 && (bd.win not true)
     suspend fun incrementActionToRead() {
         _actionToRead.emit(getActionToRead() + 1)
         updateActionList()
@@ -49,22 +50,15 @@ class AnimationData(level: Level, private val bd: Breadcrumb = Breadcrumb) {
         _actionToRead.emit(getActionToRead() - 1)
         updateActionList()
     }
-    val maxNumberActionToDisplay = 9
-//    private val _actionRowList = MutableStateFlow(bd.actionsList.subList(0, if (bd.actionsList.lastIndex < maxIndex) bd.))
+    private val maxNumberActionToDisplay = 9
     private val _actionRowList = MutableStateFlow(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
     val actionRowList: StateFlow<List<FunctionInstruction>> = _actionRowList.asStateFlow()
     private suspend fun updateActionList() {
         val actionToRead = getActionToRead()
         _actionRowList.emit(
             bd.actionsList.subListIfPossible(actionToRead, actionToRead + maxNumberActionToDisplay)
-//            bd.actionsList.subList(
-//                fromIndex = actionToRead,
-//                toIndex = if (actionToRead + maxNumberActionToDisplay < maxIndex) actionToRead + maxNumberActionToDisplay else maxIndex
-//            )
         )
     }
-
-//    var actionsList: List<FunctionInstruction> = emptyList()
 
     private val _playerAnimated = MutableStateFlow<PlayerInGame>(level.playerInitial.clone().toPlayerInGame())
     val playerAnimated: StateFlow<PlayerInGame> = _playerAnimated.asStateFlow()

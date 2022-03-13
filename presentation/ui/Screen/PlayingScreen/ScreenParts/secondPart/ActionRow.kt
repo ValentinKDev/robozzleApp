@@ -53,17 +53,18 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
             .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
             ,
         ) {
-            ActionRowCase(vm = vm, case = actionsList.first())
+            if (actionsList.isNotEmpty())
+                ActionRowCase(vm = vm, case = actionsList.first())
         }
         Box( Modifier
             .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
         ) {
             Row {
-                    actionsList.subListIfPossible(fromIndex = 1)
-                        .forEachIndexed {index, functionInstruction ->
-                            logAnimLayoutSecondPart?.let { verbalLog("Display Action", "index $index : $functionInstruction") }
-                            ActionRowCase(vm = vm, case = functionInstruction)
-                        }
+                actionsList.subListIfPossible(fromIndex = 1)
+                    .forEachIndexed {index, functionInstruction ->
+                        logAnimLayoutSecondPart?.let { verbalLog("Display Action", "index $index : $functionInstruction") }
+                        ActionRowCase(vm = vm, case = functionInstruction)
+                    }
             }
         }
     }

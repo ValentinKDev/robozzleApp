@@ -35,9 +35,10 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 //    var level: Level = myleveltest
 
     val data = InGameData(level, getApplication() )
-    var breadcrumb = BreadcrumbViewModel(level, level.funInstructionsList).getBreadCrumb()
+    private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
+    var breadcrumb = bdVM.getBreadCrumb()
     var animData = AnimationData(level, breadcrumb)
-    var animationLogicVM = AnimationLogicViewModel(level, animData)
+    var animationLogicVM = AnimationLogicViewModel(level, animData, this)
 
     val popup = PopupViewModel()
     val dragAndDrop = DragAndDropState()
@@ -64,11 +65,16 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
     fun updateAnimationLogic() {
 //        animationLogicVM = AnimationLogicViewModel(this)
-        animationLogicVM = AnimationLogicViewModel(level, animData)
+        animationLogicVM = AnimationLogicViewModel(level, animData, this)
     }
-    fun updateBreadcrumb() {
+//    fun updateBreadcrumb(addAction: Int = 0) {
+    fun updateData(data: AnimationData) {
+        animData = data
+    }
+    fun updateBreadcrumb(bd: Breadcrumb) {
         verbalLog("GameDataViewModel", ":updateBreadcrumb")
-        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value).getBreadCrumb()
+//        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value, addAction).getBreadCrumb()
+        breadcrumb = bd
     }
 
     fun startPlayerAnimation() {
@@ -112,12 +118,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     fun ChangeInstructionMenuState() {
         Log.v("DisplayMenu", "ChangeState ${_displayInstructionsMenu.value} to ${!_displayInstructionsMenu.value!!}")
         _displayInstructionsMenu.value =! _displayInstructionsMenu.value!!
-    }
-
-    fun ResetAnimation() {
-        Log.v("Reset", "animation")
-        updateBreadcrumb()
-        updateAnimationLogic()
     }
 
     fun clickResetButtonHandler() = runBlocking(Dispatchers.Default) {
@@ -166,7 +166,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     init {
         logInit?.let { errorLog("init", "GameDataViewModel") }
         setInstructionsRows(level.funInstructionsList)
-        updateBreadcrumb()
+        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value).getBreadCrumb()
     }
 //    fun init(lvl: Level) {
 //        level = lvl
