@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.logClick
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -37,11 +38,19 @@ fun MapLayout(vm: GameDataViewModel) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
+    when (isPressed) {
+//            true -> vm.mapLayoutPressedToTrue()
+//            false -> vm.mapLayoutPressedToFalse()
+        true -> vm.mapLayoutIsPressed()
+        false -> vm.mapLayoutIsReleased()
+    }
+
     val clickable = Modifier.clickable (
         interactionSource = interactionSource,
         indication = rememberRipple(color = Color.Transparent)
-//        indication = LocalIndication.current
-    ) { infoLog("clickable", "map") }
+    ) {
+        logClick?.let { infoLog("click", "map") }
+    }
 
     Box(
         modifier = Modifier
@@ -51,10 +60,6 @@ fun MapLayout(vm: GameDataViewModel) {
         ,
     ) {
         //todo : resize the map to smaller and give an effect oh pushing while buttonpressed
-        when (isPressed) {
-            true -> vm.mapLayoutPressedToTrue()
-            false -> vm.mapLayoutPressedToFalse()
-        }
         CenterComposable {
             MapViewInGame(
                 vm = vm,
@@ -62,75 +67,6 @@ fun MapLayout(vm: GameDataViewModel) {
                 playerInGame,
                 stars
             )
-        }
-    }
-}
-
-@Composable
-fun MapBox(rowIndex: Int, columnIndex: Int, vm: GameDataViewModel) {
-    //todo adjust variable on map below to display any kind of maps
-//    val charColor = lvl.map[rowIndex].get(columnIndex)
-
-
-//    val mapVM: MutableList<String> by vm.map.observeAsState(mutableListOf())
-
-
-//    val animatedStarsList: MutableList<Position> by vm.animatedStarsList.observeAsState(lvl.starsList)
-
-//    val animationIsPlaying: Boolean by vm.animationIsPlaying.observeAsState(false)
-//    val animationIsOnPause: Boolean by vm.animationIsOnPause.observeAsState(false)
-//    val animationGoBack: Boolean by vm.animationGoBack.observeAsState(false)
-//    val animationRunningInBackground = animationIsPlaying || animationIsOnPause || animationGoBack
-
-//    val animatedPlayer: PlayerInGame by vm.playerAnimated.observeAsState(vm.level.playerInitial.toPlayerInGame())
-
-
-
-//    val playerDir: Char = if (animatedPlayer.pos.Match(Position(rowIndex, columnIndex))) animatedPlayer.direction.ToChar() else 'x'
-//    val animatedStarsMap: MutableList<Position> by vm.animatedStarsMaped.collectAsState()
-//    val charColor = mapVM[rowIndex][columnIndex]
-//    Box(modifier = Modifier
-//        .background(Color.Transparent)
-//        .size((screenConfig.mapBoxSize - screenConfig.mapBoxPadding / screenConfig.numberRows).dp)
-//        .padding(screenConfig.mapBoxPadding.dp)
-//    )
-//    {
-//        MapCase(charColor , vm)
-//        Star(rowIndex, columnIndex, if (animationRunningInBackground) {animatedStarsMap} else {lvl.starsList})
-//        if (playerDir.isDirection()) {
-//            PlayerDirectionIcon(playerDir, screenConfig.directionIconSize)
-//        }
-//    }
-}
-
-@Composable
-fun MapCase(color: Char, vm: GameDataViewModel){
-    Box(
-        Modifier
-            .gradientBackground(
-                ColorsList(
-                    color,
-                    vm.displayInstructionsMenu.value == true
-                ), 135f
-            )
-            .fillMaxSize()
-    ) { }
-}
-
-
-@Composable
-fun Star(rowIndex: Int, columnIndex: Int, stars: MutableList<Position>) {
-
-    stars.forEachIndexed { index, position ->
-        if (position.Match(Position(rowIndex, columnIndex))) {
-            Box(modifier = Modifier.fillMaxSize() ) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    tint = Color.Yellow,
-                    contentDescription = "star",
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
         }
     }
 }

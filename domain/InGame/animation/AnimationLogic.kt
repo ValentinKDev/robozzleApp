@@ -44,6 +44,7 @@ class AnimationLogicViewModel(
     private var starsRemovedMap = mutableMapOf<Int, Point>()
     private var addAction = initialPreloadActionsNumber
 
+
     init {
         errorLog("init", "animation logic")
         infoLog("playerInGame position lvl", "${level.playerInitial}")
@@ -76,7 +77,7 @@ class AnimationLogicViewModel(
                     checkBreadcrumbRecalculation()
 //                    if (triggerExpandBreadcrumb()) {expandBreadcrumb()}
                     data.incrementActionToRead()
-                    AnimationDelay()
+                    delay(data.getAnimationDelay())
                 }
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
@@ -235,15 +236,11 @@ class AnimationLogicViewModel(
         )
     }
 
-    private val _animationDelay = MutableStateFlow<Long>(200)
-    val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
 
-
-    private suspend fun AnimationDelay() {
-//        if (mainVM.mapLayoutPressed.value) delay(50)
-//        else
-            delay(animationDelay.value)
-    }
+//    private suspend fun AnimationDelay() {
+//        if (data.mapLayoutIsPresed()) delay(50)
+//        else delay(animationDelay.value)
+//    }
 
     private fun Int.trigerColorChange(direction: Int): Boolean {
         return when (direction) {

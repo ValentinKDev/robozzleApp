@@ -83,18 +83,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         animationJob = animationLogicVM.start(breadcrumb)
     }
 
-    /*
-    Faire un objet qui regroupe toute les infos sur l animation en cours ?
-     */
-
-    private var playerInitial: PlayerInGame = level.playerInitial.toPlayerInGame()
-//    private var playerInitial: PlayerInGame = PlayerInGame.Unknown
-
-    private val _mapLayoutPressed = MutableStateFlow<Boolean>(false)
-    val mapLayoutPressed: StateFlow<Boolean> = _mapLayoutPressed
-
-    fun mapLayoutPressedToTrue() {_mapLayoutPressed.value = true}
-    fun mapLayoutPressedToFalse() {_mapLayoutPressed.value = false}
 
     var emptyLevel = RobuzzleLevel(
         name = "",
@@ -113,6 +101,12 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     fun triggerRecompostionToFalse() {_triggerRecompostion.value = false}
     fun triggerRecompostionToTrue() {_triggerRecompostion.value = true}
 
+    fun mapLayoutIsPressed() = runBlocking(Dispatchers.Default) {
+        animData.setAnimationDelayShort()
+    }
+    fun mapLayoutIsReleased() = runBlocking(Dispatchers.Default) {
+        animData.setAnimationDelayLong()
+    }
 
     //todo : try to use State instead of LiveData, it might ensure this display is triggered when you click
     private val _displayInstructionsMenu = MutableLiveData(false)

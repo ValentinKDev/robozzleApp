@@ -92,6 +92,18 @@ class AnimationData(
         }
     }
 
+    private val _mapLayoutPressed = MutableStateFlow<Boolean>(false)
+    val mapLayoutPressed: StateFlow<Boolean> = _mapLayoutPressed
+    fun mapLayoutPressedToTrue() {_mapLayoutPressed.value = true}
+    fun mapLayoutPressedToFalse() {_mapLayoutPressed.value = false}
+    fun mapLayoutIsPresed(): Boolean = mapLayoutPressed.value
+
+    private val _animationDelay = MutableStateFlow<Long>(200)
+    val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
+    suspend fun setAnimationDelayShort() { _animationDelay.emit(50) }
+    suspend fun setAnimationDelayLong() { _animationDelay.emit(200) }
+    fun getAnimationDelay(): Long = animationDelay.value
+
 //    private val _animatedStarsMaped = MutableStateFlow<MutableList<Position>>(savedData?.getStarsToDisplay() ?: level.starsList.toMutableList())
     private val _animatedStarsMaped = MutableStateFlow<MutableList<Position>>(level.starsList.toMutableList())
     val animatedStarsMaped: StateFlow<MutableList<Position>> = _animatedStarsMaped
