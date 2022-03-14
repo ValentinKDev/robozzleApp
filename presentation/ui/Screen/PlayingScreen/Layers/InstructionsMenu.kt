@@ -14,8 +14,8 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsMenu
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
+import gradientBackground
 
 //todo : highlight in background only the instruction you selected ?
 //todo : il manque la touche supprimer l'instruction selectionnée

@@ -6,8 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewModel
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.noRippleClickable
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
+import noRippleClickable
 
 @Composable
 fun DonationScreen(vm: DonationScreenViewModel = viewModel()) {

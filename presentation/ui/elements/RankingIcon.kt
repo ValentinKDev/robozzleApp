@@ -9,9 +9,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.presentation.res.*
+import gradientBackground
 
 @Composable
 fun RankingIconBouncing(sizeAtt: Int, rankingIconVM: RankingIconViewModel, isPressed: Boolean, enableShadow: Boolean) {

@@ -5,6 +5,8 @@ import androidx.compose.ui.geometry.Rect
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.Level
 
+const val maxNumberActionToDisplay = 9
+
 object InGameSecondPart {
     var size = Sizes
     var ratios = Ratios

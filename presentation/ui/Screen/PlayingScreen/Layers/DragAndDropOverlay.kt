@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import backColor
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
@@ -30,8 +31,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonSt
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 

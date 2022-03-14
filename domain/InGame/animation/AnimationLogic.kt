@@ -9,6 +9,7 @@ import com.mobilegame.robozzle.utils.Extensions.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.data.configuration.inGame.layouts.maxNumberActionToDisplay
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationLogicData
 import com.mobilegame.robozzle.domain.InGame.res.*
@@ -36,9 +37,7 @@ class AnimationLogicViewModel(
     private var actionAdded = 0
 
     lateinit var breadcrumb: Breadcrumb
-//    lateinit var animLogicData : AnimationLogicData
 
-//    var actionIndexEnd = 0
     lateinit var stars: Stars
     lateinit var colorSwitches: ColorsMaps
     var actionIndexEnd: Int = UNKNOWN
@@ -51,6 +50,7 @@ class AnimationLogicViewModel(
         infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
         infoLog("action to read", "${data.getActionToRead()}")
     }
+
     fun initialize(bd: Breadcrumb) {
         breadcrumb = bd
 //        animLogicData = AnimationLogicData(bd)
@@ -73,10 +73,10 @@ class AnimationLogicViewModel(
                     HandleAnimationOnPauseLogic()
 
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
-                    if (triggerExpandBreadcrumb()) {expandBreadcrumb()}
-                    AnimationDelay()
-
+                    checkBreadcrumbRecalculation()
+//                    if (triggerExpandBreadcrumb()) {expandBreadcrumb()}
                     data.incrementActionToRead()
+                    AnimationDelay()
                 }
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
@@ -88,7 +88,8 @@ class AnimationLogicViewModel(
 
     private suspend fun HandleAnimationOnPauseLogic() { while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
             infoLog("Step ${data.getActionToRead()}", " ->")
-            if ( triggerExpandBreadcrumb() ) { expandBreadcrumb() }
+//            if ( triggerExpandBreadcrumb() ) { expandBreadcrumb() }
+        checkBreadcrumbRecalculation()
             delay(50)
             when {
                 data.isGoingForward() -> StepByStep(FORWARD)
@@ -98,12 +99,18 @@ class AnimationLogicViewModel(
         }
     }
 
+    private fun checkBreadcrumbRecalculation() {
+        if (data.getActionToRead() >= data.maxAction - maxNumberActionToDisplay) {
+            expandBreadcrumb()
+        }
+    }
+
     private fun expandBreadcrumb() = runBlocking(Dispatchers.IO) {
         Log.e("breadcrumb", "Recalculate here")
         actionAdded += 5
 
         val instructionRows = breadcrumb.funInstructionsList
-        val newBd = BreadcrumbViewModel(level, instructionRows, addAction + actionAdded).getBreadCrumb()
+        val newBd = BreadcrumbViewModel(level, instructionRows, actionAdded).getBreadCrumb()
 
         data.updateBreadCrumb(newBd)
         breadcrumb = newBd.copy()
@@ -117,15 +124,6 @@ class AnimationLogicViewModel(
         errorLog("action list size", "${breadcrumb.actionsList.size}")
         errorLog("action lenght ", "${breadcrumb.actions.instructions.length}")
         errorLog("action list size", "${breadcrumb.lastActionNumber}")
-
-
-//        logAnimData.let {
-//            verbalLog("after ", "recalculation")
-//            infoLog("star.toRemove", "${stars.toRemove}")
-//            infoLog("star.removed", "${stars.removed}")
-//            stars.toRemove.forEach { infoLog("", "${it.key}") }
-//            stars.removed.forEach { infoLog("", "${it.key}") }
-//        }
     }
 
     private suspend fun StepByStep(direction: Int) {
@@ -133,7 +131,6 @@ class AnimationLogicViewModel(
         if (direction == BACKWARD) data.decrementActionToRead()
         if (direction == FORWARD) data.incrementActionToRead()
 
-//        DeleteThis(Dispatchers.Main) {
         when (direction) {
             FORWARD -> { data.setPlayerAnimationState(PlayerAnimationState.GoNext) }
             BACKWARD -> { data.setPlayerAnimationState(PlayerAnimationState.GoBack) }
@@ -211,22 +208,8 @@ class AnimationLogicViewModel(
     }
 
     private suspend fun UpdatePlayerUI() {
-//        infoLog("plr pos", "${data.getPlayer().pos}")
-//        infoLog("bd", "${breadcrumb.lastActionNumber}")
-//        infoLog("data action to read", "${data.getActionToRead()}")
-        breadcrumb.playerStateList.forEach {
-//            infoLog("plr state list", "${it.pos}")
-        }
-//        data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead()])
         data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead() + 1])
-//        infoLog("plr pos", "${data.getPlayer().pos}")
     }
-
-//    private suspend fun EndGame() {
-//        erro
-//        setWinTo(if (breadcrumb.win Is TRUE) TRUE else FALSE)
-//        setWinTo(if (breadcrumb.win) TRUE else FALSE)
-//    }
 
     private suspend fun ProcessResult() {
         if (breadcrumb.win Is TRUE) {
@@ -236,10 +219,6 @@ class AnimationLogicViewModel(
         Log.e("END animation win", "--${breadcrumb.win}--")
         Log.e("END animation lost", "--${breadcrumb.lost}--")
     }
-
-//    private val _win = MutableStateFlow<Int>(UNKNOWN)
-//    val win: StateFlow<Int> = _win
-//    fun setWinTo(value: Int) {_win.value = value}
 
     fun AddWin( context: Context ) {
         val rankVM = RankVM(context)

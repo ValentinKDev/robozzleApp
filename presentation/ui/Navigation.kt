@@ -103,25 +103,8 @@ fun Navigation(navigator: Navigator) {
             arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _id ->
-//                val layoutCoordinates: LayoutCoordinates? = getWindowCoordinates()
-//                val windowCoordinates: Rect? = ScreenDataStoreViewModel(context).getWindowCoordinates()
-//                windowCoordinates?.let {
-//                layoutCoordinates?.let { _layoutCoordinates ->
-//                LevelVM(context).getLevel(id)?.let {
                 ArgumentsDataStoreViewModel(context).storeLevelNumberArg(_id)
-                    PlayingScreen(
-//                        it
-                    )
-//                }
-//                    val level = LevelVM(context).getLevel(_id)
-//                    PlayingScreen(
-//                        vm = GameDataViewModel(
-//                            level = level,
-//                            windowCoordinates = it,
-//                            dens = dens,
-//                        )
-//                    )
-//                }
+                PlayingScreen()
             }
         }
 
@@ -130,36 +113,8 @@ fun Navigation(navigator: Navigator) {
             route = Screens.Test.route,
         ) {
             errorLog("Navigation", "Screen.Test.route")
-//            val leyou = ScreenDataStoreViewModel(context).getWindowCoordinates()
-//            val layoutCoordinates: LayoutCoordinates? = getLayoutCoordinates()
-//            val layoutCoordinates: LayoutCoordinates? = ScreenDataStoreViewModel(context).getLayoutCoordinates()
-//            layoutCoordinates?.let { _layoutCoordinates ->
-//            ScreenDataStoreViewModel(context).getWindowCoordinates()?.let {
-//                errorLog("Navigation", "layoutCoordinates = $it")
-
-//                val vm = GameDataViewModel(
-//                    level = myleveltest,
-//                        context,
-//                    windowCoordinates = it,
-//                    dens =   dens,
-//                )
-//                val vm: GameDataViewModel by viewModel { GameDataViewModel(myleveltest, context) }
-//                private val viewModel = ViewModelProvider(this, viewModelFactory).get(SheduleViewModel::class.java)
-//                PlayingScreen(
-//                    GameDataViewModel( myleveltest, context )
-//                    GameDataViewModel(context as Application, myleveltest)
-//                    vm = vm
-//                )
-//            val lvl = LevelRoomViewModel(context).getLevel(10)?.let {
-//            LevelRoomViewModel(context).getLevel(10)?.let {
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(3)
-            PlayingScreen(
-//            lvl
-//            it
-            )
-//            }?: errorLog("ERROR", "Cant acces the level")
-
-//            }
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+            PlayingScreen()
         }
     }
 //}

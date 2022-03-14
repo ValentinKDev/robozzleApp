@@ -4,10 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowForward
@@ -19,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
@@ -29,15 +26,10 @@ import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
-import com.mobilegame.robozzle.presentation.res.grayDark3
 import com.mobilegame.robozzle.presentation.res.yellowDark2
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayerDirectionIcon
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Star
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.utils.infixStyle.contain
-import com.mobilegame.robozzle.utils.infixStyle.match
+import gradientBackground
 
 @Composable
 fun MapViewInGame(
@@ -47,18 +39,13 @@ fun MapViewInGame(
     stars: List<Position> = emptyList()
 ) {
     //todo : put those calculs in a VM ?
-//    val map = MapCleaner() clean mapParam
     val map: List<String> by vm.animData.map.collectAsState()
-    infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
-    infoLog("action", "${vm.animData.getActionToRead()}")
     logAnimMap?.let {
         infoLog("stars", "$stars")
-//        infoLog("player", "${playerInGame.pos}")
+        infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
+        infoLog("action", "${vm.animData.getActionToRead()}")
     }
-//    val map = mapParam
 
-//    val cleaner = MapCleaner()
-//    val map = cleaner.clean(map1)
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size
 
@@ -122,11 +109,13 @@ fun MapViewInGame(
                                     }
                                 }
                             }
+                            playerInGame?.let {
+                                if (it.pos == casePosition) {
+                                    errorLog("postion", "$casePosition")
+                                    PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                }
+                            }
                         }
-//                        if (playerInGame.pos match casePosition) {
-//                            errorLog("postion", "$casePosition")
-//                            PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
-//                        }
                     }
                 }
             }

@@ -31,9 +31,8 @@ import com.mobilegame.robozzle.presentation.res.greendark2
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.ButtonRegister
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.backColor
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.noRippleClickable
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
+import noRippleClickable
 
 @ExperimentalComposeUiApi
 @Composable

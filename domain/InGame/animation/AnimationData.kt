@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.InGame.animation
 
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.logInit
+import com.mobilegame.robozzle.data.configuration.inGame.layouts.maxNumberActionToDisplay
 import com.mobilegame.robozzle.domain.InGame.Breadcrumb
 import com.mobilegame.robozzle.domain.InGame.ColorSwitch
 import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
@@ -51,7 +52,6 @@ class AnimationData(
         _actionToRead.emit(getActionToRead() - 1)
         updateActionList()
     }
-    private val maxNumberActionToDisplay = 9
     private val _actionRowList = MutableStateFlow(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
     val actionRowList: StateFlow<List<FunctionInstruction>> = _actionRowList.asStateFlow()
     private suspend fun updateActionList() {

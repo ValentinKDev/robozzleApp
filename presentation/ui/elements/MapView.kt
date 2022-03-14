@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.presentation.ui.utils.extensions.gradientBackground
 import com.mobilegame.robozzle.presentation.res.*
+import gradientBackground
 
 @Composable
 fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier) {
