@@ -11,7 +11,6 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.maxNumberActionToDisplay
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
-import com.mobilegame.robozzle.domain.InGame.animation.AnimationLogicData
 import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -19,12 +18,8 @@ import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.domain.res.FALSE
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 //class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
 //class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
@@ -92,14 +87,13 @@ class AnimationLogicViewModel(
     }
 
 
-    private suspend fun HandleAnimationOnPauseLogic() { while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
+    private suspend fun HandleAnimationOnPauseLogic() {
+        while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
             infoLog("Step ${data.getActionToRead()}", " ->")
-//            if ( triggerExpandBreadcrumb() ) { expandBreadcrumb() }
-        checkBreadcrumbRecalculation()
             delay(50)
             when {
-                data.isGoingForward() -> StepByStep(FORWARD)
-                data.isGoingBackward() -> StepByStep(BACKWARD)
+                data.isGoingForward() -> stepByStep(FORWARD)
+                data.isGoingBackward() -> stepByStep(BACKWARD)
             }
             if (data.actionOutOfBounds()) break
         }
@@ -132,24 +126,24 @@ class AnimationLogicViewModel(
         errorLog("action list size", "${breadcrumb.lastActionNumber}")
     }
 
-    private suspend fun StepByStep(direction: Int) {
-        UpdateMoveLogic(direction)
-        if (direction == BACKWARD) data.decrementActionToRead()
-        if (direction == FORWARD) data.incrementActionToRead()
+    suspend fun stepByStep(direction: Int) {
+        infoLog("step by step", "start ${data.getActionToRead()}")
 
-        when (direction) {
-            FORWARD -> { data.setPlayerAnimationState(PlayerAnimationState.GoNext) }
-            BACKWARD -> { data.setPlayerAnimationState(PlayerAnimationState.GoBack) }
-            else -> { errorLog("ERROR", "AnimationLogic::StepbyStep [Wrong direction]") }
-        }
+        checkBreadcrumbRecalculation()
+        UpdateMoveLogic(direction)
+        if (direction == FORWARD) data.incrementActionToRead()
+        else if (direction == BACKWARD ) data.decrementActionToRead()
     }
 
     private suspend fun UpdateMoveLogic(direction: Int) {
+        infoLog("upstae move logic", "start")
         when {
             //todo lambda for this when expression
             data.getActionToRead().trigerStar(direction) -> {
                 when (direction) {
-                    FORWARD -> { stars.FromToRemoveMapToRemovedMap(data.getActionToRead()) }
+                    FORWARD -> {
+                        stars.FromToRemoveMapToRemovedMap(data.getActionToRead())
+                    }
                     BACKWARD -> {
                         verbalLog("triger", "star")
                         stars.FromRemovedMapToToRemoveMap(data.getActionToRead())

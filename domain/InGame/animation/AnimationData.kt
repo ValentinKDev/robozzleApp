@@ -49,8 +49,10 @@ class AnimationData(
         updateActionList()
     }
     suspend fun decrementActionToRead() {
-        _actionToRead.emit(getActionToRead() - 1)
-        updateActionList()
+        if (getActionToRead() >= 1) {
+            _actionToRead.emit(getActionToRead() - 1)
+            updateActionList()
+        }
     }
     private val _actionRowList = MutableStateFlow(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
     val actionRowList: StateFlow<List<FunctionInstruction>> = _actionRowList.asStateFlow()

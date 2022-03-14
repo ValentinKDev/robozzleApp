@@ -18,8 +18,8 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 fun SecondScreenPart(vm: GameDataViewModel) {
     Log.i("" , "SecondScreenPart")
 
-    val recomposeSecondPart: Boolean by vm.triggerRecompostion.collectAsState(false)
-    if (recomposeSecondPart) vm.triggerRecompostionToFalse()
+//    val recomposeSecondPart: Boolean by vm.triggerRecompostion.collectAsState(false)
+//    if (recomposeSecondPart) vm.triggerRecompostionToFalse()
 
     Column(Modifier.fillMaxSize()) {
         Column(

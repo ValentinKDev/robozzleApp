@@ -12,6 +12,9 @@ import com.mobilegame.robozzle.utils.Extensions.replaceAt
 import com.mobilegame.robozzle.utils.Extensions.toPlayerInGame
 import com.mobilegame.robozzle.domain.InGame.*
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
+import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
+import com.mobilegame.robozzle.domain.InGame.res.FORWARD
+import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -70,11 +73,11 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         animationJob = animationLogicVM.start(breadcrumb, animData)
     }
 
-    private val _triggerRecompostion = MutableStateFlow<Boolean>(false)
-    val triggerRecompostion: StateFlow<Boolean> = _triggerRecompostion
-
-    fun triggerRecompostionToFalse() {_triggerRecompostion.value = false}
-    fun triggerRecompostionToTrue() {_triggerRecompostion.value = true}
+//    private val _triggerRecompostion = MutableStateFlow<Boolean>(false)
+//    val triggerRecompostion: StateFlow<Boolean> = _triggerRecompostion
+//
+//    fun triggerRecompostionToFalse() {_triggerRecompostion.value = false}
+//    fun triggerRecompostionToTrue() {_triggerRecompostion.value = true}
 
     fun mapLayoutIsPressed() = runBlocking(Dispatchers.Default) {
         animData.setAnimationDelayShort()
@@ -92,7 +95,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun clickResetButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { errorLog("click reset vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { verbalLog("click reset vm handler", "start ${animData.getPlayerAnimationState().key}") }
         animData.setPlayerAnimationState(PlayerAnimationState.NotStarted)
         animationJob?.cancel()
         animData.reset()
@@ -103,7 +106,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun clickPlayPauseButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { errorLog("click play pause vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { verbalLog("click play pause vm handler", "start ${animData.getPlayerAnimationState().key}") }
         when (animData.getPlayerAnimationState()) {
             PlayerAnimationState.IsPlaying -> {
                 animationJob?.cancel()
@@ -122,19 +125,20 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         logClick?.let { errorLog("click play pause vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
 
+    private val _tempAction = MutableStateFlow<Int>(UNKNOWN)
+    val tempAction: StateFlow<Int> = _tempAction.asStateFlow()
+    fun setTempAction(value: Int) { _tempAction.value = value }
+
     fun clickNextButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
-        if (animData.isOnPause()) {
-            animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
-        }
-        else {
-            infoLog("next", "else")
-        }
+        logClick?.let { verbalLog("click next vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        if (animData.isOnPause()) { animationLogicVM.stepByStep(FORWARD) }
+        else { infoLog("next", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
         logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun clickBackButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { errorLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
-        animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
+        logClick?.let { verbalLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        animationLogicVM.stepByStep(BACKWARD)
+//        animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
         logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
 
