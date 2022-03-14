@@ -30,17 +30,11 @@ import gradientBackground
 fun MapLayout(vm: GameDataViewModel) {
     val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
     val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
-//    val map: MutableList<String> by vm.animationLogicVM.data.map.collectAsState()
-//    val playerAnimationState: PlayerAnimationState by vm.animationLogicVM.data.playerAnimationState.collectAsState()
-//    val mapVM: MutableList<String> by vm.map.collectAsState()
 
-//    val animationIsPlaying: Boolean by vm.animationIsPlaying.observeAsState(false)
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     when (isPressed) {
-//            true -> vm.mapLayoutPressedToTrue()
-//            false -> vm.mapLayoutPressedToFalse()
         true -> vm.mapLayoutIsPressed()
         false -> vm.mapLayoutIsReleased()
     }

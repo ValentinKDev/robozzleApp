@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.asStateFlow
 //class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
 class AnimationLogicViewModel(
     private val level: Level,
-    private var data: AnimationData,
+//    private var data: AnimationData,
     private val VM: GameDataViewModel,
 //    private val bdVM: BreadcrumbViewModel
 ): ViewModel() {
@@ -44,15 +44,17 @@ class AnimationLogicViewModel(
     private var starsRemovedMap = mutableMapOf<Int, Point>()
     private var addAction = initialPreloadActionsNumber
 
+    private lateinit var data: AnimationData
 
     init {
         errorLog("init", "animation logic")
-        infoLog("playerInGame position lvl", "${level.playerInitial}")
-        infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
-        infoLog("action to read", "${data.getActionToRead()}")
+//        infoLog("playerInGame position lvl", "${level.playerInitial}")
+//        infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
+//        infoLog("action to read", "${data.getActionToRead()}")
     }
 
-    fun initialize(bd: Breadcrumb) {
+    fun initialize(bd: Breadcrumb, animData: AnimationData) {
+        data = animData
         breadcrumb = bd
 //        animLogicData = AnimationLogicData(bd)
         actionIndexEnd = breadcrumb.lastActionNumber
@@ -60,9 +62,12 @@ class AnimationLogicViewModel(
         colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
     }
 
-    fun start(bd: Breadcrumb): Job = runBlocking(Dispatchers.IO) {
-        viewModelScope.launch(Dispatchers.IO) {
-            initialize(bd)
+    fun start(bd: Breadcrumb, animData: AnimationData): Job = runBlocking(Dispatchers.IO) {
+//    fun start(bd: Breadcrumb, animData: AnimationData): CoroutineScope {
+//        viewModelScope.launch(Dispatchers.IO) {
+    viewModelScope.async(Dispatchers.IO) {
+//    return  scope. {
+            initialize(bd, animData)
             infoLog("stars at", "${breadcrumb.actionsTriggerStarRemoveList}")
             infoLog("stars Map", "${breadcrumb.starsRemovalMap}")
             infoLog("win", "${breadcrumb.win}")

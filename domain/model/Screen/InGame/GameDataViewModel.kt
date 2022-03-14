@@ -5,10 +5,8 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.Density
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.utils.Extensions.replaceAt
 import com.mobilegame.robozzle.utils.Extensions.toPlayerInGame
@@ -38,11 +36,11 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
     var breadcrumb = bdVM.getBreadCrumb()
     var animData = AnimationData(level, breadcrumb)
-    var animationLogicVM = AnimationLogicViewModel(level, animData, this)
+    var animationLogicVM = AnimationLogicViewModel(level,this)
 
     val popup = PopupViewModel()
     val dragAndDrop = DragAndDropState()
-    var animationJob: Job? = null
+    private var animationJob: Job? = null
 
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {
@@ -60,40 +58,17 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
             _instructionsRows.value[pos.line].instructions.replaceAt(pos.column, case.instruction)
     }
 
-    fun startAnimation() {
-        animationLogicVM.start(breadcrumb)
-    }
-    fun updateAnimationLogic() {
-//        animationLogicVM = AnimationLogicViewModel(this)
-        animationLogicVM = AnimationLogicViewModel(level, animData, this)
-    }
-//    fun updateBreadcrumb(addAction: Int = 0) {
-    fun updateData() {
-        animData.updateBreadCrumb(breadcrumb)
-//        animData = data
-    }
     fun updateBreadcrumbAndData(bd: Breadcrumb) {
-        verbalLog("GameDataViewModel", ":updateBreadcrumb")
-//        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value, addAction).getBreadCrumb()
+        verbalLog("GameDataViewModel", ":updateBreadcrumbAndData")
         breadcrumb = bd
         animData.updateBreadCrumb(breadcrumb)
     }
 
     fun startPlayerAnimation() {
-        animationJob = animationLogicVM.start(breadcrumb)
+        verbalLog("startPlayerAnimation", "job is active ${animationJob?.isActive}")
+        verbalLog("startPlayerAnimation", "job is canceled ${animationJob?.isCancelled}")
+        animationJob = animationLogicVM.start(breadcrumb, animData)
     }
-
-
-    var emptyLevel = RobuzzleLevel(
-        name = "",
-        id = -42,
-        difficulty = -42,
-        map = emptyList(),
-        instructionsMenu = mutableListOf(),
-        funInstructionsList = mutableListOf(),
-        playerInitial = PlayerInGame(Position(0,0), Direction(0,0)),
-        starsList = mutableListOf(),
-    )
 
     private val _triggerRecompostion = MutableStateFlow<Boolean>(false)
     val triggerRecompostion: StateFlow<Boolean> = _triggerRecompostion
@@ -118,20 +93,25 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     fun clickResetButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { errorLog("click reset vm handler", "start ${animData.getPlayerAnimationState().key}") }
-//        animData.setPlayerAnimationState(PlayerAnimationState.NotStarted)
-        animData = AnimationData(level, breadcrumb)
-        logClick?.let { errorLog("click reset vm handler", "end ${animData.getPlayerAnimationState().key}") }
+        animData.setPlayerAnimationState(PlayerAnimationState.NotStarted)
+        animationJob?.cancel()
+        animData.reset()
+        logClick?.let {
+            errorLog("click reset vm handler", "end ${animData.getPlayerAnimationState().key}")
+            infoLog("animData", "${animData.getActionToRead()}")
+        }
     }
 
     fun clickPlayPauseButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { errorLog("click play pause vm handler", "start ${animData.getPlayerAnimationState().key}") }
         when (animData.getPlayerAnimationState()) {
             PlayerAnimationState.IsPlaying -> {
+                animationJob?.cancel()
                 animData.setPlayerAnimationState(PlayerAnimationState.OnPause)
             }
             PlayerAnimationState.OnPause -> {
                 animData.setPlayerAnimationState(PlayerAnimationState.IsPlaying)
-//                startPlayerAnimation()
+                startPlayerAnimation()
             }
             PlayerAnimationState.NotStarted -> {
                 animData.setPlayerAnimationState(PlayerAnimationState.IsPlaying)
@@ -156,23 +136,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         logClick?.let { errorLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
         animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
         logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
-//    fun AnimationGoingBackChangeStatus() { _animationGoBack.value = !_animationGoBack.value!! }
     }
 
-    init {
-        logInit?.let { errorLog("init", "GameDataViewModel") }
-//        setInstructionsRows(level.funInstructionsList)
-//        breadcrumb = BreadcrumbViewModel(level, instructionsRows.value).getBreadCrumb()
-    }
-//    fun init(lvl: Level) {
-//        level = lvl
-//
-//        data = InGameData(lvl, getApplication())
-//        breadcrumb = BreadcrumbViewModel(lvl, lvl.funInstructionsList).getBreadCrumb()
-//        animationLogicVM = AnimationLogicViewModel(level)
-//        playerInitial = lvl.playerInitial.toPlayerInGame()
-//        setInstructionsRows(lvl.funInstructionsList)
-//        updateBreadcrumb()
-//
-//    }
+    init { logInit?.let { errorLog("init", "GameDataViewModel") } }
 }

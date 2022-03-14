@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class AnimationData(
-    level: Level,
+    private val level: Level,
 //    private var bd: Breadcrumb = Breadcrumb,
     private var bd: Breadcrumb = Breadcrumb(),
 //    private val savedData: AnimationData? = null
@@ -121,5 +121,19 @@ class AnimationData(
     val winPop: StateFlow<Boolean> = _winPop.asStateFlow()
     suspend fun setWinPopTo(value: Boolean) {
         _winPop.emit(value)
+    }
+
+    suspend fun reset() {
+        var maxAction = bd.lastActionNumber
+        var maxIndex = bd.lastActionNumber - 1
+        _actionToRead.emit(0)
+        _actionRowList.emit(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
+        _playerAnimationState.emit(PlayerAnimationState.NotStarted)
+        _playerAnimated.emit( level.playerInitial.clone().toPlayerInGame())
+        _map.emit(level.map.toMutableList())
+        _mapLayoutPressed.emit(false)
+        _animatedStarsMaped.emit(level.starsList.toMutableList())
+        _winPop.emit(false)
+
     }
 }
