@@ -31,6 +31,7 @@ fun MapLayout(vm: GameDataViewModel) {
     val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
     val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
 
+    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -59,7 +60,8 @@ fun MapLayout(vm: GameDataViewModel) {
                 vm = vm,
                 widthInt = (0.8F * vm.data.layout.firstPart.size.mapWidth).toInt() ,
                 playerInGame,
-                stars
+                stars,
+                filter = displayInstructionMenu
             )
         }
     }

@@ -1,5 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,73 +14,150 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import backColor
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logAnimLayoutSecondPart
 import com.mobilegame.robozzle.analyse.logLayoutSecondPart
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsActionRow
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
+import com.mobilegame.robozzle.utils.Extensions.Is
+import com.mobilegame.robozzle.utils.Extensions.Not
 import com.mobilegame.robozzle.utils.Extensions.subListIfPossible
 import gradientBackground
 
 //Todo: replace all this logic based on the breadCrumb in an viewModel or an other entity to unload the screen ??? should it be really on the main thread ?
 //Todo: replace fonction calls by little spaces
 //Todo: delay the disparition of the last action in actionList
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayActionsRow(vm: GameDataViewModel) {
 
     val actionList: List<FunctionInstruction> by vm.animData.actionRowList.collectAsState()
-//    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
-//    val list = if (recomposition < 0) emptyList() else actionList
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
+
+    val actionPair: Boolean by remember (vm) {vm.animData.pair}.collectAsState()
+    val animDelay: Long by vm.animData.animationDelay.collectAsState()
+
+    val visibleAnimDelay: Int = (animDelay / 7).toInt()
 
     logLayoutSecondPart?.let {
         infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
         infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
-    }
-    logAnimLayoutSecondPart?.let {
-//        verbalLog("action to read", currentAction.toString())
         verbalLog("action to read", vm.animData.actionToRead.value.toString())
-//        verbalLog("Actions list i", vm.breadcrumb.actions.instructions)
-//        verbalLog("Actions list c", vm.breadcrumb.actions.colors)
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
-//        verbalLog("Display ActionsList ", "$list")
-//        verbalLog("Display ActionsList size", "${list.size}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
 
     Row() {
-        Box( Modifier
+        Row( Modifier
+            .fillMaxHeight()
             .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
             ,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (actionList.isNotEmpty())
-                ActionRowCase(vm = vm, case = actionList.first(), filter = displayInstructionMenu)
+                ActionRowCase(vm = vm, case = actionList.first(), filter = displayInstructionMenu, bigger = true)
         }
-        Box( Modifier
+        Row( Modifier
+            .fillMaxHeight()
+//            .backColor(Color.Yellow)
             .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
+            ,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row {
-                actionList.subListIfPossible(fromIndex = 1)
-                    .forEachIndexed {index, functionInstruction ->
-                        logAnimLayoutSecondPart?.let { verbalLog("Display Action", "index $index : $functionInstruction") }
-                        ActionRowCase(vm = vm, case = functionInstruction, filter = displayInstructionMenu)
+            Row(Modifier
+                .wrapContentSize()
+//                        .weight(3F)
+//                        .background(Color.Magenta)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+                ,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                actionList.subListIfPossible(fromIndex = 1, toIndex = 8)
+                    .forEachIndexed { index, functionInstruction ->
+                        logAnimLayoutSecondPart?.let {
+                            verbalLog(
+                                "Display Action",
+                                "index $index : $functionInstruction"
+                            )
+                        }
+                        ActionRowCase(
+                            vm = vm,
+                            case = functionInstruction,
+                            filter = displayInstructionMenu
+                        )
+//                                HorizontalSpace(widthDp = vm.data.layout.secondPart.size.widthDp/70)
                     }
+            }
+            Row(Modifier
+//                        .weight(1F)
+//                        .background(Color.Yellow)
+            ) {
+                AnimatedVisibility(
+                    visible = actionPair Is true,
+//                    enter = slideInHorizontally(
+//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
+//                        animationSpec = tween(visibleAnimDelay)
+//                    )
+                    enter = expandHorizontally(
+                        expandFrom = Alignment.End,
+//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
+                        animationSpec = tween(visibleAnimDelay)
+                    )
+//                                    + fadeIn(animationSpec = tween(visibleAnimDelay)),
+//                        exit = slideOutHorizontally(
+//                            animationSpec = tween(visibleAnimDelay)
+//                        ),
+                ) {
+                    ActionRowCase(vm = vm, case = actionList[8], filter = displayInstructionMenu)
+                }
+//                    } else {
+                AnimatedVisibility(
+                    visible = actionPair Not true,
+                    enter = expandHorizontally(
+                        expandFrom = Alignment.End,
+//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
+                        animationSpec = tween(visibleAnimDelay)
+                    )
+//                    enter = slideInHorizontally(
+//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
+//                        animationSpec = tween(visibleAnimDelay)
+//                    )
+//                                    + fadeIn(animationSpec = tween(visibleAnimDelay)),
+//                        exit = slideOutHorizontally(
+//                            animationSpec = tween(visibleAnimDelay)
+//                        ),
+                ) {
+                    ActionRowCase(vm = vm, case = actionList[8], filter = displayInstructionMenu)
+                }
             }
         }
     }
 }
 
 @Composable
-fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Boolean) {
+fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Boolean, bigger: Boolean = false) {
     Card(
         Modifier
-            .size(vm.data.layout.secondPart.size.actionRowCase.dp)
+            .size(
+                if (bigger)
+                    vm.data.layout.secondPart.size.actionRowCaseBigger.dp
+                else
+                    vm.data.layout.secondPart.size.actionRowCase.dp
+            )
             .border(
                 border = BorderStroke(
                     width = 2.dp,
@@ -88,15 +167,17 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
             )
             ,
             shape = RoundedCornerShape(corner= CornerSize(5.dp)),
-            elevation = vm.data.colors.actionRowCaseElevation
+            elevation = if (bigger)
+                vm.data.colors.actionRowCaseElevation
+            else
+                vm.data.colors.actionRowCaseBiggerElevation
         ) {
             Box( Modifier.gradientBackground(
                 colors = ColorsList(
                     case.color,
                     filter
-//                    vm.displayInstructionsMenu.value,
                 ),
-                angle = 45f
+                angle = 175F
             )
             ) {
                 InstructionIconsActionRow(case.instruction, vm)

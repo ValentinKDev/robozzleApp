@@ -6,8 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.presentation.res.yellow0
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.ActionRowSurronder
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayActionsRow
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayFunctionsPart
@@ -30,14 +33,18 @@ fun SecondScreenPart(vm: GameDataViewModel) {
                 verticalArrangement = Arrangement.Top) {
                 ActionRowSurronder(vm)
             }
-            Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowHeight)) {
+            Column(
+                Modifier.weight(vm.data.layout.secondPart.ratios.actionRowHeight)
+            ) {
                 PaddingComposable(
                     startPaddingRatio = vm.data.layout.secondPart.ratios.actionRowStartPadding,
                     endPaddingRatio = vm.data.layout.secondPart.ratios.actionRowEndPadding
                 ) {
-                    CenterComposableVertically {
-                        DisplayActionsRow(vm)
-                    }
+//                    Box(Modifier.backColor(yellow0)) {
+                        CenterComposableVertically {
+                            DisplayActionsRow(vm)
+                        }
+//                    }
                 }
             }
             Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurronderHeight),

@@ -33,18 +33,4 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
             }
         }
     }
-//    Box(
-//        Modifier
-//            .gradientBackground(ColorsList(color, vm.displayInstructionsMenu.value == true), 175f)
-//            .size(
-//                if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
-//                else vm.data.layout.secondPart.size.functionCase.dp
-//            )
-//    ){
-//        if (instructionChar != '.'){
-//            CenterComposable {
-//                InstructionsIconsFunction(instructionChar, vm)
-//            }
-//        }
-//    }
 }

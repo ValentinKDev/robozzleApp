@@ -37,7 +37,8 @@ fun MapViewInGame(
     vm: GameDataViewModel,
     widthInt: Int,
     playerInGame: PlayerInGame? = null,
-    stars: List<Position> = emptyList()
+    stars: List<Position> = emptyList(),
+    filter: Boolean,
 ) {
     //todo : put those calculs in a VM ?
     val map: List<String> by vm.animData.map.collectAsState()
@@ -46,7 +47,6 @@ fun MapViewInGame(
         infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
         infoLog("action", "${vm.animData.getActionToRead()}")
     }
-    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size
 
@@ -95,7 +95,7 @@ fun MapViewInGame(
                                             .gradientBackground(
                                                 ColorsList(
                                                     _color,
-                                                    displayInstructionMenu
+                                                    filter
                                                 ), 135f
                                             )
                                             .fillMaxSize()

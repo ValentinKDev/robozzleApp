@@ -58,13 +58,25 @@ class AnimationData(
             updateActionList()
         }
     }
+//    private val _visibleActionRowList = MutableStateFlow<Boolean>(false)
+//    val visibleActionRowList: StateFlow<Boolean> = _visibleActionRowList.asStateFlow()
+
+//    val pair = true
+    private val _pair = MutableStateFlow<Boolean>(true)
+    val pair: StateFlow<Boolean> = _pair.asStateFlow()
+
+
     private val _actionRowList = MutableStateFlow(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
     val actionRowList: StateFlow<List<FunctionInstruction>> = _actionRowList.asStateFlow()
     private suspend fun updateActionList() {
         val actionToRead = getActionToRead()
+
+        _pair.emit(getActionToRead() % 2 == 0)
+//        _visibleActionRowList.emit(false)
         _actionRowList.emit(
             bd.actionsList.subListIfPossible(actionToRead, actionToRead + maxNumberActionToDisplay)
         )
+//        _visibleActionRowList.emit(true)
     }
 
 //    private val _playerAnimationState = MutableStateFlow<PlayerAnimationState>(savedData?.getPlayerAnimationState() ?: PlayerAnimationState.NotStarted)
@@ -106,8 +118,8 @@ class AnimationData(
 
     private val _animationDelay = MutableStateFlow<Long>(200)
     val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
-    suspend fun setAnimationDelayShort() { _animationDelay.emit(50) }
-    suspend fun setAnimationDelayLong() { _animationDelay.emit(200) }
+    suspend fun setAnimationDelayShort() { _animationDelay.emit(100) }
+    suspend fun setAnimationDelayLong() { _animationDelay.emit(400) }
     fun getAnimationDelay(): Long = animationDelay.value
 
 //    private val _animatedStarsMaped = MutableStateFlow<MutableList<Position>>(savedData?.getStarsToDisplay() ?: level.starsList.toMutableList())

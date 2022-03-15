@@ -41,8 +41,11 @@ fun ColorsList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
     val darkgray2 = grayDark(6, 1)
     val darkgray3 = grayDark(10, 3)
 
+
     val gray: List<Color> = if (darkerFilter) { listOf(darkgray3, darkgray2, darkgray1) }
+//    val gray: List<Color> = if (darkerFilter) metalGray
     else listOf(gray3, gray2, gray1)
+//    else metalGray.asReversed()
 //    else listOf(grayDark1, grayDark2, grayDark4)
 
     return when (toRecognize) {

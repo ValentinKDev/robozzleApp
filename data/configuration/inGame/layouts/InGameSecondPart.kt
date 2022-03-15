@@ -5,7 +5,7 @@ import androidx.compose.ui.geometry.Rect
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.Level
 
-const val maxNumberActionToDisplay = 9
+const val maxNumberActionToDisplay = 10
 
 object InGameSecondPart {
     var size = Sizes
@@ -19,6 +19,7 @@ object InGameSecondPart {
         const val actionRowStartPadding = 0.025F
         const val actionRowEndPadding = 0.005F
         const val actionRowHeight = 1F
+        const val actionRowCaseBigger = 1.15F
         const val actionRowSurronderHeight = 0.15F
         const val actionRowSurronderBlackLineHeight = 0.05F
         const val actionRowSurronderEmptyLineHeight = 0.08F
@@ -34,6 +35,7 @@ object InGameSecondPart {
 
     object Sizes {
         var width: Int = 0
+        var widthDp: Int = 0
         var height: Int = 0
         var functionCase: Int = 0
         var functionCaseIcon: Int = 0
@@ -44,6 +46,7 @@ object InGameSecondPart {
         var twoThirdFunctionCase: Int = 0
 
         var actionRowCase: Int = 0
+        var actionRowCaseBigger: Int = 0
         var actionRowIcon: Int = 0
         var actionRowCaseBorder: Int = 0
     }
@@ -61,13 +64,30 @@ object InGameSecondPart {
         val density = context.resources.displayMetrics.density
 
         size.width = (widthFull).toInt()
+        size.widthDp = (widthFull/density).toInt()
         size.height = (heightFull * Ratios.height).toInt()
 
         initFunctionInstructionsRows(level, density)
         initActionRow(density)
+        infoLog("InGameSecondPart", "initiate")
+        infoLog("width", "${size.width}")
+        infoLog("height", "${size.height}")
+
+        infoLog("functions Number", "$functionsNumber")
+        infoLog("max Cases Number", "$maxCasesNumber")
+        infoLog("function case", "${size.functionCase}")
+        infoLog("functionCasePadding", "${size.functionCasePadding}")
+        infoLog("bigFuntionCase", "${size.bigFunctionCase}")
+        infoLog("halfFuncitonCase", "${size.halfFunctionCase}")
+        infoLog("1/3functionCase", "${size.oneThirdFunctionCase}")
+        infoLog("2/3functionCase", "${size.twoThirdFunctionCase}")
+        infoLog("function case max num", "${maximumCaseNumberActionRow}")
+        infoLog("actionRowCase", "${size.actionRowCase}")
+        infoLog("actionRowCaseBigger", "${size.actionRowCaseBigger}")
     }
     fun initActionRow(density: Float) {
         size.actionRowCase = ((size.width / maximumCaseNumberActionRow) / density).toInt()
+        size.actionRowCaseBigger = (size.actionRowCase * ratios.actionRowCaseBigger).toInt()
         size.actionRowCaseBorder = ( size.actionRowCase * ratios.actionRowBorder ).toInt()
         size.actionRowIcon = size.actionRowCase
     }
@@ -90,19 +110,6 @@ object InGameSecondPart {
         size.twoThirdFunctionCase = (size.functionCase * (2F/3F)).toInt()
         size.functionCasePadding = (size.functionCase * ratios.functionCasePadding).toInt()
 
-        infoLog("InGameSecondPart", "initiate")
-        infoLog("width", "${size.width}")
-        infoLog("height", "${size.height}")
 
-        infoLog("functions Number", "$functionsNumber")
-        infoLog("max Cases Number", "$maxCasesNumber")
-        infoLog("function case", "${size.functionCase}")
-        infoLog("functionCasePadding", "${size.functionCasePadding}")
-        infoLog("bigFuntionCase", "${size.bigFunctionCase}")
-        infoLog("halfFuncitonCase", "${size.halfFunctionCase}")
-        infoLog("1/3functionCase", "${size.oneThirdFunctionCase}")
-        infoLog("2/3functionCase", "${size.twoThirdFunctionCase}")
-        infoLog("function case max num", "${maximumCaseNumberActionRow}")
-        infoLog("actionRowCase", "${size.actionRowCase}")
     }
 }
