@@ -14,7 +14,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import gradientBackground
 
 @Composable
-fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false) {
+fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false, filter: Boolean = false) {
     Card(
         modifier = Modifier.size(
             if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
@@ -25,7 +25,7 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
         ,
         elevation = 50.dp
     ) {
-        Box( Modifier.gradientBackground(ColorsList(color, vm.displayInstructionsMenu.value == true), 175f) ) {
+        Box( Modifier.gradientBackground(ColorsList(color, filter), 175f) ) {
             if (instructionChar != '.'){
                 CenterComposable {
                     InstructionsIconsFunction(instructionChar, vm)

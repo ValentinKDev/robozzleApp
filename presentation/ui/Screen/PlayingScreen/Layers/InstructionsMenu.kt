@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
@@ -23,10 +25,6 @@ import gradientBackground
 //todo : il manque la touche supprimer l'instruction selectionnée
 @Composable
 fun DisplayInstuctionMenu(vm: GameDataViewModel) {
-    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.observeAsState( false )
-
-    if (displayInstructionMenu) {
-
 //        ) {
         Box(
             Modifier
@@ -41,17 +39,20 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
             ) {
                 Card(
                     Modifier
-                        .fillMaxSize()
+//                        .wrapContentSize()
                         .clickable { vm.ChangeInstructionMenuState() }
+                        .background(Color.Transparent)
                     ,
                     shape = RectangleShape,
-                    elevation = 25.dp
+                    elevation = 25.dp,
+//                    contentColor = Color.Transparent
                 ){
-                    Column() {
+                    Column(Modifier
+                        .wrapContentSize()
+                        .background(Color.Transparent)
+                    ) {
                         vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
-                            Row(
-                                modifier = Modifier
-                                    .width(800.dp)
+                            Row( Modifier.width(vm.data.layout.menu.size.width.dp)
                                 ,
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center,
@@ -66,7 +67,7 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
                 }
             }
         }
-    }
+//    }
 }
 
 @Composable

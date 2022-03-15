@@ -26,13 +26,29 @@ val gray7 = Color(0x1F888888)
 val gray8 = Color(0x0E888888)
 val gray9 = Color(0x0C888888)
 val grayDark0 = Color(0xFF888888)
-val grayDark1 = Color(0xFF787878)
+//val grayDark0 = Color(0xFF888888)
+val grayDark1_0 = Color(0xFF787878)
+val grayDark1_1 = Color(0xFF767676)
+val grayDark1_2 = Color(0xFF747474)
+val grayDark1_3 = Color(0xFF727272)
+val grayDark1_4 = Color(0xFF707070)
 val grayDark2 = Color(0xFF686868)
 val grayDark3 = Color(0xFF585858)
 val grayDark4 = Color(0xFF484848)
 val grayDark5 = Color(0xFF383838)
 val grayDark6 = Color(0xFF343434)
 val grayDark7 = Color(0xFF282828)
+val grayDark8 = Color(0xFF191919)
+val grayDark9 = Color(0xFF101010)
+fun grayDark(darker: Int, shade: Int? = null): Color {
+    var grayTint: Long = 0xFF888888
+    val darkTint = 0x00090909
+    val shadeTint = 0x00020202
+    grayTint -= darkTint * darker
+    shade?.let { grayTint -= (shadeTint * it) }
+    return Color(grayTint)
+}
+
 
 
 val green0 = Color(0xFF00FF00)
@@ -55,9 +71,9 @@ val greendark6 = Color(0xFF008F00)
 val greendark7 = Color(0xFF007F00)
 val greendark8 = Color(0xFF006F00)
 val greendark9 = Color(0xFF005F00)
-val greendark10 = Color(0xFF006F00)
-val greendark11 = Color(0xFF005F00)
-val greendark12 = Color(0xFF004F00)
+val greendark10 = Color(0xFF004F00)
+val greendark11 = Color(0xFF003F00)
+val greendark12 = Color(0xFF002F00)
 
 val blue0 = Color(0xFF0000FF)
 val blue1 = Color(0xDF0000FF)

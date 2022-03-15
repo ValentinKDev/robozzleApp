@@ -35,14 +35,17 @@ object InGameInstructionMenu {
         val density = context.resources.displayMetrics.density
 
         maxCases = level.instructionsMenu.first().instructions.length
-//        size.width = ((widthFull * (1F - Ratios.startPadding - Ratios.endPadding))) / density
-        size.width = widthFull / density
-        size.caseWithPadding = ((Sizes.width / maxCases) - (maxCases))
+        size.width = ((widthFull * (1F - Ratios.startPadding - Ratios.endPadding))) / density
+//        size.width = widthFull / density
+//        size.caseWithPadding = ((size.width / maxCases) - (maxCases))
+        size.caseWithPadding = (size.width / maxCases)
         size.casePadding = 0F
-        size.case = Sizes.caseWithPadding - (2F * Sizes.casePadding)
+        size.case = size.caseWithPadding - (2F * Sizes.casePadding)
         size.icon = size.case
 
         infoLog(" maxCases ", "${maxCases}")
+        infoLog(" full width ", "$widthFull")
+        infoLog(" full width ", "${widthFull * 0.9}")
         infoLog(" width ", "${size.width}")
         infoLog(" caseWithPadding ", "${size.caseWithPadding}")
         infoLog(" casePaddinng ", "${size.casePadding}")

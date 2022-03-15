@@ -33,8 +33,9 @@ import gradientBackground
 fun DisplayActionsRow(vm: GameDataViewModel) {
 
     val actionList: List<FunctionInstruction> by vm.animData.actionRowList.collectAsState()
-    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
-    val list = if (recomposition < 0) emptyList() else actionList
+//    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
+//    val list = if (recomposition < 0) emptyList() else actionList
+    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
     logLayoutSecondPart?.let {
         infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
@@ -46,8 +47,8 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 //        verbalLog("Actions list i", vm.breadcrumb.actions.instructions)
 //        verbalLog("Actions list c", vm.breadcrumb.actions.colors)
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
-        verbalLog("Display ActionsList ", "$list")
-        verbalLog("Display ActionsList size", "${list.size}")
+//        verbalLog("Display ActionsList ", "$list")
+//        verbalLog("Display ActionsList size", "${list.size}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
 
@@ -56,17 +57,17 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
             .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
             ,
         ) {
-            if (list.isNotEmpty())
-                ActionRowCase(vm = vm, case = list.first())
+            if (actionList.isNotEmpty())
+                ActionRowCase(vm = vm, case = actionList.first(), filter = displayInstructionMenu)
         }
         Box( Modifier
             .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
         ) {
             Row {
-                list.subListIfPossible(fromIndex = 1)
+                actionList.subListIfPossible(fromIndex = 1)
                     .forEachIndexed {index, functionInstruction ->
                         logAnimLayoutSecondPart?.let { verbalLog("Display Action", "index $index : $functionInstruction") }
-                        ActionRowCase(vm = vm, case = functionInstruction)
+                        ActionRowCase(vm = vm, case = functionInstruction, filter = displayInstructionMenu)
                     }
             }
         }
@@ -74,7 +75,7 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 }
 
 @Composable
-fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction) {
+fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Boolean) {
     Card(
         Modifier
             .size(vm.data.layout.secondPart.size.actionRowCase.dp)
@@ -92,7 +93,8 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction) {
             Box( Modifier.gradientBackground(
                 colors = ColorsList(
                     case.color,
-                    vm.displayInstructionsMenu.value == true
+                    filter
+//                    vm.displayInstructionsMenu.value,
                 ),
                 angle = 45f
             )

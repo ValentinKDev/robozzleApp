@@ -28,12 +28,22 @@ fun ColorsList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
     val blue: List<Color> = if (darkerFilter) { listOf(Color(0xff000011), Color(0xff000065), Color(0xff000099)) }
     else { listOf(Color(0xff000078), Color(0xff000098), Color(0xff0000ba)) }
 
-    val green: List<Color> = if (darkerFilter) { listOf(Color(0xff001100), Color(0xff006500), Color(0xff009900)) }
+    val green: List<Color> = if (darkerFilter) { listOf(Color(0xff001100), Color(0xff006500), Color(0xff008800)) }
     else { listOf(Color(0xff005500), Color(0xff008000), Color(0xff00a900)) }
 
     val transparent : List<Color> =  listOf(Color.Transparent, Color.Transparent)
     val errorColor: List<Color> = listOf(Color.Yellow, Color.Green, Color.Blue)
-    val gray: List<Color> = listOf(Color.Gray, Color.Gray)
+//    val gray: List<Color> = listOf(Color.Gray, Color.Gray)
+    val gray1 = grayDark(2, 1)
+    val gray2 = grayDark(4, 1)
+    val gray3 = grayDark(6, 3)
+    val darkgray1 = grayDark(4, 1)
+    val darkgray2 = grayDark(6, 1)
+    val darkgray3 = grayDark(10, 3)
+
+    val gray: List<Color> = if (darkerFilter) { listOf(darkgray3, darkgray2, darkgray1) }
+    else listOf(gray3, gray2, gray1)
+//    else listOf(grayDark1, grayDark2, grayDark4)
 
     return when (toRecognize) {
         'g' -> gray
@@ -43,6 +53,15 @@ fun ColorsList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
         '.' -> transparent
         else -> errorColor
     }
+}
+
+fun shadowFilterColor(enable: Boolean, color: Color): Color {
+    val c = color
+    if (enable) {
+
+    }
+
+    return c
 }
 
 fun RecognizeColor(toRecognize: String, darkerFilter: Boolean): Color {

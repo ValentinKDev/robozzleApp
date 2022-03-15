@@ -39,31 +39,30 @@ import kotlinx.coroutines.flow.collectLatest
 fun DragAndDropOverlay(vm: GameDataViewModel) {
     val dragRepresentationOffset: Offset by vm.dragAndDrop.dragRepresentationOffset.collectAsState()
     val itemUnderVisible: Boolean by vm.dragAndDrop.elements.itemUnderVisible.collectAsState()
-    val visibleItermUnder: Boolean by remember(vm) {vm.dragAndDrop.elements.itemUnderVisible}.collectAsState()
+//    val visibleItermUnder: Boolean by remember(vm) {vm.dragAndDrop.elements.itemUnderVisible}.collectAsState()
     val dragStart: Boolean by vm.dragAndDrop.dragStart.collectAsState()
     val visibleDragDropOverLay by remember(vm) {vm.dragAndDrop.dragStart}.collectAsState(false)
 
     val transition = updateTransition(targetState = visibleDragDropOverLay, label = "")
-    val animSize by transition.animateDp(
-        label = "",
-        transitionSpec = {
-            when (dragStart) {
-                true -> tween(200)
-                false -> tween(200)
-            }
-        }
-    ) { _dragStart ->
-        when (_dragStart) {
-            true -> vm.data.layout.secondPart.size.bigFunctionCase.dp
-            false -> vm.data.layout.secondPart.size.functionCase.dp
-        }
-    }
+//    val animSize by transition.animateDp(
+//        label = "",
+//        transitionSpec = {
+//            when (dragStart) {
+//                true -> tween(200)
+//                false -> tween(200)
+//            }
+//        }
+//    ) { _dragStart ->
+//        when (_dragStart) {
+//            true -> vm.data.layout.secondPart.size.bigFunctionCase.dp
+//            false -> vm.data.layout.secondPart.size.functionCase.dp
+//        }
+//    }
 
     if (dragStart) {
         vm.dragAndDrop.elements.getColor() ?.let { _color ->
             vm.dragAndDrop.elements.getInstruction() ?.let { _instruction ->
                 Box( Modifier.fillMaxSize() ) {
-//                    if (itemUnderVisible) {
                     AnimatedVisibility(
                         visible = itemUnderVisible,
                         enter = fadeIn(0.7F, animationSpec = tween(100)),
@@ -86,12 +85,6 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                             }
                         }
                     }
-
-//                    Box(Modifier.size(vm.data.layout.secondPart.size.bigFunctionCase.dp)) {
-//                        CenterComposable {
-//
-//                        }
-//                    }
                     AnimatedVisibility(
                         visible = visibleDragDropOverLay,
                         enter = fadeIn(0.7F, animationSpec = tween(200)),
@@ -105,23 +98,6 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                 )
                             }
                         ) {
-//                            Card(
-//                                modifier = Modifier
-//                                    .height(animSize)
-//                                    .width(animSize)
-//                                ,
-//                                shape = RectangleShape
-//                                ,
-//                                elevation = 50.dp
-//                            ) {
-//                                Box( Modifier.gradientBackground(ColorsList(_color, vm.displayInstructionsMenu.value == true), 175f) ) {
-//                                    if (_instruction != '.'){
-//                                        CenterComposable {
-//                                            InstructionsIconsFunction(_instruction, vm)
-//                                        }
-//                                    }
-//                                }
-//                            }
                             FunctionCase(color = _color, vm = vm, instructionChar = _instruction, bigger = true)
                         }
                         Box(Modifier

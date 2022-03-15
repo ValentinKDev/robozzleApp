@@ -13,6 +13,7 @@ import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,7 +46,7 @@ fun MapViewInGame(
         infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
         infoLog("action", "${vm.animData.getActionToRead()}")
     }
-
+    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size
 
@@ -91,7 +92,12 @@ fun MapViewInGame(
                                 ) {
                                     Box(
                                         Modifier
-                                            .gradientBackground(ColorsList(_color), 135f)
+                                            .gradientBackground(
+                                                ColorsList(
+                                                    _color,
+                                                    displayInstructionMenu
+                                                ), 135f
+                                            )
                                             .fillMaxSize()
                                     ) {
 //                                        content.invoke()

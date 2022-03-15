@@ -29,16 +29,16 @@ import com.mobilegame.robozzle.utils.Extensions.getSafe
 @Composable
 fun DisplayFunctionsPart(vm: GameDataViewModel) {
     val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
-    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
+//    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
+//    val levelFunctions = if (recomposition == 0) vm.level.funInstructionsList.toMutableList() else vm.instructionsRows
+    val levelFunctions = vm.instructionsRows
+    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
-    val levelFunctions = if (recomposition == 0) vm.level.funInstructionsList.toMutableList() else vm.instructionsRows
-
-    var functions =
+    val functions =
         if ( draggedStart )
             vm.dragAndDrop.elements.onHoldItem(levelFunctions)
         else
             levelFunctions
-    if (recomposition > 0) functions = levelFunctions
 
     Column(Modifier
         .fillMaxSize()
@@ -49,18 +49,14 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             detectDragGestures(
                 onDrag = { change, _ ->
                     infoLog("onDrag", "position ${change.position}")
-//                    vm.dragAndDrop.onDrag(pointerInputChange = change, list = levelFunctions)
                     vm.dragAndDrop.onDrag(
                         pointerInputChange = change,
-//                        list = vm.getInstructionsRows()
                         list = vm.instructionsRows
                     )
                     infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
                 },
                 onDragStart = { _offset ->
                     infoLog("onDragStart", "started")
-//                    vm.dragAndDrop.onDragStart(_offset, levelFunctions)
-//                    vm.dragAndDrop.onDragStart(_offset, vm.getInstructionsRows())
                     vm.dragAndDrop.onDragStart(_offset, levelFunctions)
                     infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
                 },
@@ -77,30 +73,18 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
     ) {
         CenterComposable {
             functions.forEachIndexed { functionNumber, function ->
-                DisplayFunctionRow(functionNumber, function, vm)
+//                DisplayFunctionRow(functionNumber, function, vm)
+                DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
             }
         }
     }
 }
 
 @Composable
-fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel) {
-//fun DisplayFunctionRow(functionNumber: Int, vm: GameDataViewModel) {
+fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel, displayInstructionMenu: Boolean) {
     val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
     val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
-
-//    val levelFunctions: List<FunctionInstructions> by vm.instructionsRows.collectAsState()
-//    val levelFunctions: List<FunctionInstructions> by vm.animData.instructionsRows.collectAsState()
-
-//    val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
-//    var functionRow = levelFunctions[functionNumber]
-//    var truc =false
-//    if(draggedStart) truc = true
-//    if (draggedStart) functionRow = vm.dragAndDrop.elements.onHoldItem(levelFunctions.toMutableList())[functionNumber]
-
-//    val rowLength = functionRow.instructions.length
-//    infoLog("var", "currentAction $currentAction \nplayerAnimationState ${playerAnimationState.key}\nlevelFunction $levelFunctions\ndraggedStart $draggedStart\nfunctionRow $functionRow")
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -155,7 +139,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
 //                            val instructionChar = functionRow.instructions[_index]
                             Box( Modifier .fillMaxSize()
                             ) {
-                                FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm)
+                                FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm, filter = displayInstructionMenu)
                                 if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
 //                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList[currentAction].Match( Position(functionNumber, _index) ) )
                                     && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))

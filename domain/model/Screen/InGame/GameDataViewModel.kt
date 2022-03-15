@@ -85,8 +85,8 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
 
     //todo : try to use State instead of LiveData, it might ensure this display is triggered when you click
-    private val _displayInstructionsMenu = MutableLiveData(false)
-    val displayInstructionsMenu: MutableLiveData<Boolean> = _displayInstructionsMenu
+    private val _displayInstructionsMenu = MutableStateFlow(false)
+    val displayInstructionsMenu: StateFlow<Boolean> = _displayInstructionsMenu.asStateFlow()
     fun ChangeInstructionMenuState() {
         Log.v("DisplayMenu", "ChangeState ${_displayInstructionsMenu.value} to ${!_displayInstructionsMenu.value!!}")
         _displayInstructionsMenu.value =! _displayInstructionsMenu.value!!
