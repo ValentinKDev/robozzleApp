@@ -8,11 +8,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.analyse.errorLog
@@ -29,14 +29,16 @@ import com.mobilegame.robozzle.utils.Extensions.getSafe
 @Composable
 fun DisplayFunctionsPart(vm: GameDataViewModel) {
     val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
-//    val levelFunctions = vm.instructionsRows.value
-    val levelFunctions by vm.instructionsRows.collectAsState()
+    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
 
-    val functions =
+    val levelFunctions = if (recomposition == 0) vm.level.funInstructionsList.toMutableList() else vm.instructionsRows
+
+    var functions =
         if ( draggedStart )
-            vm.dragAndDrop.elements.onHoldItem(levelFunctions.toMutableList())
+            vm.dragAndDrop.elements.onHoldItem(levelFunctions)
         else
             levelFunctions
+    if (recomposition > 0) functions = levelFunctions
 
     Column(Modifier
         .fillMaxSize()
@@ -47,12 +49,19 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             detectDragGestures(
                 onDrag = { change, _ ->
                     infoLog("onDrag", "position ${change.position}")
-                    vm.dragAndDrop.onDrag(pointerInputChange = change, list = functions)
+//                    vm.dragAndDrop.onDrag(pointerInputChange = change, list = levelFunctions)
+                    vm.dragAndDrop.onDrag(
+                        pointerInputChange = change,
+//                        list = vm.getInstructionsRows()
+                        list = vm.instructionsRows
+                    )
                     infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
                 },
                 onDragStart = { _offset ->
                     infoLog("onDragStart", "started")
-                    vm.dragAndDrop.onDragStart(_offset, functions)
+//                    vm.dragAndDrop.onDragStart(_offset, levelFunctions)
+//                    vm.dragAndDrop.onDragStart(_offset, vm.getInstructionsRows())
+                    vm.dragAndDrop.onDragStart(_offset, levelFunctions)
                     infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
                 },
                 onDragEnd = {
@@ -76,9 +85,22 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
 
 @Composable
 fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel) {
+//fun DisplayFunctionRow(functionNumber: Int, vm: GameDataViewModel) {
     val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
     val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
+
+//    val levelFunctions: List<FunctionInstructions> by vm.instructionsRows.collectAsState()
+//    val levelFunctions: List<FunctionInstructions> by vm.animData.instructionsRows.collectAsState()
+
+//    val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
+//    var functionRow = levelFunctions[functionNumber]
+//    var truc =false
+//    if(draggedStart) truc = true
+//    if (draggedStart) functionRow = vm.dragAndDrop.elements.onHoldItem(levelFunctions.toMutableList())[functionNumber]
+
+//    val rowLength = functionRow.instructions.length
+//    infoLog("var", "currentAction $currentAction \nplayerAnimationState ${playerAnimationState.key}\nlevelFunction $levelFunctions\ndraggedStart $draggedStart\nfunctionRow $functionRow")
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -92,10 +114,12 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
             text = vm.data.text.functionText(functionNumber),
             color = vm.data.colors.functionText
         )
-        Row( Modifier
-            .height((vm.data.layout.secondPart.size.functionCase + (2 * vm.data.layout.secondPart.size.functionCasePadding)).dp)
-            .width(((function.instructions.length * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
-            .background(vm.data.colors.functionBorder)
+        Row(
+            Modifier
+                .height((vm.data.layout.secondPart.size.functionCase + (2 * vm.data.layout.secondPart.size.functionCasePadding)).dp)
+//                .width(((rowLength * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
+                .width(((function.instructions.length * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
+                .background(vm.data.colors.functionBorder)
             ,
         ) {
             CenterComposableVertically {
@@ -104,7 +128,9 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     function.instructions.forEachIndexed { _index, c ->
+//                    functionRow.instructions.forEachIndexed { _index, c ->
                         val caseColor = function.colors[_index]
+//                        val caseColor = functionRow.colors[_index]
                         Box(Modifier
                             .size(vm.data.layout.secondPart.size.functionCase.dp)
                             .onGloballyPositioned {
@@ -115,8 +141,10 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                 )
                             }
                             .clickable {
-                                if (playerAnimationState.runningInBackground() Is true
-                                    && vm.dragAndDrop.dragStart.value Is false
+                                if (
+//                                    playerAnimationState.runningInBackground() Is true
+//                                    &&
+                                    vm.dragAndDrop.dragStart.value Is false
                                 ) {
                                     vm.ChangeInstructionMenuState()
                                     vm.setSelectedFunctionCase(functionNumber, _index)
@@ -124,6 +152,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                             }
                         ) {
                             val instructionChar = function.instructions[_index]
+//                            val instructionChar = functionRow.instructions[_index]
                             Box( Modifier .fillMaxSize()
                             ) {
                                 FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm)

@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
 import android.content.Context
 import androidx.compose.ui.geometry.Rect
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
 
@@ -12,9 +13,9 @@ object InGameInstructionMenu {
 
     object Ratios {
         const val topPadding= 0.3F
-        const val bottomPadding= 0.5F
-        const val startPadding= 0.1F
-        const val endPadding= 0.1F
+        const val bottomPadding= 0.4F
+        const val startPadding= 0.05F
+        const val endPadding= 0.05F
 
         const val casePadding = 0.1F
         const val iconBiggerThanCase = 0.15F
@@ -34,9 +35,18 @@ object InGameInstructionMenu {
         val density = context.resources.displayMetrics.density
 
         maxCases = level.instructionsMenu.first().instructions.length
-        size.width = ((widthFull * (1F - Ratios.startPadding - Ratios.endPadding)))
+//        size.width = ((widthFull * (1F - Ratios.startPadding - Ratios.endPadding))) / density
+        size.width = widthFull / density
         size.caseWithPadding = ((Sizes.width / maxCases) - (maxCases))
-        size.case = Sizes.casePadding - 2F * Sizes.casePadding
-        size.icon = ratios.iconBiggerThanCase * size.case
+        size.casePadding = 0F
+        size.case = Sizes.caseWithPadding - (2F * Sizes.casePadding)
+        size.icon = size.case
+
+        infoLog(" maxCases ", "${maxCases}")
+        infoLog(" width ", "${size.width}")
+        infoLog(" caseWithPadding ", "${size.caseWithPadding}")
+        infoLog(" casePaddinng ", "${size.casePadding}")
+        infoLog(" case ", "${size.case}")
+        infoLog(" icon ", "${size.icon}")
     }
 }

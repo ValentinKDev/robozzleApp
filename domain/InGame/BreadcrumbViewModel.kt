@@ -31,6 +31,7 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 //    private val printDetails: Int? = 1
 
     private var stop = false
+//    private var inifiniteLoop =
 //    private var win = UNKNOWN
 //    private var lost = UNKNOWN
     private var loop = UNKNOWN
@@ -62,14 +63,14 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
     fun getBreadCrumb(): Breadcrumb = runBlocking(Dispatchers.IO) {
         logInit?.let { errorLog("Init", "getBreadCrumb") }
         startLogic()
-        errorLog("actionCount", "${bd.lastActionNumber}")
-        infoLog("actionList.size", "${bd.actionsList.size}")
-        bd.playerStateList.forEachIndexed { _i, _plr ->
-            infoLog("$_i", "${_plr.pos}")
-        }
-        infoLog("stars number left", "${bd.starsNumberLeft}")
-        infoLog("stars left", "${bd.starsPositionsLeft}")
-        infoLog("stars removed left", "${bd.starsRemovalMap}")
+//        errorLog("actionCount", "${bd.lastActionNumber}")
+//        infoLog("actionList.size", "${bd.actionsList.size}")
+//        bd.playerStateList.forEachIndexed { _i, _plr ->
+//            infoLog("$_i", "${_plr.pos}")
+//        }
+//        infoLog("stars number left", "${bd.starsNumberLeft}")
+//        infoLog("stars left", "${bd.starsPositionsLeft}")
+//        infoLog("stars removed left", "${bd.starsRemovalMap}")
         infoLog("win", "${bd.win}")
         infoLog("lose", "${bd.lost}")
         bd

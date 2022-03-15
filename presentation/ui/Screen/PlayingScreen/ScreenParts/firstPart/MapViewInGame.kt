@@ -97,7 +97,6 @@ fun MapViewInGame(
 //                                        content.invoke()
                                         playerInGame?.let {
                                             if (playerInGame.pos == casePosition) {
-                                                errorLog("playerInGAme.pos", "${playerInGame.pos}")
                                                 PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
                                             }
                                             else if (stars contain casePosition) {
@@ -109,10 +108,12 @@ fun MapViewInGame(
                                     }
                                 }
                             }
-                            playerInGame?.let {
-                                if (it.pos == casePosition) {
-                                    errorLog("postion", "$casePosition")
-                                    PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                            else {
+                                playerInGame?.let {
+                                    if (it.pos == casePosition) {
+                                        errorLog("player out map - postion", "$casePosition")
+                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                    }
                                 }
                             }
                         }

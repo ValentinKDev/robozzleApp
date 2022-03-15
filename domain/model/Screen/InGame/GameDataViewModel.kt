@@ -1,15 +1,10 @@
 package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.unit.Density
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.utils.Extensions.replaceAt
-import com.mobilegame.robozzle.utils.Extensions.toPlayerInGame
 import com.mobilegame.robozzle.domain.InGame.*
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
@@ -18,14 +13,11 @@ import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
-import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.presentation.ui.myleveltest
+import com.mobilegame.robozzle.utils.Extensions.clone
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +29,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     val data = InGameData(level, getApplication() )
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
+//    private val bdVM = BreadcrumbViewModel(level, )
     var breadcrumb = bdVM.getBreadCrumb()
     var animData = AnimationData(level, breadcrumb)
     var animationLogicVM = AnimationLogicViewModel(level,this)
@@ -50,15 +43,23 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         selectedCase = Position(row, column)
     }
 
-    private val _instructionsRows = MutableStateFlow(level.funInstructionsList)
-    val instructionsRows: StateFlow<List<FunctionInstructions>> = _instructionsRows.asStateFlow()
-    fun setInstructionsRows(list: List<FunctionInstructions>) {_instructionsRows.value = list}
-    fun getInstructionsRows(): List<FunctionInstructions> = instructionsRows.value
-    fun replaceInstruction(pos: Position, case: FunctionInstruction) {
-        _instructionsRows.value[pos.line].colors =
-            _instructionsRows.value[pos.line].colors.replaceAt(pos.column, case.color)
-        _instructionsRows.value[pos.line].instructions =
-            _instructionsRows.value[pos.line].instructions.replaceAt(pos.column, case.instruction)
+    val instructionsRows: MutableList<FunctionInstructions> = level.funInstructionsList.toMutableList()
+    fun replaceInstruction(pos: Position, case: FunctionInstruction) = runBlocking() {
+        infoLog("replace", "$case $pos ")
+        val function: FunctionInstructions = instructionsRows[pos.line]
+        function.colors =
+            function.colors.replaceAt(pos.column, case.color)
+        function.instructions =
+            function.instructions.replaceAt(pos.column, case.instruction)
+        instructionsRows[pos.line] = function
+        updateBreadcrumbInstructions()
+        _triggerRecompositionInstructionRows.value = triggerRecompositionInstructionsRows.value?.plus(1)
+    }
+
+    private fun updateBreadcrumbInstructions() {
+        val newBd = BreadcrumbViewModel(level, instructionsRows).getBreadCrumb()
+        breadcrumb = newBd
+        animData = AnimationData(level, newBd)
     }
 
     fun updateBreadcrumbAndData(bd: Breadcrumb) {
@@ -73,11 +74,8 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         animationJob = animationLogicVM.start(breadcrumb, animData)
     }
 
-//    private val _triggerRecompostion = MutableStateFlow<Boolean>(false)
-//    val triggerRecompostion: StateFlow<Boolean> = _triggerRecompostion
-//
-//    fun triggerRecompostionToFalse() {_triggerRecompostion.value = false}
-//    fun triggerRecompostionToTrue() {_triggerRecompostion.value = true}
+    private val _triggerRecompositionInstructionRows = MutableLiveData<Int>(0)
+    val triggerRecompositionInstructionsRows: MutableLiveData<Int> = _triggerRecompositionInstructionRows
 
     fun mapLayoutIsPressed() = runBlocking(Dispatchers.Default) {
         animData.setAnimationDelayShort()

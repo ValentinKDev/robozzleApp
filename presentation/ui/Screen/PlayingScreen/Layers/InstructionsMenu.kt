@@ -3,11 +3,13 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
@@ -22,7 +24,10 @@ import gradientBackground
 @Composable
 fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.observeAsState( false )
+
     if (displayInstructionMenu) {
+
+//        ) {
         Box(
             Modifier
                 .fillMaxSize()
@@ -34,17 +39,28 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
                 startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
                 endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
             ) {
-                vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
-                    Row(
-                        modifier = Modifier
-                            .width(800.dp)
-                        ,
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        instructions.instructions.toList().forEachIndexed { index, c ->
-                            //todo: InstructionMenuCase()
-                            InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
+                Card(
+                    Modifier
+                        .fillMaxSize()
+                        .clickable { vm.ChangeInstructionMenuState() }
+                    ,
+                    shape = RectangleShape,
+                    elevation = 25.dp
+                ){
+                    Column() {
+                        vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
+                            Row(
+                                modifier = Modifier
+                                    .width(800.dp)
+                                ,
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center,
+                            ) {
+                                instructions.instructions.toList().forEachIndexed { index, c ->
+                                    //todo: InstructionMenuCase()
+                                    InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
+                                }
+                            }
                         }
                     }
                 }
@@ -63,15 +79,8 @@ fun InstructionCase(vm: GameDataViewModel, case: FunctionInstruction) {
             )
             .clickable {
                 vm.replaceInstruction(vm.selectedCase, case)
-//                level.replaceInstruction( level.selected, case )
-//                Log.i("ON CLICK actionList", level.breadcrumb.actionList)
                 vm.ChangeInstructionMenuState()
             }
-//            .size(screenConfig.instructionMenuCaseWidth.dp)
-//            .border(
-//                width = screenConfig.instructionMenuCaseBorder.dp,
-//                color = Color.Black
-//            )
             .size(vm.data.layout.menu.size.case.dp)
             .border(
                 width = vm.data.layout.menu.size.casePadding.dp,

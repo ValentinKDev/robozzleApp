@@ -11,6 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -30,8 +31,10 @@ import gradientBackground
 //Todo: delay the disparition of the last action in actionList
 @Composable
 fun DisplayActionsRow(vm: GameDataViewModel) {
-    val actionsList: List<FunctionInstruction> by vm.animData.actionRowList.collectAsState()
-//    val currentAction: Int by vm.animData.actionToRead.collectAsState()
+
+    val actionList: List<FunctionInstruction> by vm.animData.actionRowList.collectAsState()
+    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
+    val list = if (recomposition < 0) emptyList() else actionList
 
     logLayoutSecondPart?.let {
         infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
@@ -43,8 +46,8 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 //        verbalLog("Actions list i", vm.breadcrumb.actions.instructions)
 //        verbalLog("Actions list c", vm.breadcrumb.actions.colors)
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
-        verbalLog("Display ActionsList ", "$actionsList")
-        verbalLog("Display ActionsList size", "${actionsList.size}")
+        verbalLog("Display ActionsList ", "$list")
+        verbalLog("Display ActionsList size", "${list.size}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
 
@@ -53,14 +56,14 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
             .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
             ,
         ) {
-            if (actionsList.isNotEmpty())
-                ActionRowCase(vm = vm, case = actionsList.first())
+            if (list.isNotEmpty())
+                ActionRowCase(vm = vm, case = list.first())
         }
         Box( Modifier
             .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
         ) {
             Row {
-                actionsList.subListIfPossible(fromIndex = 1)
+                list.subListIfPossible(fromIndex = 1)
                     .forEachIndexed {index, functionInstruction ->
                         logAnimLayoutSecondPart?.let { verbalLog("Display Action", "index $index : $functionInstruction") }
                         ActionRowCase(vm = vm, case = functionInstruction)

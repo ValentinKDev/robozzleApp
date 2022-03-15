@@ -52,9 +52,9 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
 
         DragAndDropOverlay(vm)
 //        if (displayInstructionMenu) {
-            DisplayInstuctionMenu(vm)
+        DisplayInstuctionMenu(vm)
 //        } else if (win == TRUE) {
-            PlayingScreenPopupWin(vm = vm)
+        PlayingScreenPopupWin(vm = vm)
 //        }
     }
 }

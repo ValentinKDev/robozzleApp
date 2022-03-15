@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.domain.InGame.animation
 
+import androidx.compose.runtime.saveable.listSaver
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.logInit
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.maxNumberActionToDisplay
@@ -11,14 +12,17 @@ import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.not
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.utils.Extensions.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.runBlocking
 
 class AnimationData(
     private val level: Level,
@@ -124,6 +128,13 @@ class AnimationData(
     suspend fun setWinPopTo(value: Boolean) {
         _winPop.emit(value)
     }
+
+//    private val _instructionsRows = MutableStateFlow(bd.funInstructionsList.toMutableList())
+//    val instructionsRows: StateFlow<MutableList<FunctionInstructions>> = _instructionsRows.asStateFlow()
+//    fun setInstructionsRows(list: MutableList<FunctionInstructions>) = runBlocking( Dispatchers.Default) {
+//        _instructionsRows.value.re = list.first()
+//        _instructionsRows.emit(list)
+//    }
 
     suspend fun reset() {
         var maxAction = bd.lastActionNumber
