@@ -1,13 +1,20 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,50 +30,55 @@ import gradientBackground
 
 //todo : highlight in background only the instruction you selected ?
 //todo : il manque la touche supprimer l'instruction selectionnée
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayInstuctionMenu(vm: GameDataViewModel) {
-//        ) {
-        Box(
+    val interactionExtMenu = remember { MutableInteractionSource() }
+    Box( Modifier
+            .fillMaxSize()
+            .clickable(
+                interactionSource = interactionExtMenu,
+                indication = null
+            ) { vm.ChangeInstructionMenuState() }
+    )
+    PaddingComposable(
+        topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
+        bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
+        startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
+        endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
+    ) {
+        Card(
             Modifier
-                .fillMaxSize()
-                .clickable { vm.ChangeInstructionMenuState() }
-        ) {
-            PaddingComposable(
-                topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
-                bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
-                startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
-                endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
-            ) {
-                Card(
-                    Modifier
 //                        .wrapContentSize()
-                        .clickable { vm.ChangeInstructionMenuState() }
-                        .background(Color.Transparent)
-                    ,
-                    shape = RectangleShape,
-                    elevation = 25.dp,
+                .clickable { vm.ChangeInstructionMenuState() }
+                .background(Color.Transparent)
+            ,
+            shape = RectangleShape,
+            elevation = 25.dp,
 //                    contentColor = Color.Transparent
-                ){
-                    Column(Modifier
-                        .wrapContentSize()
-                        .background(Color.Transparent)
+        ){
+            Column(
+                Modifier
+                    .wrapContentSize()
+                    .background(Color.Transparent)
+            ) {
+                vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
+                    Row( Modifier.width(vm.data.layout.menu.size.width.dp)
+                        ,
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
                     ) {
-                        vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
-                            Row( Modifier.width(vm.data.layout.menu.size.width.dp)
-                                ,
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                instructions.instructions.toList().forEachIndexed { index, c ->
-                                    //todo: InstructionMenuCase()
-                                    InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
-                                }
-                            }
+                        instructions.instructions.toList().forEachIndexed { index, c ->
+                            //todo: InstructionMenuCase()
+                            InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
                         }
                     }
                 }
             }
         }
+    }
+//        }
+//    }
 //    }
 }
 

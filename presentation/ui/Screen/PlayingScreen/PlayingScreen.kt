@@ -1,13 +1,15 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,22 +34,28 @@ fun PlayingScreen( vm: GameDataViewModel = viewModel()) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) {
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
-    Box(Modifier
-        .fillMaxSize()
-        .background(if (displayInstructionMenu) grayDark7 else Color.Transparent)
+    val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
+
+    Box( Modifier
+            .fillMaxSize()
+            .background(if (displayInstructionMenu) grayDark7 else Color.Transparent)
         ,
         content = {
             content.invoke()
 
             DragAndDropOverlay(vm)
 
-            if (displayInstructionMenu) {
-                DisplayInstuctionMenu(vm)
-            }
+            AnimatedVisibility(
+                visible = visisbleMenu,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) { DisplayInstuctionMenu(vm) }
+
             PlayingScreenPopupWin(vm = vm)
         }
     )
