@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,35 +27,40 @@ fun StarIcon(widhtDp: Int) {
         rotation = 0F,
         colorLeftSide = listOf(yellowDark2, yellowDark2),
         colorRightSide = listOf(yellowDark2, yellowDark3, yellowDark5),
-        colorBack = yellowDark2
+        colorBack = yellowDark2,
+                colorLines = listOf(yellowDark2, yellowDark6)
     )
     DrawStarPart(
         widhtDp = widhtDp,
         rotation = 72F,
         colorLeftSide = listOf(yellowDark2, yellowDark2),
         colorRightSide = listOf(yellowDark2, yellowDark3, yellowDark5),
-        colorBack = yellowDark2
+        colorBack = yellowDark2,
+                colorLines = listOf(yellowDark2, yellowDark6)
     )
     DrawStarPart(
         widhtDp = widhtDp,
         rotation = 144F,
         colorLeftSide = listOf(yellowDark2, yellowDark2),
         colorRightSide = listOf(yellowDark2, yellowDark3, yellowDark5),
-        colorBack = yellowDark2
+        colorBack = yellowDark2,
+                colorLines = listOf(yellowDark2, yellowDark6)
     )
     DrawStarPart(
         widhtDp = widhtDp,
         rotation = 216F,
         colorLeftSide = listOf(yellowDark2, yellowDark2),
         colorRightSide = listOf(yellowDark2, yellowDark3, yellowDark5),
-        colorBack = yellowDark2
+        colorBack = yellowDark2,
+                colorLines = listOf(yellowDark2, yellowDark6)
     )
     DrawStarPart(
         widhtDp = widhtDp,
         rotation = 288F,
         colorLeftSide = listOf(yellowDark2, yellowDark2),
         colorRightSide = listOf(yellowDark2, yellowDark3, yellowDark5),
-        colorBack = yellowDark2
+        colorBack = yellowDark2,
+        colorLines = listOf(yellowDark2, yellowDark6)
     )
 }
 @Composable
@@ -64,7 +70,7 @@ fun DrawStarPart(
     colorLeftSide: List<Color>,
     colorRightSide: List<Color>,
     colorBack: Color,
-//    colorLines: List<Color>
+    colorLines: List<Color>
 ) {
     Box(modifier = Modifier
         .size(widhtDp.dp)
@@ -81,6 +87,8 @@ fun DrawStarPart(
                     val vertical3 = xCenter + (0.118F * size.width)
                     val vertical2 = xCenter - (0.118F * size.width)
                     val vertical1 = (0.022F * size.width)
+
+                    val stroke = widhtDp/50F
 
                     val pTopx = xCenter
                     val pTopy = vertical1
@@ -103,7 +111,6 @@ fun DrawStarPart(
                         moveTo(pTopx, pTopy)
                         lineTo(pRightx, pRighty)
                         lineTo(decenterRightx, decenterRighty)
-//                        lineTo(decenterLeftx, decenterLefty)
                     }
                     val partLeft2 = Path().apply {
                         moveTo(pTopx, pTopy)
@@ -120,6 +127,18 @@ fun DrawStarPart(
                         drawPath(partLeft2, colorBack)
                         drawPath(partRight, brush = Brush.linearGradient(colorRightSide))
                         drawPath(partLeft, brush = Brush.linearGradient(colorLeftSide))
+                        drawLine(
+                            brush = Brush.verticalGradient(colorLines),
+                            start = Offset(pRightx, pRighty),
+                            end = Offset(xCenter, yCenter),
+                            strokeWidth = stroke
+                        )
+                        drawLine(
+                            brush = Brush.verticalGradient(colorLines),
+                            start = Offset(pLeftx, pLefty),
+                            end = Offset(xCenter, yCenter),
+                            strokeWidth = stroke
+                        )
                     }
                 }
             )
