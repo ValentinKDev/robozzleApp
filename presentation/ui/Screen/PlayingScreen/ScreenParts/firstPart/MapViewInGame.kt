@@ -28,6 +28,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.res.yellowDark2
+import com.mobilegame.robozzle.presentation.ui.elements.StarIcon
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.utils.infixStyle.contain
 import gradientBackground
@@ -107,7 +108,7 @@ fun MapViewInGame(
                                             }
                                             else if (stars contain casePosition) {
                                                 if (stars contain casePosition) {
-                                                    StarIcon()
+                                                    StarIcon(100)
                                                 }
                                             }
                                         }
@@ -154,16 +155,6 @@ fun DrawMapCase(caseSize: Int, caseColor: Char, content: @Composable () -> Unit)
                 }
             }
         }
-    }
-}
-
-    @Composable
-fun StarIcon() {
-    CenterComposable {
-        Box(
-            Modifier
-                .size(10.dp)
-                .background(yellowDark2))
     }
 }
 

@@ -23,12 +23,6 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.utils.Extensions.toInt
 
-@Preview
-@Composable
-fun TestIt() {
-    PlayerIcon(widhtDp = 100, Direction(1,0))
-}
-
 @Composable
 fun PlayerIcon(widhtDp: Int, direction: Direction) {
     Box(modifier = Modifier
