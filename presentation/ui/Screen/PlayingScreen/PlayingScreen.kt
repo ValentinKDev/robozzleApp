@@ -1,10 +1,8 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.*
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -41,9 +39,15 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
 
     val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
 
+//    val transition = updateTransition(targetState = displayInstructionMenu, label = "")
+//    val background by transition.animateColor(label = "what is this label good for ?") { _visible ->
+//        if (_visible) vm.data.colors.darkerBackground else Color.Transparent
+//    }
+
     Box( Modifier
-            .fillMaxSize()
-            .background(if (displayInstructionMenu) grayDark7 else Color.Transparent)
+        .fillMaxSize()
+//            .background(background)
+        .background(if (displayInstructionMenu) vm.data.colors.darkerBackground else Color.Transparent)
         ,
         content = {
             content.invoke()

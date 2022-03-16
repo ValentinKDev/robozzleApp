@@ -5,6 +5,8 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.res.*
 
 object InGameColors {
+    val darkerBackground = grayDark7
+
     val popupTextColor = whiteDark6
     val popupMainColor = grayDark2
     val popupElevation = 15.dp
