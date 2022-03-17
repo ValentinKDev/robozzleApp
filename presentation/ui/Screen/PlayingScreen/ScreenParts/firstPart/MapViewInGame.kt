@@ -28,6 +28,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.ColorsList
 import com.mobilegame.robozzle.presentation.res.yellowDark2
+import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
 import com.mobilegame.robozzle.presentation.ui.elements.StarIcon
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.utils.infixStyle.contain
@@ -104,11 +105,12 @@ fun MapViewInGame(
 //                                        content.invoke()
                                         playerInGame?.let {
                                             if (playerInGame.pos == casePosition) {
-                                                PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+//                                                PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                                PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
                                             }
                                             else if (stars contain casePosition) {
                                                 if (stars contain casePosition) {
-                                                    StarIcon(100)
+                                                    StarIcon(data = vm.data.layout.firstPart)
                                                 }
                                             }
                                         }
@@ -119,7 +121,8 @@ fun MapViewInGame(
                                 playerInGame?.let {
                                     if (it.pos == casePosition) {
                                         errorLog("player out map - postion", "$casePosition")
-                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+//                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
+                                        PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
                                     }
                                 }
                             }
@@ -158,21 +161,21 @@ fun DrawMapCase(caseSize: Int, caseColor: Char, content: @Composable () -> Unit)
     }
 }
 
-@Composable
-fun PlayerIcon(dir: Char, size: Int) {
-    Box(modifier = Modifier.fillMaxSize() ) {
-        Icon(
-            imageVector = when (dir) {
-                'r' -> Icons.Outlined.ArrowForward
-                'l' -> Icons.Outlined.ArrowBack
-                'u' -> Icons.Outlined.ArrowUpward
-                'd' -> Icons.Outlined.ArrowDownward
-                else -> Icons.Default.Home
-            },
-            contentDescription = "playerDir",
-            modifier = Modifier
-                .size(size.dp)
-                .align(Alignment.Center)
-        )
-    }
-}
+//@Composable
+//fun PlayerIcon(dir: Char, size: Int) {
+//    Box(modifier = Modifier.fillMaxSize() ) {
+//        Icon(
+//            imageVector = when (dir) {
+//                'r' -> Icons.Outlined.ArrowForward
+//                'l' -> Icons.Outlined.ArrowBack
+//                'u' -> Icons.Outlined.ArrowUpward
+//                'd' -> Icons.Outlined.ArrowDownward
+//                else -> Icons.Default.Home
+//            },
+//            contentDescription = "playerDir",
+//            modifier = Modifier
+//                .size(size.dp)
+//                .align(Alignment.Center)
+//        )
+//    }
+//}

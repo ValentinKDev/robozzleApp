@@ -22,6 +22,11 @@ import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.utils.Extensions.toInt
+@Preview
+@Composable
+fun test() {
+    PlayerIcon(widhtDp = 100, direction = Direction(0,1))
+}
 
 @Composable
 fun PlayerIcon(widhtDp: Int, direction: Direction) {
@@ -59,8 +64,8 @@ fun PlayerIcon(widhtDp: Int, direction: Direction) {
                 rotate(
                     pivot = center,
                     degrees = when (direction.ToChar()) {
-                        'u' -> 90F
-                        'd' -> 270F
+                        'u' -> 270F
+                        'd' -> 90F
                         'r' -> 0F
                         'l' -> 180F
                         else -> 45F
@@ -134,20 +139,4 @@ fun PlayerIcon(widhtDp: Int, direction: Direction) {
             }
        }
    }
-}
-
-class CustomShape(): Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val path = Path().apply {
-            moveTo(size.width / 2f, 0f)
-            lineTo(size.width, size.height)
-            lineTo(0f, size.height)
-            close()
-        }
-        return Outline.Generic(path)
-    }
 }

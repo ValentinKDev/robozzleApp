@@ -1,9 +1,7 @@
 package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.content.Context
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.unit.Density
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.*
@@ -24,7 +22,7 @@ class InGameLayout(level: Level, context: Context) {
         infoLog("density", "$density ")
 //        val rect = layoutCoordinates.boundsInRoot()
         verbalLog("init", "first Part")
-        InGameFirstPart.init(context)
+        InGameFirstPart.init(context, level)
         verbalLog("init", "second Part")
         InGameSecondPart.init(context , level)
         verbalLog("init", "third Part")
