@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.elements
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +16,8 @@ import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import io.ktor.http.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.unit.IntOffset
 
 @Preview
 @Composable
@@ -209,11 +212,21 @@ fun DrawStarPart(
                         lineTo(xCenter, yCenter)
                     }
 //                    drawRect(color = whiteDark4)
-                    drawRect(brush = Brush.linearGradient( listOf(Color(0xff000078), Color(0xff000098), Color(0xff0000ba)) ))
-                    val sideDistance = Offset(pLeftx, pLefty).minus(Offset(pTopx, pTopy)).getDistance()
+                    drawRect(
+                        brush = Brush.linearGradient(
+                            listOf(
+                                Color(0xff000078),
+                                Color(0xff000098),
+                                Color(0xff0000ba)
+                            )
+                        )
+                    )
+                    val sideDistance = Offset(pLeftx, pLefty)
+                        .minus(Offset(pTopx, pTopy))
+                        .getDistance()
                     rotate(
                         degrees = rotation + 90 + 21,
-                        pivot = Offset(pLeftx , pLefty)
+                        pivot = Offset(pLeftx, pLefty)
                     ) {
                         drawRect(
                             brush = Brush.verticalGradient(
@@ -235,10 +248,10 @@ fun DrawStarPart(
                             size = Size(sideDistance, 20F)
                         )
                     }
-                    rotate(72F){
+                    rotate(72F) {
                         rotate(
                             degrees = rotation + 90 + 21,
-                            pivot = Offset(pLeftx , pLefty)
+                            pivot = Offset(pLeftx, pLefty)
                         ) {
                             drawRect(
                                 brush = Brush.verticalGradient(
@@ -261,10 +274,10 @@ fun DrawStarPart(
                             )
                         }
                     }
-                    rotate(144F){
+                    rotate(144F) {
                         rotate(
                             degrees = rotation + 90 + 21,
-                            pivot = Offset(pLeftx , pLefty)
+                            pivot = Offset(pLeftx, pLefty)
                         ) {
                             drawRect(
                                 brush = Brush.verticalGradient(
@@ -287,10 +300,10 @@ fun DrawStarPart(
                             )
                         }
                     }
-                    rotate(216F){
+                    rotate(216F) {
                         rotate(
                             degrees = rotation + 90 + 21,
-                            pivot = Offset(pLeftx , pLefty)
+                            pivot = Offset(pLeftx, pLefty)
                         ) {
                             drawRect(
                                 brush = Brush.verticalGradient(
@@ -313,10 +326,10 @@ fun DrawStarPart(
                             )
                         }
                     }
-                    rotate(288F){
+                    rotate(288F) {
                         rotate(
                             degrees = rotation + 90 + 21,
-                            pivot = Offset(pLeftx , pLefty)
+                            pivot = Offset(pLeftx, pLefty)
                         ) {
                             drawRect(
                                 brush = Brush.verticalGradient(
@@ -431,8 +444,18 @@ fun DrawStarPart(
                             strokeWidth = stroke
                         )
                     }
+                    drawArc(
+                        color = Color.Green,
+
+                        )
                 }
             )
+        }
+        val pTopx =
+        val pTopy = vertical1
+        Canvas(modifier = Modifier.offset{ IntOffset(0F, 0F) }, onDraw = )
+        Box(modifier = Modifier.offset()) {
+
         }
     }
 }

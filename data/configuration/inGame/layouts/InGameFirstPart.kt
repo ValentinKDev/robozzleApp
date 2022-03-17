@@ -12,8 +12,9 @@ object InGameFirstPart {
         const val height = 4F
         const val mapHeight = 0.95F
         const val mapWidht = 0.95F
-        const val playerIcon = 0.75F
-        const val starIcon = 0.8F
+//        const val playerIcon = 0.75F
+        const val playerIcon = 0.65F
+        const val starIcon = 0.70F
 //        const val playerIcon = 0.8F
     }
     object Sizes {
@@ -23,6 +24,7 @@ object InGameFirstPart {
         var heightDp: Int = 0
         var mapHeightDp: Int = 0
         var mapWidth: Int = 0
+        var mapWidthDp: Int = 0
         var mapCaseDp: Int = 0
         var starIconDp: Int = 0
         var playerIconDp: Int = 0
@@ -35,14 +37,16 @@ object InGameFirstPart {
 
         size.width = (widthFull).toInt()
         size.widthDp = (size.width / density).toInt()
-        size.mapWidth = (size.widthDp * ratios.mapWidht).toInt()
+        size.mapWidth = (size.width * ratios.mapWidht).toInt()
+        size.mapWidthDp = (size.widthDp * ratios.mapWidht).toInt()
+//        size.mapWidthDp = (size.mapWidth /)
         size.height = (heightFull * Ratios.height).toInt()
         size.heightDp = (size.height / density).toInt()
         size.mapHeightDp = (size.heightDp * ratios.mapHeight).toInt()
-        size.mapCaseDp = (size.mapHeightDp / level.map.size)
+        size.mapCaseDp = (size.mapWidthDp / level.map.size)
 //        size.playerIcon = ()
         size.starIconDp = (size.mapCaseDp * ratios.starIcon).toInt()
-        size.playerIconDp = (size.mapCaseDp * ratios.playerIcon).toInt()
+        size.playerIconDp = (size.mapCaseDp.toFloat() * ratios.playerIcon).toInt()
 
 
         infoLog(" width ", "${size.width}")
@@ -54,5 +58,6 @@ object InGameFirstPart {
         infoLog(" mapHeight ", "${size.mapHeightDp}")
         infoLog(" mapCaseDp ", "${size.mapCaseDp}")
         infoLog(" starIconDp ", "${size.starIconDp}")
+        infoLog(" playerIconDp ", "${size.playerIconDp}")
     }
 }

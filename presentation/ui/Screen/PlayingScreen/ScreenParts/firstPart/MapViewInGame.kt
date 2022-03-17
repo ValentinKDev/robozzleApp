@@ -105,12 +105,15 @@ fun MapViewInGame(
 //                                        content.invoke()
                                         playerInGame?.let {
                                             if (playerInGame.pos == casePosition) {
-//                                                PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
-                                                PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
+                                                CenterComposable {
+                                                    PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
+                                                }
                                             }
                                             else if (stars contain casePosition) {
                                                 if (stars contain casePosition) {
-                                                    StarIcon(data = vm.data.layout.firstPart)
+                                                    CenterComposable {
+                                                        StarIcon(data = vm.data.layout.firstPart)
+                                                    }
                                                 }
                                             }
                                         }
@@ -122,7 +125,9 @@ fun MapViewInGame(
                                     if (it.pos == casePosition) {
                                         errorLog("player out map - postion", "$casePosition")
 //                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
-                                        PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
+                                        CenterComposable {
+                                            PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
+                                        }
                                     }
                                 }
                             }
