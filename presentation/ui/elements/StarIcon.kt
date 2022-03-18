@@ -12,12 +12,17 @@ import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.platform.LocalContext
+import com.mobilegame.robozzle.presentation.ui.myleveltest
 
 @Preview
 @Composable
 fun testView() {
+    val ctxt = LocalContext.current
     val data = InGameFirstPart
-    Canvas(Modifier.size(data.size.starIconDp.dp)) {
+    data.init(ctxt, myleveltest)
+    Canvas(Modifier.size(data.size.starBoxDp)) {
         drawRect(
             brush = Brush.linearGradient(
                 listOf(
@@ -28,7 +33,7 @@ fun testView() {
             )
         )
     }
-    StarIcon(data = data)
+    StarIcon(data)
 }
 
 @Composable
@@ -62,13 +67,13 @@ fun DrawGlowingEffect(
     data: InGameFirstPart,
     colorNeon: List<Color>,
 ) {
-    val sizeDp = data.size.starIconDp
+    val sizeDp = data.size.starBoxDp
     Box(modifier = Modifier
-        .size(sizeDp.dp)
+        .size(sizeDp)
     ){
         CenterComposable {
             Canvas(modifier = Modifier
-                .size(sizeDp.dp)
+                .fillMaxSize()
             ) {
                 drawCircle(
                     brush = Brush.radialGradient( colorNeon ),
@@ -88,13 +93,13 @@ fun DrawStarPart(
     colorBack: Color,
     colorLines: List<Color>,
 ) {
-    val sizeDp = data.size.starIconDp
+    val sizeDp = data.size.starBoxDp
     Box(modifier = Modifier
-        .size(sizeDp.dp)
+        .size(sizeDp)
     ){
         CenterComposable {
             Canvas(modifier = Modifier
-                .size(data.size.starCanvasDp.dp)
+                .size(data.size.starCanvasDp)
             ){
 //                val stroke = sizeDp / 50F
                 val partRight = Path().apply {

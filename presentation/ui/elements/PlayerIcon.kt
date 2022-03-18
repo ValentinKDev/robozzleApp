@@ -8,21 +8,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.graphics.vector.PathNode
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.domain.InGame.Direction
-import com.mobilegame.robozzle.presentation.res.blueDark1
-import com.mobilegame.robozzle.presentation.res.green0
+import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.ui.myleveltest
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Preview
 @Composable
 fun test() {
-    val s = 100
-    Canvas(Modifier.size(s.dp)) {
+    val ctxt = LocalContext.current
+    val data = InGameFirstPart
+    data.init(ctxt, myleveltest)
+
+    Canvas(Modifier.size(data.size.playerBox.dp)) {
         drawRect(
             brush = Brush.linearGradient(
                 listOf(
@@ -33,29 +36,30 @@ fun test() {
             )
         )
     }
-    val data = InGameFirstPart
-    data.size.playerIconDp = s
-    data.size.playerIcon = s * 2.75F
-    data.size.playerCanvasDp = (data.size.playerIconDp * data.ratios.playerCanvas).toInt()
-    data.initPlayerIcon()
-    PlayerIcon(direction = Direction(1,0), data = data)
-//    PlayerIcon(direction = Direction(1,0))
+//    data.size.playerBoxDp = s
+//    data.size.playerBox = s * 2.75F
+//    data.size.playerCanvasDp = (data.size.playerBoxDp * data.ratios.playerCanvas).toInt()
+//    data.initPlayerIcon()
+//    PlayerIcon(direction = Direction(1,0), data = data)
+    PlayerIcon(direction = Direction(1,0), data)
 }
 
 @Composable
 fun PlayerIcon(direction: Direction, data: InGameFirstPart) {
     Box(modifier = Modifier
-        .size(data.size.playerIconDp.dp)
+//        .sizeBy(Size(data.size.playerIcon, data.size.playerIcon))
+//        .size(data.size.playerIconDp.dp)
+        .size(data.size.playerBox.dp)
     ){
         CenterComposable {
-            Canvas(modifier = Modifier.size(data.size.playerCanvasDp.dp)) {
+            Canvas(modifier = Modifier.size(data.size.playerCanvasDp)) {
+//            Canvas(modifier = Modifier.size(data.size.playerCanvasDp.dp)) {
+//            Canvas(modifier = Modifier.sizeBy(Size(data.size.playerCanvas, data.size.playerCanvas))) {
+//            Canvas(modifier = Modifier.size(data.size.playerCanvas.dp)) {
                 val armorColor = Color.Black
                 val cap = StrokeCap.Round
 
                 val strokeWidthSmall = data.player.strokeWidth
-
-                val height = size.height
-                val width: Float = size.width
 
                 val pBottomCenter = data.player.pBottomCenter
                 val pBottomLeft = data.player.pBottomLeft
@@ -75,6 +79,12 @@ fun PlayerIcon(direction: Direction, data: InGameFirstPart) {
 
                 val pNeonLeftEnd = data.player.pNeonLeftEnd
                 val pNeonRightEnd = data.player.pNeonRightEnd
+                errorLog("info", ".")
+                errorLog("data.size.playerIconDp", "${data.size.playerBoxDp}")
+                errorLog("data.size.playerCanvasDp", "${data.size.playerCanvasDp}")
+                errorLog("size Canvas", "${size.width}")
+                errorLog("size Canvas", "${size.height}")
+
 
                 rotate(
                     pivot = center,

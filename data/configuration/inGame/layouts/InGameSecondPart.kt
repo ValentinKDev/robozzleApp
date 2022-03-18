@@ -1,9 +1,10 @@
 package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
 import android.content.Context
-import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.utils.Extensions.toDp
 
 const val maxNumberActionToDisplay = 10
 
@@ -34,9 +35,10 @@ object InGameSecondPart {
     }
 
     object Sizes {
-        var width: Int = 0
-        var widthDp: Int = 0
-        var height: Int = 0
+        var width: Float = 0F
+        var widthDp: Dp = Dp.Unspecified
+        var height: Float = 0F
+        var heightDp: Dp = Dp.Unspecified
         var functionCase: Int = 0
         var functionCaseIcon: Int = 0
         var functionCasePadding: Int = 0
@@ -63,15 +65,16 @@ object InGameSecondPart {
         val heightFull = context.resources.displayMetrics.heightPixels
         val density = context.resources.displayMetrics.density
 
-        size.width = (widthFull).toInt()
-        size.widthDp = (widthFull/density).toInt()
-        size.height = (heightFull * Ratios.height).toInt()
+        size.width = widthFull.toFloat()
+        size.widthDp = size.width.toDp(density)
+        size.height = heightFull * Ratios.height
+        size.heightDp = size.height.toDp(density)
 
         initFunctionInstructionsRows(level, density)
         initActionRow(density)
         infoLog("InGameSecondPart", "initiate")
         infoLog("width", "${size.width}")
-        infoLog("height", "${size.height}")
+        infoLog("height", "${size.heightDp}")
 
         infoLog("functions Number", "$functionsNumber")
         infoLog("max Cases Number", "$maxCasesNumber")
@@ -99,9 +102,10 @@ object InGameSecondPart {
                 maxCasesNumber = it.instructions.length
         }
 
-
         //todo : take the number of row in the calcul
 //        size.functionCase = ((size.width * ratios.maxFunctionWidth) / maxCasesNumber).toInt()
+        val functionCaseByWidth: Float = (size.width * ratios.maxFunctionWidth) / maxCasesNumber
+//        val functionCaseByHeight: Float = size
         size.functionCase = (((size.width * ratios.maxFunctionWidth) / maxCasesNumber) / density).toInt()
         size.functionCaseIcon = size.functionCase
         size.bigFunctionCase = (size.functionCase * ( 1F + ratios.biggerFunctionCaseRatio )).toInt()

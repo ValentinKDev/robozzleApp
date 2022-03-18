@@ -18,9 +18,7 @@ class InGameLayout(level: Level, context: Context) {
     private var layoutCoordinates: LayoutCoordinates? = null
 
     init {
-//        density = dens.density
         infoLog("density", "$density ")
-//        val rect = layoutCoordinates.boundsInRoot()
         verbalLog("init", "first Part")
         InGameFirstPart.init(context, level)
         verbalLog("init", "second Part")
@@ -30,20 +28,4 @@ class InGameLayout(level: Level, context: Context) {
         verbalLog("init", "initMenu")
         InGameInstructionMenu.init(context , level)
     }
-//    fun setDensity(dens: Density) {density = dens.density}
-//    fun setLayoutCoordinates(newLayoutCoordinates: LayoutCoordinates) { layoutCoordinates ?: run { layoutCoordinates = newLayoutCoordinates } }
-//    fun setAllLayouts(level: Level) {
-//        layoutCoordinates?.let {
-//            val rect = it.boundsInRoot()
-//            infoLog("init", "first Part")
-//            firstPart.init(rect)
-//            infoLog("init", "second Part")
-//            secondPart.init(rect, density, level)
-//            infoLog("init", "third Part")
-//            thirdPart.init(rect)
-//            infoLog("init", "initMenu")
-//            menu.init(rect, level)
-//        }
-//    }
-//
 }

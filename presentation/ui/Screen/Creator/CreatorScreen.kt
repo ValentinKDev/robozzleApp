@@ -10,10 +10,16 @@ import androidx.compose.material.Text
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
+import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
+import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
+import com.mobilegame.robozzle.presentation.ui.elements.StarIcon
+import com.mobilegame.robozzle.presentation.ui.myleveltest
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 
@@ -27,17 +33,33 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAn
                 .width(350.dp)
                 .background(gray9)
         ) {
-            VerticalSpace(height = 50)
-            EmptySquare(40, 0.15F, whiteDark4)
-            VerticalSpace(height = 50)
-            EmptyRect(height = 100.dp, 100.dp, 10F, whiteDark4)
+            val s = 100 / 2.75
+            Box {
+                Canvas(Modifier.size(s.dp)) {
+                    drawRect(
+                        brush = Brush.linearGradient(
+                            listOf(
+                                Color(0xff000078),
+                                Color(0xff000098),
+                                Color(0xff0000ba)
+                            )
+                        )
+                    )
+                }
+                val data = InGameFirstPart
+                InGameFirstPart.init(LocalContext.current, myleveltest)
+//                PlayerIcon(direction = Direction(1,0), data = data)
+                StarIcon(data)
+            }
         }
     }
 }
 
 @Composable
 fun EmptyRect(height: Dp, width: Dp, stroke: Float, color: Color) {
-    Canvas(modifier = Modifier.height(height).width(width)) {
+    Canvas(modifier = Modifier
+        .height(height)
+        .width(width)) {
         val canvasHeight = size.height
         val canvasWidth = size.width
         drawRect(

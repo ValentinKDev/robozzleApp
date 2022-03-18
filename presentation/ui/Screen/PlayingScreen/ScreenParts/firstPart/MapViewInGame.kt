@@ -3,17 +3,9 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowDownward
-import androidx.compose.material.icons.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,8 +18,7 @@ import com.mobilegame.robozzle.analyse.logAnimMap
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.ColorsList
-import com.mobilegame.robozzle.presentation.res.yellowDark2
+import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
 import com.mobilegame.robozzle.presentation.ui.elements.StarIcon
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
@@ -37,7 +28,7 @@ import gradientBackground
 @Composable
 fun MapViewInGame(
     vm: GameDataViewModel,
-    widthInt: Int,
+//    widthInt: Int,
     playerInGame: PlayerInGame? = null,
     stars: List<Position> = emptyList(),
     filter: Boolean,
@@ -54,23 +45,37 @@ fun MapViewInGame(
 
     val calulByWidth = if (caseNumberWidth > caseNumberHeight) true else false
 
+//    val widthInt = vm.data.layout.firstPart.size.mapWidthDp
     val padingRatio: Float = 1.0f / 20.0f
 
-    val caseSize: Int =
-        if (calulByWidth) (widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))).toInt()
-        else (widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))).toInt()
-    val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
-    val mapWidthtDP: Dp = widthInt.dp
-    val casePaddingDP: Dp = (caseSize / 20.0F).dp
-    val playerIconSize: Int = (caseSize * vm.data.layout.firstPart.ratios.playerIcon).toInt()
+//    val caseSize: Int =
+//        if (calulByWidth) (widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))).toInt()
+//        else (widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))).toInt()
+//    val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
+//    val mapWidthtDP: Dp = widthInt.dp
+//    val casePaddingDP: Dp = (caseSize / 20.0F).dp
+//    val playerIconSize: Int = (caseSize * vm.data.layout.firstPart.ratios.playerBox).toInt()
 
     var casePosition = Position.Zero
 
     Box(
         Modifier
-            .height(mapHeightDP)
-            .width(mapWidthtDP)
+            .height(vm.data.layout.firstPart.size.mapHeightDp)
+            .width(vm.data.layout.firstPart.size.mapWidthDp)
+            .background(green9)
+//            .height(mapHeightDP)
+//            .width(mapWidthtDP)
     ) {
+        Row {
+            for (i in 0..9) {
+                Box(Modifier.height(10.dp).width(vm.data.layout.firstPart.size.mapCaseDp).background( yellow1) ) { }
+                Spacer(Modifier.size(vm.data.layout.firstPart.size.mapCasePaddingDp))
+            }
+        }
+        Box(Modifier.height(10.dp).width(vm.data.layout.firstPart.size.mapCase.dp).background( yellow1) ) { }
+        Box(Modifier.height(20.dp).width(vm.data.layout.firstPart.size.mapCaseDp).background( yellow1) ) { }
+//        Box(Modifier.height(10.dp).width(vm.data.layout.firstPart.size.mapWidthDp).background( yellow1) ) { }
+//        Box(Modifier.width(10.dp).height(vm.data.layout.firstPart.size.mapHeightDp).background( yellow1) ) { }
         Column( Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -82,14 +87,17 @@ fun MapViewInGame(
                         Box(
                             Modifier
                                 .background(Color.Transparent)
-                                .size(caseSize.dp),
+//                                .size(caseSize.dp),
+                                .size(vm.data.layout.firstPart.size.mapCaseDp),
+//                                .size(vm.data.layout.firstPart.size.mapCase.dp),
                         ) {
                             if (_color != '.') {
                                 Card(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(1.dp),
-                                    shape = RectangleShape,
+//                                        .padding(1.dp),
+                                        .padding(vm.data.layout.firstPart.size.mapCasePaddingDp),
+                                shape = RectangleShape,
                                     elevation = 7.dp,
                                 ) {
                                     Box(
@@ -112,7 +120,7 @@ fun MapViewInGame(
                                             else if (stars contain casePosition) {
                                                 if (stars contain casePosition) {
                                                     CenterComposable {
-                                                        StarIcon(data = vm.data.layout.firstPart)
+                                                        StarIcon(vm.data.layout.firstPart)
                                                     }
                                                 }
                                             }
@@ -126,7 +134,7 @@ fun MapViewInGame(
                                         errorLog("player out map - postion", "$casePosition")
 //                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
                                         CenterComposable {
-                                            PlayerIcon(direction = it.direction, data = vm.data.layout.firstPart)
+                                            PlayerIcon(direction = it.direction, vm.data.layout.firstPart)
                                         }
                                     }
                                 }

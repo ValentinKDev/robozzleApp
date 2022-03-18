@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
 import com.mobilegame.robozzle.utils.Extensions.clone
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
+    val cleaner = MapCleaner()
     var level: Level = LevelVM(getApplication()).getLevelArgument()
 //    var level: Level = myleveltest
 
