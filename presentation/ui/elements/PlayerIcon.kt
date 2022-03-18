@@ -17,9 +17,9 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 @Composable
 fun test() {
     PlayerIcon(widhtDp = 100, direction = Direction(1,0))
-    PlayerIcon(widhtDp = 9, direction = Direction(1,0))
-    PlayerIcon(widhtDp = 10, direction = Direction(1,0))
-    PlayerIcon(widhtDp = 9, direction = Direction(1,0))
+//    PlayerIcon(widhtDp = 9, direction = Direction(1,0))
+//    PlayerIcon(widhtDp = 10, direction = Direction(1,0))
+//    PlayerIcon(widhtDp = 9, direction = Direction(1,0))
 }
 
 @Composable
@@ -147,27 +147,32 @@ fun PlayerIcon(widhtDp: Int, direction: Direction) {
                     val newOffset = Offset(start + (baseOffsetLeft.x * 0.5F), (0.93F * bottom) + (baseOffsetLeft.y * 0.5F))
                     val pNeonLeftEnd = Offset(pBottomCenter.x - (baseOffsetLeft.x * 0.5F) , pBottomCenter.y - (baseOffsetLeft.y * 0.5F))
                     val pNeonRightEnd = Offset(pBottomCenter.x - (baseOffsetLeft.x * 0.5F) , pBottomCenter.y - (baseOffsetLeft.y * 0.5F))
-                    drawLine(
-                        start = pBottomCenter,
-                        end = pNeonLeftEnd,
-                        color = Color(0xFFFFB020),
-                        cap = cap,
-                        strokeWidth = 5F,
-                    )
-                    rotate(degrees = 45F + 184F, pivot = pBottomCenter) {
-                        drawLine(
-                            start = pBottomCenter,
-                            end = pNeonLeftEnd,
-                            color = Color(0xFFFFB020),
-                            cap = cap,
-                            strokeWidth = 5F,
-                        )
-                    }
+//                    drawLine(
+//                        start = pBottomCenter,
+//                        end = pNeonLeftEnd,
+//                        color = Color(0xFFFFB020),
+//                        cap = cap,
+//                        strokeWidth = 5F,
+//                    )
+//                    rotate(degrees = 45F + 184F, pivot = pBottomCenter) {
+//                        drawLine(
+//                            start = pBottomCenter,
+//                            end = pNeonLeftEnd,
+//                            color = Color(0xFFFFB020),
+//                            cap = cap,
+//                            strokeWidth = 5F,
+//                        )
+//                    }
                     drawArc(
 //                        brush = Brush.linearGradient(listOf(
-                        brush = Brush.verticalGradient(listOf(
-                            Color(0xFFFFB020),
+                        brush = Brush.radialGradient(listOf(
                             Color(0xFFAF7000),
+                            Color(0xFFFFB020),
+                            Color(0xBBFFB020),
+                            Color(0xBBFFB020),
+//                        brush = Brush.verticalGradient(listOf(
+//                            Color(0xFFFFB020),
+//                            Color(0xFFAF7000),
                         )),
 //                        color = Color(0xFFFFB020),
 //                        color = Color(0xFFDFDF00),
