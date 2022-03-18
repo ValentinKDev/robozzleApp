@@ -60,88 +60,81 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
 
-    Row() {
-        Row( Modifier
-            .fillMaxHeight()
-            .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
-            ,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (actionList.isNotEmpty())
-                ActionRowCase(vm = vm, case = actionList.first(), filter = displayInstructionMenu, bigger = true)
-        }
-        Row( Modifier
-            .fillMaxHeight()
-//            .backColor(Color.Yellow)
-            .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
-            ,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(Modifier
-                .wrapContentSize()
-//                        .weight(3F)
-//                        .background(Color.Magenta)
+    if (actionList.isNotEmpty()) {
+
+        Row() {
+            Row( Modifier
+                .fillMaxHeight()
+                .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)
                 ,
                 verticalAlignment = Alignment.CenterVertically
-                ,
-                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                actionList.subListIfPossible(fromIndex = 1, toIndex = 8)
-                    .forEachIndexed { index, functionInstruction ->
-                        logAnimLayoutSecondPart?.let {
-                            verbalLog(
-                                "Display Action",
-                                "index $index : $functionInstruction"
-                            )
-                        }
-                        ActionRowCase(
-                            vm = vm,
-                            case = functionInstruction,
-                            filter = displayInstructionMenu
-                        )
-//                                HorizontalSpace(widthDp = vm.data.layout.secondPart.size.widthDp/70)
-                    }
+                if (actionList.isNotEmpty())
+                    ActionRowCase(vm = vm, case = actionList.first(), filter = displayInstructionMenu, bigger = true)
             }
-            Row(Modifier
+            Row( Modifier
+                .fillMaxHeight()
+//            .backColor(Color.Yellow)
+                .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
+                ,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(Modifier
+                    .wrapContentSize()
+//                        .weight(3F)
+//                        .background(Color.Magenta)
+                    ,
+                    verticalAlignment = Alignment.CenterVertically
+                    ,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    actionList.subListIfPossible(fromIndex = 1, toIndex = 8)
+//                actionList.subListIfPossible(fromIndex = 1, toIndex = actionList.lastIndex - 1)
+                        .forEachIndexed { index, functionInstruction ->
+                            logAnimLayoutSecondPart?.let {
+                                verbalLog(
+                                    "Display Action",
+                                    "index $index : $functionInstruction"
+                                )
+                            }
+                            ActionRowCase(
+                                vm = vm,
+                                case = functionInstruction,
+                                filter = displayInstructionMenu
+                            )
+//                                HorizontalSpace(widthDp = vm.data.layout.secondPart.size.widthDp/70)
+                        }
+                }
+                Row(Modifier
 //                        .weight(1F)
 //                        .background(Color.Yellow)
-            ) {
-                AnimatedVisibility(
-                    visible = actionPair Is true,
-//                    enter = slideInHorizontally(
-//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
-//                        animationSpec = tween(visibleAnimDelay)
-//                    )
-                    enter = expandHorizontally(
-                        expandFrom = Alignment.End,
-//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
-                        animationSpec = tween(visibleAnimDelay)
-                    )
-//                                    + fadeIn(animationSpec = tween(visibleAnimDelay)),
-//                        exit = slideOutHorizontally(
-//                            animationSpec = tween(visibleAnimDelay)
-//                        ),
                 ) {
-                    ActionRowCase(vm = vm, case = actionList[8], filter = displayInstructionMenu)
-                }
-//                    } else {
-                AnimatedVisibility(
-                    visible = actionPair Not true,
-                    enter = expandHorizontally(
-                        expandFrom = Alignment.End,
-//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
-                        animationSpec = tween(visibleAnimDelay)
-                    )
-//                    enter = slideInHorizontally(
-//                        initialOffsetX = {vm.data.layout.secondPart.size.width + it},
-//                        animationSpec = tween(visibleAnimDelay)
-//                    )
-//                                    + fadeIn(animationSpec = tween(visibleAnimDelay)),
-//                        exit = slideOutHorizontally(
-//                            animationSpec = tween(visibleAnimDelay)
-//                        ),
-                ) {
-                    ActionRowCase(vm = vm, case = actionList[8], filter = displayInstructionMenu)
+                    AnimatedVisibility(
+                        visible = actionPair Is true,
+                        enter = expandHorizontally(
+                            expandFrom = Alignment.End,
+                            animationSpec = tween(visibleAnimDelay)
+                        )
+                    ) {
+                        actionList.getOrNull(8)?.let {
+                            ActionRowCase(vm = vm, case = it, filter = displayInstructionMenu)
+                        }
+//                        ActionRowCase(vm = vm, case = actionList.last(), filter = displayInstructionMenu)
+                    }
+                    AnimatedVisibility(
+                        visible = actionPair Not true,
+                        enter = expandHorizontally(
+                            expandFrom = Alignment.End,
+                            animationSpec = tween(visibleAnimDelay)
+                        )
+                    ) {
+                        //todo: use remember to differenciate pair and impair display, so it make the animation more readable
+                        actionList.getOrNull(8)?.let {
+                            ActionRowCase(vm = vm, case = it, filter = displayInstructionMenu)
+                        }
+//                        ActionRowCase(vm = vm, case = actionList.last(), filter = displayInstructionMenu)
+//                    ActionRowCase(vm = vm, case = actionList[8], filter = displayInstructionMenu)
+                    }
                 }
             }
         }
@@ -165,24 +158,24 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
                 ),
                 shape = RoundedCornerShape(corner = CornerSize(5.dp))
             )
-            ,
-            shape = RoundedCornerShape(corner= CornerSize(5.dp)),
-            elevation = if (bigger)
-                vm.data.colors.actionRowCaseElevation
-            else
-                vm.data.colors.actionRowCaseBiggerElevation
+        ,
+        shape = RoundedCornerShape(corner= CornerSize(5.dp)),
+        elevation = if (bigger)
+            vm.data.colors.actionRowCaseElevation
+        else
+            vm.data.colors.actionRowCaseBiggerElevation
+    ) {
+        Box( Modifier.gradientBackground(
+            colors = ColorsList(
+                case.color,
+                filter
+            ),
+            angle = 175F
+        )
         ) {
-            Box( Modifier.gradientBackground(
-                colors = ColorsList(
-                    case.color,
-                    filter
-                ),
-                angle = 175F
-            )
-            ) {
-                InstructionIconsActionRow(case.instruction, vm)
-            }
+            InstructionIconsActionRow(case.instruction, vm)
         }
+    }
 }
 @Composable
 fun ActionRowSurronder(vm: GameDataViewModel) {

@@ -113,7 +113,11 @@ fun Navigation(navigator: Navigator) {
             route = Screens.Test.route,
         ) {
             errorLog("Navigation", "Screen.Test.route")
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(5)
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(7)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
             PlayingScreen()
         }
     }
