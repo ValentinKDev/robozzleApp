@@ -2,63 +2,79 @@ package com.mobilegame.robozzle.presentation.ui.elements
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.vector.PathNode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.domain.InGame.Direction
+import com.mobilegame.robozzle.presentation.res.blueDark1
 import com.mobilegame.robozzle.presentation.res.green0
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Preview
 @Composable
 fun test() {
-    PlayerIcon(widhtDp = 100, direction = Direction(1,0))
-//    PlayerIcon(widhtDp = 9, direction = Direction(1,0))
-//    PlayerIcon(widhtDp = 10, direction = Direction(1,0))
-//    PlayerIcon(widhtDp = 9, direction = Direction(1,0))
+    val s = 100
+    Canvas(Modifier.size(s.dp)) {
+        drawRect(
+            brush = Brush.linearGradient(
+                listOf(
+                    Color(0xff000078),
+                    Color(0xff000098),
+                    Color(0xff0000ba)
+                )
+            )
+        )
+    }
+    val data = InGameFirstPart
+    data.size.playerIconDp = s
+    data.size.playerIcon = s * 2.75F
+    data.size.playerCanvasDp = (data.size.playerIconDp * data.ratios.playerCanvas).toInt()
+    data.initPlayerIcon()
+    PlayerIcon(direction = Direction(1,0), data = data)
+//    PlayerIcon(direction = Direction(1,0))
 }
 
 @Composable
-fun PlayerIcon(widhtDp: Int, direction: Direction) {
+fun PlayerIcon(direction: Direction, data: InGameFirstPart) {
     Box(modifier = Modifier
-        .size(widhtDp.dp)
+        .size(data.size.playerIconDp.dp)
     ){
         CenterComposable {
-            androidx.compose.foundation.Canvas(modifier = Modifier.size((0.9F * widhtDp).dp)) {
+            Canvas(modifier = Modifier.size(data.size.playerCanvasDp.dp)) {
                 val armorColor = Color.Black
                 val cap = StrokeCap.Round
-                val strokeWidthBig = 0.06F * widhtDp.toFloat()
-                val strokeWidthMedium = 0.05F * widhtDp.toFloat()
-                val strokeWidthSmall = 0.04F * widhtDp.toFloat()
+
+                val strokeWidthSmall = data.player.strokeWidth
 
                 val height = size.height
-                val width = size.width
+                val width: Float = size.width
 
-                val start = 0F
-                val end = width
-                val top = 0F
-                val bottom = height
-
-                val yCenter = (bottom - top) / 2F
-
-                val pBottomCenter = Offset( x = width / 5F, y = yCenter)
-                val pBottomLeft = Offset(x = start,y = 0.07F * end)
-                val pBottomRight = Offset(x = start,y = 0.93F * end)
+                val pBottomCenter = data.player.pBottomCenter
+                val pBottomLeft = data.player.pBottomLeft
+                val pBottomRight = data.player.pBottomRight
+                val pTop = data.player.pTop
 
                 val trianglePathLeftHalf = Path().apply {
-                    moveTo(width, yCenter)
+                    moveTo(pTop.x, pTop.y)
                     lineTo(pBottomLeft.x, pBottomLeft.y)
                     lineTo(pBottomCenter.x, pBottomCenter.y)
                 }
                 val trianglePathRightHalf = Path().apply {
-                    moveTo(width, yCenter)
+                    moveTo(pTop.x, pTop.y)
                     lineTo(pBottomRight.x, pBottomRight.y)
                     lineTo(pBottomCenter.x, pBottomCenter.y)
                 }
+
+                val pNeonLeftEnd = data.player.pNeonLeftEnd
+                val pNeonRightEnd = data.player.pNeonRightEnd
 
                 rotate(
                     pivot = center,
@@ -70,55 +86,56 @@ fun PlayerIcon(widhtDp: Int, direction: Direction) {
                         else -> 45F
                     }
                 ) {
-
-                    drawLine(
-                        start = pBottomCenter,
-                        end = Offset(end, yCenter),
-                        color = armorColor,
-                        cap = cap,
-                        strokeWidth = strokeWidthSmall
-//                        strokeWidth = 4F
+                    drawArc(
+                        brush = Brush.radialGradient(listOf(
+                            Color(0xFFAF7000),
+                            Color(0xFFFFB020),
+                            Color(0xBBFFB020),
+                            Color(0x99FFB020),
+                            Color(0x22FFB020),
+                        )),
+                        useCenter = true,
+                        topLeft = Offset.Zero,
+                        startAngle = 148F,
+                        sweepAngle = 64F,
                     )
-                    //ext rigth
+
+                    //ext right
                     drawLine(
-                        start = Offset(width, yCenter),
+//                        start = Offset(width, yCenter),
+                        start = data.player.pCenter,
                         end = pBottomRight,
                         color = armorColor,
                         cap = cap,
-//                        strokeWidth = strokeWidthMedium
                         strokeWidth = strokeWidthSmall
-//                        strokeWidth = 5F
                     )
+
                     //ext left
                     drawLine(
-                        start = pBottomLeft,
-                        end = Offset(width, yCenter),
+                        start = data.player.pCenter,
+                        end = pBottomLeft,
+//                        end = Offset(width, yCenter),
                         color = armorColor,
                         cap = cap,
                         strokeWidth = strokeWidthSmall
-//                        strokeWidth = strokeWidthMedium
-//                        strokeWidth = 5F
                     )
 
                     //bottom right
                     drawLine(
-                        start = pBottomCenter,
+                        start = pNeonRightEnd,
                         end = pBottomRight,
                         color = armorColor,
                         cap = cap,
                         strokeWidth = strokeWidthSmall
-//                        strokeWidth = strokeWidthBig,
-//                        strokeWidth = 6F
                     )
+
                     //bottom left
                     drawLine(
-                        start = pBottomCenter,
+                        start = pNeonLeftEnd,
                         end = pBottomLeft,
                         color = armorColor,
                         cap = cap,
                         strokeWidth = strokeWidthSmall
-//                        strokeWidth = strokeWidthBig,
-//                        strokeWidth = 6F
                     )
 
                     drawPath(
@@ -142,45 +159,23 @@ fun PlayerIcon(widhtDp: Int, direction: Direction) {
                             )
                         )
                     )
-                    //bottom right neon
-                    val baseOffsetLeft = pBottomCenter.minus(pBottomLeft)
-                    val newOffset = Offset(start + (baseOffsetLeft.x * 0.5F), (0.93F * bottom) + (baseOffsetLeft.y * 0.5F))
-                    val pNeonLeftEnd = Offset(pBottomCenter.x - (baseOffsetLeft.x * 0.5F) , pBottomCenter.y - (baseOffsetLeft.y * 0.5F))
-                    val pNeonRightEnd = Offset(pBottomCenter.x - (baseOffsetLeft.x * 0.5F) , pBottomCenter.y - (baseOffsetLeft.y * 0.5F))
-//                    drawLine(
-//                        start = pBottomCenter,
-//                        end = pNeonLeftEnd,
-//                        color = Color(0xFFFFB020),
-//                        cap = cap,
-//                        strokeWidth = 5F,
-//                    )
-//                    rotate(degrees = 45F + 184F, pivot = pBottomCenter) {
-//                        drawLine(
-//                            start = pBottomCenter,
-//                            end = pNeonLeftEnd,
-//                            color = Color(0xFFFFB020),
-//                            cap = cap,
-//                            strokeWidth = 5F,
-//                        )
-//                    }
-                    drawArc(
-//                        brush = Brush.linearGradient(listOf(
-                        brush = Brush.radialGradient(listOf(
-                            Color(0xFFAF7000),
-                            Color(0xFFFFB020),
-                            Color(0xBBFFB020),
-                            Color(0xBBFFB020),
-//                        brush = Brush.verticalGradient(listOf(
-//                            Color(0xFFFFB020),
-//                            Color(0xFFAF7000),
-                        )),
-//                        color = Color(0xFFFFB020),
-//                        color = Color(0xFFDFDF00),
-                        useCenter = true,
-                        topLeft = Offset.Zero,
-                        startAngle = 148F,
-                        sweepAngle = 64F,
-//                        size =
+
+                    val bottomBase = Path().apply {
+                        moveTo(data.player.pCenter.x, data.player.pCenter.y)
+                        lineTo(pNeonLeftEnd.x, pNeonLeftEnd.y)
+                        lineTo(pBottomCenter.x, pBottomCenter.y)
+                        lineTo(pNeonRightEnd.x, pNeonRightEnd.y)
+                        lineTo(data.player.pCenter.x, data.player.pCenter.y)
+                    }
+                    drawPath(
+                        brush = Brush.radialGradient(
+                            listOf(
+                                Color(0x88FFB020),
+                                Color(0xDDFFB020),
+                                Color(0xFFFFB020),
+                            )
+                        ),
+                        path = bottomBase
                     )
                 }
             }

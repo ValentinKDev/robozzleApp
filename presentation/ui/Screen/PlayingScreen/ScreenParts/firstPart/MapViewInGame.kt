@@ -106,7 +106,7 @@ fun MapViewInGame(
                                         playerInGame?.let {
                                             if (playerInGame.pos == casePosition) {
                                                 CenterComposable {
-                                                    PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
+                                                    PlayerIcon(direction = it.direction, data = vm.data.layout.firstPart)
                                                 }
                                             }
                                             else if (stars contain casePosition) {
@@ -126,7 +126,7 @@ fun MapViewInGame(
                                         errorLog("player out map - postion", "$casePosition")
 //                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
                                         CenterComposable {
-                                            PlayerIcon(widhtDp = vm.data.layout.firstPart.size.playerIconDp, direction = it.direction)
+                                            PlayerIcon(direction = it.direction, data = vm.data.layout.firstPart)
                                         }
                                     }
                                 }
