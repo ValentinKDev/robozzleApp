@@ -7,6 +7,7 @@ import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomView
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -18,6 +19,7 @@ class LevelVM (
     val argumentLevelDataStore = ArgumentsDataStoreViewModel(context)
 
     fun getLevelArgument(): Level = runBlocking(Dispatchers.IO) {
+        val cleaner = MapCleaner()
         val id = argumentLevelDataStore.getLevelNumberArg()
         val lvl = levelRoomVM.getLevel(id)!!
         infoLog("getLevelargument()", "${lvl.playerInitial[0]}")

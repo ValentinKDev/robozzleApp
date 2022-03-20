@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-    val cleaner = MapCleaner()
+//    val cleaner = MapCleaner()
     var level: Level = LevelVM(getApplication()).getLevelArgument()
 //    var level: Level = myleveltest
 
@@ -86,7 +86,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         animData.setAnimationDelayLong()
     }
 
-    //todo : try to use State instead of LiveData, it might ensure this display is triggered when you click
     private val _displayInstructionsMenu = MutableStateFlow(false)
     val displayInstructionsMenu: StateFlow<Boolean> = _displayInstructionsMenu.asStateFlow()
     fun ChangeInstructionMenuState() {
@@ -142,5 +141,9 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
 
-    init { logInit?.let { errorLog("init", "GameDataViewModel") } }
+    init {
+        logInit?.let { errorLog("init", "GameDataViewModel") }
+        level.map.printMap()
+        level.starsList.printList()
+    }
 }

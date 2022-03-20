@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.elements
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import com.mobilegame.robozzle.presentation.ui.myleveltest
 
@@ -49,7 +51,8 @@ fun StarIcon(data: InGameFirstPart) {
             yellow5,
             yellow6,
             yellow7,
-            yellow12,
+//            yellow12,
+            Color.Transparent
         )
     )
 
@@ -67,13 +70,28 @@ fun DrawGlowingEffect(
     data: InGameFirstPart,
     colorNeon: List<Color>,
 ) {
+    val transition = rememberInfiniteTransition()
+    val ratioAnim by transition.animateFloat(
+        initialValue = 0.8F,
+        targetValue = 0.92F,
+        animationSpec = infiniteRepeatable(
+            tween(
+                durationMillis = 1200,
+                easing = FastOutSlowInEasing
+//                easing = FastOutLinearInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
     val sizeDp = data.size.starBoxDp
     Box(modifier = Modifier
         .size(sizeDp)
     ){
         CenterComposable {
             Canvas(modifier = Modifier
-                .fillMaxSize()
+                .size(sizeDp * ratioAnim)
+//                .fillMaxSize()
             ) {
                 drawCircle(
                     brush = Brush.radialGradient( colorNeon ),

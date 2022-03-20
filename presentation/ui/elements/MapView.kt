@@ -2,13 +2,9 @@ package com.mobilegame.robozzle.presentation.ui.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
@@ -60,7 +56,7 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
                             Box(
                                 Modifier
                                     .fillMaxSize()
-                                    .gradientBackground(ColorsList(caseColor), 135f)
+                                    .gradientBackground(mapCaseColorList(caseColor), 135f)
                                     .graphicsLayer { shadowElevation = if (caseColor != '.') 7.dp.toPx() else 0.dp.toPx() }
                             ) { }
                         }

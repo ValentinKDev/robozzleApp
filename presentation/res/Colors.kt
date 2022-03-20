@@ -20,7 +20,7 @@ val darkerRed =         Color(0xafaf0000)
 val niceBlue =          Color(0xdf0000df)
 val darkerBlue =        Color(0xaf0000af)
 
-fun ColorsList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
+fun mapCaseColorList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
 
     val red: List<Color> = if (darkerFilter) { listOf(Color(0xff110000), Color(0xff650000), Color(0xff990000))}
     else {listOf(Color(0xff750000), Color(0xff920000), Color(0xffad0000))}
@@ -33,7 +33,6 @@ fun ColorsList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
 
     val transparent : List<Color> =  listOf(Color.Transparent, Color.Transparent)
     val errorColor: List<Color> = listOf(Color.Yellow, Color.Green, Color.Blue)
-//    val gray: List<Color> = listOf(Color.Gray, Color.Gray)
     val gray1 = grayDark(2, 1)
     val gray2 = grayDark(4, 1)
     val gray3 = grayDark(6, 3)
@@ -43,17 +42,14 @@ fun ColorsList(toRecognize: Char, darkerFilter: Boolean = false): List<Color> {
 
 
     val gray: List<Color> = if (darkerFilter) { listOf(darkgray3, darkgray2, darkgray1) }
-//    val gray: List<Color> = if (darkerFilter) metalGray
     else listOf(gray3, gray2, gray1)
-//    else metalGray.asReversed()
-//    else listOf(grayDark1, grayDark2, grayDark4)
 
     return when (toRecognize) {
         'g' -> gray
         'R' -> red
         'B' -> blue
         'G' -> green
-        '.' -> transparent
+//        '.' -> transparent
         else -> errorColor
     }
 }

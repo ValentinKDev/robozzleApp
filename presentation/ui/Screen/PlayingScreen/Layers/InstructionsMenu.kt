@@ -1,9 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,9 +8,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,9 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
-import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.ColorsList
+import com.mobilegame.robozzle.presentation.res.mapCaseColorList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsMenu
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import gradientBackground
@@ -87,7 +80,7 @@ fun InstructionCase(vm: GameDataViewModel, case: FunctionInstruction) {
     Box(
         modifier = Modifier
             .gradientBackground(
-                ColorsList(case.color, false),
+                mapCaseColorList(case.color, false),
                 175f
             )
             .clickable {

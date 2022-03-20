@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.ColorsList
+import com.mobilegame.robozzle.presentation.res.mapCaseColorList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionsIconsFunction
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import gradientBackground
@@ -25,7 +25,7 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
         ,
         elevation = 50.dp
     ) {
-        Box( Modifier.gradientBackground(ColorsList(color, filter), 175f) ) {
+        Box( Modifier.gradientBackground(mapCaseColorList(color, filter), 175f) ) {
             if (instructionChar != '.'){
                 CenterComposable {
                     InstructionsIconsFunction(instructionChar, vm)

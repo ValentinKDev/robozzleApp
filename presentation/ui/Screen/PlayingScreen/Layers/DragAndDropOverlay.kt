@@ -2,37 +2,21 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.animateSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import backColor
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
-import com.mobilegame.robozzle.presentation.res.ColorsList
-import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.res.yellow0
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptySquare
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

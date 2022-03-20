@@ -22,10 +22,10 @@ object InGameFirstPart {
         const val mapWidth = 0.95F
         const val mapCasePadding = 0.004F
 
-        const val playerBox = 0.8F
-        const val playerCanvas = 0.7F
+        const val playerBox = 0.9F
+        const val playerCanvas = 0.82F
 
-        const val starBox = 0.65F
+        const val starBox = 0.75F
         const val starCanvas = 0.78F
     }
     object Sizes {
@@ -33,6 +33,11 @@ object InGameFirstPart {
         var widthDp: Dp = Dp.Unspecified
         var height: Float = 0F
         var heightDp: Dp = Dp.Unspecified
+
+        var mapLayoutWidth: Float = 0F
+        var mapLayoutWidthDp: Dp = Dp.Unspecified
+        var mapLayoutHeight: Float = 0F
+        var mapLayoutHeightDp: Dp = Dp.Unspecified
         var mapHeight: Float = 0F
         var mapHeightDp: Dp = Dp.Unspecified
         var mapWidth: Float = 0F
@@ -88,17 +93,24 @@ object InGameFirstPart {
         size.height = heightFull * (Ratios.height / (Ratios.height + InGameSecondPart.Ratios.height + InGameThirdPart.Ratios.height))
         size.heightDp = size.height.toDp(density)
 
-        size.mapWidth = size.width * ratios.mapWidth
-        size.mapWidthDp = size.mapWidth.toDp(density)
-        size.mapHeight = size.height * ratios.mapHeight
-        size.mapHeightDp = size.mapHeight.toDp(density)
+        size.mapLayoutWidth = size.width * ratios.mapWidth
+        size.mapLayoutWidthDp = size.mapLayoutWidth.toDp(density)
+        size.mapLayoutHeight = size.height * ratios.mapHeight
+        size.mapLayoutHeightDp = size.mapLayoutHeight.toDp(density)
 
-        size.mapCasePadding = size.mapWidth * ratios.mapCasePadding
+        val casePaddingByHeight = size.mapLayoutHeight * ratios.mapCasePadding
+        val casePaddingByWidth = size.mapLayoutWidth * ratios.mapCasePadding
+        size.mapCasePadding = getSmallerFloat(casePaddingByHeight, casePaddingByWidth)
         size.mapCasePaddingDp = size.mapCasePadding.toDp(density)
-        val mapCaseByWidth = (size.mapWidth - ((1 + level.map.first().length ) * size.mapCasePadding)) / level.map.first().length
-        val mapCaseByHeight = (size.mapHeight - ((1 + level.map.size ) * size.mapCasePadding)) / level.map.size
+        val mapCaseByWidth = (size.mapLayoutWidth - ((1 + level.map.first().length ) * size.mapCasePadding)) / level.map.first().length
+        val mapCaseByHeight = (size.mapLayoutHeight - ((1 + level.map.size ) * size.mapCasePadding)) / level.map.size
         size.mapCase = getSmallerFloat(mapCaseByWidth, mapCaseByHeight)
         size.mapCaseDp = size.mapCase.toDp(density)
+
+        size.mapWidth = ((size.mapCase + size.mapCasePadding) * level.map.first().length) - size.mapCasePadding
+        size.mapWidthDp = size.mapWidth.toDp(density)
+        size.mapHeight = ((size.mapCase + size.mapCasePadding) * level.map.size) - size.mapCasePadding
+        size.mapHeightDp = size.mapHeight.toDp(density)
 
         size.playerBox = size.mapCase * ratios.playerBox
         size.playerBoxDp = size.playerBox.toDp(density)
@@ -115,9 +127,11 @@ object InGameFirstPart {
 
         infoLog(" widthDp ", "${size.widthDp}")
         infoLog(" mapWidth ", "${size.mapWidth}")
+        infoLog(" mapLayoutWidth ", "${size.mapLayoutWidth}")
         infoLog(" height ", "${size.height}")
         infoLog(" heightDp ", "${size.heightDp}")
         infoLog(" mapHeight ", "${size.mapHeightDp}")
+        infoLog(" mapLayoutHeight ", "${size.mapLayoutHeight}")
         infoLog(" mapCasePadding ", "${size.mapCasePadding}")
         infoLog(" mapCasePaddingDp ", "${size.mapCasePaddingDp}")
         infoLog(" mapCase ", "${size.mapCase}")

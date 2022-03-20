@@ -13,25 +13,19 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import backColor
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logAnimLayoutSecondPart
 import com.mobilegame.robozzle.analyse.logLayoutSecondPart
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
-import com.mobilegame.robozzle.presentation.res.ColorsList
+import com.mobilegame.robozzle.presentation.res.mapCaseColorList
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsActionRow
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
-import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.utils.Extensions.Not
 import com.mobilegame.robozzle.utils.Extensions.subListIfPossible
@@ -166,7 +160,7 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
             vm.data.colors.actionRowCaseBiggerElevation
     ) {
         Box( Modifier.gradientBackground(
-            colors = ColorsList(
+            colors = mapCaseColorList(
                 case.color,
                 filter
             ),

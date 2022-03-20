@@ -110,6 +110,12 @@ fun Print_List_String(list: List<String>) {
     }
 }
 
+fun <U> List<U>.printList() {
+    this.forEach {
+        println(it.toString())
+    }
+}
+
 fun Print_rb_Level(lvl: RobuzzleLevel) {
     Log.i("Print Level", lvl.name)
     Log.i("", "${lvl.id}")
@@ -122,4 +128,45 @@ fun Print_rb_Level(lvl: RobuzzleLevel) {
     Print_FunInstructionList(lvl.funInstructionsList)
     Log.i("", "player (${lvl.playerInitial.pos.line}, ${lvl.playerInitial.pos.column})")
     Print_List_Position("stars", lvl.starsList)
+}
+
+fun List<String>.printMap() {
+    var u = 0
+    var d = 0
+    print("\t")
+    if (this.first().length > 9) for (i in 0..19) {print(" ")}
+    this.first().toListOfChar().forEach {
+        if (u >= 10) {
+            print("$d ")
+            d++
+        }
+        u++
+    }
+    print("\n")
+    print("\t")
+    u = 0
+    this.first().toListOfChar().forEach {
+        if (u <= 9 ) print("$u ") else print("1 ")
+        u++
+    }
+    u = 0
+    print("\n")
+    print("\n")
+    this.forEach {
+        print("$u\t")
+        it.toListOfChar().forEach { _c ->
+            print("$_c ")
+        }
+        print("\n")
+        u++
+    }
+}
+
+fun String.toListOfChar(): List<Char> {
+    val mutableList = mutableListOf<Char>()
+    val lastIndex = this.lastIndex
+    for (i in 0..lastIndex) {
+        mutableList.add(this[i].toChar())
+    }
+    return mutableList.toList()
 }
