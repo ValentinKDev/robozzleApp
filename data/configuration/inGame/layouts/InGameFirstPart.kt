@@ -81,6 +81,7 @@ object InGameFirstPart {
         var pNeonLeftEnd: Offset = Offset.Zero
         var pNeonRightEnd: Offset = Offset.Zero
         var strokeWidth: Float = 0F
+        var strokeWidthSmall: Float = 0F
     }
 
     fun init(context: Context, level: Level) {
@@ -167,6 +168,7 @@ object InGameFirstPart {
         player.pNeonLeftEnd = Offset(player.pBottomCenter.x - (baseOffsetLeft.x * 0.5F) , player.pBottomCenter.y - (baseOffsetLeft.y * 0.5F))
         player.pNeonRightEnd = Offset(player.pBottomCenter.x - (baseOffsetLeft.x * 0.5F) , player.pBottomCenter.y + (baseOffsetLeft.y * 0.5F))
         player.strokeWidth = sizeCanvas * 0.04F
+        player.strokeWidthSmall = sizeCanvas * 0.02F
 
         infoLog(" ", "\t init player canvas")
         infoLog(" sizeCanvas ", "${size.playerCanvas}")

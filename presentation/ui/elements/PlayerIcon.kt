@@ -154,12 +154,6 @@ fun Player(direction: Direction, data: InGameFirstPart) {
 
                 val pNeonLeftEnd = data.player.pNeonLeftEnd
                 val pNeonRightEnd = data.player.pNeonRightEnd
-//                errorLog("info", ".")
-//                errorLog("data.size.playerIconDp", "${data.size.playerBoxDp}")
-//                errorLog("data.size.playerCanvasDp", "${data.size.playerCanvasDp}")
-//                errorLog("size Canvas", "${size.width}")
-//                errorLog("size Canvas", "${size.height}")
-
 
                 rotate(
                     pivot = center,
@@ -171,25 +165,24 @@ fun Player(direction: Direction, data: InGameFirstPart) {
                         else -> 45F
                     }
                 ) {
-//                    drawArc(
-////                        brush = Brush.radialGradient(listOf(
-////                            Color(0xFFAF7000),
-////                            Color(0xFFFFB020),
-////                            Color(0xBBFFB020),
-////                            Color(0x99FFB020),
-////                            Color(0x22FFB020),
-////                        )),
-//                        color = green0,
-//                        size = Size(size.width, size.height),
-//                        useCenter = true,
-//                        topLeft = Offset.Zero,
-//                        startAngle = 148F,
-//                        sweepAngle = 64F,
-//                    )
 
+                    drawLine(
+                        start = pBottomCenter,
+                        end = pTop,
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                Color.Transparent,
+                                Color.Transparent,
+                                armorColor,
+                                Color(0xFFA23807),
+                            )
+                        ),
+//                        color = armorColor,
+                        cap = cap,
+                        strokeWidth = data.player.strokeWidthSmall
+                    )
                     //ext right
                     drawLine(
-//                        start = Offset(width, yCenter),
                         start = data.player.pCenter,
                         end = pBottomRight,
                         color = armorColor,
@@ -201,7 +194,6 @@ fun Player(direction: Direction, data: InGameFirstPart) {
                     drawLine(
                         start = data.player.pCenter,
                         end = pBottomLeft,
-//                        end = Offset(width, yCenter),
                         color = armorColor,
                         cap = cap,
                         strokeWidth = strokeWidthSmall
