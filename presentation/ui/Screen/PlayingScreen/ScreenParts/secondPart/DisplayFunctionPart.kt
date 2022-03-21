@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -24,13 +23,12 @@ import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptySquare
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
 
 @Composable
 fun DisplayFunctionsPart(vm: GameDataViewModel) {
     val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
-//    val recomposition: Int by vm.triggerRecompositionInstructionsRows.observeAsState(initial = 0)
-//    val levelFunctions = if (recomposition == 0) vm.level.funInstructionsList.toMutableList() else vm.instructionsRows
     val levelFunctions = vm.instructionsRows
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
@@ -72,9 +70,11 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
         }
     ) {
         CenterComposable {
-            functions.forEachIndexed { functionNumber, function ->
-//                DisplayFunctionRow(functionNumber, function, vm)
-                DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
+            Column(verticalArrangement = Arrangement.SpaceBetween) {
+                functions.forEachIndexed { functionNumber, function ->
+                    DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
+                    VerticalSpace(heightDp = 50.dp)
+                }
             }
         }
     }
@@ -100,9 +100,10 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
         )
         Row(
             Modifier
-                .height((vm.data.layout.secondPart.size.functionCase + (2 * vm.data.layout.secondPart.size.functionCasePadding)).dp)
-//                .width(((rowLength * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
-                .width(((function.instructions.length * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
+//                .height((vm.data.layout.secondPart.size.functionCase + (2 * vm.data.layout.secondPart.size.functionCasePadding)).dp)
+//                .width(((function.instructions.length * (vm.data.layout.secondPart.size.functionCase + vm.data.layout.secondPart.size.functionCasePadding)) + vm.data.layout.secondPart.size.functionCasePadding).dp)
+                .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
+                .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
                 .background(vm.data.colors.functionBorder)
             ,
         ) {
@@ -111,12 +112,12 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                     ,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    function.instructions.forEachIndexed { _index, c ->
+                    function.instructions.forEachIndexed { _index, _ ->
 //                    functionRow.instructions.forEachIndexed { _index, c ->
                         val caseColor = function.colors[_index]
 //                        val caseColor = functionRow.colors[_index]
                         Box(Modifier
-                            .size(vm.data.layout.secondPart.size.functionCase.dp)
+                            .size(vm.data.layout.secondPart.size.functionCaseDp)
                             .onGloballyPositioned {
                                 vm.dragAndDrop.elements.addDroppableCase(
                                     rowIndex = functionNumber,
@@ -146,8 +147,9 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                     && playerAnimationState.runningInBackground()
                                 ) {
                                     EmptySquare(
-                                        size =  vm.data.layout.secondPart.size.functionCase,
-                                        ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
+                                        size =  vm.data.layout.secondPart.size.functionCaseDp,
+                                        stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
+//                                        ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
                                         color = vm.data.colors.functionCaseSelection
                                     )
                                 }

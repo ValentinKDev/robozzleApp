@@ -28,7 +28,6 @@ import gradientBackground
 @Composable
 fun MapViewInGame(
     vm: GameDataViewModel,
-//    widthInt: Int,
     playerInGame: PlayerInGame? = null,
     stars: List<Position> = emptyList(),
     filter: Boolean,
@@ -40,44 +39,13 @@ fun MapViewInGame(
         infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
         infoLog("action", "${vm.animData.getActionToRead()}")
     }
-//    val caseNumberWidth = map[0].length
-//    val caseNumberHeight = map.size
-
-//    val calulByWidth = if (caseNumberWidth > caseNumberHeight) true else false
-
-//    val widthInt = vm.data.layout.firstPart.size.mapWidthDp
-//    val padingRatio: Float = 1.0f / 20.0f
-
-//    val caseSize: Int =
-//        if (calulByWidth) (widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))).toInt()
-//        else (widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))).toInt()
-//    val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
-//    val mapWidthtDP: Dp = widthInt.dp
-//    val casePaddingDP: Dp = (caseSize / 20.0F).dp
-//    val playerIconSize: Int = (caseSize * vm.data.layout.firstPart.ratios.playerBox).toInt()
-
-//    infoLog("mapViewinGame", "in")
     var casePosition = Position.Zero
 
-//    Center
     Box(
         Modifier
             .height(vm.data.layout.firstPart.size.mapHeightDp)
             .width(vm.data.layout.firstPart.size.mapWidthDp)
-//            .background(green9)
-//            .height(mapHeightDP)
-//            .width(mapWidthtDP)
     ) {
-//        Row {
-//            for (i in 0..9) {
-//                Box(Modifier.height(10.dp).width(vm.data.layout.firstPart.size.mapCaseDp).background( yellow1) ) { }
-//                Spacer(Modifier.size(vm.data.layout.firstPart.size.mapCasePaddingDp))
-//            }
-//        }
-//        Box(Modifier.height(10.dp).width(vm.data.layout.firstPart.size.mapCase.dp).background( yellow1) ) { }
-//        Box(Modifier.height(20.dp).width(vm.data.layout.firstPart.size.mapCaseDp).background( yellow1) ) { }
-//        Box(Modifier.height(10.dp).width(vm.data.layout.firstPart.size.mapWidthDp).background( yellow1) ) { }
-//        Box(Modifier.width(10.dp).height(vm.data.layout.firstPart.size.mapHeightDp).background( yellow1) ) { }
         Column( Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -85,13 +53,10 @@ fun MapViewInGame(
                 Row {
                     rowString.forEachIndexed { _columnIndex, _color ->
                         casePosition = Position(_rowIndex, _columnIndex)
-//                        DrawMapCase(caseSize = caseSize, caseColor = _color) {
                         Box(
                             Modifier
                                 .background(Color.Transparent)
-//                                .size(caseSize.dp),
                                 .size(vm.data.layout.firstPart.size.mapCaseDp),
-//                                .size(vm.data.layout.firstPart.size.mapCase.dp),
                         ) {
                             if (_color != '.') {
                                 Card(
@@ -134,7 +99,6 @@ fun MapViewInGame(
                                 playerInGame?.let {
                                     if (it.pos == casePosition) {
                                         errorLog("player out map - postion", "$casePosition")
-//                                        PlayerIcon(dir = playerInGame.direction.ToChar(), size = playerIconSize)
                                         CenterComposable {
                                             PlayerIcon(direction = it.direction, vm.data.layout.firstPart, _color.toCaseColor())
                                         }
@@ -175,22 +139,3 @@ fun DrawMapCase(caseSize: Int, caseColor: Char, content: @Composable () -> Unit)
         }
     }
 }
-
-//@Composable
-//fun PlayerIcon(dir: Char, size: Int) {
-//    Box(modifier = Modifier.fillMaxSize() ) {
-//        Icon(
-//            imageVector = when (dir) {
-//                'r' -> Icons.Outlined.ArrowForward
-//                'l' -> Icons.Outlined.ArrowBack
-//                'u' -> Icons.Outlined.ArrowUpward
-//                'd' -> Icons.Outlined.ArrowDownward
-//                else -> Icons.Default.Home
-//            },
-//            contentDescription = "playerDir",
-//            modifier = Modifier
-//                .size(size.dp)
-//                .align(Alignment.Center)
-//        )
-//    }
-//}

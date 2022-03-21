@@ -66,7 +66,7 @@ fun StarIcon(data: InGameFirstPart) {
 }
 
 @Composable
-fun DrawGlowingEffect(
+private fun DrawGlowingEffect(
     data: InGameFirstPart,
     colorNeon: List<Color>,
 ) {
@@ -104,7 +104,7 @@ fun DrawGlowingEffect(
 }
 
 @Composable
-fun DrawStarPart(
+private fun DrawStarPart(
     data: InGameFirstPart,
     colorLeftSide: List<Color>,
     colorRightSide: List<Color>,

@@ -70,8 +70,8 @@ fun EmptyRect(height: Dp, width: Dp, stroke: Float, color: Color) {
 }
 
 @Composable
-fun EmptySquare(size: Int, ratio: Float, color: Color) {
-    EmptyRect(height = size.dp, width = size.dp, stroke = size.times(ratio), color = color)
+fun EmptySquare(size: Dp, stroke: Float, color: Color) {
+    EmptyRect(height = size, width = size, stroke = stroke, color = color)
 }
 
 @Composable

@@ -2,14 +2,19 @@ package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
 import android.content.Context
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.utils.Extensions.toDp
 
 object InGameInstructionMenu {
     val size = Sizes
     val ratios = Ratios
     private var maxCases = 0
+    lateinit var caseColoringIcon: CaseColoringIcon
+//    var case
 
     object Ratios {
         const val topPadding= 0.3F
@@ -26,7 +31,8 @@ object InGameInstructionMenu {
         var caseWithPadding = 0F
         var casePadding = 0F
         var case = 0F
-        var icon = 0F
+        var icon: Float = 0F
+        var iconDp: Dp = Dp.Unspecified
     }
 
     fun init(context: Context, level: Level) {
@@ -42,6 +48,8 @@ object InGameInstructionMenu {
         size.casePadding = 0F
         size.case = size.caseWithPadding - (2F * Sizes.casePadding)
         size.icon = size.case
+        size.iconDp = size.icon.toDp(density)
+        caseColoringIcon = CaseColoringIcon(size.case, density)
 
         infoLog(" maxCases ", "${maxCases}")
         infoLog(" full width ", "$widthFull")

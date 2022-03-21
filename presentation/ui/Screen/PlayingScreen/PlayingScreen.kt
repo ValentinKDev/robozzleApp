@@ -39,14 +39,8 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
 
     val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
 
-//    val transition = updateTransition(targetState = displayInstructionMenu, label = "")
-//    val background by transition.animateColor(label = "what is this label good for ?") { _visible ->
-//        if (_visible) vm.data.colors.darkerBackground else Color.Transparent
-//    }
-
     Box( Modifier
         .fillMaxSize()
-//            .background(background)
         .background(if (displayInstructionMenu) vm.data.colors.darkerBackground else Color.Transparent)
         ,
         content = {

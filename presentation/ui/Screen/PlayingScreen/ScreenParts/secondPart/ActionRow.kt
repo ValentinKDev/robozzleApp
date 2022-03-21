@@ -48,7 +48,7 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 
     logLayoutSecondPart?.let {
         infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
-        infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
+//        infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
         verbalLog("action to read", vm.animData.actionToRead.value.toString())
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
@@ -167,7 +167,7 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
             angle = 175F
         )
         ) {
-            InstructionIconsActionRow(case.instruction, vm)
+            InstructionIconsActionRow(case.instruction, vm, filter)
         }
     }
 }

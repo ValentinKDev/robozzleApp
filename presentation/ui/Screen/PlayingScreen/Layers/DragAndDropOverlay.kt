@@ -27,22 +27,6 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
     val dragStart: Boolean by vm.dragAndDrop.dragStart.collectAsState()
     val visibleDragDropOverLay by remember(vm) {vm.dragAndDrop.dragStart}.collectAsState(false)
 
-    val transition = updateTransition(targetState = visibleDragDropOverLay, label = "")
-//    val animSize by transition.animateDp(
-//        label = "",
-//        transitionSpec = {
-//            when (dragStart) {
-//                true -> tween(200)
-//                false -> tween(200)
-//            }
-//        }
-//    ) { _dragStart ->
-//        when (_dragStart) {
-//            true -> vm.data.layout.secondPart.size.bigFunctionCase.dp
-//            false -> vm.data.layout.secondPart.size.functionCase.dp
-//        }
-//    }
-
     if (dragStart) {
         vm.dragAndDrop.elements.getColor() ?.let { _color ->
             vm.dragAndDrop.elements.getInstruction() ?.let { _instruction ->
@@ -62,8 +46,10 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                 }
                             ) {
                                 EmptySquare(
-                                    size =  vm.data.layout.secondPart.size.functionCase,
-                                    ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
+                                    size =  vm.data.layout.secondPart.size.functionCaseDp,
+                                    stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
+//                                    size =  vm.data.layout.secondPart.size.functionCase,
+//                                    ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
                                     color = vm.data.colors.functionCaseSelection
                                 )
                             }
@@ -99,8 +85,4 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
             }
         }
     }
-}
-
-enum class ItemState {
-    NotDragged, phase0, phase1, phase2, phase3, phase4, onHold
 }

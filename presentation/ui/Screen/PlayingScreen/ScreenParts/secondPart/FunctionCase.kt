@@ -17,8 +17,10 @@ import gradientBackground
 fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigger: Boolean = false, filter: Boolean = false) {
     Card(
         modifier = Modifier.size(
-            if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
-            else vm.data.layout.secondPart.size.functionCase.dp
+//            if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
+//            else vm.data.layout.secondPart.size.functionCase.dp
+            if (bigger) vm.data.layout.secondPart.size.bigFunctionCaseDp
+            else vm.data.layout.secondPart.size.functionCaseDp
         )
         ,
         shape = RectangleShape
@@ -28,7 +30,7 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
         Box( Modifier.gradientBackground(mapCaseColorList(color, filter), 175f) ) {
             if (instructionChar != '.'){
                 CenterComposable {
-                    InstructionsIconsFunction(instructionChar, vm)
+                    InstructionsIconsFunction(instructionChar, vm, filter)
                 }
             }
         }

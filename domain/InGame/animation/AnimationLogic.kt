@@ -9,7 +9,6 @@ import com.mobilegame.robozzle.utils.Extensions.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.configuration.inGame.layouts.maxNumberActionToDisplay
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.InGame.res.*
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
@@ -21,6 +20,7 @@ import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.*
 
+const val maxNumberActionToDisplay = 10
 //class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
 //class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
 class AnimationLogicViewModel(

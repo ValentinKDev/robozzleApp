@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,49 +11,72 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
+import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.mapCaseColorList
-import gradientBackground
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DrawCaseColoringIcon
+import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
 @Composable
-fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel) {
-    InstructionIcons(instruction, vm, vm.data.layout.secondPart.size.functionCase, vm.data.layout.secondPart.size.functionCaseIcon)
+fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel, darkFilter: Boolean) {
+    InstructionIcons(
+        instruction,
+        vm.data.layout.secondPart.caseColoringIcon,
+        vm.data.colors,
+        vm.data.layout.secondPart.size.functionCaseIconDp,
+        darkFilter
+    )
 }
 
 @Composable
-fun InstructionIconsActionRow(instruction: Char, vm: GameDataViewModel) {
-    InstructionIcons(instruction, vm, vm.data.layout.secondPart.size.actionRowCase, vm.data.layout.secondPart.size.actionRowIcon)
+fun InstructionIconsActionRow(instruction: Char, vm: GameDataViewModel, darkFilter: Boolean) {
+    InstructionIcons(
+        instruction,
+        vm.data.layout.secondPart.actionRow.caseColoringIcon,
+        vm.data.colors,
+        vm.data.layout.secondPart.size.actionRowIconDp,
+        darkFilter
+    )
 }
 
 @Composable
 fun InstructionIconsMenu(instruction: Char, vm: GameDataViewModel) {
     InstructionIcons(
         instruction,
-        vm,
-        vm.data.layout.menu.size.case.toInt(),
-        vm.data.layout.menu.size.icon.toInt()
+        vm.data.layout.menu.caseColoringIcon,
+        vm.data.colors,
+        vm.data.layout.menu.size.iconDp
     )
 }
 
 @Composable
-fun InstructionIcons(instruction: Char, gameDataViewModel: GameDataViewModel, sizeCase: Int, sizeIcon: Int) {
+fun InstructionIcons(
+    instruction: Char,
+    caseColoringData: CaseColoringIcon,
+    colors: InGameColors,
+    sizeInstruction: Dp,
+    darkFilter: Boolean = false
+) {
     when {
         instruction.toString().matches("[RGBg]".toRegex()) -> {
-            //todo: resize shape of the colored square inside the black square in the actionsRow
-            MyIconCaseColoring(instruction, sizeCase, gameDataViewModel)
+            DrawCaseColoringIcon(
+                colorInto = instruction.toCaseColor(),
+                data = caseColoringData,
+                dataColors = colors,
+                darkFilter =  darkFilter
+            )
+//            MyIconCaseColoring(instruction, gameDataViewModel)
         }
         instruction.toString().matches("[url0-6]".toRegex()) -> {
-            SelectGoogleIcons(instruction, sizeIcon)
+            SelectGoogleIcons(instruction, sizeInstruction )
         }
-        else -> {
-        }
+        else -> { }
     }
 }
 
 @Composable
-fun SelectGoogleIcons(instruction: Char, sizeIcon: Int) {
+fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp) {
     Box(modifier = Modifier.fillMaxSize()
     ) {
         Icon(
@@ -73,43 +95,8 @@ fun SelectGoogleIcons(instruction: Char, sizeIcon: Int) {
             },
             contentDescription = "instruction",
             modifier = Modifier
-                .size(sizeIcon.dp)
+                .size(sizeIconDp)
                 .align(Alignment.Center)
         )
-    }
-}
-
-@Composable
-fun MyIconCaseColoring(
-    instruction: Char,
-    sizeCase: Int,
-    vm: GameDataViewModel
-) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Box(
-            modifier = Modifier
-                .background(Color.Gray)
-                .size((sizeCase - 10).dp)
-                .border(
-                    width = 2.dp,
-                    color = Color.Black
-                )
-                .align(Alignment.Center)
-        ) {
-            Box(
-                Modifier
-                    .gradientBackground(
-                        mapCaseColorList(
-                            instruction,
-                            vm.displayInstructionsMenu.value == true
-                        ), 145f
-                    )
-                    .size((sizeCase - 20).dp)
-                    .align(Alignment.Center)
-            ) {
-
-
-            }
-        }
     }
 }

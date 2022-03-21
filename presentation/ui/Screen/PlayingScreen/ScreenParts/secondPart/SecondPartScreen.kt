@@ -3,14 +3,8 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
-import com.mobilegame.robozzle.presentation.res.yellow0
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.ActionRowSurronder
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayActionsRow
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayFunctionsPart
@@ -29,7 +23,7 @@ fun SecondScreenPart(vm: GameDataViewModel) {
             Modifier
                 .weight(vm.data.layout.secondPart.ratios.actionRowHeight)
         ) {
-            Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurronderHeight),
+            Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurrounderHeight),
                 verticalArrangement = Arrangement.Top) {
                 ActionRowSurronder(vm)
             }
@@ -47,12 +41,12 @@ fun SecondScreenPart(vm: GameDataViewModel) {
 //                    }
                 }
             }
-            Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurronderHeight),
+            Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurrounderHeight),
                 verticalArrangement = Arrangement.Top) {
                 ActionRowSurronder(vm)
             }
         }
-        Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowHeight)
+        Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight)
         ) {
             DisplayFunctionsPart(vm)
         }

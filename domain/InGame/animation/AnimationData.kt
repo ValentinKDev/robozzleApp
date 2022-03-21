@@ -3,11 +3,7 @@ package com.mobilegame.robozzle.domain.InGame.animation
 import androidx.compose.runtime.saveable.listSaver
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.logInit
-import com.mobilegame.robozzle.data.configuration.inGame.layouts.maxNumberActionToDisplay
-import com.mobilegame.robozzle.domain.InGame.Breadcrumb
-import com.mobilegame.robozzle.domain.InGame.ColorSwitch
-import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
-import com.mobilegame.robozzle.domain.InGame.PlayerInGame
+import com.mobilegame.robozzle.domain.InGame.*
 import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
 import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
