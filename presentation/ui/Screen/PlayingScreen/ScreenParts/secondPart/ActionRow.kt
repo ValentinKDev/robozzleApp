@@ -25,7 +25,6 @@ import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.mapCaseColorList
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsActionRow
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.utils.Extensions.Not
 import com.mobilegame.robozzle.utils.Extensions.subListIfPossible
@@ -53,6 +52,8 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
+    verbalLog("actionList to display size ", "${actionList.size}")
+    verbalLog("actionList to display size 2", "${actionList.subListIfPossible(1, 8).size}")
 
     if (actionList.isNotEmpty()) {
 
@@ -73,6 +74,7 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
                 ,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                logLayoutSecondPart?.let { verbalLog("second part actionRow", "actionList ${actionList.size}")}
                 Row(Modifier
                     .wrapContentSize()
 //                        .weight(3F)
@@ -82,22 +84,21 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
                     ,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    actionList.subListIfPossible(fromIndex = 1, toIndex = 8)
-//                actionList.subListIfPossible(fromIndex = 1, toIndex = actionList.lastIndex - 1)
-                        .forEachIndexed { index, functionInstruction ->
-                            logAnimLayoutSecondPart?.let {
-                                verbalLog(
-                                    "Display Action",
-                                    "index $index : $functionInstruction"
+                    if (actionList.size > 1)
+                        actionList.subListIfPossible(fromIndex = 1, toIndex = 8)
+                            .forEachIndexed { index, functionInstruction ->
+                                logAnimLayoutSecondPart?.let {
+                                    verbalLog(
+                                        "Display Action",
+                                        "index $index : $functionInstruction"
+                                    )
+                                }
+                                ActionRowCase(
+                                    vm = vm,
+                                    case = functionInstruction,
+                                    filter = displayInstructionMenu
                                 )
                             }
-                            ActionRowCase(
-                                vm = vm,
-                                case = functionInstruction,
-                                filter = displayInstructionMenu
-                            )
-//                                HorizontalSpace(widthDp = vm.data.layout.secondPart.size.widthDp/70)
-                        }
                 }
                 Row(Modifier
 //                        .weight(1F)

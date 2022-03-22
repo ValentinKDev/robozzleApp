@@ -112,7 +112,7 @@ class AnimationLogicViewModel(
         val instructionRows = breadcrumb.funInstructionsList
         val newBd = BreadcrumbViewModel(level, instructionRows, actionAdded).getBreadCrumb()
 
-        data.updateBreadCrumb(newBd)
+        data.updateExpandedBreadCrumb(newBd)
         breadcrumb = newBd.copy()
 
         viewModelScope.launch(Dispatchers.Main) { VM.updateBreadcrumbAndData(newBd) }

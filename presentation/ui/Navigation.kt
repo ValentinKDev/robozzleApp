@@ -114,8 +114,8 @@ fun Navigation(navigator: Navigator) {
             route = Screens.Test.route,
         ) {
             errorLog("Navigation", "Screen.Test.route")
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
             //todo : make an async coroutine to wait for the data storage to be done
@@ -156,4 +156,60 @@ val myleveltest = Level(
     starsList = mutableListOf(
         Position(5, 9),
     ),
+)
+
+val mylevelTest2 = Level(
+    name = "Two stripes"
+    ,
+    id = 4
+    ,
+    difficulty = 1,
+    map = listOf(
+        /*0*/   "..........",
+        "..........",
+        "GGGGGGGGGG",
+        "BBBBBBBBBB",
+        "BBBBBBBBBB",
+        "BBBBBBBBBB",
+        "BBBBBBBBBB",
+        "RRRRRRRRRR",
+        "..........",
+        "..........",
+    ),
+    instructionsMenu = mutableListOf(
+        FunctionInstructions("urlRBGg.0n", "g"),
+        FunctionInstructions("urlRBGg.0n", "R"),
+        FunctionInstructions("urlRBGg.0n", "B"),
+        FunctionInstructions("urlRBGg.0n", "G"), )
+    ,
+    funInstructionsList = listOf(
+//        FunctionInstructions("u0..", "gggg")
+                FunctionInstructions("....", "gggg")
+    ) ,
+    playerInitial = listOf(
+        Position(4,0),
+        Position(0,1)
+    )
+    ,
+    starsList = listOf(
+        Position(3,0),
+        Position(3,2),
+        Position(3,4),
+        Position(3,6),
+
+        Position(4,1),
+        Position(4,3),
+        Position(4,5),
+        Position(4,7),
+
+        Position(5,2),
+        Position(5,4),
+        Position(5,6),
+        Position(5,8),
+
+        Position(6,3),
+        Position(6,5),
+        Position(6,7),
+        Position(6,9),
+    )
 )

@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.mapCaseColorList
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionsIconsFunction
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import gradientBackground
 

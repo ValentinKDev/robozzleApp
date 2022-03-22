@@ -17,17 +17,15 @@ import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
-import com.mobilegame.robozzle.utils.Extensions.clone
+import com.mobilegame.robozzle.presentation.ui.mylevelTest2
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-//    val cleaner = MapCleaner()
     var level: Level = LevelVM(getApplication()).getLevelArgument()
-//    var level: Level = myleveltest
+//    var level: Level = mylevelTest2
 
     val data = InGameData(level, getApplication() )
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
@@ -46,6 +44,10 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
 
     val instructionsRows: MutableList<FunctionInstructions> = level.funInstructionsList.toMutableList()
+    fun upDateInstructionRows(line: Int ,newFunction: FunctionInstructions) {
+        instructionsRows[line] = newFunction
+    }
+
     fun replaceInstruction(pos: Position, case: FunctionInstruction) = runBlocking() {
         infoLog("replace", "$case $pos ")
         val function: FunctionInstructions = instructionsRows[pos.line]
@@ -53,21 +55,29 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
             function.colors.replaceAt(pos.column, case.color)
         function.instructions =
             function.instructions.replaceAt(pos.column, case.instruction)
-        instructionsRows[pos.line] = function
+
+        upDateInstructionRows(line = pos.line, newFunction = function)
+//        instructionsRows[pos.line] = function
         updateBreadcrumbInstructions()
+        updateAnimData()
+//        animData.updateBd(breadcrumb)
+
         _triggerRecompositionInstructionRows.value = triggerRecompositionInstructionsRows.value?.plus(1)
     }
 
     private fun updateBreadcrumbInstructions() {
         val newBd = BreadcrumbViewModel(level, instructionsRows).getBreadCrumb()
         breadcrumb = newBd
-        animData = AnimationData(level, newBd)
+//        animData = AnimationData(level, newBd)
+        viewModelScope.launch() { animData.updateBd(newBd) }
     }
 
+    private fun updateAnimData() { animData.updateExpandedBreadCrumb(breadcrumb) }
     fun updateBreadcrumbAndData(bd: Breadcrumb) {
         verbalLog("GameDataViewModel", ":updateBreadcrumbAndData")
         breadcrumb = bd
-        animData.updateBreadCrumb(breadcrumb)
+        updateAnimData()
+//        animData.updateBreadCrumb(breadcrumb)
     }
 
     fun startPlayerAnimation() {

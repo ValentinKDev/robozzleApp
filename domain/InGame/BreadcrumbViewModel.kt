@@ -56,7 +56,6 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
         logInit?.let { errorLog("Init", "BreadCrumb")
             infoLog("numberActionToLoad", "${numberActionToLoad}")
             infoLog("addAction", "${addActions}")
-            infoLog("numberActionToLoad", "${numberActionToLoad}")
         }
     }
 
@@ -73,6 +72,10 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 //        infoLog("stars removed left", "${bd.starsRemovalMap}")
         infoLog("win", "${bd.win}")
         infoLog("lose", "${bd.lost}")
+        verbalLog("actions instructions ", bd.actions.instructions)
+        verbalLog("actions colors ", bd.actions.colors)
+//        bd.actionsList.printList()
+//        verbalLog("list action", "${bd.}")
         bd
     }
 
@@ -103,9 +106,10 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
                 errorLog("true", "StopOneMoreRound()")
                 oneMoreRound = false}
             if (stop && !oneMoreRound) {
-                errorLog("true", "stop && !oneMoreRound")
+//                errorLog("true", "stop && !oneMoreRound")
                 bd.lost = bd.lastActionNumber
-                ; break }
+                break
+            }
 //            infoLog("playerS", "${bd.playerStateList}")
             caseIndex++
         }

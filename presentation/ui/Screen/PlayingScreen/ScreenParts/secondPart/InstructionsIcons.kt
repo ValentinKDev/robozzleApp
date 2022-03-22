@@ -1,6 +1,5 @@
-package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
+package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -15,7 +14,6 @@ import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
 import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DrawCaseColoringIcon
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
 @Composable

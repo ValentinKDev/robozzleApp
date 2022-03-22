@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.mapCaseColorList
-import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.InstructionIconsMenu
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.InstructionIconsMenu
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import gradientBackground
 
@@ -70,9 +70,6 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
             }
         }
     }
-//        }
-//    }
-//    }
 }
 
 @Composable

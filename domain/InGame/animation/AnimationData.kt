@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.InGame.animation
 
 import androidx.compose.runtime.saveable.listSaver
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logInit
 import com.mobilegame.robozzle.domain.InGame.*
 import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
@@ -22,13 +23,7 @@ import kotlinx.coroutines.runBlocking
 
 class AnimationData(
     private val level: Level,
-//    private var bd: Breadcrumb = Breadcrumb,
     private var bd: Breadcrumb = Breadcrumb(),
-//    private val savedData: AnimationData? = null
-//    actionToRead: Int? = null,
-//    playerAnimationState: PlayerAnimationState? = null,
-//    playerAnimated: PlayerInGame? = null,
-//    starsToDisplay: List<Position>? = null
 ) {
     init {
         logInit?.let { errorLog("Animation Data", "init") }
@@ -37,13 +32,11 @@ class AnimationData(
     var maxAction = bd.lastActionNumber
     var maxIndex = bd.lastActionNumber - 1
     private val _actionToRead = MutableStateFlow(0)
-//    private val _actionToRead = MutableStateFlow(savedData?.getActionToRead() ?: 0)
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
     fun actionInBounds(): Boolean? = if (actionToRead.value < maxAction) true else null
     fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
-//        fun triggerExpandBreadcrumb() = getActionToRead() == maxAction - 2 && (bd.win Not TRUE) && (bd.lost Not TRUE)
     suspend fun incrementActionToRead() {
         _actionToRead.emit(getActionToRead() + 1)
         updateActionList()
@@ -54,28 +47,23 @@ class AnimationData(
             updateActionList()
         }
     }
-//    private val _visibleActionRowList = MutableStateFlow<Boolean>(false)
-//    val visibleActionRowList: StateFlow<Boolean> = _visibleActionRowList.asStateFlow()
 
-//    val pair = true
     private val _pair = MutableStateFlow<Boolean>(true)
     val pair: StateFlow<Boolean> = _pair.asStateFlow()
-
+    private suspend fun upDatePair() {
+        _pair.emit(getActionToRead() % 2 == 0)
+    }
 
     private val _actionRowList = MutableStateFlow(bd.actionsList.subListIfPossible(0, maxNumberActionToDisplay))
     val actionRowList: StateFlow<List<FunctionInstruction>> = _actionRowList.asStateFlow()
     private suspend fun updateActionList() {
         val actionToRead = getActionToRead()
-
-        _pair.emit(getActionToRead() % 2 == 0)
-//        _visibleActionRowList.emit(false)
+        upDatePair()
         _actionRowList.emit(
             bd.actionsList.subListIfPossible(actionToRead, actionToRead + maxNumberActionToDisplay)
         )
-//        _visibleActionRowList.emit(true)
     }
 
-//    private val _playerAnimationState = MutableStateFlow<PlayerAnimationState>(savedData?.getPlayerAnimationState() ?: PlayerAnimationState.NotStarted)
     private val _playerAnimationState = MutableStateFlow<PlayerAnimationState>( PlayerAnimationState.NotStarted)
     val playerAnimationState: StateFlow<PlayerAnimationState> = _playerAnimationState.asStateFlow()
     fun getPlayerAnimationState(): PlayerAnimationState = playerAnimationState.value
@@ -126,23 +114,22 @@ class AnimationData(
     fun SetAnimatedStarMap(starsList: MutableList<Position>) { _animatedStarsMaped.value = starsList.copy() }
     fun getStarsToDisplay(): MutableList<Position> = animatedStarsMaped.value
 
-    fun updateBreadCrumb(newBd: Breadcrumb) {
+    fun updateExpandedBreadCrumb(newBd: Breadcrumb) {
         bd = newBd
         maxAction = bd.lastActionNumber
         maxIndex = bd.lastActionNumber - 1
     }
+
     private val _winPop = MutableStateFlow<Boolean>(false)
     val winPop: StateFlow<Boolean> = _winPop.asStateFlow()
     suspend fun setWinPopTo(value: Boolean) {
         _winPop.emit(value)
     }
 
-//    private val _instructionsRows = MutableStateFlow(bd.funInstructionsList.toMutableList())
-//    val instructionsRows: StateFlow<MutableList<FunctionInstructions>> = _instructionsRows.asStateFlow()
-//    fun setInstructionsRows(list: MutableList<FunctionInstructions>) = runBlocking( Dispatchers.Default) {
-//        _instructionsRows.value.re = list.first()
-//        _instructionsRows.emit(list)
-//    }
+    suspend fun updateBd(newBd: Breadcrumb) {
+        bd = newBd
+        reset()
+    }
 
     suspend fun reset() {
         var maxAction = bd.lastActionNumber

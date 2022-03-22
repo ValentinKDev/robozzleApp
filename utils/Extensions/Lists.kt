@@ -54,16 +54,37 @@ fun MutableList<String>.switchInMatrice(position1: Position, c1: Char, position2
 fun List<Position>.getSafe(index: Int): Position = this[getSmallerInt(this.lastIndex, index)]
 
 fun <U> List<U>.subListIfPossible(fromIndex: Int, toIndex: Int? = null): List<U> {
+//    infoLog("subList if possible", "original size ${this.size}")
+//    toIndex?.let { infoLog("getSmaller($it, ${this.lastIndex})", "${getSmallerInt(it, this.lastIndex)}")
+//        val list = if (this.isNotEmpty()) {
+//            this.subList(
+//                fromIndex = getSmallerInt(fromIndex, this.lastIndex),
+//                toIndex = getSmallerInt(it, this.lastIndex)
+//            )
+//        } else emptyList()
+//        infoLog("from", "${getSmallerInt(fromIndex, this.lastIndex)}")
+//        infoLog("toIndex", "${getSmallerInt(it, this.lastIndex)}")
+//        infoLog("list size", "${list.size}")
+//        infoLog("list", "$list")
+//    }
+//
     return if (this.isNotEmpty()) {
         this.subList(
-            fromIndex = getSmallerInt(fromIndex, this.lastIndex),
-            toIndex = toIndex?.let { getSmallerInt(toIndex, this.lastIndex) } ?: this.lastIndex
+//            fromIndex = getSmallerInt(fromIndex, this.lastIndex),
+//            toIndex = toIndex?.let { getSmallerInt(toIndex, this.lastIndex) } ?: this.lastIndex
+            getSmallerInt(fromIndex, this.lastIndex),
+            getSmallerInt(toIndex, this.size)
         )
     } else emptyList()
 }
 
-fun getSmallerInt(int1: Int, int2: Int): Int {
-    return if (int1 < int2) int1 else int2
+fun getSmallerInt(int1: Int?, int2: Int?): Int {
+//    return if (int1 < int2) int1 else int2
+    return int1?.let {
+        int2?.let {
+            if (int1 < int2) int1 else int2
+        }
+    } ?: int2 ?: 0
 }
 
 fun List<Position>.toPlayerInGame(): PlayerInGame {
