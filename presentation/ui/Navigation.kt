@@ -36,6 +36,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
 import com.mobilegame.robozzle.presentation.ui.utils.getWindowCoordinates
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 
 @Composable
@@ -53,8 +54,8 @@ fun Navigation(navigator: Navigator) {
 //    val dens = LocalDensity.current
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Test.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Test.route
 //        startDestination = Screens.Creator.route
     ) {
         composable(route = Screens.MainMenu.route) { MainScreen(navigator) }
@@ -104,7 +105,7 @@ fun Navigation(navigator: Navigator) {
             arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _id ->
-                ArgumentsDataStoreViewModel(context).storeLevelNumberArg(_id)
+//                ArgumentsDataStoreViewModel(context).storeLevelNumberArg(_id)
                 PlayingScreen()
             }
         }

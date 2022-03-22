@@ -1,25 +1,12 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty
 
-import android.graphics.Paint
-import android.icu.util.Calendar
-import android.provider.CalendarContract
 import android.util.Log
-import android.util.Size
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -27,28 +14,21 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.res.gray6
-import com.mobilegame.robozzle.presentation.res.grayDark2
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
-import kotlinx.coroutines.delay
-import java.util.*
 
 @Composable
 fun LevelsScreenByDifficultyList(
@@ -73,6 +53,7 @@ fun LevelsScreenByDifficultyList(
 
 @Composable
 fun DisplayLevelOverView(level: LevelOverView, screenVM: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) {
+    val ctxt = LocalContext.current
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
@@ -85,7 +66,8 @@ fun DisplayLevelOverView(level: LevelOverView, screenVM: LevelsScreenByDifficult
             .fillMaxWidth()
             .height(100.dp)
             .clickable {
-                NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
+                NavViewModel(navigator).storeIntAndNavigateTo(destination = Screens.Playing, int = level.id, context = ctxt)
+//                NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
             }
         ,
 //        elevation = 8.dp,

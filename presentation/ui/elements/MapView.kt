@@ -53,12 +53,14 @@ fun MapView(widthInt: Int, mapParam: List<String>, modifier: Modifier = Modifier
                             ,
                         ) {
 //                           todo : might add clarity to augement the range of luminosity in the gradient so the difference between each case is clear and it compensate the fact that there is no padding
-                            Box(
-                                Modifier
-                                    .fillMaxSize()
-                                    .gradientBackground(mapCaseColorList(caseColor), 135f)
-                                    .graphicsLayer { shadowElevation = if (caseColor != '.') 7.dp.toPx() else 0.dp.toPx() }
-                            ) { }
+                            if (caseColor != '.') {
+                                Box(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .gradientBackground(mapCaseColorList(caseColor), 135f)
+                                        .graphicsLayer { shadowElevation = if (caseColor != '.') 7.dp.toPx() else 0.dp.toPx() }
+                                ) { }
+                            }
                         }
                     }
                 }
