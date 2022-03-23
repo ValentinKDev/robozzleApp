@@ -3,7 +3,6 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.yellow0
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.EmptySquare
+import com.mobilegame.robozzle.presentation.ui.Screen.Creator.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -45,12 +44,13 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                     )
                                 }
                             ) {
-                                EmptySquare(
-                                    size =  vm.data.layout.secondPart.size.functionCaseDp,
+                                WhiteSquare(
+                                    sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
                                     stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
 //                                    size =  vm.data.layout.secondPart.size.functionCase,
 //                                    ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
-                                    color = vm.data.colors.functionCaseSelection
+//                                    color = vm.data.colors.functionCaseSelection
+                                    vm = vm
                                 )
                             }
                         }

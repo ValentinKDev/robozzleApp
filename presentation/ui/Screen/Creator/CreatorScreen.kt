@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -7,20 +8,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.material.Text
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
-import com.mobilegame.robozzle.domain.InGame.Direction
+import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
+import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
-import com.mobilegame.robozzle.presentation.ui.elements.StarIcon
 import com.mobilegame.robozzle.presentation.ui.myleveltest
-import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 
 @Composable
@@ -56,22 +56,40 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAn
 }
 
 @Composable
-fun EmptyRect(height: Dp, width: Dp, stroke: Float, color: Color) {
-    Canvas(modifier = Modifier
-        .height(height)
-        .width(width)) {
-        val canvasHeight = size.height
-        val canvasWidth = size.width
+fun WhiteSquare(sizeDp: Dp, stroke: Float, vm: GameDataViewModel) {
+    val playerState by vm.animData.playerAnimationState.collectAsState()
+    val transition = rememberInfiniteTransition()
+    val translateAnim by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            tween(durationMillis = 3800, easing = FastOutSlowInEasing),
+            RepeatMode.Restart
+        )
+    )
+
+    Canvas( Modifier .height(sizeDp) .width(sizeDp)) {
         drawRect(
-            color = color,
+            color = Color.Gray,
             style = Stroke(stroke)
         )
+        if (playerState == PlayerAnimationState.OnPause) {
+            val brush = Brush.linearGradient(
+                colors = vm.data.colors.emptySquare.shimmerColorShades,
+                start = Offset(10f, 10f),
+                end = Offset(translateAnim, translateAnim)
+            )
+            drawRect(
+                brush = brush,
+                style = Stroke(stroke)
+            )
+        }
+        else
+            drawRect(
+                color = Color.LightGray,
+                style = Stroke(stroke)
+            )
     }
-}
-
-@Composable
-fun EmptySquare(size: Dp, stroke: Float, color: Color) {
-    EmptyRect(height = size, width = size, stroke = stroke, color = color)
 }
 
 @Composable

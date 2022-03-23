@@ -58,7 +58,6 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InG
         val transition = rememberInfiniteTransition()
         val ratioAnim by transition.animateFloat(
             initialValue = 0.85F,
-//            initialValue = 0.88F,
             targetValue = 0.92F,
             animationSpec = infiniteRepeatable(
                 tween(

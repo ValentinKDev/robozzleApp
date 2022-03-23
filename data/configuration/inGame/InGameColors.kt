@@ -55,4 +55,12 @@ object InGameColors {
         val lineCenter = Color(0xFFA23807)
         val glowGradient = listOf( Color(0xFF9F7000), Color(0xFFFFB020), Color(0xBBFFB020), Color(0x99FFB020), Color.Transparent )
     }
+    val emptySquare = EmptySquare
+    object EmptySquare {
+        val shimmerColorShades = listOf(
+            Color.LightGray.copy(0.9f),
+            Color.LightGray.copy(0.2f),
+            Color.LightGray.copy(0.9f)
+        )
+    }
 }

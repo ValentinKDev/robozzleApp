@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.elements
 
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -29,8 +30,8 @@ fun testView() {
             brush = Brush.linearGradient(
 //                InGameColors.gradientOfBlue
 //                InGameColors.gradientOfGray
-//                InGameColors.gradientOfGreen
-                InGameColors.gradientOfRed
+                InGameColors.gradientOfGreen
+//                InGameColors.gradientOfRed
             )
         )
     }
@@ -88,6 +89,46 @@ private fun DrawBackGlowingEffect(
             repeatMode = RepeatMode.Reverse
         )
     )
+    val animColor1 by transition.animateColor(
+        initialValue = Color(0xAAAAAA15),
+        targetValue = Color(0xEEAAAA15),
+        animationSpec = infiniteRepeatable(
+            tween(
+                durationMillis = 1200,
+                easing = FastOutSlowInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val animColor2 by transition.animateColor(
+        initialValue = Color(0x88AAAA15),
+        targetValue = Color(0xAAAAAA15),
+        animationSpec = infiniteRepeatable(
+            tween(
+                durationMillis = 1200,
+                easing = FastOutSlowInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val animColor3 by transition.animateColor(
+        initialValue = Color(0x44AAAA15),
+        targetValue = Color(0x55AAAA15),
+        animationSpec = infiniteRepeatable(
+            tween(
+                durationMillis = 1200,
+                easing = FastOutSlowInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val list = listOf(
+        Color(0xFFFFFF15),
+        animColor1,
+        animColor2,
+        animColor3,
+        Color.Transparent
+    )
 
     val sizeDp = data.size.starBoxDp
     Box(modifier = Modifier
@@ -97,11 +138,16 @@ private fun DrawBackGlowingEffect(
             Canvas(modifier = Modifier
                 .size(sizeDp * ratioAnim)
             ) {
-                drawCircle(
-                    brush = Brush.radialGradient( colors.star.backGlowingEffect ),
-                    radius = center.x,
-                    center = center
+                drawRect(
+                    brush = Brush.radialGradient(
+                        list
+                    ),
                 )
+//                drawCircle(
+//                    brush = Brush.radialGradient( colors.star.backGlowingEffect ),
+//                    radius = center.x,
+//                    center = center
+//                )
             }
         }
     }
