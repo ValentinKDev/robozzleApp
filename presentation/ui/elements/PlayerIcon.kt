@@ -47,13 +47,13 @@ fun PlayerIcon(direction: Direction, data: InGameFirstPart, colors: InGameColors
     Box(modifier = Modifier
         .size(data.size.playerBoxDp)
     ) {
-        PlayerGlowingEffect(direction = direction, data, colors,  caseColor)
+        PlayerGlowingEffect(direction = direction, data, colors, caseColor)
         Player(direction = direction, data, colors)
     }
 }
 
 @Composable
-fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InGameColors, caseColor: CaseColor) {
+fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InGameColors, caseColor: CaseColor, isMoving: Boolean = false) {
     CenterComposable {
         val transition = rememberInfiniteTransition()
         val ratioAnim by transition.animateFloat(
@@ -69,7 +69,7 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InG
             )
         )
 
-        Box(Modifier.size(data.size.playerBoxDp * ratioAnim))
+        Box(Modifier.size( if (isMoving) data.size.playerBoxDp else data.size.playerBoxDp * ratioAnim ))
         {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 Color
