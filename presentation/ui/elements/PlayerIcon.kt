@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.presentation.res.*
@@ -38,21 +39,21 @@ fun test() {
             )
         )
     }
-    PlayerIcon(direction = Direction(1,0), data, color.toCaseColor())
+    PlayerIcon(direction = Direction(1,0), data, InGameColors, color.toCaseColor())
 }
 
 @Composable
-fun PlayerIcon(direction: Direction, data: InGameFirstPart, caseColor: CaseColor) {
+fun PlayerIcon(direction: Direction, data: InGameFirstPart, colors: InGameColors, caseColor: CaseColor) {
     Box(modifier = Modifier
         .size(data.size.playerBoxDp)
     ) {
-        PlayerGlowingEffect(direction = direction, data, caseColor)
-        Player(direction = direction, data)
+        PlayerGlowingEffect(direction = direction, data, colors,  caseColor)
+        Player(direction = direction, data, colors)
     }
 }
 
 @Composable
-fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, caseColor: CaseColor) {
+fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InGameColors, caseColor: CaseColor) {
     CenterComposable {
         val transition = rememberInfiniteTransition()
         val ratioAnim by transition.animateFloat(
@@ -63,15 +64,11 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, caseColor: 
                 tween(
                     durationMillis = 1200,
                     easing = CubicBezierEasing(0.0f, 0.4f, 0.9f, 0.3f),
-//                    easing = FastOutSlowInEasing
-//                easing = FastOutLinearInEasing
-//                        easing = LinearEasing
                 ),
                 repeatMode = RepeatMode.Reverse
             )
         )
 
-//        Box(Modifier.size(data.size.playerBoxDp * (5F/6F)) )
         Box(Modifier.size(data.size.playerBoxDp * ratioAnim))
         {
             Canvas(modifier = Modifier.fillMaxSize()) {
@@ -90,29 +87,11 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, caseColor: 
                         brush = Brush.radialGradient(
                             when (caseColor) {
                                 CaseColor.Blue ->
-                                    listOf(
-                                        Color(0xFF9F7000),
-                                        Color(0xFFFFB020),
-                                        Color(0xBBFFB020),
-                                        Color(0x99FFB020),
-                                        Color.Transparent
-                                    )
+                                    colors.player.glowGradient
                                 CaseColor.Green ->
-                                    listOf(
-                                        Color(0xFF9F7000),
-                                        Color(0xFFFFB020),
-                                        Color(0xBBFFB020),
-                                        Color(0x99FFB020),
-                                        Color.Transparent
-                                    )
+                                    colors.player.glowGradient
                                 else ->
-                                    listOf(
-                                        Color(0xFF9F7000),
-                                        Color(0xFFFFB020),
-                                        Color(0xBBFFB020),
-                                        Color(0x99FFB020),
-                                        Color.Transparent
-                                    )
+                                    colors.player.glowGradient
                             }
                         ),
                         size = Size(size.maxDimension, size.maxDimension),
@@ -128,7 +107,7 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, caseColor: 
 }
 
 @Composable
-fun Player(direction: Direction, data: InGameFirstPart) {
+fun Player(direction: Direction, data: InGameFirstPart, colors: InGameColors) {
     CenterComposable {
         Canvas(modifier = Modifier.size(data.size.playerCanvasDp)) {
             val armorColor = Color.Black
@@ -138,126 +117,109 @@ fun Player(direction: Direction, data: InGameFirstPart) {
 
             val pBottomCenter = data.player.pBottomCenter
             val pBottomLeft = data.player.pBottomLeft
-                val pBottomRight = data.player.pBottomRight
-                val pTop = data.player.pTop
+            val pBottomRight = data.player.pBottomRight
+            val pTop = data.player.pTop
 
-                val trianglePathLeftHalf = Path().apply {
-                    moveTo(pTop.x, pTop.y)
-                    lineTo(pBottomLeft.x, pBottomLeft.y)
-                    lineTo(pBottomCenter.x, pBottomCenter.y)
-                }
-                val trianglePathRightHalf = Path().apply {
-                    moveTo(pTop.x, pTop.y)
-                    lineTo(pBottomRight.x, pBottomRight.y)
-                    lineTo(pBottomCenter.x, pBottomCenter.y)
-                }
-
-                val pNeonLeftEnd = data.player.pNeonLeftEnd
-                val pNeonRightEnd = data.player.pNeonRightEnd
-
-                rotate(
-                    pivot = center,
-                    degrees = when (direction.ToChar()) {
-                        'r' -> 0F
-                        'd' -> 90F
-                        'l' -> 180F
-                        'u' -> 270F
-                        else -> 45F
-                    }
-                ) {
-
-                    drawLine(
-                        start = pBottomCenter,
-                        end = pTop,
-                        brush = Brush.horizontalGradient(
-                            listOf(
-                                Color.Transparent,
-                                Color.Transparent,
-                                armorColor,
-                                Color(0xFFA23807),
-                            )
-                        ),
-//                        color = armorColor,
-                        cap = cap,
-                        strokeWidth = data.player.strokeWidthSmall
-                    )
-                    //ext right
-                    drawLine(
-                        start = data.player.pCenter,
-                        end = pBottomRight,
-                        color = armorColor,
-                        cap = cap,
-                        strokeWidth = strokeWidthSmall
-                    )
-
-                    //ext left
-                    drawLine(
-                        start = data.player.pCenter,
-                        end = pBottomLeft,
-                        color = armorColor,
-                        cap = cap,
-                        strokeWidth = strokeWidthSmall
-                    )
-
-                    //bottom right
-                    drawLine(
-                        start = pNeonRightEnd,
-                        end = pBottomRight,
-                        color = armorColor,
-                        cap = cap,
-                        strokeWidth = strokeWidthSmall
-                    )
-
-                    //bottom left
-                    drawLine(
-                        start = pNeonLeftEnd,
-                        end = pBottomLeft,
-                        color = armorColor,
-                        cap = cap,
-                        strokeWidth = strokeWidthSmall
-                    )
-
-                    drawPath(
-                        trianglePathLeftHalf,
-                        brush = Brush.verticalGradient(
-                            listOf(
-                                Color(0xFFA23807),
-                                Color(0xFFDD5412),
-                                Color(0xFFEE6615),
-                            )
-                        )
-                    )
-                    drawPath(
-                        trianglePathRightHalf,
-                        brush = Brush.verticalGradient(
-                            listOf(
-                                Color(0xFFEE6615),
-                                Color(0xFFDD5412),
-                                Color(0xFFBD4409),
-                                Color(0xFFA23807),
-                            )
-                        )
-                    )
-
-                    val bottomBase = Path().apply {
-                        moveTo(data.player.pCenter.x, data.player.pCenter.y)
-                        lineTo(pNeonLeftEnd.x, pNeonLeftEnd.y)
-                        lineTo(pBottomCenter.x, pBottomCenter.y)
-                        lineTo(pNeonRightEnd.x, pNeonRightEnd.y)
-                        lineTo(data.player.pCenter.x, data.player.pCenter.y)
-                    }
-                    drawPath(
-                        brush = Brush.radialGradient(
-                            listOf(
-                                Color(0x88FFB020),
-                                Color(0xDDFFB020),
-                                Color(0xFFFFB020),
-                            )
-                        ),
-                        path = bottomBase
-                    )
-                }
+            val trianglePathLeftHalf = Path().apply {
+                moveTo(pTop.x, pTop.y)
+                lineTo(pBottomLeft.x, pBottomLeft.y)
+                lineTo(pBottomCenter.x, pBottomCenter.y)
             }
-       }
-//   }
+            val trianglePathRightHalf = Path().apply {
+                moveTo(pTop.x, pTop.y)
+                lineTo(pBottomRight.x, pBottomRight.y)
+                lineTo(pBottomCenter.x, pBottomCenter.y)
+            }
+
+            val pNeonLeftEnd = data.player.pNeonLeftEnd
+            val pNeonRightEnd = data.player.pNeonRightEnd
+
+            rotate(
+                pivot = center,
+                degrees = when (direction.ToChar()) {
+                    'r' -> 0F
+                    'd' -> 90F
+                    'l' -> 180F
+                    'u' -> 270F
+                    else -> 45F
+                }
+            ) {
+
+                drawLine(
+                    start = pBottomCenter,
+                    end = pTop,
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color.Transparent,
+                            Color.Transparent,
+                            armorColor,
+                            colors.player.lineCenter
+                        )
+                    ),
+                    cap = cap,
+                    strokeWidth = data.player.strokeWidthSmall
+                )
+                //ext right
+                drawLine(
+                    start = data.player.pCenter,
+                    end = pBottomRight,
+                    color = armorColor,
+                    cap = cap,
+                    strokeWidth = strokeWidthSmall
+                )
+
+                //ext left
+                drawLine(
+                    start = data.player.pCenter,
+                    end = pBottomLeft,
+                    color = armorColor,
+                    cap = cap,
+                    strokeWidth = strokeWidthSmall
+                )
+
+                //bottom right
+                drawLine(
+                    start = pNeonRightEnd,
+                    end = pBottomRight,
+                    color = armorColor,
+                    cap = cap,
+                    strokeWidth = strokeWidthSmall
+                )
+
+                //bottom left
+                drawLine(
+                    start = pNeonLeftEnd,
+                    end = pBottomLeft,
+                    color = armorColor,
+                    cap = cap,
+                    strokeWidth = strokeWidthSmall
+                )
+
+                drawPath(
+                    trianglePathLeftHalf,
+                    brush = Brush.verticalGradient( colors.player.leftPart )
+                )
+                drawPath(
+                    trianglePathRightHalf,
+                    brush = Brush.verticalGradient( colors.player.rightPart )
+                )
+
+                val bottomBase = Path().apply {
+                    moveTo(data.player.pCenter.x, data.player.pCenter.y)
+                    lineTo(pNeonLeftEnd.x, pNeonLeftEnd.y)
+                    lineTo(pBottomCenter.x, pBottomCenter.y)
+                    lineTo(pNeonRightEnd.x, pNeonRightEnd.y)
+                    lineTo(data.player.pCenter.x, data.player.pCenter.y)
+                }
+                drawPath(
+                    brush = Brush.radialGradient( colors.player.bottomPart ),
+                    path = bottomBase
+                )
+                drawPath(
+                    brush = Brush.horizontalGradient( colors.player.neonGradient ),
+                    path = bottomBase
+                )
+            }
+        }
+    }
 }

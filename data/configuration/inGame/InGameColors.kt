@@ -46,4 +46,13 @@ object InGameColors {
         val inColor = yellowDark2
         val neongradient = listOf( Color(0xFFFFFFFF), Color(0x9FFFFFFF), Color(0x5FFFFFFF), Color(0x0FFFFFFF), Color.Transparent, Color.Transparent, )
     }
+    val player = Player
+    object Player {
+        val neonGradient = listOf( Color(0x9FFFFFFF), Color(0x5FFFFFFF), Color(0x0FFFFFFF), Color.Transparent, Color.Transparent, Color.Transparent, )
+        val bottomPart = listOf( Color(0x88FFB020), Color(0xDDFFB020), Color(0xFFFFB020), )
+        val rightPart = listOf( Color(0xFFEE6615), Color(0xFFDD5412), Color(0xFFBD4409), Color(0xFFA23807), )
+        val leftPart = listOf( Color(0xFFA23807), Color(0xFFDD5412), Color(0xFFEE6615), )
+        val lineCenter = Color(0xFFA23807)
+        val glowGradient = listOf( Color(0xFF9F7000), Color(0xFFFFB020), Color(0xBBFFB020), Color(0x99FFB020), Color.Transparent )
+    }
 }
