@@ -90,7 +90,8 @@ object InGameSecondPart {
     private var minimumCaseNumberPerRow = 7
 
     fun initFunctionInstructionsRows(level: Level, density: Float) {
-        size.functionPartHeight = size.height * ratios.functionsRowPartHeight
+//        size.functionPartHeight = size.height * ratios.functionsRowPartHeight
+        size.functionPartHeight = (size.height * ratios.functionsRowPartHeight) / (ratios.functionsRowPartHeight * ratios.actionRowHeight)
         size.functionRowPaddingHeight = size.height * ratios.functionRowPaddingHeight
         size.functionRowPaddingHeightDp = size.functionRowPaddingHeight.toDp(density)
 

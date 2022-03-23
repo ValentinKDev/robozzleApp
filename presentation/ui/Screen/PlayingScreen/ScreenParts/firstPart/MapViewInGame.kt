@@ -87,7 +87,7 @@ fun MapViewInGame(
                                             else if (stars contain casePosition) {
                                                 if (stars contain casePosition) {
                                                     CenterComposable {
-                                                        StarIcon(vm.data.layout.firstPart)
+                                                        StarIcon(vm.data.layout.firstPart, vm.data.colors)
                                                     }
                                                 }
                                             }

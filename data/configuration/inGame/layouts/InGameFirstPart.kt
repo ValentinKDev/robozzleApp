@@ -3,11 +3,9 @@ package com.mobilegame.robozzle.data.configuration.inGame.layouts
 import android.content.Context
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.utils.Extensions.getSmallerFloat
-import com.mobilegame.robozzle.utils.Extensions.getSmallerInt
 import com.mobilegame.robozzle.utils.Extensions.toDp
 
 object InGameFirstPart {
@@ -18,8 +16,8 @@ object InGameFirstPart {
 
     object Ratios {
         const val height = 4F
-        const val mapHeight = 0.95F
-        const val mapWidth = 0.95F
+        const val mapHeight = 0.98F
+        const val mapWidth = 0.98F
         const val mapCasePadding = 0.004F
 
         const val playerBox = 0.9F
@@ -27,6 +25,7 @@ object InGameFirstPart {
 
         const val starBox = 0.75F
         const val starCanvas = 0.78F
+        const val starBoxNeon = 0.63F
     }
     object Sizes {
         var width: Float = 0F
@@ -57,18 +56,10 @@ object InGameFirstPart {
         var starBoxDp: Dp = Dp.Unspecified
         var starCanvas: Float = 0F
         var starCanvasDp: Dp = Dp.Unspecified
+        var starCanvasBigger: Float = 0F
+        var starCanvasBiggerDp: Dp = Dp.Unspecified
     }
 
-
-    object StarIcon {
-        var width = 0F
-        var center: Offset = Offset.Zero
-        var decenter: Offset = Offset.Zero
-        var pTop: Offset = Offset.Zero
-        var pLeft: Offset = Offset.Zero
-        var pRight: Offset = Offset.Zero
-        var stroke: Float = 0F
-    }
 
     object PlayerIcon {
         var width = 0F
@@ -82,6 +73,68 @@ object InGameFirstPart {
         var pNeonRightEnd: Offset = Offset.Zero
         var strokeWidth: Float = 0F
         var strokeWidthSmall: Float = 0F
+    }
+
+    object StarIcon {
+        var width = 0F
+        var starNeonBoxFront: Float = 0F
+        var starNeonBoxFrontDp: Dp = Dp.Unspecified
+        var center: Offset = Offset.Zero
+        var decenterRight: Offset = Offset.Zero
+        var decenterLeft: Offset = Offset.Zero
+        var pTop: Offset = Offset.Zero
+        var pLeft: Offset = Offset.Zero
+        var pRight: Offset = Offset.Zero
+        var stroke: Float = 0F
+
+        var centerBigger: Offset = Offset.Zero
+        var decenterRightBigger: Offset = Offset.Zero
+        var decenterLeftBigger: Offset = Offset.Zero
+        var pTopBigger: Offset = Offset.Zero
+        var pLeftBigger: Offset = Offset.Zero
+        var pRightBigger: Offset = Offset.Zero
+    }
+
+    fun initStarCanvasData(density: Float) {
+        size.starBox = size.mapCase * ratios.starBox
+        size.starBoxDp = size.starBox.toDp(density)
+        size.starCanvas = size.starBox * ratios.starCanvas
+        size.starCanvasDp = size.starCanvas.toDp(density)
+        size.starCanvasBigger = size.starBox * 1.2F
+        size.starCanvasBiggerDp = size.starCanvas.toDp(density)
+
+        star.starNeonBoxFront = size.starBox * ratios.starBoxNeon
+        star.starNeonBoxFrontDp = star.starNeonBoxFront.toDp(density)
+        val sizeCanvas = if (size.starCanvas != 0F) size.starCanvas else 55F
+        val center = Offset(x = sizeCanvas / 2F, y = sizeCanvas / 2F)
+        val vertical1 = (0.022F * sizeCanvas)
+        val vertical2 = center.x - (0.118F * sizeCanvas)
+        val vertical3 = center.x + (0.118F * sizeCanvas)
+        val horizontal = 0.343F * sizeCanvas
+        star.center = center
+        star.decenterRight = Offset(x = center.x + (0.01F * size.starCanvas), y = center.x + (0.01F * size.starCanvas))
+        star.decenterLeft = Offset(x = center.x - (0.01F * size.starCanvas), y = center.x + (0.01F * size.starCanvas))
+        star.pTop = Offset(x = center.x, y = vertical1)
+        star.pLeft = Offset(x = vertical2, y =  horizontal)
+        star.pRight = Offset(x = vertical3, y = horizontal)
+        star.stroke = sizeCanvas / 50F
+
+        star.centerBigger = center
+        star.decenterRightBigger = Offset(x = center.x + (0.01F * size.starCanvasBigger), y = center.x + (0.01F * size.starCanvasBigger))
+        star.decenterLeftBigger = Offset(x = center.x - (0.01F * size.starCanvasBigger), y = center.x + (0.01F * size.starCanvasBigger))
+        star.pTopBigger = Offset(x = center.x, y = vertical1)
+        star.pLeftBigger = Offset(x = vertical2, y =  horizontal)
+        star.pRightBigger = Offset(x = vertical3, y = horizontal)
+
+        infoLog(" ", "\t init star canvas")
+        infoLog(" starCanvasCenterOfferset ", "${star.center}")
+        infoLog(" starCanvasDecenterOfferset ", "${star.decenterRight}")
+        infoLog(" vertical1 ", "$vertical1")
+        infoLog(" vertical2 ", "$vertical2")
+        infoLog(" vertical3 ", "$vertical3")
+        infoLog(" pTop ", "${star.pTop}")
+        infoLog(" pLeft ", "${star.pLeft}")
+        infoLog(" pRight ", "${star.pRight}")
     }
 
     fun init(context: Context, level: Level) {
@@ -118,10 +171,6 @@ object InGameFirstPart {
         size.playerCanvas = size.playerBox * ratios.playerCanvas
         size.playerCanvasDp = size.playerCanvas.toDp(density)
 
-        size.starBox = size.mapCase * ratios.starBox
-        size.starBoxDp = size.starBox.toDp(density)
-        size.starCanvas = size.starBox * ratios.starCanvas
-        size.starCanvasDp = size.starCanvas.toDp(density)
 
         infoLog(" density ", "${density}")
         infoLog(" width ", "${size.width}")
@@ -149,7 +198,7 @@ object InGameFirstPart {
         infoLog(" starCanvas ", "${size.starCanvas}")
         infoLog(" starCanvasDp ", "${size.starCanvasDp}")
 
-        initStarCanvasData()
+        initStarCanvasData(density)
         initPlayerIcon()
 
     }
@@ -176,30 +225,4 @@ object InGameFirstPart {
 //        player.decenterLeft = Offset(x = center.x - (0.05F * sizeCanvas), y = center.y)
     }
 
-    fun initStarCanvasData() {
-        val sizeCanvas = if (size.starCanvas != 0F) size.starCanvas else 55F
-        val center = Offset(x = sizeCanvas / 2F, y = sizeCanvas / 2F)
-        val vertical1 = (0.022F * sizeCanvas)
-        val vertical2 = center.x - (0.118F * sizeCanvas)
-        val vertical3 = center.x + (0.118F * sizeCanvas)
-        val horizontal = 0.343F * sizeCanvas
-        star.center = center
-        star.decenter = Offset(x = center.x + (0.01F * size.starCanvas), y = center.x + (0.01F * size.starCanvas))
-        star.pTop = Offset(x = center.x, y = vertical1)
-        star.pLeft = Offset(x = vertical2, y =  horizontal)
-        star.pRight = Offset(x = vertical3, y = horizontal)
-        star.stroke = sizeCanvas / 50F
-
-        infoLog(" ", "\t init star canvas")
-        infoLog(" starCanvasCenterOfferset ", "${star.center}")
-        infoLog(" starCanvasDecenterOfferset ", "${star.decenter}")
-        infoLog(" vertical1 ", "$vertical1")
-        infoLog(" vertical2 ", "$vertical2")
-        infoLog(" vertical3 ", "$vertical3")
-        infoLog(" pTop ", "${star.pTop}")
-        infoLog(" pLeft ", "${star.pLeft}")
-        infoLog(" pRight ", "${star.pRight}")
-//        newOffset
-//    }
-    }
 }

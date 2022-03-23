@@ -49,7 +49,7 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAn
                 val data = InGameFirstPart
                 InGameFirstPart.init(LocalContext.current, myleveltest)
 //                PlayerIcon(direction = Direction(1,0), data = data)
-                StarIcon(data)
+//                StarIcon(data, )
             }
         }
     }

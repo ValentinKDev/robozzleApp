@@ -39,4 +39,11 @@ object InGameColors {
 
     val gradientOfGray = listOf(grayDark(1,2), grayDark(2,3), grayDark(3,3))
     val gradientOfGrayDark = listOf(darkgray3, darkgray2, darkgray1)
+
+    val star = Star
+    object Star {
+        val backGlowingEffect = listOf( yellow1, yellow2, yellow3, yellow4, yellow5, yellow6, yellow7, Color.Transparent )
+        val inColor = yellowDark2
+        val neongradient = listOf( Color(0xFFFFFFFF), Color(0x9FFFFFFF), Color(0x5FFFFFFF), Color(0x0FFFFFFF), Color.Transparent, Color.Transparent, )
+    }
 }
