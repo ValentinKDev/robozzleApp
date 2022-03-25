@@ -21,7 +21,7 @@ import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.WhiteSquare
+import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
@@ -180,13 +180,13 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                         ) {
                             if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                 && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
-                                && playerAnimationState.runningInBackground()
-                            ) {
+                                && playerAnimationState.runningInBackground() )
+                            {
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
                                     stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
 //                                    color = vm.data.colors.functionCaseSelection
-                                vm = vm
+                                    vm = vm
                                 )
                             }
                         }

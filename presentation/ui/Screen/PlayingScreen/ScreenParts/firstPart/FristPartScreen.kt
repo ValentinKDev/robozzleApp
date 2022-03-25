@@ -52,8 +52,6 @@ fun MapLayout(vm: GameDataViewModel) {
         CenterComposable {
             MapViewInGame(
                 vm = vm,
-//                widthInt = (0.8F * vm.data.layout.firstPart.size.mapWidthDp).toInt() ,
-//                widthInt = (0.8F * vm.data.layout.firstPart.size.mapWidthDp).toInt() ,
                 playerInGame,
                 stars,
                 filter = displayInstructionMenu

@@ -85,12 +85,15 @@ class AnimationData(
     private val _map = MutableStateFlow<MutableList<String>>(level.map.toMutableList())
     val map: StateFlow<MutableList<String>> = _map.asStateFlow()
     fun setNewMap(newMap: MutableList<String>) {_map.value = newMap}
-    fun ChangeCaseColorMap(colorSwitch: ColorSwitch, direction: Int) {
-        when (direction) {
-//            FORWARD -> { _map.value!![colorSwitch.pos.line] = _map.value!![colorSwitch.pos.line].replaceAt(colorSwitch.pos.column, colorSwitch.newColor) }
-            FORWARD -> { setNewMap(map.value.replaceInMatrice(colorSwitch.newColor, colorSwitch.pos)) }
-            BACKWARD -> { _map.value!![colorSwitch.pos.line] = _map.value!![colorSwitch.pos.line].replaceAt(colorSwitch.pos.column, colorSwitch.oldColor) }
-            else -> { errorLog("ERROR", "GameDataViewModel::ChangeCaseColorMap [Wrong direction]") }
+//    fun ChangeCaseColorMap(colorSwitch: ColorSwitch, direction: Int) {
+    fun ChangeCaseColorMap(colorSwitch: ColorSwitch, stream: AnimationStream) {
+//    when (direction) {
+        when (stream) {
+//            FORWARD -> { setNewMap(map.value.replaceInMatrice(colorSwitch.newColor, colorSwitch.pos)) }
+//            BACKWARD -> { _map.value!![colorSwitch.pos.line] = _map.value!![colorSwitch.pos.line].replaceAt(colorSwitch.pos.column, colorSwitch.oldColor) }
+            AnimationStream.Forward -> { setNewMap(map.value.replaceInMatrice(colorSwitch.newColor, colorSwitch.pos)) }
+            AnimationStream.Backward -> { _map.value!![colorSwitch.pos.line] = _map.value!![colorSwitch.pos.line].replaceAt(colorSwitch.pos.column, colorSwitch.oldColor) }
+//            else -> { errorLog("ERROR", "GameDataViewModel::ChangeCaseColorMap [Wrong direction]") }
         }
     }
 

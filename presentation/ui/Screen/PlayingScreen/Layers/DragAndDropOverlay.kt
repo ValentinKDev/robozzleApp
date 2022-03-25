@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.yellow0
-import com.mobilegame.robozzle.presentation.ui.Screen.Creator.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
+import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -47,9 +47,6 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
                                     stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
-//                                    size =  vm.data.layout.secondPart.size.functionCase,
-//                                    ratio = vm.data.layout.secondPart.ratios.selectionCaseHalo,
-//                                    color = vm.data.colors.functionCaseSelection
                                     vm = vm
                                 )
                             }
@@ -57,7 +54,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                     }
                     AnimatedVisibility(
                         visible = visibleDragDropOverLay,
-                        enter = fadeIn(0.7F, animationSpec = tween(200)),
+//                        enter = scaleIn
+                        enter = fadeIn(0.5F, animationSpec = tween(200)),
                         exit = fadeOut(0.7F, animationSpec = tween(200)),
                     ) {
                         Box(Modifier

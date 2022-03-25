@@ -55,42 +55,6 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAn
     }
 }
 
-@Composable
-fun WhiteSquare(sizeDp: Dp, stroke: Float, vm: GameDataViewModel) {
-    val playerState by vm.animData.playerAnimationState.collectAsState()
-    val transition = rememberInfiniteTransition()
-    val translateAnim by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1000f,
-        animationSpec = infiniteRepeatable(
-            tween(durationMillis = 3800, easing = FastOutSlowInEasing),
-            RepeatMode.Restart
-        )
-    )
-
-    Canvas( Modifier .height(sizeDp) .width(sizeDp)) {
-        drawRect(
-            color = Color.Gray,
-            style = Stroke(stroke)
-        )
-        if (playerState == PlayerAnimationState.OnPause) {
-            val brush = Brush.linearGradient(
-                colors = vm.data.colors.emptySquare.shimmerColorShades,
-                start = Offset(10f, 10f),
-                end = Offset(translateAnim, translateAnim)
-            )
-            drawRect(
-                brush = brush,
-                style = Stroke(stroke)
-            )
-        }
-        else
-            drawRect(
-                color = Color.LightGray,
-                style = Stroke(stroke)
-            )
-    }
-}
 
 @Composable
 fun Handle(rowIndex: Int, columnIndex: Int, s: String, dragAndDropVM: DragAndDropState) {

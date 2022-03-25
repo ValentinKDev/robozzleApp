@@ -69,9 +69,10 @@ class AnimationLogicViewModel(
             Log.v(Thread.currentThread().name,"Start - actionIndexEnd ${breadcrumb.lastActionNumber}")
             while (data.actionInBounds() == true) {
                 infoLog("action to read ${data.getActionToRead()}" , "->")
-                UpdateMoveLogic(FORWARD)
+//                UpdateMoveLogic(FORWARD)
+                UpdateMoveLogic(AnimationStream.Forward)
                 data.actionInBounds()?.let {
-                    HandleAnimationOnPauseLogic()
+//                    HandleAnimationOnPauseLogic()
 
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
                     checkBreadcrumbRecalculation()
@@ -92,8 +93,10 @@ class AnimationLogicViewModel(
             infoLog("Step ${data.getActionToRead()}", " ->")
             delay(50)
             when {
-                data.isGoingForward() -> stepByStep(FORWARD)
-                data.isGoingBackward() -> stepByStep(BACKWARD)
+//                data.isGoingForward() -> stepByStep(FORWARD)
+//                data.isGoingBackward() -> stepByStep(BACKWARD)
+//                data.isGoingForward() -> stepByStep(FORWARD)
+//                data.isGoingBackward() -> stepByStep(BACKWARD)
             }
             if (data.actionOutOfBounds()) break
         }
@@ -126,53 +129,71 @@ class AnimationLogicViewModel(
         errorLog("action list size", "${breadcrumb.lastActionNumber}")
     }
 
-    suspend fun stepByStep(direction: Int) {
+    suspend fun stepByStep(stream: AnimationStream) {
         infoLog("step by step", "start ${data.getActionToRead()}")
 
-        checkBreadcrumbRecalculation()
-        UpdateMoveLogic(direction)
-        if (direction == FORWARD) data.incrementActionToRead()
-        else if (direction == BACKWARD ) data.decrementActionToRead()
+//        checkBreadcrumbRecalculation()
+//
+//        UpdateMoveLogic(stream)
+//        when (stream) {
+//            AnimationStream.Forward -> data.incrementActionToRead()
+//            AnimationStream.Backward -> data.decrementActionToRead()
+//        }
+
+        when (stream) {
+            AnimationStream.Forward -> {
+                checkBreadcrumbRecalculation()
+                UpdateMoveLogic(stream)
+                data.incrementActionToRead()
+            }
+            AnimationStream.Backward -> {
+                data.decrementActionToRead()
+                checkBreadcrumbRecalculation()
+                UpdateMoveLogic(stream)
+            }
+        }
     }
 
-    private suspend fun UpdateMoveLogic(direction: Int) {
-        infoLog("upstae move logic", "start")
+    private suspend fun UpdateMoveLogic(stream: AnimationStream) {
+        infoLog("update move logic", "$stream")
         when {
             //todo lambda for this when expression
-            data.getActionToRead().trigerStar(direction) -> {
-                when (direction) {
-                    FORWARD -> {
+            data.getActionToRead().trigerStar(stream) -> {
+                when (stream) {
+                    AnimationStream.Forward -> {
                         stars.FromToRemoveMapToRemovedMap(data.getActionToRead())
                     }
-                    BACKWARD -> {
+                    AnimationStream.Backward -> {
                         verbalLog("triger", "star")
                         stars.FromRemovedMapToToRemoveMap(data.getActionToRead())
 
                         infoLog("star", "toRemove"); stars.toRemove.forEach { infoLog("", "${it.key}") }
                         infoLog("star", "removed"); stars.removed.forEach { infoLog("", "${it.key}") }
                     }
-                    else -> { errorLog("Update Move Logic triger Star", "Error")}
                 }
-                UpdateStarsUI(direction)
+                UpdateStarsUI(stream)
             }
-            data.getActionToRead().trigerColorChange(direction) -> {
-                when (direction) {
-                FORWARD -> { colorSwitches.FromToRemoveMapToRemovedMap(data.getActionToRead()) }
-                    BACKWARD -> { colorSwitches.FromRemovedMapToToRemoveMap(data.getActionToRead()) }
-                    else -> { errorLog("Update Move Logic triger Color Change", "Error")}
+            data.getActionToRead().trigerColorChange(stream) -> {
+                when (stream) {
+                    AnimationStream.Forward -> { colorSwitches.FromToRemoveMapToRemovedMap(data.getActionToRead()) }
+                    AnimationStream.Backward -> { colorSwitches.FromRemovedMapToToRemoveMap(data.getActionToRead()) }
                 }
-                UpdateMapCaseColorsUI(direction)
+                UpdateMapCaseColorsUI(stream)
             }
+        }
+        when (stream) {
+            AnimationStream.Forward -> {}
+            AnimationStream.Backward -> {}
         }
         UpdatePlayerUI()
     }
 
-    private fun UpdateStarsUI(direction: Int) {
+    private fun UpdateStarsUI(stream: AnimationStream) {
         infoLog("UpddateStarsUI()", "Start()")
         val starPos: Position? = try {
-            when (direction) {
-                FORWARD -> { stars.removed.getValue(data.getActionToRead()) }
-                BACKWARD -> { stars.toRemove.getValue(data.getActionToRead()) }
+            when (stream) {
+                AnimationStream.Forward -> { stars.removed.getValue(data.getActionToRead()) }
+                AnimationStream.Backward -> { stars.toRemove.getValue(data.getActionToRead()) }
                 else -> { errorLog("Update Stars UI()", "error on direction parameter"); null }
             }
         } catch (e: NoSuchElementException) {
@@ -180,20 +201,19 @@ class AnimationLogicViewModel(
             null
         }
         starPos?.let {
-            when (direction) {
-                FORWARD ->  data.DelAnimatedStarMap(it)
-                BACKWARD -> data.AddAnimatedStarMap(it)
+            when (stream) {
+                AnimationStream.Forward ->  data.DelAnimatedStarMap(it)
+                AnimationStream.Backward -> data.AddAnimatedStarMap(it)
                 else -> errorLog("ERROR", "AnimationLogic::UpdateStarsUI")
             }
         }
     }
 
-    private fun UpdateMapCaseColorsUI(direction: Int) {
+    private fun UpdateMapCaseColorsUI(stream: AnimationStream) {
         val colorSwitch: ColorSwitch? = try {
-            when (direction) {
-                FORWARD -> { colorSwitches.removed.getValue(data.getActionToRead()) }
-                BACKWARD -> { colorSwitches.toRemove.getValue(data.getActionToRead()) }
-                else -> { errorLog("Update Stars UI()", "error on direction parameter"); null }
+            when (stream) {
+                AnimationStream.Forward -> { colorSwitches.removed.getValue(data.getActionToRead()) }
+                AnimationStream.Backward -> { colorSwitches.toRemove.getValue(data.getActionToRead()) }
             }
         } catch (e: NoSuchElementException) {
             errorLog("Update Map Case Colors UI()", "No such ElementException Catched")
@@ -203,7 +223,8 @@ class AnimationLogicViewModel(
             null
         }
         colorSwitch?.let {
-           data.ChangeCaseColorMap(colorSwitch, direction)
+//            data.ChangeCaseColorMap(colorSwitch, direction)
+           data.ChangeCaseColorMap(colorSwitch, stream)
         }
     }
 
@@ -241,23 +262,35 @@ class AnimationLogicViewModel(
 //        else delay(animationDelay.value)
 //    }
 
-    private fun Int.trigerColorChange(direction: Int): Boolean {
-        return when (direction) {
-            FORWARD -> { colorSwitches.toRemove.containsKey(data.getActionToRead()) }
-            BACKWARD -> { colorSwitches.removed.containsKey(data.getActionToRead()) }
-            else -> { errorLog("Triger Color Change", "Error"); false }
+//    private fun Int.trigerColorChange(direction: Int): Boolean {
+    private fun Int.trigerColorChange(stream: AnimationStream): Boolean {
+//    return when (direction) {
+        return when (stream) {
+//            FORWARD -> { colorSwitches.toRemove.containsKey(data.getActionToRead()) }
+//            BACKWARD -> { colorSwitches.removed.containsKey(data.getActionToRead()) }
+            AnimationStream.Forward -> { colorSwitches.toRemove.containsKey(data.getActionToRead()) }
+            AnimationStream.Backward -> { colorSwitches.removed.containsKey(data.getActionToRead()) }
+//            else -> { errorLog("Triger Color Change", "Error"); false }
         }
     }
 
-    private fun Int.trigerStar(direction: Int): Boolean {
-       return when(direction) {
-           FORWARD -> {stars.toRemove.containsKey(data.getActionToRead())}
-           BACKWARD -> {stars.removed.containsKey(data.getActionToRead())}
-           else -> { errorLog("Triger Star", "Error"); false }
+//    private fun Int.trigerStar(direction: Int): Boolean {
+    private fun Int.trigerStar(stream: AnimationStream): Boolean {
+//    return when(direction) {
+        return when(stream) {
+//            FORWARD -> {stars.toRemove.containsKey(data.getActionToRead())}
+//            BACKWARD -> {stars.removed.containsKey(data.getActionToRead())}
+           AnimationStream.Forward -> {stars.toRemove.containsKey(data.getActionToRead())}
+           AnimationStream.Backward -> {stars.removed.containsKey(data.getActionToRead())}
+//           else -> { errorLog("Triger Star", "Error"); false }
        }
     }
 
     fun triggerExpandBreadcrumb(): Boolean = runBlocking {
         data.getActionToRead() == breadcrumb.lastActionNumber - 2 && (breadcrumb.win Is UNKNOWN) && (breadcrumb.lost Is UNKNOWN)
     }
+}
+
+enum class AnimationStream {
+    Forward, Backward
 }

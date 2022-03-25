@@ -24,8 +24,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-    var level: Level = LevelVM(getApplication()).getLevelArgument()
-//    var level: Level = mylevelTest2
+//    var level: Level = LevelVM(getApplication()).getLevelArgument()
+    var level: Level = mylevelTest2
 
     val data = InGameData(level, getApplication() )
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
@@ -140,13 +140,18 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     fun clickNextButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { verbalLog("click next vm handler", "start ${animData.getPlayerAnimationState().key}") }
-        if (animData.isOnPause()) { animationLogicVM.stepByStep(FORWARD) }
+//        if (animData.isOnPause()) { animationLogicVM.stepByStep(FORWARD) }
+        if (animData.isOnPause()) { animationLogicVM.stepByStep(AnimationStream.Forward) }
         else { infoLog("next", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
         logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun clickBackButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { verbalLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
-        animationLogicVM.stepByStep(BACKWARD)
+        logClick?.let { verbalLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}")
+            infoLog("actionList size", "${breadcrumb.actionsList.size}")
+            infoLog("playserState size", "${breadcrumb.playerStateList.size}")
+        }
+//        animationLogicVM.stepByStep(BACKWARD)
+        animationLogicVM.stepByStep(AnimationStream.Backward)
 //        animData.setPlayerAnimationState(PlayerAnimationState.GoNext)
         logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }

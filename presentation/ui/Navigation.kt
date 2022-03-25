@@ -54,8 +54,8 @@ fun Navigation(navigator: Navigator) {
 //    val dens = LocalDensity.current
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
 //        startDestination = Screens.Creator.route
     ) {
         composable(route = Screens.MainMenu.route) { MainScreen(navigator) }
@@ -184,8 +184,8 @@ val mylevelTest2 = Level(
         FunctionInstructions("urlRBGg.0n", "G"), )
     ,
     funInstructionsList = listOf(
-//        FunctionInstructions("u0..", "gggg")
-                FunctionInstructions("....", "gggg")
+        FunctionInstructions("url0", "gGRg")
+//                FunctionInstructions("....", "gggg")
     ) ,
     playerInitial = listOf(
         Position(4,0),
