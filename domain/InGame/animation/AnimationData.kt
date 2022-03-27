@@ -32,6 +32,7 @@ class AnimationData(
     var maxAction = bd.lastActionNumber
     var maxIndex = bd.lastActionNumber - 1
     private val _actionToRead = MutableStateFlow(0)
+//    private val _actionToRead = MutableStateFlow(1)
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
@@ -44,10 +45,10 @@ class AnimationData(
         }
     }
     suspend fun decrementActionToRead() {
-        if (getActionToRead() >= 1) {
+//        if (getActionToRead() >= 1) {
             _actionToRead.emit(getActionToRead() - 1)
             updateActionList()
-        }
+//        }
     }
     fun actionEnd(): Boolean {
         return if (bd.win != UNKNOWN && bd.lost != UNKNOWN) false

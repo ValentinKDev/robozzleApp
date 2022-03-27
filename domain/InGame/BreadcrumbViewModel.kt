@@ -63,9 +63,13 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
         infoLog("win", "${bd.win}")
         infoLog("lose", "${bd.lost}")
         verbalLog("playerstate size ", bd.playerStateList.size.toString())
+        verbalLog("currenaction size ", bd.currentInstructionList.size.toString())
         verbalLog("actions length ", bd.actions.instructions.length.toString())
         verbalLog("actions instructions ", bd.actions.instructions)
         verbalLog("actions colors ", bd.actions.colors)
+//        bd.playerStateList.forEach {
+//            verbalLog("player pos ", it.pos.toString())
+//        }
 //        bd.actionsList.printList()
 //        verbalLog("list action", "${bd.}")
         bd

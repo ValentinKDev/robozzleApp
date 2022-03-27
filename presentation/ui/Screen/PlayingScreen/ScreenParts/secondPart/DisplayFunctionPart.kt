@@ -180,6 +180,7 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                         ) {
                             if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                 && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
+//                                && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction - 1).Match(Position(functionNumber, _index)))
                                 && playerAnimationState.runningInBackground() )
                             {
                                 WhiteSquare(

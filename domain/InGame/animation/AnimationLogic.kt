@@ -124,7 +124,8 @@ class AnimationLogicViewModel(
     }
 
     suspend fun stepByStep(stream: AnimationStream) {
-        infoLog("step by step", "start ${data.getActionToRead()}")
+        infoLog("step by step", "action ${data.getActionToRead()}")
+//        infoLog("step by step", "play ${data.getActionToRead()}")
 
 //        checkBreadcrumbRecalculation()
 //
@@ -141,9 +142,13 @@ class AnimationLogicViewModel(
                 data.incrementActionToRead()
             }
             AnimationStream.Backward -> {
-                data.decrementActionToRead()
-                checkBreadcrumbRecalculation()
-                UpdateMoveLogic(stream)
+                if (data.getActionToRead() == 0) {
+                    data.ChangePlayerAnimatedStatus( breadcrumb.playerStateList.toList().getSafe(0) )
+                } else {
+                    data.decrementActionToRead()
+                    checkBreadcrumbRecalculation()
+                    UpdateMoveLogic(stream)
+                }
             }
         }
     }
@@ -174,10 +179,6 @@ class AnimationLogicViewModel(
                 }
                 UpdateMapCaseColorsUI(stream)
             }
-        }
-        when (stream) {
-            AnimationStream.Forward -> {}
-            AnimationStream.Backward -> {}
         }
         UpdatePlayerUI()
     }
@@ -223,7 +224,8 @@ class AnimationLogicViewModel(
     }
 
     private suspend fun UpdatePlayerUI() {
-        data.ChangePlayerAnimatedStatus(breadcrumb.playerStateList[data.getActionToRead() + 1])
+        data.ChangePlayerAnimatedStatus( breadcrumb.playerStateList.toList().getSafe(data.getActionToRead() + 1) )
+//        data.ChangePlayerAnimatedStatus( breadcrumb.playerStateList.toList().getSafe(data.getActionToRead()) )
     }
 
     private suspend fun ProcessResult() {
@@ -249,34 +251,17 @@ class AnimationLogicViewModel(
             winDetails = winDetails
         )
     }
-
-
-//    private suspend fun AnimationDelay() {
-//        if (data.mapLayoutIsPresed()) delay(50)
-//        else delay(animationDelay.value)
-//    }
-
-//    private fun Int.trigerColorChange(direction: Int): Boolean {
     private fun Int.trigerColorChange(stream: AnimationStream): Boolean {
-//    return when (direction) {
         return when (stream) {
-//            FORWARD -> { colorSwitches.toRemove.containsKey(data.getActionToRead()) }
-//            BACKWARD -> { colorSwitches.removed.containsKey(data.getActionToRead()) }
             AnimationStream.Forward -> { colorSwitches.toRemove.containsKey(data.getActionToRead()) }
             AnimationStream.Backward -> { colorSwitches.removed.containsKey(data.getActionToRead()) }
-//            else -> { errorLog("Triger Color Change", "Error"); false }
         }
     }
 
-//    private fun Int.trigerStar(direction: Int): Boolean {
     private fun Int.trigerStar(stream: AnimationStream): Boolean {
-//    return when(direction) {
         return when(stream) {
-//            FORWARD -> {stars.toRemove.containsKey(data.getActionToRead())}
-//            BACKWARD -> {stars.removed.containsKey(data.getActionToRead())}
            AnimationStream.Forward -> {stars.toRemove.containsKey(data.getActionToRead())}
            AnimationStream.Backward -> {stars.removed.containsKey(data.getActionToRead())}
-//           else -> { errorLog("Triger Star", "Error"); false }
        }
     }
 

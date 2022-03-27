@@ -12,6 +12,10 @@ import java.lang.IndexOutOfBoundsException
 
 fun <T> MutableList<T>.containsNot(element: T): Boolean = !this.contains(element)
 
+//fun <U> MutableList<U>.getSafe(index: Int) {
+//
+//}
+
 //fun List<String>.countCha(exclude: Char? = null): Int {
 //    val number = 0
 //    this.toMutableList()
@@ -51,7 +55,9 @@ fun MutableList<String>.switchInMatrice(position1: Position, c1: Char, position2
     }
 }
 
-fun List<Position>.getSafe(index: Int): Position = this[getSmallerInt(this.lastIndex, index)]
+fun <U> List<U>.getSafe(index: Int): U = this[if (index > this.lastIndex) this.lastIndex else if (index < 0) 0 else index]
+
+//fun List<Position>.getSafe(index: Int): Position = this[getSmallerInt(this.lastIndex, index)]
 
 fun <U> List<U>.subListIfPossible(fromIndex: Int, toIndex: Int? = null): List<U> {
 //    infoLog("subList if possible", "original size ${this.size}")
