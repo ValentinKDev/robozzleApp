@@ -16,38 +16,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 //internal const val initialPreloadActionsNumber = 10
-internal const val initialPreloadActionsNumber = 14
-//internal const val initialPreloadActionsNumber = 30
+//internal const val initialPreloadActionsNumber = 14
+internal const val initialPreloadActionsNumber = 30
 
 class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstructions>, addActions: Int = 0): ViewModel() {
+
+    private var bd: Breadcrumb
+
+    private val printDetails: Int? = null
+
     var numberActionToLoad = initialPreloadActionsNumber
-
-//    private var bd = Breadcrumb
-//    var actionsCount = 0
-
-    private lateinit var bd: Breadcrumb
-
-        private val printDetails: Int? = null
-//    private val printDetails: Int? = 1
-
     private var stop = false
-//    private var inifiniteLoop =
-//    private var win = UNKNOWN
-//    private var lost = UNKNOWN
     private var loop = UNKNOWN
     private var oneMoreRound = false
 
     private var currentPlayerState = PlayerInGame(Position(-42,-42), Direction(-42, -42))
 
     init {
-//        win = UNKNOWN
-        loop = UNKNOWN
-//        lost = UNKNOWN
-        oneMoreRound = false
-        stop = false
+//        loop = UNKNOWN
+//        oneMoreRound = false
+//        stop = false
         numberActionToLoad += addActions
         currentPlayerState = level.playerInitial.toPlayerInGame()
-//        bd = Breadcrumb.createABreadCrumb(
         bd = Breadcrumb().createABreadCrumb(
             instructionsRows = instructionRows,
             level = level
@@ -72,6 +62,8 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
 //        infoLog("stars removed left", "${bd.starsRemovalMap}")
         infoLog("win", "${bd.win}")
         infoLog("lose", "${bd.lost}")
+        verbalLog("playerstate size ", bd.playerStateList.size.toString())
+        verbalLog("actions length ", bd.actions.instructions.length.toString())
         verbalLog("actions instructions ", bd.actions.instructions)
         verbalLog("actions colors ", bd.actions.colors)
 //        bd.actionsList.printList()

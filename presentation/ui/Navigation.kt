@@ -151,7 +151,7 @@ val myleveltest = Level(
         FunctionInstructions("u0r0", "gRgg"),
     ),
     playerInitial = listOf(
-        Position(5, 1),
+        Position(5, 0),
         Position(0, 1)
     ),
     starsList = mutableListOf(

@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.domain.res.IntGet
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.*
 
@@ -58,10 +59,7 @@ class AnimationLogicViewModel(
     }
 
     fun start(bd: Breadcrumb, animData: AnimationData): Job = runBlocking(Dispatchers.IO) {
-//    fun start(bd: Breadcrumb, animData: AnimationData): CoroutineScope {
-//        viewModelScope.launch(Dispatchers.IO) {
-    viewModelScope.async(Dispatchers.IO) {
-//    return  scope. {
+        viewModelScope.async(Dispatchers.IO) {
             initialize(bd, animData)
             infoLog("stars at", "${breadcrumb.actionsTriggerStarRemoveList}")
             infoLog("stars Map", "${breadcrumb.starsRemovalMap}")
@@ -69,14 +67,10 @@ class AnimationLogicViewModel(
             Log.v(Thread.currentThread().name,"Start - actionIndexEnd ${breadcrumb.lastActionNumber}")
             while (data.actionInBounds() == true) {
                 infoLog("action to read ${data.getActionToRead()}" , "->")
-//                UpdateMoveLogic(FORWARD)
                 UpdateMoveLogic(AnimationStream.Forward)
                 data.actionInBounds()?.let {
-//                    HandleAnimationOnPauseLogic()
-
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
                     checkBreadcrumbRecalculation()
-//                    if (triggerExpandBreadcrumb()) {expandBreadcrumb()}
                     data.incrementActionToRead()
                     delay(data.getAnimationDelay())
                 }

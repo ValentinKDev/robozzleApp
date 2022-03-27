@@ -38,14 +38,20 @@ class AnimationData(
     fun actionInBounds(): Boolean? = if (actionToRead.value < maxAction) true else null
     fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
     suspend fun incrementActionToRead() {
-        _actionToRead.emit(getActionToRead() + 1)
-        updateActionList()
+        if (actionEnd() Is false) {
+            _actionToRead.emit(getActionToRead() + 1)
+            updateActionList()
+        }
     }
     suspend fun decrementActionToRead() {
         if (getActionToRead() >= 1) {
             _actionToRead.emit(getActionToRead() - 1)
             updateActionList()
         }
+    }
+    fun actionEnd(): Boolean {
+        return if (bd.win != UNKNOWN && bd.lost != UNKNOWN) false
+        else getActionToRead() == bd.win || getActionToRead() == bd.lost
     }
 
     private val _pair = MutableStateFlow<Boolean>(true)
