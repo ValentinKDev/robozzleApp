@@ -81,21 +81,6 @@ class AnimationLogicViewModel(
         }
     }
 
-
-    private suspend fun HandleAnimationOnPauseLogic() {
-        while ( data.getPlayerAnimationState() == PlayerAnimationState.OnPause ) {
-            infoLog("Step ${data.getActionToRead()}", " ->")
-            delay(50)
-            when {
-//                data.isGoingForward() -> stepByStep(FORWARD)
-//                data.isGoingBackward() -> stepByStep(BACKWARD)
-//                data.isGoingForward() -> stepByStep(FORWARD)
-//                data.isGoingBackward() -> stepByStep(BACKWARD)
-            }
-            if (data.actionOutOfBounds()) break
-        }
-    }
-
     private fun checkBreadcrumbRecalculation() {
         if (data.getActionToRead() >= data.maxAction - maxNumberActionToDisplay) {
             expandBreadcrumb()
@@ -125,21 +110,13 @@ class AnimationLogicViewModel(
 
     suspend fun stepByStep(stream: AnimationStream) {
         infoLog("step by step", "action ${data.getActionToRead()}")
-//        infoLog("step by step", "play ${data.getActionToRead()}")
-
-//        checkBreadcrumbRecalculation()
-//
-//        UpdateMoveLogic(stream)
-//        when (stream) {
-//            AnimationStream.Forward -> data.incrementActionToRead()
-//            AnimationStream.Backward -> data.decrementActionToRead()
-//        }
 
         when (stream) {
             AnimationStream.Forward -> {
                 checkBreadcrumbRecalculation()
                 UpdateMoveLogic(stream)
                 data.incrementActionToRead()
+                ProcessResult()
             }
             AnimationStream.Backward -> {
                 if (data.getActionToRead() == 0) {
@@ -199,7 +176,6 @@ class AnimationLogicViewModel(
             when (stream) {
                 AnimationStream.Forward ->  data.DelAnimatedStarMap(it)
                 AnimationStream.Backward -> data.AddAnimatedStarMap(it)
-                else -> errorLog("ERROR", "AnimationLogic::UpdateStarsUI")
             }
         }
     }
@@ -218,20 +194,17 @@ class AnimationLogicViewModel(
             null
         }
         colorSwitch?.let {
-//            data.ChangeCaseColorMap(colorSwitch, direction)
            data.ChangeCaseColorMap(colorSwitch, stream)
         }
     }
 
     private suspend fun UpdatePlayerUI() {
         data.ChangePlayerAnimatedStatus( breadcrumb.playerStateList.toList().getSafe(data.getActionToRead() + 1) )
-//        data.ChangePlayerAnimatedStatus( breadcrumb.playerStateList.toList().getSafe(data.getActionToRead()) )
     }
 
     private suspend fun ProcessResult() {
         if (breadcrumb.win Is TRUE) {
             data.setWinPopTo(true)
-//            setWinTo(TRUE)
         }
         Log.e("END animation win", "--${breadcrumb.win}--")
         Log.e("END animation lost", "--${breadcrumb.lost}--")

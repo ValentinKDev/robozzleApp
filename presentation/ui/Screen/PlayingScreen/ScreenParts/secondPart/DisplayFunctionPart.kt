@@ -21,8 +21,11 @@ import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.presentation.res.yellow1
+import com.mobilegame.robozzle.presentation.res.yellow9
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
@@ -70,17 +73,14 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             )
         }
     ) {
-        CenterComposable {
-            Column(verticalArrangement = Arrangement.SpaceBetween) {
-                functions.forEachIndexed { functionNumber, function ->
-                    Box{
-                        DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
-                        DisplayCurrentInstructionHighlighted(functionNumber, function, vm, displayInstructionMenu)
-                    }
-                    VerticalSpace(heightDp = 50.dp)
-                }
+        functions.forEachIndexed { functionNumber, function ->
+            VerticalSpace(heightDp = vm.data.layout.secondPart.size.functionRowPaddingHeightDp)
+            Box{
+                DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
+                DisplayCurrentInstructionHighlighted(functionNumber, function, vm, displayInstructionMenu)
             }
         }
+        VerticalSpace(heightDp = vm.data.layout.secondPart.size.functionRowPaddingHeightDp)
     }
 }
 
@@ -99,19 +99,21 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
             text = vm.data.text.functionText(functionNumber),
             color = vm.data.colors.functionText
         )
-        Row(
-            Modifier
-                .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
-                .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
-                .background(vm.data.colors.functionBorder)
-            ,
-        ) {
-            CenterComposableVertically {
+        Column {
+            val doubleRow: Boolean = function.instructions.length == 10
+            val listInstructions1 = if (doubleRow) function.instructions.substring(0..4) else function.instructions
+            Column(
+                Modifier
+                    .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
+                    .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
+                    .background(vm.data.colors.functionBorder)
+                ,
+            ) {
                 Row( Modifier.fillMaxWidth()
                     ,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    function.instructions.forEachIndexed { _index, _ ->
+                    listInstructions1.forEachIndexed { _index, _ ->
                         val caseColor = function.colors[_index]
                         Box(Modifier
                             .size(vm.data.layout.secondPart.size.functionCaseDp)
@@ -123,7 +125,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                 )
                             }
                             .clickable {
-                                if ( vm.dragAndDrop.dragStart.value Is false ) {
+                                if (vm.dragAndDrop.dragStart.value Is false) {
                                     vm.ChangeInstructionMenuState()
                                     vm.setSelectedFunctionCase(functionNumber, _index)
                                 }
@@ -133,6 +135,39 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                             Box( Modifier .fillMaxSize()
                             ) {
                                 FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm, filter = displayInstructionMenu)
+                            }
+                        }
+                    }
+                }
+                if (doubleRow) {
+                    Row( Modifier.fillMaxWidth()
+                        ,
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                    function.instructions.substring(5..9).forEachIndexed { _index, _ ->
+                        val index = _index + 5
+                            val caseColor = function.colors[index]
+                            Box(Modifier
+                                .size(vm.data.layout.secondPart.size.functionCaseDp)
+                                .onGloballyPositioned {
+                                    vm.dragAndDrop.elements.addDroppableCase(
+                                        rowIndex = functionNumber,
+                                        columnIndex = index,
+                                        it
+                                    )
+                                }
+                                .clickable {
+                                    if (vm.dragAndDrop.dragStart.value Is false) {
+                                        vm.ChangeInstructionMenuState()
+                                        vm.setSelectedFunctionCase(functionNumber, index)
+                                    }
+                                }
+                            ) {
+                                val instructionChar = function.instructions[index]
+                                Box( Modifier .fillMaxSize()
+                                ) {
+                                    FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm, filter = displayInstructionMenu)
+                                }
                             }
                         }
                     }
@@ -148,47 +183,66 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
 
     val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
 
-    Row(modifier = Modifier.fillMaxWidth() ,
+    val doubleRow: Boolean = function.instructions.length == 10
+    val listInstructions1 = if (doubleRow) function.instructions.substring(0..4) else function.instructions
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .onGloballyPositioned {
+            vm.dragAndDrop.elements.addDroppableRow(functionNumber, it)
+        } ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
             text = vm.data.text.functionText(functionNumber),
-            color = Color.Transparent,
+            color = vm.data.colors.functionText
         )
-        Row( Modifier
+        Column {
+            Column( Modifier
                 .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
                 .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
-            ,
-        ) {
-            CenterComposableVertically {
+            ) {
                 Row( Modifier.fillMaxWidth()
                     ,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    function.instructions.forEachIndexed { _index, _ ->
-                        val caseColor = function.colors[_index]
-                        Box(Modifier
-                            .size(vm.data.layout.secondPart.size.functionCaseDp)
-                            .onGloballyPositioned {
-                                vm.dragAndDrop.elements.addDroppableCase(
-                                    rowIndex = functionNumber,
-                                    columnIndex = _index,
-                                    it
-                                )
-                            }
+                    listInstructions1.forEachIndexed { _index, _ ->
+                        Box( Modifier.size(vm.data.layout.secondPart.size.functionCaseDp)
                         ) {
                             if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                 && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
-//                                && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction - 1).Match(Position(functionNumber, _index)))
                                 && playerAnimationState.runningInBackground() )
                             {
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
                                     stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
-//                                    color = vm.data.colors.functionCaseSelection
                                     vm = vm
                                 )
+                            }
+                        }
+                    }
+                }
+                if (doubleRow) {
+                    Row( Modifier.fillMaxWidth()
+                        ,
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        function.instructions.substring(5..9).forEachIndexed { _index, _ ->
+                            val index = _index + 5
+                            Box(Modifier
+                                .size(vm.data.layout.secondPart.size.functionCaseDp)
+                            ) {
+                                if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
+                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
+                                    && playerAnimationState.runningInBackground() )
+                                {
+                                    WhiteSquare(
+                                        sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
+                                        stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
+                                        vm = vm
+                                    )
+                                }
                             }
                         }
                     }

@@ -31,7 +31,7 @@ object InGameSecondPart {
         const val actionRowBorder = 0.08F
 
         const val functionsRowPartHeight = 5F
-        const val functionRowPaddingHeight = 0.1F
+        const val minimumFunctionRowPaddingHeight = 0.07F
         const val maxFunctionRowWidth = 0.8F
         const val functionRowPaddingWidth = 0.05F
         const val functionCasePadding = 0.1F
@@ -78,7 +78,6 @@ object InGameSecondPart {
         var actionRowCaseBiggerDp: Dp = Dp.Unspecified
         var actionRowIcon: Float = 0F
         var actionRowIconDp: Dp = Dp.Unspecified
-//        var actionRowCaseBorder: Int = 0
     }
 
     object ActionRow {
@@ -90,10 +89,7 @@ object InGameSecondPart {
     private var minimumCaseNumberPerRow = 7
 
     fun initFunctionInstructionsRows(level: Level, density: Float) {
-//        size.functionPartHeight = size.height * ratios.functionsRowPartHeight
-        size.functionPartHeight = (size.height * ratios.functionsRowPartHeight) / (ratios.functionsRowPartHeight * ratios.actionRowHeight)
-        size.functionRowPaddingHeight = size.height * ratios.functionRowPaddingHeight
-        size.functionRowPaddingHeightDp = size.functionRowPaddingHeight.toDp(density)
+        size.functionPartHeight = (size.height * ratios.functionsRowPartHeight) / (ratios.functionsRowPartHeight + ratios.actionRowHeight)
 
         var rows = 0
         level.funInstructionsList.forEach { rows += if (it.instructions.length > 9) 2 else 1 }
@@ -103,10 +99,17 @@ object InGameSecondPart {
             if (it.instructions.length in maxCasesNumber..9) maxCasesNumber = it.instructions.length
         }
         val functionCaseByHeight: Float =
-            (size.functionPartHeight - (level.funInstructionsList.size * size.functionRowPaddingHeight)) / rows
+            (size.functionPartHeight - (level.funInstructionsList.size * size.functionRowPaddingHeight)) / (rows + 1)
+//            (size.functionPartHeight - (level.funInstructionsList.size * size.functionRowPaddingHeight)) / rows
         val functionCaseByWidth: Float = (size.width * ratios.maxFunctionRowWidth) / maxCasesNumber
         size.functionCase = getSmallerFloat(functionCaseByHeight, functionCaseByWidth)
         size.functionCaseDp = size.functionCase.toDp(density)
+
+//        size.functionRowPaddingHeight = (size.height - (rows * size.functionCase)) / (rows + 2)
+//        size.functionRowPaddingHeight = (size.height - (rows * size.functionCase)) / (level.funInstructionsList.size * 2)
+        size.functionRowPaddingHeight = (size.height - (rows * size.functionCase)) / (rows * 2)
+        size.functionRowPaddingHeightDp = size.functionRowPaddingHeight.toDp(density)
+
 
         level.funInstructionsList.forEachIndexed { _index, _functionInstructions ->
             val caseNumber = _functionInstructions.instructions.length
@@ -121,10 +124,7 @@ object InGameSecondPart {
                 size.functionRowHeightListDp.add(index = _index, (size.functionCase * 2).toDp(density))
             }
         }
-//        size.functionRowWidthListDp = size.function
-//        size.functionRowHeightListDp
 
-//        size.functionCase = (((size.width * ratios.maxFunctionRowWidth) / maxCasesNumber) / density).toInt()
         size.functionCaseIcon = size.functionCase
         size.functionCaseIconDp = size.functionCaseIcon.toDp(density)
         size.bigFunctionCase = size.functionCase * ( 1F + ratios.biggerFunctionCaseRatio )
@@ -138,8 +138,6 @@ object InGameSecondPart {
         size.caseColoringIconDp = size.caseColoringIcon.toDp(density)
         size.caseColoringIconBorder = size.caseColoringIcon * ratios.caseColoringIconBorder
         size.caseColoringIconBorderDp = size.caseColoringIconBorder.toDp(density)
-
-
 
         infoLog("init", "\tfunctions part")
         infoLog("rows", "$rows")
@@ -156,6 +154,12 @@ object InGameSecondPart {
         infoLog("1/3functionCase", "${size.oneThirdFunctionCase}")
         infoLog("2/3functionCase", "${size.twoThirdFunctionCase}")
         infoLog("function case max num", "${maximumCaseNumberActionRow}")
+
+        errorLog("rows ", "${rows}")
+        errorLog("function part height ", "${size.functionPartHeight}")
+        errorLog("function part height to Dp", "${size.functionPartHeight.toDp(density)}")
+        errorLog("function Row padding h ", "${size.functionRowPaddingHeight}")
+        errorLog("function Row padding h dp", "${size.functionRowPaddingHeightDp}")
     }
 
     fun initActionRow(density: Float) {
@@ -163,6 +167,7 @@ object InGameSecondPart {
         size.actionRowCaseDp = size.actionRowCase.toDp(density)
         size.actionRowCaseBigger = size.actionRowCase * ratios.actionRowCaseBigger
         size.actionRowCaseBiggerDp = size.actionRowCaseBigger.toDp(density)
+
 //        size.actionRowCaseBorder = ( size.actionRowCase * ratios.actionRowBorder ).toInt()
         size.actionRowIcon = size.actionRowCase
         size.actionRowIconDp = size.actionRowIcon.toDp(density)
@@ -181,7 +186,8 @@ object InGameSecondPart {
 
         size.width = widthFull.toFloat()
         size.widthDp = size.width.toDp(density)
-        size.height = heightFull * Ratios.height
+//        size.height = heightFull * Ratios.height
+        size.height = heightFull * (Ratios.height / (Ratios.height + InGameFirstPart.Ratios.height + InGameThirdPart.Ratios.height))
         size.heightDp = size.height.toDp(density)
 
         infoLog("InGameSecondPart", "initiate")
@@ -190,7 +196,6 @@ object InGameSecondPart {
 
         initFunctionInstructionsRows(level, density)
         initActionRow(density)
-//        caseColoringIcon = CaseColoringIcon.init(size.functionCase, density)
         caseColoringIcon = CaseColoringIcon(size.functionCase, density)
         errorLog(".....................................", "caseColoring radius = ${caseColoringIcon.radiusIn}")
         

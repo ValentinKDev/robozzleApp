@@ -149,6 +149,13 @@ val myleveltest = Level(
     ),
     funInstructionsList = mutableListOf(
         FunctionInstructions("u0r0", "gRgg"),
+//        FunctionInstructions("....", "gggg"),
+//        FunctionInstructions(".....", "ggggg"),
+        FunctionInstructions("........", "gggggggg"),
+//        FunctionInstructions("u...Ru....", "GgggBggggg"),
+//        FunctionInstructions("u...Ru....", "GgggBggggg"),
+//        FunctionInstructions("u...Ru....", "GgggBggggg"),
+        FunctionInstructions("u...Ru....", "GgggBggggg"),
     ),
     playerInitial = listOf(
         Position(5, 0),

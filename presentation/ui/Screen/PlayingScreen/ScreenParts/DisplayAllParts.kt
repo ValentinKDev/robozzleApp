@@ -20,7 +20,6 @@ fun DisplayAllParts(vm: GameDataViewModel) {
         }
         Row(modifier = Modifier
             .weight(vm.data.layout.secondPart.ratios.height)
-            .background(green9)
         ) {
             SecondScreenPart(vm)
         }

@@ -149,11 +149,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
     fun clickBackButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { verbalLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
-//        if (animData.getActionToRead() == 0) {
-//            clickResetButtonHandler()
-//        }
-//        else
-            animationLogicVM.stepByStep(AnimationStream.Backward)
+        animationLogicVM.stepByStep(AnimationStream.Backward)
         logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
 

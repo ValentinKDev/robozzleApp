@@ -69,7 +69,6 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
             }
             Row( Modifier
                 .fillMaxHeight()
-//            .backColor(Color.Yellow)
                 .weight(vm.data.layout.secondPart.ratios.actionRowSecondPart)
                 ,
                 verticalAlignment = Alignment.CenterVertically
