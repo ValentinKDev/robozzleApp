@@ -43,13 +43,13 @@ open class MapElementTracker <T>(
     }
 
     open fun expand(newToRemoveMap: MutableMap<Int, T>) {
-        verbalLog("Expand start", "${toRemove}")
+//        verbalLog("Expand start", "${toRemove}")
         toRemove = newToRemoveMap.copy()
-        verbalLog("Expand copy", "${toRemove}")
+//        verbalLog("Expand copy", "${toRemove}")
         toRemove = toRemove.filterNot { removed.containsKey(it.key) } as MutableMap<Int, T>
-        verbalLog("Expand wash", "${toRemove}")
-        infoLog("removed", "${removed}")
-        infoLog("toRemove", "${toRemove}")
+//        verbalLog("Expand wash", "${toRemove}")
+//        infoLog("removed", "${removed}")
+//        infoLog("toRemove", "${toRemove}")
         toRemove.forEach { infoLog("", "${it.key}") }
     }
 }

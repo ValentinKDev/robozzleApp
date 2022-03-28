@@ -76,8 +76,6 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
                 logLayoutSecondPart?.let { verbalLog("second part actionRow", "actionList ${actionList.size}")}
                 Row(Modifier
                     .wrapContentSize()
-//                        .weight(3F)
-//                        .background(Color.Magenta)
                     ,
                     verticalAlignment = Alignment.CenterVertically
                     ,
@@ -100,8 +98,6 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
                             }
                 }
                 Row(Modifier
-//                        .weight(1F)
-//                        .background(Color.Yellow)
                 ) {
                     AnimatedVisibility(
                         visible = actionPair Is true,
@@ -113,7 +109,6 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
                         actionList.getOrNull(8)?.let {
                             ActionRowCase(vm = vm, case = it, filter = displayInstructionMenu)
                         }
-//                        ActionRowCase(vm = vm, case = actionList.last(), filter = displayInstructionMenu)
                     }
                     AnimatedVisibility(
                         visible = actionPair Not true,
@@ -126,8 +121,6 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
                         actionList.getOrNull(8)?.let {
                             ActionRowCase(vm = vm, case = it, filter = displayInstructionMenu)
                         }
-//                        ActionRowCase(vm = vm, case = actionList.last(), filter = displayInstructionMenu)
-//                    ActionRowCase(vm = vm, case = actionList[8], filter = displayInstructionMenu)
                     }
                 }
             }

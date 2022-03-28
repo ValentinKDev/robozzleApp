@@ -82,7 +82,17 @@ class AnimationLogicViewModel(
     }
 
     private fun checkBreadcrumbRecalculation() {
-        if (data.getActionToRead() >= data.maxAction - maxNumberActionToDisplay) {
+        if (data.getActionToRead() >= data.maxAction - maxNumberActionToDisplay
+//            && (data.getActionToRead()..(data.maxAction - maxNumberActionToDisplay)) containsNot breadcrumb.win
+//            && (data.getActionToRead()..(data.maxAction - maxNumberActionToDisplay)) containsNot breadcrumb.lost
+            && (data.getActionToRead()..data.maxAction) containsNot breadcrumb.win
+            && (data.getActionToRead()..data.maxAction) containsNot breadcrumb.lost
+        ) {
+            errorLog("..........", "expand Breadcrumb .............................................................")
+            infoLog("action to read", "${data.getActionToRead()}")
+            infoLog("data max - maxNum", "${data.maxAction - maxNumberActionToDisplay}")
+            infoLog("win", "${breadcrumb.win}")
+            infoLog("lost", "${breadcrumb.lost}")
             expandBreadcrumb()
         }
     }
@@ -103,9 +113,6 @@ class AnimationLogicViewModel(
         stars.toRemove = breadcrumb.starsRemovalMap.copy()
         stars.expand(breadcrumb.starsRemovalMap)
         colorSwitches.expand(breadcrumb.colorChangeMap)
-        errorLog("action list size", "${breadcrumb.actionsList.size}")
-        errorLog("action lenght ", "${breadcrumb.actions.instructions.length}")
-        errorLog("action list size", "${breadcrumb.lastActionNumber}")
     }
 
     suspend fun stepByStep(stream: AnimationStream) {

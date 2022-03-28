@@ -31,7 +31,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     val data = InGameData(level, getApplication() )
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
-//    private val bdVM = BreadcrumbViewModel(level, )
     var breadcrumb = bdVM.getBreadCrumb()
     var animData = AnimationData(level, breadcrumb)
     var animationLogicVM = AnimationLogicViewModel(level,this)
@@ -59,18 +58,14 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
             function.instructions.replaceAt(pos.column, case.instruction)
 
         upDateInstructionRows(line = pos.line, newFunction = function)
-//        instructionsRows[pos.line] = function
         updateBreadcrumbInstructions()
         updateAnimData()
-//        animData.updateBd(breadcrumb)
 
-        _triggerRecompositionInstructionRows.value = triggerRecompositionInstructionsRows.value?.plus(1)
     }
 
     private fun updateBreadcrumbInstructions() {
         val newBd = BreadcrumbViewModel(level, instructionsRows).getBreadCrumb()
         breadcrumb = newBd
-//        animData = AnimationData(level, newBd)
         viewModelScope.launch() { animData.updateBd(newBd) }
     }
 
@@ -79,7 +74,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         verbalLog("GameDataViewModel", ":updateBreadcrumbAndData")
         breadcrumb = bd
         updateAnimData()
-//        animData.updateBreadCrumb(breadcrumb)
     }
 
     fun startPlayerAnimation() {
@@ -87,9 +81,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         verbalLog("startPlayerAnimation", "job is canceled ${animationJob?.isCancelled}")
         animationJob = animationLogicVM.start(breadcrumb, animData)
     }
-
-    private val _triggerRecompositionInstructionRows = MutableLiveData<Int>(0)
-    val triggerRecompositionInstructionsRows: MutableLiveData<Int> = _triggerRecompositionInstructionRows
 
     fun mapLayoutIsPressed() = runBlocking(Dispatchers.Default) {
         animData.setAnimationDelayShort()
@@ -136,13 +127,8 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         logClick?.let { errorLog("click play pause vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
 
-    private val _tempAction = MutableStateFlow<Int>(UNKNOWN)
-    val tempAction: StateFlow<Int> = _tempAction.asStateFlow()
-    fun setTempAction(value: Int) { _tempAction.value = value }
-
     fun clickNextButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { verbalLog("click next vm handler", "start ${animData.getPlayerAnimationState().key}") }
-//        if (animData.isOnPause()) { animationLogicVM.stepByStep(FORWARD) }
         if (animData.isOnPause()) { animationLogicVM.stepByStep(AnimationStream.Forward) }
         else { infoLog("next", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
         logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }

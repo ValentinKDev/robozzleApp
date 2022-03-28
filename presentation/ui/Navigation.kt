@@ -52,6 +52,7 @@ fun Navigation(navigator: Navigator) {
 
     val context = LocalContext.current
 //    val dens = LocalDensity.current
+
     NavHost(
         navController = navController,
 //        startDestination = Screens.MainMenu.route

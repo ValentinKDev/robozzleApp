@@ -36,7 +36,8 @@ class AnimationData(
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
-    fun actionInBounds(): Boolean? = if (actionToRead.value < maxAction) true else null
+//    fun actionInBounds(): Boolean? = if (actionToRead.value < maxAction) true else null
+    fun actionInBounds(): Boolean? = if (actionToRead.value < maxIndex) true else null
     fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
     suspend fun incrementActionToRead() {
         if (actionEnd() Is false) {
@@ -45,10 +46,8 @@ class AnimationData(
         }
     }
     suspend fun decrementActionToRead() {
-//        if (getActionToRead() >= 1) {
-            _actionToRead.emit(getActionToRead() - 1)
-            updateActionList()
-//        }
+        _actionToRead.emit(getActionToRead() - 1)
+        updateActionList()
     }
     fun actionEnd(): Boolean {
         return if (bd.win != UNKNOWN && bd.lost != UNKNOWN) false
@@ -81,7 +80,6 @@ class AnimationData(
     suspend fun setPlayerAnimationState(newState: PlayerAnimationState) {_playerAnimationState.emit(newState)}
 
 
-//    private val _playerAnimated = MutableStateFlow<PlayerInGame>( savedData?.getPlayer() ?: level.playerInitial.clone().toPlayerInGame())
     private val _playerAnimated = MutableStateFlow<PlayerInGame>( level.playerInitial.clone().toPlayerInGame())
     val playerAnimated: StateFlow<PlayerInGame> = _playerAnimated.asStateFlow()
     suspend fun ChangePlayerAnimatedStatus(newStatus: PlayerInGame) {
