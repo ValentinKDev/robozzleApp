@@ -44,7 +44,6 @@ fun SecondScreenPart(vm: GameDataViewModel) {
             }
         }
         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
-            .background(red9)
         ) {
             DisplayFunctionsPart(vm)
         }

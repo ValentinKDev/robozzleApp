@@ -28,10 +28,7 @@ class DragAndDropState() {
 
     private val _dragStart = MutableStateFlow<Boolean>(false)
     val dragStart: StateFlow<Boolean> = _dragStart.asStateFlow()
-    //    val _dragStartP = MutableStateFlow<Boolean>(false)
-//    val dragStart = _dragStart.stateIn
     fun setDragStart(value: Boolean) {
-//        _dragStart.tryEmit(value)
         _dragStart.value = value
     }
 
@@ -61,7 +58,6 @@ class DragAndDropState() {
     }
 
     private val _dragRepresentationOffset = MutableStateFlow<Offset>(Offset.Zero)
-//    val dragRepresentationOffset = _dragRepresentationOffset
     val dragRepresentationOffset: StateFlow<Offset> = _dragRepresentationOffset.asStateFlow()
     fun setDraggedRepresentationOffset() {
         val elementHalfHeight: Float = elements.itemSelectedHalfHeight ?: 0F
@@ -93,7 +89,6 @@ class DragAndDropState() {
     fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
         setOffsets(pointerInputChange.position)
         elements.findItemUnderItem(underPointerOffset, list)
-//        setDragStart(true)
     }
 
     fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
@@ -105,9 +100,6 @@ class DragAndDropState() {
     }
 
     fun onDragCancel() = runBlocking {
-//        switch(lvl)
-//        switchCases(list)
-
         setDragStart(false)
         elements.itemSelectedPosition = null
         elements.itemSelected = null

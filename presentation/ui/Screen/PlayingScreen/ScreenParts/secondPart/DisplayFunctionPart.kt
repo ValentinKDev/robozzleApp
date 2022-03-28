@@ -55,7 +55,7 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
                         pointerInputChange = change,
                         list = vm.instructionsRows
                     )
-                    infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
+//                    infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
                 },
                 onDragStart = { _offset ->
                     infoLog("onDragStart", "started")

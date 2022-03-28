@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.runBlocking
 
 typealias DragAndDropRow = Pair<Rect, DragAndDropCaseList>
 typealias DragAndDropCaseList = MutableList<Rect>
@@ -37,17 +38,25 @@ class DragAndDropElements {
     var itemSelectedOneThirdHeight: Float? = null
     var itemSelectedTwoThirdHeight: Float? = null
 
-    private val _itemUnderVisible = MutableStateFlow<Boolean>(false)
-    val itemUnderVisible: StateFlow<Boolean> = _itemUnderVisible.asStateFlow()
+//    private val _itemUnderVisible = MutableStateFlow<Boolean>(false)
+//    val itemUnderVisible: StateFlow<Boolean> = _itemUnderVisible.asStateFlow()
+//    fun setUnderVisibleTo(value: Boolean) = runBlocking {
+//        _itemUnderVisible.emit(value)
+//    }
+
     var itemUnderPosition: Position? = null
     var itemUnder: FunctionInstruction? = null
+    private val _itemUnderCorner = MutableStateFlow<Offset?>(null)
+    val itemUnderCorner: StateFlow<Offset?> = _itemUnderCorner.asStateFlow()
     var itemUnderTopLeftOffset: Offset? = null
     fun clearItemUnder() {
         errorLog("clear", "item Under")
-        _itemUnderVisible.value = false
+//        setUnderVisibleTo(false)
+//        _itemUnderVisible.value = false
         itemUnderPosition = null
         itemUnder = null
         itemUnderTopLeftOffset = null
+        _itemUnderCorner.value = null
     }
 
     var rowsList: MutableList<DragAndDropRow> = mutableListOf()
@@ -109,7 +118,7 @@ class DragAndDropElements {
         var found = false
         var visible = false
         rowsList.forEachIndexed { rowIndex, row ->
-            if (row.first.contains(offset)) {
+//            if (row.first.contains(offset)) {
                 row.second.forEachIndexed { columnIndex, case ->
                     if (case.contains(offset)) {
                         visible = true
@@ -123,8 +132,9 @@ class DragAndDropElements {
                                     color = list[it.line].colors[it.column]
                                 )
                                 if (it != itemSelectedPosition)  {
-                                    _itemUnderVisible.value = true
+//                                    setUnderVisibleTo(true)
                                     itemUnderTopLeftOffset = case.topLeft
+                                    _itemUnderCorner.value = case.topLeft
                                 }
                                 found = true
                                 verbalLog("itemUnder Postion", "$itemUnderPosition")
@@ -133,14 +143,8 @@ class DragAndDropElements {
                         }
                     }
                 }
-            }
-//            if (found not true) {
-//                itemUnderPosition = null
-//                itemUnder = null
-//            }
             if (visible not true)
                 clearItemUnder()
-            verbalLog("visibleUnder", "${_itemUnderVisible.value}")
         }
     }
     infix fun not(uoi: Boolean): Boolean = uoi.not()
