@@ -19,6 +19,7 @@ object InGameFirstPart {
         const val mapHeight = 0.98F
         const val mapWidth = 0.98F
         const val mapCasePadding = 0.004F
+        const val mapCaseStroke = 0.07F
 
         const val playerBox = 0.9F
         const val playerCanvas = 0.82F
@@ -43,6 +44,7 @@ object InGameFirstPart {
         var mapWidthDp: Dp = Dp.Unspecified
         var mapCaseDp: Dp = Dp.Unspecified
         var mapCase: Float = 0F
+        var mapCaseStroke: Float = 0F
         var mapCasePadding: Float = 0F
         var mapCasePaddingDp: Dp = Dp.Unspecified
 
@@ -160,6 +162,8 @@ object InGameFirstPart {
         val mapCaseByHeight = (size.mapLayoutHeight - ((1 + level.map.size ) * size.mapCasePadding)) / level.map.size
         size.mapCase = getSmallerFloat(mapCaseByWidth, mapCaseByHeight)
         size.mapCaseDp = size.mapCase.toDp(density)
+//        size.mapCaseStrokeDp = (size.mapCase * ratios.mapCaseStroke).toDp(density)
+        size.mapCaseStroke = 3F
 
         size.mapWidth = ((size.mapCase + size.mapCasePadding) * level.map.first().length) - size.mapCasePadding
         size.mapWidthDp = size.mapWidth.toDp(density)

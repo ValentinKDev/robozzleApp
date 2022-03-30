@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.firstPart
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -14,12 +15,14 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logAnimMap
+import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
 import com.mobilegame.robozzle.presentation.ui.elements.StarIcon
+import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 import com.mobilegame.robozzle.utils.infixStyle.contain
@@ -30,6 +33,7 @@ fun MapViewInGame(
     vm: GameDataViewModel,
     playerInGame: PlayerInGame? = null,
     stars: List<Position> = emptyList(),
+    caseStop: List<Position> = emptyList(),
     filter: Boolean,
 ) {
     //todo : put those calculs in a VM ?
@@ -39,8 +43,8 @@ fun MapViewInGame(
         infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
         infoLog("action", "${vm.animData.getActionToRead()}")
     }
-    var casePosition = Position.Zero
 
+    var casePosition = Position.Error
     Box(
         Modifier
             .height(vm.data.layout.firstPart.size.mapHeightDp)
@@ -53,57 +57,21 @@ fun MapViewInGame(
                 Row {
                     rowString.forEachIndexed { _columnIndex, _color ->
                         casePosition = Position(_rowIndex, _columnIndex)
-                        Box(
-                            Modifier
-                                .background(Color.Transparent)
-                                .size(vm.data.layout.firstPart.size.mapCaseDp),
-                        ) {
-                            if (_color != '.') {
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-//                                        .padding(1.dp),
-                                        .padding(vm.data.layout.firstPart.size.mapCasePaddingDp),
-                                shape = RectangleShape,
-                                    elevation = 7.dp,
-                                ) {
-                                    Box(
-                                        Modifier
-                                            .gradientBackground(
-                                                mapCaseColorList(
-                                                    _color,
-                                                    filter
-                                                ), 135f
-                                            )
-                                            .fillMaxSize()
-                                    ) {
-//                                        content.invoke()
-                                        playerInGame?.let {
-                                            if (playerInGame.pos == casePosition) {
-                                                CenterComposable {
-                                                    PlayerIcon(direction = it.direction, data = vm.data.layout.firstPart, colors = vm.data.colors, _color.toCaseColor())
-                                                }
-                                            }
-                                            else if (stars contain casePosition) {
-                                                if (stars contain casePosition) {
-                                                    CenterComposable {
-                                                        StarIcon(vm.data.layout.firstPart, vm.data.colors)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            else {
-                                playerInGame?.let {
-                                    if (it.pos == casePosition) {
-                                        errorLog("player out map - postion", "$casePosition")
-                                        CenterComposable {
-                                            PlayerIcon(direction = it.direction, vm.data.layout.firstPart, colors = vm.data.colors, _color.toCaseColor())
-                                        }
-                                    }
-                                }
+                        Box {
+                            DrawMapCase(
+                                playerInGame = playerInGame,
+                                stars = stars,
+                                casePos = casePosition,
+                                caseColor = _color,
+                                filter = filter,
+                                vm = vm
+                            )
+                            if (caseStop.contains(casePosition)) {
+                                WhiteSquare(
+                                    sizeDp = vm.data.layout.firstPart.size.mapCaseDp,
+                                    stroke = vm.data.layout.firstPart.size.mapCaseStroke,
+                                    vm = vm
+                                )
                             }
                         }
                     }
@@ -114,26 +82,65 @@ fun MapViewInGame(
 }
 
 @Composable
-fun DrawMapCase(caseSize: Int, caseColor: Char, content: @Composable () -> Unit) {
+fun DrawMapCase(
+    playerInGame: PlayerInGame?,
+    stars: List<Position>,
+    casePos: Position,
+    caseColor: Char,
+    filter: Boolean,
+    vm: GameDataViewModel,
+) {
     Box(
         Modifier
             .background(Color.Transparent)
-            .size(caseSize.dp),
+            .size(vm.data.layout.firstPart.size.mapCaseDp),
     ) {
         if (caseColor != '.') {
             Card(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(1.dp),
+                    .padding(vm.data.layout.firstPart.size.mapCasePaddingDp),
                 shape = RectangleShape,
                 elevation = 7.dp,
             ) {
                 Box(
                     Modifier
-                        .gradientBackground(mapCaseColorList(caseColor), 135f)
+                        .gradientBackground(
+                            mapCaseColorList(
+                                caseColor,
+                                filter
+                            ), 135f
+                        )
+                        .clickable {
+                            infoLog("click", "on map case $casePos")
+                            vm.animData.mapCaseSelectionHandler(casePos)
+                        }
                         .fillMaxSize()
                 ) {
-                    content.invoke()
+                    playerInGame?.let {
+                        if (playerInGame.pos == casePos) {
+                            CenterComposable {
+                                PlayerIcon(direction = it.direction, data = vm.data.layout.firstPart, colors = vm.data.colors, caseColor.toCaseColor())
+                            }
+                        }
+                        else if (stars contain casePos) {
+                            if (stars contain casePos) {
+                                CenterComposable {
+                                    StarIcon(vm.data.layout.firstPart, vm.data.colors)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            playerInGame?.let {
+                if (it.pos == casePos) {
+                    errorLog("player out map - postion", "$casePos")
+                    CenterComposable {
+                        PlayerIcon(direction = it.direction, vm.data.layout.firstPart, colors = vm.data.colors, caseColor.toCaseColor())
+                    }
                 }
             }
         }

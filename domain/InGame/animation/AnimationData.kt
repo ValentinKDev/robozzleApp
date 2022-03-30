@@ -1,21 +1,17 @@
 package com.mobilegame.robozzle.domain.InGame.animation
 
-import androidx.compose.runtime.saveable.listSaver
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logInit
 import com.mobilegame.robozzle.domain.InGame.*
-import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
-import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
-import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.not
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.utils.Extensions.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,6 +69,7 @@ class AnimationData(
     private val _playerAnimationState = MutableStateFlow<PlayerAnimationState>( PlayerAnimationState.NotStarted)
     val playerAnimationState: StateFlow<PlayerAnimationState> = _playerAnimationState.asStateFlow()
     fun getPlayerAnimationState(): PlayerAnimationState = playerAnimationState.value
+    fun getPlayerPosition(): Position = playerAnimated.value.pos
     fun isGoingBackward(): Boolean = getPlayerAnimationState() == PlayerAnimationState.GoBack && actionToRead.value > 0
     fun isGoingForward(): Boolean = getPlayerAnimationState() == PlayerAnimationState.GoNext && actionToRead.value < maxAction - 1
     fun isPlaying(): Boolean = playerAnimationState.value == PlayerAnimationState.IsPlaying
@@ -90,23 +87,49 @@ class AnimationData(
     private val _map = MutableStateFlow<MutableList<String>>(level.map.toMutableList())
     val map: StateFlow<MutableList<String>> = _map.asStateFlow()
     fun setNewMap(newMap: MutableList<String>) {_map.value = newMap}
-//    fun ChangeCaseColorMap(colorSwitch: ColorSwitch, direction: Int) {
     fun ChangeCaseColorMap(colorSwitch: ColorSwitch, stream: AnimationStream) {
-//    when (direction) {
         when (stream) {
-//            FORWARD -> { setNewMap(map.value.replaceInMatrice(colorSwitch.newColor, colorSwitch.pos)) }
-//            BACKWARD -> { _map.value!![colorSwitch.pos.line] = _map.value!![colorSwitch.pos.line].replaceAt(colorSwitch.pos.column, colorSwitch.oldColor) }
             AnimationStream.Forward -> { setNewMap(map.value.replaceInMatrice(colorSwitch.newColor, colorSwitch.pos)) }
             AnimationStream.Backward -> { _map.value!![colorSwitch.pos.line] = _map.value!![colorSwitch.pos.line].replaceAt(colorSwitch.pos.column, colorSwitch.oldColor) }
-//            else -> { errorLog("ERROR", "GameDataViewModel::ChangeCaseColorMap [Wrong direction]") }
         }
     }
 
-    private val _mapLayoutPressed = MutableStateFlow<Boolean>(false)
-    val mapLayoutPressed: StateFlow<Boolean> = _mapLayoutPressed
-    fun mapLayoutPressedToTrue() {_mapLayoutPressed.value = true}
-    fun mapLayoutPressedToFalse() {_mapLayoutPressed.value = false}
-    fun mapLayoutIsPresed(): Boolean = mapLayoutPressed.value
+    var listOfStopsPassed: MutableList<Position> = mutableListOf()
+    fun mapCaseMakeStop(coroutineScope: CoroutineScope) {
+        listOfStopsPassed.add(getPlayerPosition())
+        coroutineScope.cancel()
+    }
+    private val _mapCaseSelection = MutableStateFlow<List<Position>>(mutableListOf())
+    val mapCaseSelection: StateFlow<List<Position>> = _mapCaseSelection.asStateFlow()
+    fun mapCaseSelectionHandler(position: Position) = runBlocking(Dispatchers.Default) {
+        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
+        if (mapCaseSelection.value.contains(position)) deleteMapCaseStop(position)
+        else addMapCaseStop(position)
+        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
+    }
+    private suspend fun addMapCaseStop(position: Position) {
+        val newList: MutableList<Position> = _mapCaseSelection.value.toMutableList()
+        newList.add(position)
+        _mapCaseSelection.emit(
+            newList.toList()
+        )
+    }
+    private suspend fun deleteMapCaseStop(position: Position) {
+        val newList: MutableList<Position> = _mapCaseSelection.value.toMutableList()
+        newList.remove(position)
+        _mapCaseSelection.emit(
+            newList.toList()
+        )
+    }
+    fun isPlayerOnStopMark(): Boolean = runBlocking(Dispatchers.Default) {
+        mapCaseSelection.value.contains(getPlayerPosition()) && listOfStopsPassed.containsNot(getPlayerPosition())
+    }
+
+//    private val _mapLayoutPressed = MutableStateFlow<Boolean>(false)
+//    val mapLayoutPressed: StateFlow<Boolean> = _mapLayoutPressed
+//    fun mapLayoutPressedToTrue() {_mapLayoutPressed.value = true}
+//    fun mapLayoutPressedToFalse() {_mapLayoutPressed.value = false}
+//    fun mapLayoutIsPresed(): Boolean = mapLayoutPressed.value
 
     private val _animationDelay = MutableStateFlow<Long>(200)
     val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
@@ -147,9 +170,9 @@ class AnimationData(
         _playerAnimationState.emit(PlayerAnimationState.NotStarted)
         _playerAnimated.emit( level.playerInitial.clone().toPlayerInGame())
         _map.emit(level.map.toMutableList())
-        _mapLayoutPressed.emit(false)
+//        _mapLayoutPressed.emit(false)
         _animatedStarsMaped.emit(level.starsList.toMutableList())
         _winPop.emit(false)
-
+        listOfStopsPassed = mutableListOf()
     }
 }

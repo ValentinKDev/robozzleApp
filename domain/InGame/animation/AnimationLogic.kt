@@ -11,13 +11,11 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.InGame.res.*
-import com.mobilegame.robozzle.domain.InGame.res.FORWARD
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.domain.res.IntGet
 import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.*
 
@@ -36,6 +34,7 @@ class AnimationLogicViewModel(
 
     lateinit var stars: Stars
     lateinit var colorSwitches: ColorsMaps
+//    var stops: MutableList<Position> = mutableListOf()
     var actionIndexEnd: Int = UNKNOWN
     private var starsRemovedMap = mutableMapOf<Int, Point>()
     private var addAction = initialPreloadActionsNumber
@@ -73,6 +72,9 @@ class AnimationLogicViewModel(
                     checkBreadcrumbRecalculation()
                     data.incrementActionToRead()
                     delay(data.getAnimationDelay())
+                }
+                if (data.isPlayerOnStopMark()) {
+                    data.mapCaseMakeStop(this)
                 }
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
@@ -163,6 +165,10 @@ class AnimationLogicViewModel(
                 }
                 UpdateMapCaseColorsUI(stream)
             }
+//            data.isPlayerOnStopMark() -> data.mapCaseMakeStop(this)
+        }
+        if (stream == AnimationStream.Backward && data.listOfStopsPassed.contains(data.getPlayerPosition())) {
+            data.listOfStopsPassed.remove(data.getPlayerPosition())
         }
         UpdatePlayerUI()
     }

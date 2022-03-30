@@ -23,6 +23,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 @Composable
 fun MapLayout(vm: GameDataViewModel) {
     val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
+    val caseStop: List<Position> by vm.animData.mapCaseSelection.collectAsState()
     val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
 
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
@@ -40,6 +41,7 @@ fun MapLayout(vm: GameDataViewModel) {
     ) {
         logClick?.let { infoLog("click", "map") }
     }
+//    infoLog("case stop list ", "$caseStop")
 
     Box(
         modifier = Modifier
@@ -54,6 +56,7 @@ fun MapLayout(vm: GameDataViewModel) {
                 vm = vm,
                 playerInGame,
                 stars,
+                caseStop = caseStop,
                 filter = displayInstructionMenu
             )
         }
