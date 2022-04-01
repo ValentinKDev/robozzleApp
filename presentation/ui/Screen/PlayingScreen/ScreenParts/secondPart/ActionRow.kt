@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,11 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.logAnimLayoutSecondPart
-import com.mobilegame.robozzle.analyse.logLayoutSecondPart
-import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.analyse.*
+import com.mobilegame.robozzle.domain.InGame.AnimationStream
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.mapCaseColorList
@@ -47,17 +48,46 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 
     logLayoutSecondPart?.let {
         infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
-//        infoLog("action row case border size", "${vm.data.layout.secondPart.size.actionRowCaseBorder}")
         verbalLog("action to read", vm.animData.actionToRead.value.toString())
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
     }
-    verbalLog("actionList to display size ", "${actionList.size}")
-    verbalLog("actionList to display size 2", "${actionList.subListIfPossible(1, 8).size}")
+//    verbalLog("actionList to display size ", "${actionList.size}")
+//    verbalLog("actionList to display size 2", "${actionList.subListIfPossible(1, 8).size}")
 
     if (actionList.isNotEmpty()) {
-
-        Row() {
+        Row(Modifier
+            .onGloballyPositioned {
+                vm.dragAndDropRow.setDraggableLength(it)
+            }
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDrag = { change, _ ->
+                        infoLog( "onDrag", "position ${change.position}" )
+                        vm.dragAndDropRow.onDrag( pointerInputChange = change)
+                        vm.dragAndDropRow.move()?.let {
+                            when (it) {
+                                AnimationStream.Forward -> vm.clickNextButtonHandler()
+                                AnimationStream.Backward -> vm.clickBackButtonHandler()
+                            }
+                        }
+                    },
+                    onDragStart = { _offset ->
+                        infoLog("onDragStart", "started")
+                        vm.dragAndDropRow.onDragStart(_offset)
+                        infoLog( "vm.dragstart", "${vm.dragAndDropRow.dragStart.value}" )
+                    },
+                    onDragEnd = {
+                        vm.dragAndDropRow.onDragReset()
+                        errorLog("onDragEnd", "end")
+                    },
+                    onDragCancel = {
+                        vm.dragAndDropRow.onDragReset()
+                        errorLog("onDragCanceled", "cancel")
+                    }
+                )
+            }
+        ) {
             Row( Modifier
                 .fillMaxHeight()
                 .weight(vm.data.layout.secondPart.ratios.actionRowFirstPart)

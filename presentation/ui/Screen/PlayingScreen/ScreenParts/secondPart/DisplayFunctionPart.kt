@@ -10,10 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -21,37 +19,32 @@ import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.yellow1
-import com.mobilegame.robozzle.presentation.res.yellow9
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
 
 @Composable
 fun DisplayFunctionsPart(vm: GameDataViewModel) {
-    val draggedStart : Boolean by vm.dragAndDrop.dragStart.collectAsState()
+    val draggedStart : Boolean by vm.dragAndDropCase.dragStart.collectAsState()
     val levelFunctions = vm.instructionsRows
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
     val functions =
         if ( draggedStart )
-            vm.dragAndDrop.elements.onHoldItem(levelFunctions)
+            vm.dragAndDropCase.elements.onHoldItem(levelFunctions)
         else
             levelFunctions
 
     Column(Modifier
         .fillMaxSize()
         .onGloballyPositioned {
-            vm.dragAndDrop.elements.setDraggableParentOffset(it)
+            vm.dragAndDropCase.elements.setDraggableParentOffset(it)
         }
         .pointerInput(Unit) {
             detectDragGestures(
                 onDrag = { change, _ ->
                     infoLog("onDrag", "position ${change.position}")
-                    vm.dragAndDrop.onDrag(
+                    vm.dragAndDropCase.onDrag(
                         pointerInputChange = change,
                         list = vm.instructionsRows
                     )
@@ -59,15 +52,15 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
                 },
                 onDragStart = { _offset ->
                     infoLog("onDragStart", "started")
-                    vm.dragAndDrop.onDragStart(_offset, levelFunctions)
-                    infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
+                    vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
+                    infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")
                 },
                 onDragEnd = {
-                    vm.dragAndDrop.onDragEnd(vm)
+                    vm.dragAndDropCase.onDragEnd(vm)
                     errorLog("onDragEnd", "end")
                 },
                 onDragCancel = {
-                    vm.dragAndDrop.onDragCancel()
+                    vm.dragAndDropCase.onDragCancel()
                     errorLog("onDragCanceled", "cancel")
                 }
             )
@@ -90,7 +83,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
     Row(modifier = Modifier
         .fillMaxWidth()
         .onGloballyPositioned {
-            vm.dragAndDrop.elements.addDroppableRow(functionNumber, it)
+            vm.dragAndDropCase.elements.addDroppableRow(functionNumber, it)
         } ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -118,14 +111,14 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                         Box(Modifier
                             .size(vm.data.layout.secondPart.size.functionCaseDp)
                             .onGloballyPositioned {
-                                vm.dragAndDrop.elements.addDroppableCase(
+                                vm.dragAndDropCase.elements.addDroppableCase(
                                     rowIndex = functionNumber,
                                     columnIndex = _index,
                                     it
                                 )
                             }
                             .clickable {
-                                if (vm.dragAndDrop.dragStart.value Is false) {
+                                if (vm.dragAndDropCase.dragStart.value Is false) {
                                     vm.ChangeInstructionMenuState()
                                     vm.setSelectedFunctionCase(functionNumber, _index)
                                 }
@@ -150,14 +143,14 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                             Box(Modifier
                                 .size(vm.data.layout.secondPart.size.functionCaseDp)
                                 .onGloballyPositioned {
-                                    vm.dragAndDrop.elements.addDroppableCase(
+                                    vm.dragAndDropCase.elements.addDroppableCase(
                                         rowIndex = functionNumber,
                                         columnIndex = index,
                                         it
                                     )
                                 }
                                 .clickable {
-                                    if (vm.dragAndDrop.dragStart.value Is false) {
+                                    if (vm.dragAndDropCase.dragStart.value Is false) {
                                         vm.ChangeInstructionMenuState()
                                         vm.setSelectedFunctionCase(functionNumber, index)
                                     }
@@ -189,7 +182,7 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
     Row(modifier = Modifier
         .fillMaxWidth()
         .onGloballyPositioned {
-            vm.dragAndDrop.elements.addDroppableRow(functionNumber, it)
+            vm.dragAndDropCase.elements.addDroppableRow(functionNumber, it)
         } ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,

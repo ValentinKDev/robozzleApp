@@ -1,15 +1,7 @@
-package com.mobilegame.robozzle.domain.model.gesture.dragAndDrop
+package com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase
 
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
@@ -19,12 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
-//class DragAndDropState(): ViewModel() {
-class DragAndDropState() {
-    val elements = DragAndDropElements()
-
-    private val _visibleDragDropOverlay = MutableStateFlow<Boolean>(false)
-    val visibleDragDropOverlay: StateFlow<Boolean> = _visibleDragDropOverlay.asStateFlow()
+class DragAndDropCaseState() {
+    val elements = DragAndDropCaseElements()
 
     private val _dragStart = MutableStateFlow<Boolean>(false)
     val dragStart: StateFlow<Boolean> = _dragStart.asStateFlow()
@@ -48,6 +36,7 @@ class DragAndDropState() {
         setDraggedRepresentationOffset()
         setPointerUnderOffset()
     }
+
     private val _touchOffSet = MutableStateFlow<Offset>(Offset(0F,0F))
     val touchOffSet: StateFlow<Offset> = _touchOffSet.asStateFlow()
     fun setTouchOffset(localOffset: Offset) {

@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -8,23 +7,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
 import androidx.compose.material.Text
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
-import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
-import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
+import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.myleveltest
 
 
 @Composable
-fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAndDropState(), itemList: List<String> = itemListval) {
+fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropCaseState = DragAndDropCaseState(), itemList: List<String> = itemListval) {
 
     Box(Modifier.fillMaxSize()) {
         Column(
@@ -57,7 +52,7 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropState = DragAn
 
 
 @Composable
-fun Handle(rowIndex: Int, columnIndex: Int, s: String, dragAndDropVM: DragAndDropState) {
+fun Handle(rowIndex: Int, columnIndex: Int, s: String, dragAndDropVM: DragAndDropCaseState) {
     var selectColor: Color = remember { gray7 }
 
     Box(

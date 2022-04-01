@@ -20,16 +20,16 @@ import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DragAndDropOverlay(vm: GameDataViewModel) {
-    val dragRepresentationOffset: Offset by vm.dragAndDrop.dragRepresentationOffset.collectAsState()
+    val dragRepresentationOffset: Offset by vm.dragAndDropCase.dragRepresentationOffset.collectAsState()
 //    val itemUnderVisible: Boolean by vm.dragAndDrop.elements.itemUnderVisible.collectAsState()
 //    val visibleItermUnder: Boolean by remember(vm) {vm.dragAndDrop.elements.itemUnderVisible}.collectAsState()
-    val itemUnderCornerOffset: Offset? by vm.dragAndDrop.elements.itemUnderCorner.collectAsState()
-    val dragStart: Boolean by vm.dragAndDrop.dragStart.collectAsState()
-    val visibleDragDropOverLay by remember(vm) {vm.dragAndDrop.dragStart}.collectAsState(false)
+    val itemUnderCornerOffset: Offset? by vm.dragAndDropCase.elements.itemUnderCorner.collectAsState()
+    val dragStart: Boolean by vm.dragAndDropCase.dragStart.collectAsState()
+    val visibleDragDropOverLay by remember(vm) {vm.dragAndDropCase.dragStart}.collectAsState(false)
 
     if (dragStart) {
-        vm.dragAndDrop.elements.getColor() ?.let { _color ->
-            vm.dragAndDrop.elements.getInstruction() ?.let { _instruction ->
+        vm.dragAndDropCase.elements.getColor() ?.let { _color ->
+            vm.dragAndDropCase.elements.getInstruction() ?.let { _instruction ->
                 Box( Modifier.fillMaxSize() ) {
                     AnimatedVisibility(
 //                        visible = itemUnderVisible,
@@ -74,8 +74,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                         Box(Modifier
                             .offset {
                                 IntOffset(
-                                    x = vm.dragAndDrop.underPointerOffset.x.toInt(),
-                                    y = vm.dragAndDrop.underPointerOffset.y.toInt(),
+                                    x = vm.dragAndDropCase.underPointerOffset.x.toInt(),
+                                    y = vm.dragAndDropCase.underPointerOffset.y.toInt(),
                                 )
                             }
                             .size(5.dp)

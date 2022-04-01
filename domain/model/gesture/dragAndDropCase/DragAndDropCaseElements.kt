@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.model.gesture.dragAndDrop
+package com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -16,14 +16,13 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
 
 typealias DragAndDropRow = Pair<Rect, DragAndDropCaseList>
 typealias DragAndDropCaseList = MutableList<Rect>
 
 infix fun Boolean.not(check: Boolean) = this != check
 
-class DragAndDropElements {
+class DragAndDropCaseElements {
     var parentOffset: Offset = Offset.Zero
     fun  setDraggableParentOffset(layoutCoordinates: LayoutCoordinates) {
         if (parentOffset == Offset.Zero) {

@@ -7,18 +7,14 @@ import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.utils.Extensions.replaceAt
 import com.mobilegame.robozzle.domain.InGame.*
 import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
-import com.mobilegame.robozzle.domain.InGame.res.BACKWARD
-import com.mobilegame.robozzle.domain.InGame.res.FORWARD
-import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
-import com.mobilegame.robozzle.domain.model.gesture.dragAndDrop.DragAndDropState
+import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
+import com.mobilegame.robozzle.domain.model.gesture.dragAndDropRow.DragAndDropRowState
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.presentation.ui.mylevelTest2
-import com.mobilegame.robozzle.presentation.ui.myleveltest
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +32,8 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     var animationLogicVM = AnimationLogicViewModel(level,this)
 
     val popup = PopupViewModel()
-    val dragAndDrop = DragAndDropState()
+    val dragAndDropCase = DragAndDropCaseState()
+    val dragAndDropRow = DragAndDropRowState()
     private var animationJob: Job? = null
 
     var selectedCase = Position.Zero
@@ -130,6 +127,11 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     fun clickNextButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { verbalLog("click next vm handler", "start ${animData.getPlayerAnimationState().key}") }
         if (animData.isOnPause()) { animationLogicVM.stepByStep(AnimationStream.Forward) }
+        else if (animData.hasNotStarted()) {
+            animationLogicVM.initialize(breadcrumb, animData)
+            animData.setPlayerAnimationState(PlayerAnimationState.OnPause)
+            animationLogicVM.stepByStep(AnimationStream.Forward)
+        }
         else { infoLog("next", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
         logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }

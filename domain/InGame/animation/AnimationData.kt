@@ -28,11 +28,9 @@ class AnimationData(
     var maxAction = bd.lastActionNumber
     var maxIndex = bd.lastActionNumber - 1
     private val _actionToRead = MutableStateFlow(0)
-//    private val _actionToRead = MutableStateFlow(1)
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
-//    fun actionInBounds(): Boolean? = if (actionToRead.value < maxAction) true else null
     fun actionInBounds(): Boolean? = if (actionToRead.value < maxIndex) true else null
     fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
     suspend fun incrementActionToRead() {
@@ -45,6 +43,7 @@ class AnimationData(
         _actionToRead.emit(getActionToRead() - 1)
         updateActionList()
     }
+
     fun actionEnd(): Boolean {
         return if (bd.win != UNKNOWN && bd.lost != UNKNOWN) false
         else getActionToRead() == bd.win || getActionToRead() == bd.lost
@@ -74,6 +73,7 @@ class AnimationData(
     fun isGoingForward(): Boolean = getPlayerAnimationState() == PlayerAnimationState.GoNext && actionToRead.value < maxAction - 1
     fun isPlaying(): Boolean = playerAnimationState.value == PlayerAnimationState.IsPlaying
     fun isOnPause(): Boolean = playerAnimationState.value == PlayerAnimationState.OnPause
+    fun hasNotStarted(): Boolean = playerAnimationState.value == PlayerAnimationState.NotStarted
     suspend fun setPlayerAnimationState(newState: PlayerAnimationState) {_playerAnimationState.emit(newState)}
 
 
@@ -125,19 +125,12 @@ class AnimationData(
         mapCaseSelection.value.contains(getPlayerPosition()) && listOfStopsPassed.containsNot(getPlayerPosition())
     }
 
-//    private val _mapLayoutPressed = MutableStateFlow<Boolean>(false)
-//    val mapLayoutPressed: StateFlow<Boolean> = _mapLayoutPressed
-//    fun mapLayoutPressedToTrue() {_mapLayoutPressed.value = true}
-//    fun mapLayoutPressedToFalse() {_mapLayoutPressed.value = false}
-//    fun mapLayoutIsPresed(): Boolean = mapLayoutPressed.value
-
     private val _animationDelay = MutableStateFlow<Long>(200)
     val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
     suspend fun setAnimationDelayShort() { _animationDelay.emit(100) }
     suspend fun setAnimationDelayLong() { _animationDelay.emit(400) }
     fun getAnimationDelay(): Long = animationDelay.value
 
-//    private val _animatedStarsMaped = MutableStateFlow<MutableList<Position>>(savedData?.getStarsToDisplay() ?: level.starsList.toMutableList())
     private val _animatedStarsMaped = MutableStateFlow<MutableList<Position>>(level.starsList.toMutableList())
     val animatedStarsMaped: StateFlow<MutableList<Position>> = _animatedStarsMaped
     fun AddAnimatedStarMap(position: Position) { _animatedStarsMaped.value.add(position) }
