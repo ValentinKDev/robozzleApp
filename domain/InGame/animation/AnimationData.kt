@@ -32,7 +32,7 @@ class AnimationData(
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
 //    fun actionInBounds(): Boolean? = if (actionToRead.value < maxIndex) true else null
-    fun actionInBounds(): Boolean? = if (actionToRead.value <= maxIndex) true else null
+    fun actionInBounds(): Boolean? = if (getActionToRead() <= maxIndex) true else null
 //    fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
     suspend fun incrementActionToRead() {
         if (actionEnd() Is false) {
@@ -49,6 +49,8 @@ class AnimationData(
         return if (bd.win != UNKNOWN && bd.lost != UNKNOWN) false
         else getActionToRead() == bd.win || getActionToRead() == bd.lost
     }
+    fun actionNotEnd(): Boolean = !actionEnd()
+//    fun action
 
     private val _pair = MutableStateFlow<Boolean>(true)
     val pair: StateFlow<Boolean> = _pair.asStateFlow()
@@ -138,6 +140,7 @@ class AnimationData(
     fun DelAnimatedStarMap(position: Position) { _animatedStarsMaped.value.remove(position) }
     fun SetAnimatedStarMap(starsList: MutableList<Position>) { _animatedStarsMaped.value = starsList.copy() }
     fun getStarsToDisplay(): MutableList<Position> = animatedStarsMaped.value
+    fun StarsListIsEmpty(): Boolean = animatedStarsMaped.value.isEmpty()
 
     fun updateExpandedBreadCrumb(newBd: Breadcrumb) {
         bd = newBd

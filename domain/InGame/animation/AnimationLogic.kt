@@ -37,17 +37,14 @@ class AnimationLogicViewModel(
     lateinit var colorSwitches: ColorsMaps
 //    var stops: MutableList<Position> = mutableListOf()
     var actionIndexEnd: Int = UNKNOWN
+    private var stop: Boolean = false
     private var starsRemovedMap = mutableMapOf<Int, Point>()
     private var addAction = initialPreloadActionsNumber
 
     private lateinit var data: AnimationData
 
-    init {
-        errorLog("init", "animation logic")
-//        infoLog("playerInGame position lvl", "${level.playerInitial}")
-//        infoLog("playerInGame position anim.data", "${data.playerAnimated.value.pos}")
-//        infoLog("action to read", "${data.getActionToRead()}")
-    }
+
+    init { errorLog("init", "animation logic") }
 
     fun initialize(bd: Breadcrumb, animData: AnimationData) {
         data = animData
@@ -56,6 +53,7 @@ class AnimationLogicViewModel(
         actionIndexEnd = breadcrumb.lastActionNumber
         stars = Stars(toRemove = breadcrumb.starsRemovalMap.copy())
         colorSwitches = ColorsMaps(toRemove  = breadcrumb.colorChangeMap.copy())
+        stop = false
     }
 
     fun start(bd: Breadcrumb, animData: AnimationData): Job = runBlocking(Dispatchers.IO) {
@@ -65,8 +63,10 @@ class AnimationLogicViewModel(
             infoLog("stars Map", "${breadcrumb.starsRemovalMap}")
             infoLog("win", "${breadcrumb.win}")
             Log.v(Thread.currentThread().name,"Start - actionIndexEnd ${breadcrumb.lastActionNumber}")
-            while (data.actionInBounds() == true) {
+//            while (data.actionInBounds() == true) {
+            while (!stop) {
                 infoLog("action to read ${data.getActionToRead()}" , "->")
+                infoLog("actionEnd()" , "${data.actionEnd()}")
                 UpdateMoveLogic(AnimationStream.Forward)
                 data.actionInBounds()?.let {
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
@@ -77,6 +77,8 @@ class AnimationLogicViewModel(
                 if (data.isPlayerOnStopMark()) {
                     data.mapCaseMakeStop(this)
                 }
+                if (data.StarsListIsEmpty() || data.actionEnd()) stop = true
+                verbalLog("stop", "$stop")
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
             Log.v(Thread.currentThread().name,"Loop END at actionIndexEnd ${breadcrumb.lastActionNumber}")
