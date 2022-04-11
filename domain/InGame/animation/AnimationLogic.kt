@@ -77,7 +77,8 @@ class AnimationLogicViewModel(
                 if (data.isPlayerOnStopMark()) {
                     data.mapCaseMakeStop(this)
                 }
-                if (data.StarsListIsEmpty() || data.actionEnd()) stop = true
+//                if (data.StarsListIsEmpty() || data.actionEnd()) stop = true
+                if (data.StarsListIsEmpty() || data.actionLost()) stop = true
                 verbalLog("stop", "$stop")
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")
@@ -219,7 +220,8 @@ class AnimationLogicViewModel(
     }
 
     private suspend fun ProcessResult() {
-        if (breadcrumb.win Is TRUE) {
+//        if (breadcrumb.win Is TRUE) {
+        if (data.actionWin()) {
             data.setWinPopTo(true)
         }
         Log.e("END animation win", "--${breadcrumb.win}--")

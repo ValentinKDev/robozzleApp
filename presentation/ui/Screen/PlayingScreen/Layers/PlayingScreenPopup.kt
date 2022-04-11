@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.InGame.res.UNKNOWN
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
@@ -22,12 +23,14 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 fun PlayingScreenPopupWin(vm: GameDataViewModel) {
     val win: Boolean by vm.animData.winPop.collectAsState(false)
     if (win) {
+        errorLog("WIN", "popup")
         vm.animationLogicVM.AddWin( LocalContext.current )
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    vm.popup.changePopupVisibility()
+//                    vm.popup.changePopupVisibility()
+                    vm.animData.setWinPopTo(false)
                 },
             content = {
                 PaddingComposable(

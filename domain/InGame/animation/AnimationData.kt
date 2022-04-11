@@ -50,7 +50,8 @@ class AnimationData(
         else getActionToRead() == bd.win || getActionToRead() == bd.lost
     }
     fun actionNotEnd(): Boolean = !actionEnd()
-//    fun action
+    fun actionLost(): Boolean = getActionToRead() == bd.lost
+    fun actionWin(): Boolean = getActionToRead() == bd.win
 
     private val _pair = MutableStateFlow<Boolean>(true)
     val pair: StateFlow<Boolean> = _pair.asStateFlow()
@@ -130,8 +131,8 @@ class AnimationData(
 
     private val _animationDelay = MutableStateFlow<Long>(200)
     val animationDelay: StateFlow<Long> = _animationDelay.asStateFlow()
-    suspend fun setAnimationDelayShort() { _animationDelay.emit(100) }
-    suspend fun setAnimationDelayLong() { _animationDelay.emit(400) }
+    suspend fun setAnimationDelayShort() { _animationDelay.emit(30) }
+    suspend fun setAnimationDelayLong() { _animationDelay.emit(100) }
     fun getAnimationDelay(): Long = animationDelay.value
 
     private val _animatedStarsMaped = MutableStateFlow<MutableList<Position>>(level.starsList.toMutableList())
@@ -150,7 +151,7 @@ class AnimationData(
 
     private val _winPop = MutableStateFlow<Boolean>(false)
     val winPop: StateFlow<Boolean> = _winPop.asStateFlow()
-    suspend fun setWinPopTo(value: Boolean) {
+    fun setWinPopTo(value: Boolean) = runBlocking(Dispatchers.IO) {
         _winPop.emit(value)
     }
 
