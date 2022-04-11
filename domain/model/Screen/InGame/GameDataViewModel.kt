@@ -15,15 +15,17 @@ import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropRow.DragAndDropRowState
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.presentation.ui.mylevelTest2
+import com.mobilegame.robozzle.presentation.ui.myleveltest
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-    var level: Level = LevelVM(getApplication()).getLevelArgument()
+//    var level: Level = LevelVM(getApplication()).getLevelArgument()
 //    var level: Level = mylevelTest2
-//    var level: Level = myleveltest
+    var level: Level = myleveltest
 
     val data = InGameData(level, getApplication() )
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)

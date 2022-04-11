@@ -31,8 +31,9 @@ class AnimationData(
     val actionToRead: StateFlow<Int> = _actionToRead.asStateFlow()
     fun getActionToRead(): Int = actionToRead.value
     fun setActionTo(action: Int) {_actionToRead.value = action}
-    fun actionInBounds(): Boolean? = if (actionToRead.value < maxIndex) true else null
-    fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
+//    fun actionInBounds(): Boolean? = if (actionToRead.value < maxIndex) true else null
+    fun actionInBounds(): Boolean? = if (actionToRead.value <= maxIndex) true else null
+//    fun actionOutOfBounds(): Boolean = actionToRead.value >= maxAction
     suspend fun incrementActionToRead() {
         if (actionEnd() Is false) {
             _actionToRead.emit(getActionToRead() + 1)

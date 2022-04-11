@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDao
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDataBase
@@ -28,6 +29,7 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
     }
 
     fun addLevelWinData(levelId: Int, levelName: String, points: Int, winDetails: WinDetails) {
+        infoLog("LevelWinRoomViewModel", "addLevelWinData")
          viewModelScope.launch(Dispatchers.IO) {
              val lvlWinData = LevelWinData(
 //                 id = levelId,

@@ -28,7 +28,7 @@ class RankVM(
     //function to post my win
     fun registerANewWin(levelId: Int, levelName: String, levelDifficulty: Int, winDetails: WinDetails) {
         viewModelScope.launch(Dispatchers.IO) {
-            errorLog("PostPlayerWin", "start")
+            errorLog("registerANewWin", "start")
             val points: Int = ( (1000 / winDetails.instructionsNumber) * levelDifficulty) - winDetails.actionsNumber
             errorLog("points", "$points")
             if (levelWinRoomVM.noBetterInStock(levelId, points)) {
