@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,13 @@ import kotlinx.coroutines.launch
 
 class UserInfoScreenLogic(val application: Application): ViewModel() {
 
+    val name = UserDataStoreViewModel(application).getName()
     val rankingIconVM = RankingIconViewModel()
+//    private val levelWinRoomVM = LevelWinRoomViewModel(getApplication())
+    private val levelWinRoomVM = LevelWinRoomViewModel(application)
+
+    val levelWinList = levelWinRoomVM.getAllLevelWins()
+    val maps =  LevelRoomViewModel(application).getLevelOverViewInList(levelWinList).map { it.map }
 
     private val _doubleListVisible = MutableStateFlow<Boolean>(false)
     val doubleListVisible: StateFlow<Boolean> = _doubleListVisible.asStateFlow()

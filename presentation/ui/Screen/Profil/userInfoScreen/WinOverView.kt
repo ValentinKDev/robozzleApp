@@ -40,18 +40,13 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .padding(
-                top = vm.dimension.winOverViewDimensions[UserInfoScreenDimensions.WinOverViewDimensions.PaddingTop]?.dp
-                    ?: 0.dp,
-            )
-            .fillMaxWidth()
-//            .height(150.dp)
+            .size(50.dp)
+//            .padding( top = vm.uiData.winOverViewDimensions[UserInfoScreenDimensions.WinOverViewDimensions.PaddingTop]?.dp ?: 0.dp, )
+//            .fillMaxWidth()
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(color = Color.Transparent)
-            ) {
-                infoLog("clickable", "ranking icon")
-            }
+            ) { infoLog("clickable", "ranking icon") }
         ,
         elevation = 8.dp,
         backgroundColor = grayDark3
@@ -65,13 +60,12 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                 TextWithShadow(text = "level ${levelWin.levelId}", modifier = Modifier.align(Center))
             }
             Row( Modifier
-//                    .wrapContentHeight()
                     .wrapContentWidth()
                     .weight(0.3F)
             ) {
                 CenterComposable {
                     MapView(
-                        widthInt = vm.dimension.mapOverViewSize,
+                        widthInt = vm.uiData.mapOverViewSize,
                         mapParam = levelMap,
                     )
                 }

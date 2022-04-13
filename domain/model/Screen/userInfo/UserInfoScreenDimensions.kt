@@ -7,9 +7,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import kotlinx.coroutines.launch
 
 class UserInfoScreenDimensions(): ViewModel() {
+
     /** Parts */
     val firstPartScreenWeight = 0.1f
     val secondPartScreenWeight = 0.05f

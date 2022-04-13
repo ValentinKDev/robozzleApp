@@ -56,7 +56,6 @@ fun Navigation(navigator: Navigator) {
         navController = navController,
         startDestination = Screens.MainMenu.route
 //        startDestination = Screens.Test.route
-
 //        startDestination = Screens.Creator.route
     ) {
         composable(route = Screens.MainMenu.route) { MainScreen(navigator) }

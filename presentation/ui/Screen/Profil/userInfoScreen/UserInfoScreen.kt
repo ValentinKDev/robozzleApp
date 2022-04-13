@@ -8,10 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
-import com.mobilegame.robozzle.domain.model.Screen.userInfo.UserInfoScreenData
 import com.mobilegame.robozzle.presentation.ui.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenFirstPart
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenSecondPart
@@ -20,38 +19,37 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.User
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), screenData: UserInfoScreenData = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
-    val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
+fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
 
     val ctxt = LocalContext.current
     val dens = LocalDensity.current
 
+    val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
     LaunchedEffect(key1 = "Launch LevelsScreenByDifficulty") {
         vm.logic.setVisibilityAtLaunch()
-        vm.data.setLevelsListsAtLaunch()
+//        vm.data.setLevelsListsAtLaunch()
     }
 
-    infoLog("Launch", "UserInfoScreen()")
+    errorLog("Launch", "UserInfoScreen()")
 
     Column() {
         Box( modifier = Modifier
             .fillMaxWidth()
-            .weight(vm.dimension.firstPartScreenWeight)
+            .weight(vm.uiData.firstPartScreenWeight)
         ) {
             UserInfoScreenFirstPart(
                 vm = vm,
-                screenData = screenData,
                 navigator = navigator
             )
         }
         Box( modifier = Modifier
             .fillMaxWidth()
-            .weight(vm.dimension.secondPartScreenWeight)
+            .weight(vm.uiData.secondPartScreenWeight)
         ) {
             UserInfoScreenSecondPart(vm = vm)
         }
         Column( Modifier
-            .weight(vm.dimension.thirdPartScreenWeight)
+            .weight(vm.uiData.thirdPartScreenWeight)
             .fillMaxWidth()
         ) {
             AnimatedVisibility(
