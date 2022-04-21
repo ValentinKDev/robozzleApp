@@ -22,13 +22,9 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
     val levelWinList = levelWinRoomVM.getAllLevelWins()
     val maps =  LevelRoomViewModel(application).getLevelOverViewInList(levelWinList).map { it.map }
 
-    private val _doubleListVisible = MutableStateFlow<Boolean>(false)
-    val doubleListVisible: StateFlow<Boolean> = _doubleListVisible.asStateFlow()
-    fun setDoubleListVisible(value: Boolean) {_doubleListVisible.value = value}
-
-//    private val _doubleListVisible = MutableStateFlow<Boolean>(false)
-//    val doubleListVisible: StateFlow<Boolean> = _doubleListVisible.asStateFlow()
-//    fun setDoubleListVisible(value: Boolean) {_doubleListVisible.value = value}
+    private val _gridVisible = MutableStateFlow<Boolean>(false)
+    val gridVisible: StateFlow<Boolean> = _gridVisible.asStateFlow()
+    fun setGridVisible(value: Boolean) {_gridVisible.value = value}
 
     init {
         //launch levelwin list from room
@@ -48,7 +44,7 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
         viewModelScope.launch {
 //            setHeaderVisible(true)
 //            delay(200)
-            setDoubleListVisible(true)
+            setGridVisible(true)
         }
     }
 }

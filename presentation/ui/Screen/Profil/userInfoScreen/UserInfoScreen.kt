@@ -24,7 +24,7 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
     val ctxt = LocalContext.current
     val dens = LocalDensity.current
 
-    val listVisible by remember(vm){ vm.logic.doubleListVisible}.collectAsState()
+    val listVisible by remember(vm){ vm.logic.gridVisible}.collectAsState()
     LaunchedEffect(key1 = "Launch LevelsScreenByDifficulty") {
         vm.logic.setVisibilityAtLaunch()
 //        vm.data.setLevelsListsAtLaunch()
@@ -35,7 +35,9 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
     Column() {
         Box( modifier = Modifier
             .fillMaxWidth()
-            .weight(vm.uiData.firstPartScreenWeight)
+//            .weight(vm.uiData.firstPartScreenWeight)
+//            .weight(vm.uiData.secondPart.ratio.heightWeight)
+            .weight(vm.uiData.secondPart.dimensions.heightWeight)
         ) {
             UserInfoScreenFirstPart(
                 vm = vm,
@@ -44,12 +46,16 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
         }
         Box( modifier = Modifier
             .fillMaxWidth()
-            .weight(vm.uiData.secondPartScreenWeight)
+//            .weight(vm.uiData.secondPartScreenWeight)
+//            .weight(vm.uiData.secondPart.ratio.heightWeight)
+            .weight(vm.uiData.secondPart.dimensions.heightWeight)
         ) {
             UserInfoScreenSecondPart(vm = vm)
         }
         Column( Modifier
-            .weight(vm.uiData.thirdPartScreenWeight)
+//            .weight(vm.uiData.thirdPartScreenWeight)
+//            .weight(vm.uiData.thirdPart.ratio.heightWeight)
+            .weight(vm.uiData.thirdPart.dimensions.heightWeight)
             .fillMaxWidth()
         ) {
             AnimatedVisibility(

@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
-import com.mobilegame.robozzle.domain.model.Screen.userInfo.UserInfoScreenDimensions
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigator
@@ -40,9 +39,14 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .size(50.dp)
-//            .padding( top = vm.uiData.winOverViewDimensions[UserInfoScreenDimensions.WinOverViewDimensions.PaddingTop]?.dp ?: 0.dp, )
-//            .fillMaxWidth()
+            .height(vm.uiData.thirdPart.winOverView.heightDp)
+            .width(vm.uiData.thirdPart.winOverView.widthDp)
+            .padding(
+                top = vm.uiData.thirdPart.winOverView.topPaddingDp,
+                bottom = vm.uiData.thirdPart.winOverView.bottomPaddingDp,
+                start = vm.uiData.thirdPart.winOverView.startPaddingDp,
+                end = vm.uiData.thirdPart.winOverView.endPaddingDp,
+            )
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(color = Color.Transparent)
@@ -65,7 +69,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
             ) {
                 CenterComposable {
                     MapView(
-                        widthInt = vm.uiData.mapOverViewSize,
+                        widthInt = vm.uiData.thirdPart.winOverView.mapWidthInt,
                         mapParam = levelMap,
                     )
                 }
