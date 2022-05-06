@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.model.Screen
+package com.mobilegame.robozzle.data.wallet
 
 
 val listWallet = mapOf(

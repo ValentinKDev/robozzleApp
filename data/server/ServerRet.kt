@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.data.server.User
+package com.mobilegame.robozzle.data.server
 
 sealed class ServerRet(val ret: String) {
     object Positiv: ServerRet("positiv_ret")

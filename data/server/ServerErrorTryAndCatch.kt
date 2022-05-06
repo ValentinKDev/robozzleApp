@@ -1,7 +1,6 @@
 package com.mobilegame.robozzle.data.server
 
 import android.util.Log
-import com.mobilegame.robozzle.data.server.User.ServerRet
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.*

@@ -2,10 +2,8 @@ package com.mobilegame.robozzle.data.server.JwtToken
 
 import android.util.Log
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.server.HttpRoutes
 import com.mobilegame.robozzle.data.server.HttpRoutes.USER_GET_TOKEN
 import com.mobilegame.robozzle.data.server.HttpRoutes.USER_VERIFY_TOKEN
-import com.mobilegame.robozzle.data.server.User.ServerRet
 import com.mobilegame.robozzle.data.server.tryGetAndCatchErrors
 import com.mobilegame.robozzle.domain.model.data.general.TokenState
 //import com.mobilegame.robozzle.domain.state.TokenState
@@ -14,7 +12,6 @@ import io.ktor.client.call.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import java.lang.Exception
-import java.util.concurrent.TimeoutException
 
 class JWTTokenImplementation(
     private val client: HttpClient
