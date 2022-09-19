@@ -8,15 +8,18 @@ import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.runBlocking
 
 class MainScreenViewModel(application: Application): AndroidViewModel(application) {
-    val popup = PopupViewModel()
     val data = MainScreenData()
-
     val popupState: PopUpState = ScreenDataStoreViewModel(getApplication<Application>().applicationContext).getPopupState()
+    val popup = PopupViewModel(popupState != PopUpState.None)
+
+
 //    val popupState = ScreenDataStoreViewModel(context)
 
     private val _visibleElements = MutableStateFlow<Boolean>(false)

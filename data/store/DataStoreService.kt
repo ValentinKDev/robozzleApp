@@ -12,6 +12,10 @@ val Context.screenDimensionsDataStore: DataStore<Preferences> by preferencesData
 val Context.argumentsDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Arg.pref)
 
 interface DataStoreService {
+    suspend fun getBoolean(key: String): Boolean?
+    suspend fun putBoolean(key: String, value: Boolean)
+    suspend fun delBoolean(key: String)
+
     suspend fun getString(key: String): String?
     suspend fun putString(key: String, value: String)
     suspend fun delString(key: String)

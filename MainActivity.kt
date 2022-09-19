@@ -28,25 +28,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-//            val screenConfig = ScreenConfig()
-//            val context = LocalContext.current
-//            val density = LocalDensity.current
-//
-//            LaunchingViewModel(context).launch()
-//
-//            Box(
-//                Modifier
-//                    .fillMaxSize()
-//                    .backColor(RobuzzleConfiguration.applicationBackgroundColor)
-//                    .onGloballyPositioned {
-//
-//                    }
-//            ) {
-//                Navigation(Navigator())
-//            }
-//            val window: Window = this.window
-//            val w: Window = thi
             LaunchingApp(this.window) {
                 Navigation(Navigator())
             }

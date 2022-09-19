@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.data.server.Level
 
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
+import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
 import com.mobilegame.robozzle.data.server.dto.LevelRequest
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import io.ktor.client.*
@@ -31,7 +32,8 @@ interface LevelService {
                 install(HttpTimeout) {
 //                    requestTimeoutMillis = 300
 //                    requestTimeoutMillis = 1500
-                    requestTimeoutMillis = 200
+//                    requestTimeoutMillis = 200
+                    requestTimeoutMillis = REQUEST_TIME
                 }
                 install(JsonFeature) {
                     serializer = KotlinxSerializer(kotlinx.serialization.json.Json {

@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.data.server.User
 
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
+import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
 import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.server.dto.UserRequest
 import io.ktor.client.*
@@ -28,7 +29,8 @@ interface UltimateUserService {
             return UltimateUserImplementation(
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
-                        requestTimeoutMillis = 1500
+//                        requestTimeoutMillis = 1500
+                        requestTimeoutMillis = REQUEST_TIME
                     }
                     defaultRequest {
                         host = HttpRoutes.HOST

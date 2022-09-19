@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.data.server.ranking
 
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
+import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.User
 import io.ktor.client.*
@@ -34,7 +35,8 @@ interface RankingService {
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
 //                        requestTimeoutMillis = 1500
-                        requestTimeoutMillis = 200
+//                        requestTimeoutMillis = 200
+                        requestTimeoutMillis = REQUEST_TIME
 //                        requestTimeoutMillis = 300
                     }
                     install(JsonFeature) {

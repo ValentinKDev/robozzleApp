@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 
 class AppConfigServerViewModel(
 ): ViewModel() {
-    val service = AppConfigService.create()
+    private val service = AppConfigService.create()
 
     fun getVersion(): String? = runBlocking(Dispatchers.IO) {
         service.getAppConfig()?.version

@@ -21,4 +21,13 @@ class AppConfigDataStoreViewModel (
         }
     }
 
+    fun setServerLinkState(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            service.putBoolean(KeyProvider.LinkState.key, state)
+        }
+    }
+
+    fun getServerLinkState(): Boolean? = runBlocking(Dispatchers.IO) {
+        service.getBoolean(KeyProvider.LinkState.key)
+    }
 }

@@ -13,5 +13,6 @@ internal sealed class KeyProvider(val key: String) {
     object DensityDpi: KeyProvider("density_key_datastore")
     object WindowCoordinates: KeyProvider("layout_key_datastore")
     object PopupState: KeyProvider("popup_state_key_datastore")
+    object LinkState: KeyProvider("link_state_datastore")
     object LevelArg: KeyProvider("level_argument_datastore")
 }

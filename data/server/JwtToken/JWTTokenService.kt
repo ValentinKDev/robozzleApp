@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.data.server.JwtToken
 
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
+import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -25,7 +26,8 @@ interface JWTTokenService {
                 client = HttpClient(Android) {
                     install(HttpTimeout) {
 //                        requestTimeoutMillis = 1500
-                        requestTimeoutMillis = 200
+//                        requestTimeoutMillis = 200
+                        requestTimeoutMillis = REQUEST_TIME
                     }
                     install(JsonFeature) {
                         acceptContentTypes = acceptContentTypes + ContentType("application","json+hal")

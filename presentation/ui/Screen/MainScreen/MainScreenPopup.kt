@@ -38,9 +38,10 @@ fun MainScreenPopup(vm: MainScreenViewModel) {
                                 color = vm.data.color.popupTextColor,
                                 text =
 //                                if (screenConfig.popUp == PopUpState.Update)
-                                    vm.data.text.popupUpdateAvailable
+//                                vm.data.text.popupUpdateAvailable
 //                                else
 //                                    vm.data.text.popupUnReachableServer
+                                vm.popupState.toString()
                             )
                         }
                     }

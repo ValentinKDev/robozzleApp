@@ -22,6 +22,7 @@ fun MainScreen(
 ) {
 //    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
+
     infoLog("MainScreen", "launch")
 
     LaunchedEffect(key1 = "Launch MainScreen") {
@@ -53,7 +54,9 @@ fun MainScreen(
 //        if (screenConfig.popUp != PopUpState.None && visiblePopup) {
 //            MainScreenPopup(vm, screenConfig)
 //        }
-        if (vm.popupState != PopUpState.None && visiblePopup) {
+//        if (vm.popupState != PopUpState.None && visiblePopup) {
+//        if (vm.popupState != PopUpState.None) {
+        if (visiblePopup) {
             MainScreenPopup(vm)
         }
     }
