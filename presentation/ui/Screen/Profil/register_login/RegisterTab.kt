@@ -31,49 +31,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @Composable
 fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
-    val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
-
-    infoLog("RegisterTab", "connectionState $connectionState")
-    when (connectionState) {
-        UserConnection.NoUser.state ->  {
-            RegisteringElements(vm, navigator)
-        }
-        UserConnection.NotCreated.state ->  {
-            Toast.makeText(LocalContext.current, "${vm.name.value} already exist", Toast.LENGTH_LONG).show()
-            RegisteringElements(vm, navigator)
-            vm.setUserConnectionState(UserConnection.NoUser.state)
-        }
-        //todo : personalize ret from server for weird error or just an already exsiting name
-        UserConnection.Created.state -> {
-            Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_LONG).show()
-            RegisteringElements(vm, navigator)
-        }
-        UserConnection.NotConnected.state ->  {
-            Toast.makeText(LocalContext.current, "Server facing some issue with your profil", Toast.LENGTH_LONG).show()
-            RegisteringElements(vm, navigator)
-        }
-        UserConnection.CreatedAndVerified.state -> {
-            vm.setUserConnectionState(UserConnection.Connected.state)
-//            NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
-//            NavViewModel(navigator).navigateTo(Screens.Profil)
-
-            NavViewModel(navigator).navigateTo(
-                if (UserDataStoreViewModel(LocalContext.current).getName().isNullOrBlank())
-                    Screens.RegisterLogin
-                else
-                    Screens.UserInfo
-            )
-//                NavViewModel(navigator).navigateTo(Screens.RegisterLogin)
-//                RegisterLoginScreen(navigator, Tab())
-//            else
-//                UserInfoScreen(navigator)
-//            vm.navigation(Screens.Profil, navigator)
-//            navigator.navigate(Screens.Profil)
-        }
-        UserConnection.Connected.state -> {
-        }
-        else -> errorLog("Register Tab", "Error from the connectionState / value $connectionState")
-    }
+    RegisteringElements(vm, navigator)
 }
 
 @Composable
@@ -118,3 +76,49 @@ fun RegisteringElements(vm: RegisterLoginViewModel, navigator: Navigator) {
         ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navigator)
     }
 }
+//@Composable
+//fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
+//    val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
+//
+//    infoLog("RegisterTab", "connectionState $connectionState")
+//    when (connectionState) {
+//        UserConnection.NoUser.state ->  {
+//            RegisteringElements(vm, navigator)
+//        }
+//        UserConnection.NotCreated.state ->  {
+//            Toast.makeText(LocalContext.current, "${vm.name.value} already exist", Toast.LENGTH_LONG).show()
+//            RegisteringElements(vm, navigator)
+//            vm.setUserConnectionState(UserConnection.NoUser.state)
+//        }
+//        //todo : personalize ret from server for weird error or just an already exsiting name
+//        UserConnection.Created.state -> {
+//            Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_LONG).show()
+//            RegisteringElements(vm, navigator)
+//        }
+//        UserConnection.NotConnected.state ->  {
+//            Toast.makeText(LocalContext.current, "Server facing some issue with your profil", Toast.LENGTH_LONG).show()
+//            RegisteringElements(vm, navigator)
+//        }
+//        UserConnection.CreatedAndVerified.state -> {
+//            vm.setUserConnectionState(UserConnection.Connected.state)
+////            NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
+////            NavViewModel(navigator).navigateTo(Screens.Profil)
+//
+//            NavViewModel(navigator).navigateTo(
+//                if (UserDataStoreViewModel(LocalContext.current).getName().isNullOrBlank())
+//                    Screens.RegisterLogin
+//                else
+//                    Screens.UserInfo
+//            )
+////                NavViewModel(navigator).navigateTo(Screens.RegisterLogin)
+////                RegisterLoginScreen(navigator, Tab())
+////            else
+////                UserInfoScreen(navigator)
+////            vm.navigation(Screens.Profil, navigator)
+////            navigator.navigate(Screens.Profil)
+//        }
+//        UserConnection.Connected.state -> {
+//        }
+//        else -> errorLog("Register Tab", "Error from the connectionState / value $connectionState")
+//    }
+//}

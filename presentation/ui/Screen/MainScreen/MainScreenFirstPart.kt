@@ -34,10 +34,12 @@ fun MainScreenFirstPart(
             horizontalArrangement = Arrangement.End,
         ) {
             AnimatedVisibility(visible = visibleElements) {
+                //todo: do not put string in hard code in the composalbe
                 Box( modifier = Modifier.align(CenterVertically) ) {
-                    UserDataStoreViewModel(LocalContext.current).getName()?.let {
-                        Text(text = "player : $it")
-                    }?: Text(text = "Not registered")
+//                    UserDataStoreViewModel(LocalContext.current).getName()?.let {
+//                        Text(text = "player : $it")
+//                    }?: Text(text = "Not registered")
+                    Text(text = vm.getName())
                 }
             }
             Box( modifier = Modifier
@@ -45,7 +47,10 @@ fun MainScreenFirstPart(
                 .padding(vertical = 10.dp, horizontal = 10.dp)
             ) {
                 MainScreenButton( navigator,
-                    UserDataStoreViewModel(LocalContext.current).getName()?.let { MainScreenButtonStyle.UserInfos.type } ?: MainScreenButtonStyle.RegisterLogin.type,
+//                    UserDataStoreViewModel(LocalContext.current).getName()?.let {
+//                        MainScreenButtonStyle.UserInfos.type
+//                    } ?: MainScreenButtonStyle.RegisterLogin.type,
+                    vm.getNavInfoToUser(),
                     fromButton,
                     vm,
                     w

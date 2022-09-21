@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.server.JwtToken.JWTTokenService
 import com.mobilegame.robozzle.data.server.ServerRet
 import com.mobilegame.robozzle.data.server.User.UltimateUserService
@@ -24,12 +25,8 @@ import kotlinx.coroutines.launch
 //class RegisterScreenViewModel(context: Context): ViewModel() {
 class RegisterLoginViewModel(application: Application): AndroidViewModel(application) {
 
-    val tokenDataVm = TokenDataStoreViewModel(
-        getApplication()
-    )
-    val userDataStoreVM = UserDataStoreViewModel(
-        getApplication()
-    )
+    val tokenDataVm = TokenDataStoreViewModel( getApplication() )
+    val userDataStoreVM = UserDataStoreViewModel( getApplication() )
 
     private val _userConnectionState = MutableStateFlow(UserConnection.NoUser.state)
     val userConnectionState: StateFlow<String> = _userConnectionState
@@ -41,10 +38,10 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     private val _connectionEstablished = MutableStateFlow<Boolean>(false)
     val connectionEstablished: StateFlow<Boolean> = _connectionEstablished
 
-
     private val _name = MutableStateFlow<String>("")
     val name: StateFlow<String> = _name.asStateFlow()
     fun set_name(newName: String) {
+        verbalLog("set_name", "$newName")
         _name.value = newName
         _validName.value = newName.isValid()
     }
@@ -107,13 +104,12 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     fun registerOnClickListner() {
         infoLog("register", "onclicklistner()")
         viewModelScope.launch {
-//            var connectionState = UserConnection.NoUser.state
             //create a new user to server
             infoLog("createnewsuerandgetState", "start")
             var connectionState = createANewUserAndGetState()
             if (connectionState == UserConnection.Created.state) {
                 //get a token for the new user
-                    infoLog("getAToken", "start")
+                infoLog("getAToken", "start")
                 getAToken(name.value, password.value)
                 delay(300)
                 infoLog("waitfortoken", "start")
@@ -136,7 +132,6 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     suspend fun getUserFromServerAndStore(userName: String, expectedState: String, errorState: String): String {
         infoLog("connectUserToServer", "userName : ${userName}")
-//        val returnState:
 //        todo : what about the token State when it is deprecated and the server tels us so ?
         val ultimateUser: UltimateUserRequest? = getUltimateUserFromServer()
         //todo : UltimateUser to User ?
@@ -157,24 +152,6 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             errorState }
                 )
     }
-//        ultimateUser?.let {
-//        if (ultimateUser != null) {
-//            val userId = try {
-//                ultimateUser.id.toInt()
-//            } catch (e: NumberFormatException) {
-//                errorLog("getUserFromServer", "${e.message}")
-//                ERROR
-//            }
-//            userDataStoreVM.saveUser(
-//                User(
-//                    userId,
-//                    ultimateUser.name,
-//                    ultimateUser.password
-//                )
-//            )
-//        } else _canNotLog.value += 1
-//        return if (ultimateUser == null) errorState else expectedState
-
 
     suspend fun getUltimateUserFromServer(): UltimateUserRequest? {
         val ultimateUserService: UltimateUserService = UltimateUserService.create(tokenJwt.value)
@@ -231,7 +208,6 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         }
     }
 
-
     fun trimPasswordInput(input: String) {
         viewModelScope.launch {
             val newPassword = input.trim()
@@ -247,7 +223,9 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     }
 
     fun handleInputName(input: String) {
-        viewModelScope.launch { set_name(input.trim().filterAuthorizedName()) }
+        viewModelScope.launch {
+            set_name(input.trim().filterAuthorizedName())
+        }
     }
 
     fun getNameInputFieldLabel(): String {
@@ -270,23 +248,4 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             this.substringBefore(this[nameLastIndex])
         } else { this }
     }
-
-//    fun navigation(navigDestination: NavigationDestination, navigator: Navigator) {
-//        viewModelScope.launch() {
-//            navigator.navig(navigDestination)
-//        }
-//    }
 }
-
-//@InternalCoroutinesApi
-//class RegisterScreenViewModelFactory(
-//    private val application: Application
-//) : ViewModelProvider.Factory {
-//    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-//        @Suppress("UNCHECKED_CAST")
-//        if (modelClass.isAssignableFrom(RegisterScreenViewModel::class.java)) {
-//            return RegisterScreenViewModel(application) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-//}

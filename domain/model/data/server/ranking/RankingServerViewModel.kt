@@ -23,6 +23,10 @@ class RankingServerViewModel(
     private val service: RankingService = RankingService.create(TokenVM(context).getToken())
     private val userDataStore = UserDataStoreViewModel(context)
 
+    init {
+        errorLog("Ranking server VM", "init")
+
+    }
     fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
             service.getWinnerListJson(levelId).toListPlayerWin()
     }

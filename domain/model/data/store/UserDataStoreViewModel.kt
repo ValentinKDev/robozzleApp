@@ -27,8 +27,8 @@ class UserDataStoreViewModel (
         val password = getPassword() ?: PASSWORD_NO_VALUE
 
         infoLog(id.toString(), "from datastore")
-        infoLog(name, "name from datastore")
-        infoLog(password, "password from datastore")
+        infoLog("name from datastore", name)
+        infoLog("password from datastore", password)
         return User(id, name, password)
     }
 

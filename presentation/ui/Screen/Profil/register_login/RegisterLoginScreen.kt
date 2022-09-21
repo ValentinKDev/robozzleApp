@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.*
 fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
     val tabSelected: Int by tab.selected.collectAsState()
 
-    infoLog("Launch", "RegisterLoginScreen")
+    verbalLog("Launch", "RegisterLoginScreen")
 
     Column {
         RegisterLoginTabsHead(tab)
@@ -49,10 +50,7 @@ fun RegisterLoginTabsHead(tab: Tab) {
                 .weight(1.0f)
                 //todo: could avoid the test on tabselect by using an boolean variable like isRegisterTabSelected
                 .background(if (tabRegister) Color.Transparent else Color.Gray)
-                .clickable {
-                    TabSelectionViewModel().setTabToRegister(tab)
-                }
-
+                .clickable { TabSelectionViewModel().setTabToRegister(tab) }
         ) {
             Text(text = "Register", Modifier.align(Alignment.Center))
         }
@@ -74,8 +72,9 @@ fun RegisterLoginTabsHead(tab: Tab) {
 class Tab() {
     private val _selected: MutableStateFlow<Int> = MutableStateFlow(1)
     val selected : StateFlow<Int> = _selected.asStateFlow()
-    fun setSelecedTo(t: Int) {
-        _selected.value = t
+
+    fun setSelecedTo(tab: Int) {
+        _selected.value = tab
         infoLog("_selected", "${_selected.value}")
     }
 }

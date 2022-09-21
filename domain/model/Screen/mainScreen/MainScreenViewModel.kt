@@ -2,25 +2,31 @@ package com.mobilegame.robozzle.domain.model.Screen.mainScreen
 
 import android.app.Application
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
+import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
-import kotlinx.coroutines.Dispatchers
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
+import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
 
 class MainScreenViewModel(application: Application): AndroidViewModel(application) {
     val data = MainScreenData()
     val popupState: PopUpState = ScreenDataStoreViewModel(getApplication<Application>().applicationContext).getPopupState()
     val popup = PopupViewModel(popupState != PopUpState.None)
 
-
-//    val popupState = ScreenDataStoreViewModel(context)
+    //todo: make Not registered illegal name
+    val noUser = "Not registered"
+    val userName = UserDataStoreViewModel(getApplication()).getName() ?: noUser
+    fun getName(): String = if (userName != noUser) userName else noUser
+    fun getNavInfoToUser(): NavigationButtonInfo =
+        if (userName != noUser) MainScreenButtonStyle.UserInfos.type
+        else MainScreenButtonStyle.RegisterLogin.type
 
     private val _visibleElements = MutableStateFlow<Boolean>(false)
     val visibleElements: StateFlow<Boolean> = _visibleElements.asStateFlow()

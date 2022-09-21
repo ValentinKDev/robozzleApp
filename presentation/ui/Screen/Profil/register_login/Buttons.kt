@@ -32,7 +32,7 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
                 .background(Color.Gray)
             ,
             onClick = {
-                vm.registerOnClickListner()
+//                vm.registerOnClickListner()
             },
             enabled = enable
         ) {
@@ -50,9 +50,6 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
 
     errorLog("connectionEstablished", "${connectionEstablished}")
 
-//    if (connectionEstablished) navigator.navigate(Screens.Profil)
-//    if (connectionEstablished) NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
-//    if (connectionEstablished) NavViewModel(navigator).navigateTo(Screens.Profil)
     if (connectionEstablished)
         NavViewModel(navigator).navigateTo(
             UserDataStoreViewModel(ctxt).getName()?.let { Screens.RegisterLogin }?: Screens.UserInfo
@@ -66,7 +63,7 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
                 .background(Color.Gray)
             ,
             onClick = {
-                vm.loginOnClickListner()
+//                vm.loginOnClickListner()
             },
             enabled = enable
         ) {

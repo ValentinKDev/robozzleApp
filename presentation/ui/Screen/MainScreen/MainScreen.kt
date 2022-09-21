@@ -51,11 +51,7 @@ fun MainScreen(
                 content = { MainScreenThirdPart(navigator = navigator, w = w, vm = vm) }
             )
         }
-//        if (screenConfig.popUp != PopUpState.None && visiblePopup) {
-//            MainScreenPopup(vm, screenConfig)
-//        }
-//        if (vm.popupState != PopUpState.None && visiblePopup) {
-//        if (vm.popupState != PopUpState.None) {
+
         if (visiblePopup) {
             MainScreenPopup(vm)
         }

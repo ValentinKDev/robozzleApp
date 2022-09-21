@@ -18,6 +18,9 @@ class TokenServerViewModel(
     val user = UserDataStoreViewModel(context).getUser()
     val service: JWTTokenService = JWTTokenService.create(user.name, user.password, "")
 
+    init {
+        errorLog("TokenServerViewModel", "init")
+    }
     fun getTokenServer(): String? = runBlocking {
         service.getJwtToken()
     }
