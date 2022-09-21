@@ -22,10 +22,12 @@ class TokenServerViewModel(
         errorLog("TokenServerViewModel", "init")
     }
     fun getTokenServer(): String? = runBlocking {
+        errorLog("TokendServerViewModel","getTokenServer")
         service.getJwtToken()
     }
 
     fun verifyTokenValidity(token: String?): String = runBlocking {
+        errorLog("TokendServerViewModel", "verifyTokenValidity")
         token?.let {
             val verifyingService: JWTTokenService = JWTTokenService.create(user.name, user.password, token)
             verifyingService.verifyToken()

@@ -9,13 +9,15 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import backColor
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.data.configuration.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.presentation.res.*
@@ -39,6 +41,7 @@ class MainActivity : ComponentActivity() {
 fun LaunchingApp(window: Window, content: @Composable () -> Unit) {
     val context = LocalContext.current
     val density = LocalDensity.current
+    var launched by remember { mutableStateOf(false)}
 
     window.statusBarColor = grayDark5.toArgb()
     Box(
@@ -46,7 +49,9 @@ fun LaunchingApp(window: Window, content: @Composable () -> Unit) {
             .fillMaxSize()
             .backColor(RobuzzleConfiguration.applicationBackgroundColor)
             .onGloballyPositioned {
-                LaunchingViewModel(context).launch(it)
+                if (!launched)
+                    LaunchingViewModel(context).launch(it)
+                launched = true
             }
     ) {
         content.invoke()

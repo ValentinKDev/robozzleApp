@@ -29,6 +29,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
 
     fun launch(layoutCoordinates: LayoutCoordinates) {
 
+        errorLog("LaunchingApp", "Composable call.........................................................")
         viewModelScope.launch {
             Log.e("init", "LaunchingViewModel::launch")
             screenDataStore.configure(layoutCoordinates)

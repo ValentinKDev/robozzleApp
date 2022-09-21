@@ -3,6 +3,8 @@ package com.mobilegame.robozzle.domain.model.data.general
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.data.server.token.TokenServerViewModel
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 //import com.mobilegame.robozzle.domain.state.TokenState
@@ -12,6 +14,8 @@ import kotlinx.coroutines.runBlocking
 class TokenVM(
     context: Context
 ): ViewModel() {
+    init { verbalLog("TokenVM", "init") }
+
     private val tokenServerVM = TokenServerViewModel(context)
     private val tokenDataVM = TokenDataStoreViewModel(context)
     private val localToken: String? = tokenDataVM.getTokenData()

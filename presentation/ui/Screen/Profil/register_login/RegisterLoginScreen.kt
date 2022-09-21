@@ -22,7 +22,9 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
 @Composable
-fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
+//fun RegisterLoginScreen(navigator: Navigator, tab: Tab = Tab()) {
+fun RegisterLoginScreen(navigator: Navigator) {
+    val tab = Tab()
     val tabSelected: Int by tab.selected.collectAsState()
 
     verbalLog("Launch", "RegisterLoginScreen")
@@ -31,6 +33,7 @@ fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
         RegisterLoginTabsHead(tab)
         if (tabSelected == 1) { RegisterTab(navigator) }
         else { LoginTab(navigator) }
+
         Spacer(modifier = Modifier.height(50.dp))
     }
 }
