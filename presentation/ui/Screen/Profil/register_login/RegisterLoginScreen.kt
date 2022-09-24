@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
+import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.RegisterTab
@@ -22,9 +23,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
 @Composable
-//fun RegisterLoginScreen(navigator: Navigator, tab: Tab = Tab()) {
-fun RegisterLoginScreen(navigator: Navigator) {
-    val tab = Tab()
+fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
     val tabSelected: Int by tab.selected.collectAsState()
 
     verbalLog("Launch", "RegisterLoginScreen")
@@ -43,6 +42,7 @@ fun RegisterLoginTabsHead(tab: Tab) {
     val tabRegister: Boolean = tab.selected.value == 1
     val tabLogin: Boolean = !tabRegister
 
+    //todo: adding animation from registering tab to Login tab and vice versa
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +55,11 @@ fun RegisterLoginTabsHead(tab: Tab) {
                 .background(if (tabRegister) Color.Transparent else Color.Gray)
                 .clickable { TabSelectionViewModel().setTabToRegister(tab) }
         ) {
-            Text(text = "Register", Modifier.align(Alignment.Center))
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                color = whiteDark4,
+                text = "Register",
+            )
         }
 
         Box(
@@ -66,7 +70,11 @@ fun RegisterLoginTabsHead(tab: Tab) {
                     TabSelectionViewModel().setTabToLogin(tab)
                 }
         ) {
-            Text(text = "Login", Modifier.align(Alignment.Center))
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                color = whiteDark4,
+                text = "Login",
+            )
         }
     }
 }

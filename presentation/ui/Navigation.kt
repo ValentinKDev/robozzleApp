@@ -64,9 +64,8 @@ fun Navigation(navigator: Navigator) {
         composable(route = Screens.Donation.route) { DonationScreen() }
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         composable(route = Screens.UserInfo.route) { UserInfoScreen(navigator) }
-//        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator, Tab()) }
-        composable(route = Screens.RegisterLogin.route) { 
-            RegisterLoginScreen(navigator) }
+        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator, Tab()) }
+//        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator) }
         /** Main Menu Screen */
         composable(
             route = Screens.MainMenu.route + "/{" + Arguments.Button.key + "}",

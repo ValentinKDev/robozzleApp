@@ -11,6 +11,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.mobilegame.robozzle.R
 import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.presentation.res.*
@@ -22,31 +27,12 @@ import com.mobilegame.robozzle.presentation.ui.myleveltest
 fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropCaseState = DragAndDropCaseState(), itemList: List<String> = itemListval) {
 
     Box(Modifier.fillMaxSize()) {
-        Column(
-            Modifier
-                .height(600.dp)
-                .width(350.dp)
-                .background(gray9)
-        ) {
-            val s = 100 / 2.75
-            Box {
-                Canvas(Modifier.size(s.dp)) {
-                    drawRect(
-                        brush = Brush.linearGradient(
-                            listOf(
-                                Color(0xff000078),
-                                Color(0xff000098),
-                                Color(0xff0000ba)
-                            )
-                        )
-                    )
-                }
-                val data = InGameFirstPart
-                InGameFirstPart.init(LocalContext.current, myleveltest)
-//                PlayerIcon(direction = Direction(1,0), data = data)
-//                StarIcon(data, )
-            }
-        }
+        val compo by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.toaster))
+        LottieAnimation(
+            compo,
+            modifier = Modifier.size(100.dp),
+            iterations = LottieConstants.IterateForever,
+        )
     }
 }
 

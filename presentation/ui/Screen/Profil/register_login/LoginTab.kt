@@ -1,9 +1,11 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login
 
+import android.text.style.BackgroundColorSpan
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.runtime.Composable
@@ -12,9 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
+import com.mobilegame.robozzle.presentation.res.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -29,6 +33,12 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     Column( )
     {
         //todo: check if the inputs are resistant to application switching
+        if (!isValidName)
+            Text(
+                color = whiteDark2,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = "Player name \'$name\' is can't",
+            )
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             value = name,
@@ -36,12 +46,17 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             label = { Text(text = vm.getNameInputFieldLabel()) },
             isError = !isValidName,
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
         )
 
-        if (!isValidName) Text("Player name \"$name\" is can't", Modifier.align(Alignment.CenterHorizontally))
 
         Spacer(modifier = Modifier.height(50.dp))
 
+        Text(
+            color = whiteDark2,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = "password : $password",
+        )
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             label = { Text(vm.getPasswordInputFieldLabel()) },
@@ -52,9 +67,9 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             isError = !isValidPassword,
             enabled = isValidName,
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
         )
 
-        Text("password : $password", Modifier.align(Alignment.CenterHorizontally))
 
         Spacer(modifier = Modifier.height(50.dp))
 
