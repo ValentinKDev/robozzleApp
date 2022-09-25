@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,13 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.RegisterTab
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -28,6 +32,7 @@ fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
 
     verbalLog("Launch", "RegisterLoginScreen")
 
+    BackHandler { NavViewModel(navigator).navigateTo(destination = Screens.MainMenu) }
     Column {
         RegisterLoginTabsHead(tab)
         if (tabSelected == 1) { RegisterTab(navigator) }

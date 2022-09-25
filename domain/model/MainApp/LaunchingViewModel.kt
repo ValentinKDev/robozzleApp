@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.domain.model.data.server.level.LevelServerViewMod
 import com.mobilegame.robozzle.domain.model.data.store.KeyProvider
 import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigator
 import kotlinx.coroutines.*
 
 class LaunchingViewModel(context: Context): ViewModel() {
@@ -27,6 +28,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
     private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
     private val rankVM = RankVM(context)
 
+//    fun launch(layoutCoordinates: LayoutCoordinates, navigator: Navigator) {
     fun launch(layoutCoordinates: LayoutCoordinates) {
 
         errorLog("LaunchingApp", "Composable call.........................................................")
@@ -85,6 +87,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
                     //compare them
                     //add the ones from room to server
                 }
+//                navigator.reload_launcher(false)
             }
         }
         //todo: check if all the wins are well uploaded to the server

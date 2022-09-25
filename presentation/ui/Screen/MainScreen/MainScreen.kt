@@ -21,7 +21,7 @@ fun MainScreen(
     vm: MainScreenViewModel = viewModel(),
 
 ) {
-//    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
+    //todo : use the fromButton to make coherent animations
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
 
     infoLog("MainScreen", "launch")

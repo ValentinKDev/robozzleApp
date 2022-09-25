@@ -12,6 +12,7 @@ import com.mobilegame.robozzle.data.server.User.UltimateUserService
 import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.server.dto.UserRequest
 import com.mobilegame.robozzle.domain.User
+import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.state.UserConnection
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
@@ -127,6 +128,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             setUserConnectionState(connectionState)
             //todo: use this connection established flow to clean the navigation logic
             _connectionEstablished.value = checkConnectionState()
+//            LaunchingViewModel(context).launch(it)
         }
     }
 

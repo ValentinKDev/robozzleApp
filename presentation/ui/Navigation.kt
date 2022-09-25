@@ -60,7 +60,7 @@ fun Navigation(navigator: Navigator) {
 //        startDestination = Screens.Creator.route
     ) {
         composable(route = Screens.MainMenu.route) { MainScreen(navigator) }
-        composable(route = Screens.Config.route) { ConfigScreen() }
+        composable(route = Screens.Config.route) { ConfigScreen(navigator) }
         composable(route = Screens.Donation.route) { DonationScreen() }
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         composable(route = Screens.UserInfo.route) { UserInfoScreen(navigator) }

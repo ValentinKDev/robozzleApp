@@ -1,12 +1,10 @@
 package com.mobilegame.robozzle.presentation.ui
 
-import androidx.navigation.NavDestination
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 
 class Navigator {
     var dest: MutableSharedFlow<String> = MutableSharedFlow()
@@ -15,5 +13,14 @@ class Navigator {
     suspend fun navig(destination: NavigationDestination, argumentStr: String = "") {
         if (argumentStr.isEmpty()) dest.emit(destination.route)
         else dest.emit(destination.route + "/" + argumentStr)
+    }
+
+    private var _forceReload  = MutableSharedFlow<String>()
+    var forceReload = _forceReload.asSharedFlow()
+
+    fun reload_launcher(setTo: String = "") = runBlocking(Dispatchers.IO) {
+        errorLog("Navigator::reload_launcher", "start")
+        _forceReload.emit(setTo)
+        errorLog("Navigator::reload_launcher", "end forceReload = ${forceReload.equals(true)}")
     }
 }
