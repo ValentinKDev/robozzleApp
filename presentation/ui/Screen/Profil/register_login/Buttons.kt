@@ -23,6 +23,9 @@ import kotlinx.coroutines.*
 
 @Composable
 fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel, navigator: Navigator) {
+    val showErrorMessage by vm.canNotLog.collectAsState()
+    val ctxt = LocalContext.current
+
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -32,13 +35,15 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
                 .background(Color.Gray)
             ,
             onClick = {
-//                vm.registerOnClickListner()
+                vm.registerOnClickListner()
             },
             enabled = enable
         ) {
 //            Text(text = "Register", Modifier.align(Alignment.Center))
             Text(text = "Register")
         }
+        if (showErrorMessage > 0)
+            Toast.makeText( ctxt, "Can't reach Servers", Toast.LENGTH_LONG).show()
     }
 }
 
@@ -63,7 +68,7 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
                 .background(Color.Gray)
             ,
             onClick = {
-//                vm.loginOnClickListner()
+                vm.loginOnClickListner()
             },
             enabled = enable
         ) {

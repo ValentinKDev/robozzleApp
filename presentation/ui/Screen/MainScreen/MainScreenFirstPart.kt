@@ -13,8 +13,12 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import backColor
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.presentation.res.red0
+import com.mobilegame.robozzle.presentation.res.redDark3
+import com.mobilegame.robozzle.presentation.res.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
@@ -33,13 +37,17 @@ fun MainScreenFirstPart(
         Row( Modifier .fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
         ) {
-            AnimatedVisibility(visible = visibleElements) {
-                //todo: do not put string in hard code in the composalbe
-                Box( modifier = Modifier.align(CenterVertically) ) {
-//                    UserDataStoreViewModel(LocalContext.current).getName()?.let {
-//                        Text(text = "player : $it")
-//                    }?: Text(text = "Not registered")
-                    Text(text = vm.getName())
+            Row(
+                modifier = Modifier
+                    .align(CenterVertically)
+//                    .backColor(redDark3)
+                ,
+            ) {
+                AnimatedVisibility(visible = visibleElements) {
+                    Text(
+                        text = vm.getName(),
+                        color = whiteDark2
+                    )
                 }
             }
             Box( modifier = Modifier
