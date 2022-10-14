@@ -47,12 +47,6 @@ fun RegisteringElements(vm: RegisterLoginViewModel, navigator: Navigator) {
 
     Column( )
     {
-        if (!isValidName)
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "Player name \"$name\" is invalid",
-                color = whiteDark2,
-            )
         //todo: check if the inputs are resistant to application switching
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
@@ -63,15 +57,7 @@ fun RegisteringElements(vm: RegisterLoginViewModel, navigator: Navigator) {
             isError = !isValidName,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
         )
-
-
         Spacer(modifier = Modifier.height(50.dp))
-
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "password : $password",
-            color = whiteDark2,
-        )
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             label = { Text(vm.getPasswordInputFieldLabel()) },

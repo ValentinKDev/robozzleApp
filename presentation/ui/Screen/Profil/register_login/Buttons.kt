@@ -19,7 +19,6 @@ import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import kotlinx.coroutines.*
 
 @Composable
 fun ButtonRegister(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel, navigator: Navigator) {
@@ -35,7 +34,7 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
                 .background(Color.Gray)
             ,
             onClick = {
-                vm.registerOnClickListner()
+                vm.registerOnClickListner(navigator)
             },
             enabled = enable
         ) {
@@ -68,7 +67,7 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
                 .background(Color.Gray)
             ,
             onClick = {
-                vm.loginOnClickListner()
+                vm.loginOnClickListner(navigator)
             },
             enabled = enable
         ) {

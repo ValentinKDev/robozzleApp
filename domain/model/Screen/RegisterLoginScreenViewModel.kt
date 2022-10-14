@@ -19,6 +19,10 @@ import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.TokenState
+import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -71,7 +75,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     private val _tokenState = MutableStateFlow<String>(TokenState.NoToken.ret)
     val tokenState: StateFlow<String> = _tokenState.asStateFlow()
 
-    fun loginOnClickListner() {
+    fun loginOnClickListner(navigator: Navigator) {
         infoLog("login", "onclicklistner()")
         viewModelScope.launch {
             //get a token
@@ -98,11 +102,18 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             _connectionEstablished.value = checkConnectionState()
 
             //dl stats from server
-            if (connection == UserConnection.Connected.state) RankVM(getApplication()).wipeRoomRankinAndDLUsersRanking()
+//            if (connection == UserConnection.Connected.state) RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
+            if (connection == UserConnection.Connected.state) {
+                val newUserRanking = viewModelScope.async(Dispatchers.IO) {
+                    RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
+                }
+                newUserRanking.await()
+                NavViewModel(navigator).navigateTo(Screens.UserInfo)
+            }
         }
     }
 
-    fun registerOnClickListner() {
+    fun registerOnClickListner(navigator: Navigator) {
         infoLog("register", "onclicklistner()")
         viewModelScope.launch {
             //create a new user to server
@@ -128,7 +139,10 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             setUserConnectionState(connectionState)
             //todo: use this connection established flow to clean the navigation logic
             _connectionEstablished.value = checkConnectionState()
-//            LaunchingViewModel(context).launch(it)
+
+            if (connectionState == UserConnection.Connected.state) {
+                NavViewModel(navigator).navigateTo(Screens.UserInfo)
+            }
         }
     }
 
@@ -231,13 +245,12 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     }
 
     fun getNameInputFieldLabel(): String {
+        //todo: protect against illegal character
+        infoLog("getNameInputFieldLabel", "is Empty ${name.value.isEmpty()} / is Valid ${name.value.isValid()} / is Short ${name.value.isShort()}")
         return if (name.value.isEmpty()) { "name or email" }
+        else if (name.value.isShort()) { "your name can't be less than 3 characters" }
         else if (name.value.isValid()) "your login name :"
-        else {
-            if (name.value.isShort()) { "your name can't be less than 3 characters" }
-            //todo: protect against illegal character
-            else { "your name is incorrect" }
-        }
+        else { "your name is incorrect" }
     }
 
     private fun String.isValid(): Boolean = this.length >= 3
@@ -246,7 +259,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     private fun String.filterAuthorizedName(): String {
         val nameLastIndex = this.lastIndex
         //todo: add tabulation and other weird shit in the unauthorized characters
-        return if (this.isNotEmpty() && "[./:*?<>|~#%&+{}-]".toRegex().matches(this[nameLastIndex].toString())) {
+        return if (this.isNotEmpty() && "[./:*?<>|~#%&+{}()\\[\\]-]".toRegex().matches(this[nameLastIndex].toString())) {
             this.substringBefore(this[nameLastIndex])
         } else { this }
     }
