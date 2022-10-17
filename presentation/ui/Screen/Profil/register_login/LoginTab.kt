@@ -2,19 +2,20 @@ package com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login
 
 import android.text.style.BackgroundColorSpan
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
@@ -27,6 +28,7 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
     val password by remember(vm) {vm.password}.collectAsState( initial = "" )
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val isValidName: Boolean = vm.nameIsValid.value
     val isValidPassword: Boolean = vm.passwordIsValid.value
 
@@ -63,6 +65,18 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
             isError = !isValidPassword,
             enabled = isValidName,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+                val description = if (passwordVisible) "password unprotected" else "password protected"
+
+                IconButton(onClick = {passwordVisible = !passwordVisible}){
+                    Icon(imageVector  = image, contentDescription = description)
+                }
+            }
         )
 
 

@@ -217,11 +217,22 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             set_password(newPassword)
         }
     }
+//    fun trimPasswordInputAndHide(input: String) {
+//        trimPasswordInput(input)
+//    }
+
+    fun getPasswordProtected(input: String): String {
+        var passwordProtected = ""
+        repeat(input.length) { passwordProtected += "*" }
+        return passwordProtected
+    }
 
     fun getPasswordInputFieldLabel(): String {
-        return if (password.value.isEmpty()) "password"
-            else if (!passwordIsValid.value) "your password can't be less than 3 characters"
-            else ""
+//        return if (!passwordIsValid.value) "your password can't be less than 3 characters"
+//        else  "password"
+//            else if (!passwordIsValid.value) "your password can't be less than 3 characters"
+//            else ""
+        return "password :"
     }
 
     fun handleInputName(input: String) {

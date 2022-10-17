@@ -1,41 +1,30 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
-import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
-import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.presentation.res.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-
-//@Composable
-//fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
-//    RegisteringElements(vm, navigator)
-//}
 
 @Composable
-//fun RegisteringElements(vm: RegisterLoginViewModel, navigator: Navigator) {
 fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
     val password by remember(vm) {vm.password}.collectAsState( initial = "" )
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val isValidName: Boolean = vm.nameIsValid.value
     val isValidPassword: Boolean = vm.passwordIsValid.value
 
@@ -51,18 +40,34 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
             isError = !isValidName,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
         )
+
         Spacer(modifier = Modifier.height(50.dp))
+
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             label = { Text(vm.getPasswordInputFieldLabel()) },
-            value = password,
             onValueChange = {
                 vm.trimPasswordInput(it)
             },
+
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             isError = !isValidPassword,
             enabled = isValidName,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
+//            value = if (passwordVisible) password else vm.getPasswordProtected(password),
+            value = password,
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if (passwordVisible)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+                val description = if (passwordVisible) "password unprotected" else "password protected"
+
+                IconButton(onClick = {passwordVisible = !passwordVisible}){
+                    Icon(imageVector  = image, contentDescription = description)
+                }
+            }
         )
 
 
@@ -71,6 +76,12 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
         ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navigator)
     }
 }
+
+//@Composable
+//fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
+//    RegisteringElements(vm, navigator)
+//}
+
 
 //@Composable
 //fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
