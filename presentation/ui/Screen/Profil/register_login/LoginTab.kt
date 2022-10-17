@@ -52,11 +52,6 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        Text(
-            color = whiteDark2,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "password : $password",
-        )
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             label = { Text(vm.getPasswordInputFieldLabel()) },

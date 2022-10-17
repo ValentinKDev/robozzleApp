@@ -3,7 +3,6 @@ package com.mobilegame.robozzle.domain.model.Screen
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.server.JwtToken.JWTTokenService
@@ -12,9 +11,8 @@ import com.mobilegame.robozzle.data.server.User.UltimateUserService
 import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.server.dto.UserRequest
 import com.mobilegame.robozzle.domain.User
-import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
-import com.mobilegame.robozzle.domain.state.UserConnection
+import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.NOTOKEN
@@ -33,15 +31,15 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     val tokenDataVm = TokenDataStoreViewModel( getApplication() )
     val userDataStoreVM = UserDataStoreViewModel( getApplication() )
 
-    private val _userConnectionState = MutableStateFlow(UserConnection.NoUser.state)
+    private val _userConnectionState = MutableStateFlow(UserConnectionState.NoUser.str)
     val userConnectionState: StateFlow<String> = _userConnectionState
-    fun setUserConnectionState(state: String) {
-        _userConnectionState.value = state
-        userDataStoreVM.saveUserConnectionState(state)
+    fun setUserConnectionState(stateStr: String) {
+        _userConnectionState.value = stateStr
+        userDataStoreVM.saveUserConnectionState(stateStr)
     }
 
-    private val _connectionEstablished = MutableStateFlow<Boolean>(false)
-    val connectionEstablished: StateFlow<Boolean> = _connectionEstablished
+//    private val _connectionEstablished = MutableStateFlow<Boolean>(false)
+//    val connectionEstablished: StateFlow<Boolean> = _connectionEstablished
 
     private val _name = MutableStateFlow<String>("")
     val name: StateFlow<String> = _name.asStateFlow()
@@ -68,8 +66,9 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     private val _validPassword = MutableStateFlow<Boolean>(false)
     val passwordIsValid: StateFlow<Boolean> = _validPassword.asStateFlow()
 
-    private val _canNotLog = MutableStateFlow<Int>(0)
-    val canNotLog: StateFlow<Int> = _canNotLog.asStateFlow()
+    private val _showToast= MutableStateFlow<Int>(0)
+    val showToast: StateFlow<Int> = _showToast.asStateFlow()
+    fun showTaost() { _showToast.value += 1 }
 
 //    todo should warn about the impossibility to log or register with this name and password
     private val _tokenState = MutableStateFlow<String>(TokenState.NoToken.ret)
@@ -78,94 +77,86 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     fun loginOnClickListner(navigator: Navigator) {
         infoLog("login", "onclicklistner()")
         viewModelScope.launch {
-            //get a token
-            var connection = UserConnection.NoUser.state
+            verbalLog("get a token", "start")
             getAToken(name.value, password.value)
-            if (tokenState.value == TokenState.Invalid.ret) _canNotLog.value += 1
-            else {
-                waitForToken()
-                //get the ultimate user by using the id
-                //save ultimateUser
-                connection = getUserFromServerAndStore(
-                    userName = name.value,
-                    expectedState = UserConnection.CreatedAndVerified.state,
-                    errorState = UserConnection.NotConnected.state
-                )
-            }
-            infoLog("going to set user connection to ", if (connection != UserConnection.NotConnected.state) { UserConnection.Connected.state } else connection )
+            waitForToken()
             setUserConnectionState(
-                state =  if (connection != UserConnection.NotConnected.state) {
-                    UserConnection.Connected.state
-                } else connection
+                stateStr =
+                if (tokenState.value == TokenState.Invalid.ret) UserConnectionState.InvalidNameOrPassword.str
+                else getUserFromServerAndStore(
+                        userName = name.value,
+                        expectedState = UserConnectionState.Verified,
+                        errorState = UserConnectionState.IssueWithServer
+                ).str
             )
             delay(500)
-            _connectionEstablished.value = checkConnectionState()
-
-            //dl stats from server
-//            if (connection == UserConnection.Connected.state) RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
-            if (connection == UserConnection.Connected.state) {
+            if (userConnectionState.value == UserConnectionState.Connected.str) {
                 val newUserRanking = viewModelScope.async(Dispatchers.IO) {
                     RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
                 }
                 newUserRanking.await()
                 NavViewModel(navigator).navigateTo(Screens.UserInfo)
-            }
+            } else
+                showTaost()
         }
     }
 
     fun registerOnClickListner(navigator: Navigator) {
         infoLog("register", "onclicklistner()")
+        infoLog("UserConnectionState 0 ", userConnectionState.value)
         viewModelScope.launch {
-            //create a new user to server
             infoLog("createnewsuerandgetState", "start")
-            var connectionState = createANewUserAndGetState()
-            if (connectionState == UserConnection.Created.state) {
-                //get a token for the new user
+            var serverRetFromCreation = createANewUserAndGetState()
+            if (serverRetFromCreation == UserConnectionState.CreatedAndNotVerified) {
                 infoLog("getAToken", "start")
                 getAToken(name.value, password.value)
                 delay(300)
                 infoLog("waitfortoken", "start")
                 waitForToken()
-                //get the id of the new user with the token
-                //store the user with the id and the connection state
                 infoLog("getUserFromServerAndStore", "start")
-                connectionState = getUserFromServerAndStore(
+                serverRetFromCreation = getUserFromServerAndStore(
                     userName = name.value,
-                    expectedState = UserConnection.CreatedAndVerified.state,
-                    errorState = UserConnection.NotConnected.state
+                    expectedState = UserConnectionState.Verified,
+                    errorState = UserConnectionState.IssueWithServer
                 )
             }
-            errorLog("set user connection state", connectionState)
-            setUserConnectionState(connectionState)
-            //todo: use this connection established flow to clean the navigation logic
-            _connectionEstablished.value = checkConnectionState()
+            setUserConnectionState(serverRetFromCreation.str)
 
-            if (connectionState == UserConnection.Connected.state) {
+            if (userConnectionState.value == UserConnectionState.Connected.str)
                 NavViewModel(navigator).navigateTo(Screens.UserInfo)
-            }
+            else
+                showTaost()
         }
     }
 
-    suspend fun getUserFromServerAndStore(userName: String, expectedState: String, errorState: String): String {
+    fun getConnectionErrorMessage(): String {
+        return when (userConnectionState.value) {
+            UserConnectionState.ServerNotReached.str -> "can't reach servers"
+            UserConnectionState.IssueWithServer.str -> "issue with the servers"
+            UserConnectionState.Connected.str -> "created"
+            UserConnectionState.NotCreated.str -> "impossible to create user"
+            else -> "default"
+        }
+    }
+
+    suspend fun getUserFromServerAndStore(userName: String, expectedState: UserConnectionState, errorState: UserConnectionState): UserConnectionState {
         infoLog("connectUserToServer", "userName : ${userName}")
 //        todo : what about the token State when it is deprecated and the server tels us so ?
         val ultimateUser: UltimateUserRequest? = getUltimateUserFromServer()
-        //todo : UltimateUser to User ?
-        return ( if (ultimateUser != null)
-        {
-            userDataStoreVM.saveUser(
-                User(
-                    ultimateUser.id.toInt(),
-                    ultimateUser.name,
-                    ultimateUser.password
-                )
-            )
-            expectedState
-        }
-        else
-        {
-            _canNotLog.value += 1
-            errorState }
+        return (
+                if (ultimateUser != null)
+                {
+                    userDataStoreVM.saveUser(
+                        User(
+                            ultimateUser.id.toInt(),
+                            ultimateUser.name,
+                            ultimateUser.password
+                        )
+                    )
+                    expectedState
+                }
+                else
+                    errorState
                 )
     }
 
@@ -179,7 +170,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         return ultimateUser
     }
 
-    private suspend fun createANewUserAndGetState(): String {
+    private suspend fun createANewUserAndGetState(): UserConnectionState {
         infoLog("createANewUserAndGetState()", "start")
         val ultimateUserService: UltimateUserService = UltimateUserService.create(token = NOTOKEN)
         val newUserRequest = UserRequest(name.value, password.value)
@@ -187,17 +178,12 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         infoLog("user connection state before", userConnectionState.value)
 
         return when (serverRet) {
-            ServerRet.Positiv.ret -> {
-                UserConnection.Created.state
-            }
-            else -> {
-//                UserConnection.NotConnected.state
-                UserConnection.NotCreated.state
-            }
+            ServerRet.Positiv.ret -> UserConnectionState.CreatedAndNotVerified
+            else -> UserConnectionState.NotCreated
         }
     }
 
-    fun checkConnectionState(): Boolean = userConnectionState.value != UserConnection.CreatedAndVerified.state
+    fun checkConnectionState(): Boolean = userConnectionState.value != UserConnectionState.Verified.str
 
     //todo : do i have to store the token?
     suspend fun getAToken(name: String, password: String) {
