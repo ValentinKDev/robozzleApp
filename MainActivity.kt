@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LaunchingApp(navigator: Navigator, window: Window, content: @Composable () -> Unit) {
+    //todo: https://www.youtube.com/watch?v=GhNwvGePTbY 5min20s to trigger relaunching ?
     val context = LocalContext.current
     val density = LocalDensity.current
     var launch by remember { mutableStateOf(true) }

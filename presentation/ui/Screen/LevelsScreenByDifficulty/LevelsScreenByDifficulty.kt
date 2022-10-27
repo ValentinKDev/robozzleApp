@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -34,10 +35,17 @@ fun LevelsScreenByDifficulty(
     val listVisible by remember(levelScreenVM){ levelScreenVM.listVisible}.collectAsState()
     val headerVisible by remember(levelScreenVM) { levelScreenVM.headerVisible}.collectAsState()
 
-    Log.e("LevelsScreen", "Start")
-    LaunchedEffect(key1 = "Launch LevelsScreenByDifficulty") {
+    LaunchedEffect(key1 = true) {
+        Log.e("LevelsScreen", "Start")
         levelScreenVM.setVisibilityAtLaunch()
         levelScreenVM.loadLevelListById(levelsDifficulty)
+    }
+
+    BackHandler {
+        NavViewModel(navigator).navigateTo(
+            destination = Screens.MainMenu,
+            argStr = Screens.findScreen(keyToFind = levelsDifficulty).route
+        )
     }
 
     //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data

@@ -37,7 +37,10 @@ fun LevelsScreenByDifficultyList(
     rankingIconVM: RankingIconViewModel = viewModel()
 ) {
     val levelsList: List<LevelOverView> by screenVM.levelOverViewList.collectAsState()
-    Log.e("LevelsScreen", "Start levelsList size ${levelsList.size}")
+
+    LaunchedEffect(key1 = true) {
+        Log.i("LevelsScreenByDifficultyList", "Start levelsList size ${levelsList.size}")
+    }
 
     Column() {
         Spacer(modifier = Modifier.height(100.dp))

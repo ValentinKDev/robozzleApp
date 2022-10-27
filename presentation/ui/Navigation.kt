@@ -1,16 +1,8 @@
 package com.mobilegame.robozzle.presentation.ui
 
-import android.app.Application
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,11 +13,8 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
-import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.*
@@ -36,8 +25,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
-import com.mobilegame.robozzle.presentation.ui.utils.getWindowCoordinates
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 
 @Composable
@@ -61,20 +48,25 @@ fun Navigation(navigator: Navigator) {
     ) {
         composable(route = Screens.MainMenu.route) { MainScreen(navigator) }
         composable(route = Screens.Config.route) { ConfigScreen(navigator) }
-        composable(route = Screens.Donation.route) { DonationScreen() }
+        composable(route = Screens.Donation.route) { DonationScreen(navigator) }
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         composable(route = Screens.UserInfo.route) { UserInfoScreen(navigator) }
         composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator, Tab()) }
 //        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator) }
         /** Main Menu Screen */
         composable(
-            route = Screens.MainMenu.route + "/{" + Arguments.Button.key + "}",
-            arguments = listOf(navArgument(Arguments.Button.key) { type = NavType.IntType })
+            route = Screens.MainMenu.route
+//                .plus("/{${Arguments.Button.key}}")
+                .plus("/{${Screens.None.route}}")
+            ,
+//            arguments = listOf(navArgument(Arguments.Button.key) { type = NavType.StringType })
+            arguments = listOf(navArgument(Screens.None.route) { type = NavType.StringType })
         ) { entry ->
-            entry.arguments?.getInt(Arguments.Button.key)?.let { _buttonId ->
+            entry.arguments?.getString(Screens.None.route)?.let { _fromScreen ->
+                infoLog("Navigation::MainMenu", "from : $_fromScreen")
                 MainScreen(
                     navigator = navigator,
-                    fromButton = _buttonId,
+                    fromScreen = Screens.findScreen(routeToFind = _fromScreen),
                 )
             }
         }

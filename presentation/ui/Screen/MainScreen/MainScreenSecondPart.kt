@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,13 +10,13 @@ import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewMode
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
-import com.mobilegame.robozzle.presentation.ui.button.MainMenuButton
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 @Composable
 fun MainScreenSecondPart(
     navigator: Navigator,
-    fromButton: Int = MainMenuButton.None.key,
+    fromScreen: Screens = Screens.None,
     w: MainScreenWindowsInfos,
     vm: MainScreenViewModel
 ) {
@@ -31,7 +30,7 @@ fun MainScreenSecondPart(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty1.type, fromButton, vm, w)
+            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty1.type, fromScreen, vm, w)
             VerticalSpace(10)
         }
         Column(
@@ -41,7 +40,7 @@ fun MainScreenSecondPart(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty2.type, fromButton, vm, w)
+            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty2.type, fromScreen, vm, w)
             VerticalSpace(10)
         }
         Column(
@@ -51,7 +50,7 @@ fun MainScreenSecondPart(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty3.type, fromButton, vm, w)
+            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty3.type, fromScreen, vm, w)
             VerticalSpace(10)
         }
         Column(
@@ -61,7 +60,7 @@ fun MainScreenSecondPart(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty4.type, fromButton, vm, w)
+            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty4.type, fromScreen, vm, w)
             VerticalSpace(10)
         }
         Column(
@@ -72,7 +71,7 @@ fun MainScreenSecondPart(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty5.type, fromButton, vm, w)
+            MainScreenButton(navigator, info = MainScreenButtonStyle.LevelDifficulty5.type, fromScreen, vm, w)
             VerticalSpace(10)
         }
     }

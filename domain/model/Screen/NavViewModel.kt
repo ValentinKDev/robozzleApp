@@ -19,6 +19,8 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
             navigator.navig(destination, argStr)
         }
     }
+
+    //todo: why storing the int ???
     fun storeIntAndNavigateTo(destination: NavigationDestination, int: Int, delayTiming: Long? = null, context: Context) = runBlocking {
         val storing = viewModelScope.async {
             ArgumentsDataStoreViewModel(context).storeLevelNumberArg(levelId = int)

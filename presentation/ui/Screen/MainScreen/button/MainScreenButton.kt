@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button
 
+import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -16,12 +17,15 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
@@ -29,60 +33,71 @@ const val goingTopTiming = 450
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int, vm: MainScreenViewModel, w: MainScreenWindowsInfos) {
+fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScreen: Screens, vm: MainScreenViewModel, w: MainScreenWindowsInfos, anim: MainMenuAnimationViewModel = viewModel()) {
     val ctxt = LocalContext.current
     val dens = LocalDensity.current
 
-    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
-    var buttonState by remember { mutableStateOf(ButtonState.OnPlace)}
 
-    buttonState = vm.updateButtonStates(info.buttonKey)
+    var buttonState by remember { mutableStateOf(ButtonState.Unknown)}
+
+    val xScale = remember{ Animatable(2F) }
+
+    LaunchedEffect(key1 = true) {
+        xScale.animateTo(
+            targetValue = 1F,
+            animationSpec = tween(
+                durationMillis = 600,
+                easing = {OvershootInterpolator(2F).getInterpolation(it)}
+            )
+        )
+    }
+
+    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
+
+    if (buttonState != ButtonState.Selected) buttonState = anim.getAState(info.button, fromScreen)
+
+
     val transition = updateTransition(targetState = buttonState, label = "")
     val animSize by transition.animateSize(
-        label = "",
+        label = "animSizeExit",
         transitionSpec = {
             when (buttonState) {
-                ButtonState.OnTop -> tween(goingTopTiming)
-                ButtonState.OnLeftSide -> tween(300)
-                ButtonState.OnRightSide -> tween(300)
-                ButtonState.Fade -> tween(200)
-                else -> tween(250)
+                ButtonState.Selected -> tween(goingTopTiming)
+                else -> tween(200)
             }
         }
     ) { state ->
         when (state) {
-            ButtonState.OnTop -> MainScreenWindowsInfos().getButtonSizeTarget(info.button, ctxt, dens)
-            else -> MainScreenWindowsInfos().getButtonSize(info.button, ctxt, dens)
+            ButtonState.Selected -> w.getButtonSizeTarget(info.button.key, ctxt, dens)
+            else -> w.getButtonSize(info.button.key, ctxt, dens)
         }
     }
+
     Box(
         Modifier
             .wrapContentSize()
             .background(Color.Transparent)
             .onGloballyPositioned { _layoutCoordinates ->
                 val offset = _layoutCoordinates.boundsInRoot().topLeft
-                vm.setOffset(info.buttonKey, offset)
+                vm.setOffset(info.button, offset)
             }
     ) {
         AnimatedVisibility(
             visible = visibleElements,
             //todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
-            enter = MainMenuAnimationViewModel().enterTransitionByFrom(info.buttonKey, from) ,
-            exit = MainMenuAnimationViewModel().exitTransitionByState(buttonState, info.buttonKey, vm.getOffset(info.buttonKey), vm.animationTime.value)
+            enter = anim.enterTransitionByFrom(info.button.key, fromScreen.key, vm.getOffset(info.button)) ,
+            exit = anim.exitTransitionByState(vm.buttonSelected.value.key, info.button.key, vm.getOffset(info.button), vm.animTriggeredButton.animationTime.value)
         ) {
             Card(
                 modifier = Modifier
-                    .size(width = animSize.width.dp, height = animSize.height.dp)
+                    .size(
+                        width = if (buttonState == ButtonState.From) xScale.value.times(animSize.width).dp else animSize.width.dp,
+                        height = if (buttonState == ButtonState.From) xScale.value.times(animSize.height).dp else animSize.height.dp,
+                    )
                     .clickable(enabled = info.enable) {
-                        vm.updateButtonSelected(info.buttonKey)
-                        vm.setAnimationTime(info.buttonKey)
-                        buttonState = ButtonState.OnTop
-                        vm.changeVisibility()
-                        NavViewModel(navigator).navigateTo(
-                            destination = info.destination,
-                            argStr = info.arg,
-                            delayTiming = vm.animationTime.value
-                        )
+                        //todo : make the screen unsensitive to click/tap during the whole animation + navigation process
+                        buttonState = ButtonState.Selected
+                        vm.clickHandler(navigator, info)
                     }
                 ,
                 elevation = 15.dp,
@@ -96,5 +111,5 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, from: Int
 }
 
 enum class ButtonState {
-    OnPlace, OnTop, OnLeftSide, OnRightSide, OnBottom, Fade
+    Selected, NotSelected, Unknown, From
 }

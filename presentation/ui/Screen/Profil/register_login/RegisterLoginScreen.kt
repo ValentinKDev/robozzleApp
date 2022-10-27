@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,9 +31,10 @@ import kotlinx.coroutines.flow.*
 fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
     val tabSelected: Int by tab.selected.collectAsState()
 
-    verbalLog("Launch", "RegisterLoginScreen")
+    LaunchedEffect(key1 = true) { verbalLog("Launch", "RegisterLoginScreen") }
 
-    BackHandler { NavViewModel(navigator).navigateTo(destination = Screens.MainMenu) }
+    BackHandler { NavViewModel(navigator).navigateTo(destination = Screens.MainMenu, argStr = Screens.RegisterLogin.route) }
+
     Column {
         RegisterLoginTabsHead(tab)
         if (tabSelected == 1) { RegisterTab(navigator) }
