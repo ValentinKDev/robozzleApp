@@ -1,21 +1,34 @@
 package com.mobilegame.robozzle.presentation.ui
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.graphics.alpha
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.compose.*
+
+//import androidx.navigation.navArgument
+//import androidx.navigation.navArgument
+//import androidx.navigation.compose.NavHost
+//import androidx.navigation.compose.rememberNavController
+//import com.google.accompanist.navigation.animation.AnimatedNavHost
+//import com.google.accompanist.navigation.animation.composable
+//import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+
+//import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.presentation.ui.Navigation.AnimateNavigation
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
@@ -25,10 +38,12 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
+import com.mobilegame.robozzle.utils.Extensions.getNavArguement
 import kotlinx.coroutines.flow.*
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Navigation(navigator: Navigator) {
+fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel()) {
     infoLog("navigation", "...")
     val navController = rememberNavController()
 
@@ -46,21 +61,45 @@ fun Navigation(navigator: Navigator) {
 //        startDestination = Screens.Test.route
 //        startDestination = Screens.Creator.route
     ) {
-        composable(route = Screens.MainMenu.route) { MainScreen(navigator) }
-        composable(route = Screens.Config.route) { ConfigScreen(navigator) }
-        composable(route = Screens.Donation.route) { DonationScreen(navigator) }
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
-        composable(route = Screens.UserInfo.route) { UserInfoScreen(navigator) }
-        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator, Tab()) }
-//        composable(route = Screens.RegisterLogin.route) { RegisterLoginScreen(navigator) }
+        /** Config Screen */
+        composable(route = Screens.Config.route) {
+            AnimateNavigation(
+                element = Screens.Config,
+                vm = animNav,
+            ) { ConfigScreen(navigator) }
+        }
+        /** Donation Screen */
+        composable(route = Screens.Donation.route ) {
+            AnimateNavigation(
+                element = Screens.Donation,
+                vm = animNav,
+            ) { DonationScreen(navigator) }
+        }
+        /** UserInfo Screen */
+        composable(route = Screens.UserInfo.route) {
+            AnimateNavigation(
+                element = Screens.UserInfo,
+                vm = animNav,
+            ) { UserInfoScreen(navigator) }
+        }
+        /** RegisterLogin Screen */
+        composable(route = Screens.RegisterLogin.route) {
+            AnimateNavigation(
+                element = Screens.RegisterLogin,
+                vm = animNav,
+            ) { RegisterLoginScreen(navigator, Tab()) }
+        }
         /** Main Menu Screen */
+        composable(route = Screens.MainMenu.route) {
+            AnimateNavigation(
+                element = Screens.MainMenu,
+                vm = animNav,
+            ) { MainScreen(navigator) }
+        }
         composable(
-            route = Screens.MainMenu.route
-//                .plus("/{${Arguments.Button.key}}")
-                .plus("/{${Screens.None.route}}")
-            ,
-//            arguments = listOf(navArgument(Arguments.Button.key) { type = NavType.StringType })
-            arguments = listOf(navArgument(Screens.None.route) { type = NavType.StringType })
+            route = Screens.MainMenu.route .plus("/{${Screens.None.route}}") ,
+            arguments = listOf(navArgument(Screens.None.route) {type = NavType.StringType}),
         ) { entry ->
             entry.arguments?.getString(Screens.None.route)?.let { _fromScreen ->
                 infoLog("Navigation::MainMenu", "from : $_fromScreen")
@@ -72,14 +111,44 @@ fun Navigation(navigator: Navigator) {
         }
         /** Level By Difficulty Screen */
         composable(
-            route = Screens.LevelByDifficulty.route + "/{" + Arguments.Button.key + "}",
-            arguments = listOf(navArgument(Arguments.Button.key) { type = NavType.IntType }),
+            route = Screens.LevelByDifficulty
+                .route
+                .getNavArguement(Arguments.Button.key)
+//                .getNavArguement(Arguments.From.key)
+//                .getNavArguement(Arguments.From.key)
+            ,
+            arguments = listOf(
+                navArgument(Arguments.Button.key) { type = NavType.IntType },
+//                navArgument(Arguments.From.key) { type = NavType.StringType },
+            ),
         ) { entry ->
-            entry.arguments?.getInt(Arguments.Button.key)?.let {
-                LevelsScreenByDifficulty(
-                    navigator = navigator,
-                    levelsDifficulty = it
-                )
+            entry.arguments?.getInt(Arguments.Button.key)?.let { _levelDiff ->
+                infoLog("Navigation::LevelByDifficulty", "from : ${entry.destination.route}")
+                infoLog("Navigation::LevelByDifficulty", "${navController.previousBackStackEntry?.destination?.route}")
+                navController.previousBackStackEntry?.destination?.route.let { _fromScreen ->
+                    AnimateNavigation(
+                        element = Screens.MainMenu,
+                        enterTransition =
+                        if (_fromScreen == Screens.Playing.route)
+                            slideInHorizontally(initialOffsetX = { -500 }, animationSpec = tween(400))
+                        else
+                            slideInVertically(initialOffsetY = {0}, animationSpec = tween(500))
+                        ,
+                        exitTransition = fadeOut(animationSpec = tween(400)),
+//                        if (_fromScreen == Screens.Playing.route)
+//                        else
+//                            slideInVertically(initialOffsetY = {0}, animationSpec = tween(500))
+//                        ,
+                        vm = animNav,
+                    ) {
+                        LevelsScreenByDifficulty(
+                            navigator = navigator,
+                            levelsDifficulty = _levelDiff,
+                            fromScreen = Screens.findScreen(routeToFind = _fromScreen),
+                        )
+                    }
+//                }
+                }
             }
         }
         /** Ranks Level Screen Screen */
@@ -100,7 +169,7 @@ fun Navigation(navigator: Navigator) {
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _id ->
 //                ArgumentsDataStoreViewModel(context).storeLevelNumberArg(_id)
-                PlayingScreen()
+                PlayingScreen(navigator)
             }
         }
 
@@ -114,7 +183,7 @@ fun Navigation(navigator: Navigator) {
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
             //todo : make an async coroutine to wait for the data storage to be done
-            PlayingScreen()
+            PlayingScreen(navigator)
         }
     }
 //}

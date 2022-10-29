@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.domain.repository
 
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao

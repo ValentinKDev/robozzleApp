@@ -13,6 +13,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonSt
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.utils.Extensions.IsPair
+import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,26 +22,22 @@ import kotlinx.coroutines.runBlocking
 
 class MainMenuAnimationViewModel(): ViewModel() {
 
+    private val _visibleButton = MutableStateFlow(MutableTransitionState(false))
+    val visibleButton= _visibleButton.asStateFlow()
+    fun setVisibleButtonTargetSate(state: Boolean) {_visibleButton.value.targetState = state
+        time1 = getTimeMillis()
+    }
+    fun animationEnd() = !visibleButton.value.currentState && !visibleButton.value.targetState
+
+    var time1 = 0L
+    var time2 = 0L
+
     private val _animationTime = MutableStateFlow<Long>(500)
     val animationTime: StateFlow<Long> = _animationTime
 
-//    private val _buttonState = MutableStateFlow<ButtonState>(ButtonState.NotSelected)
-//    val buttonState: StateFlow<ButtonState> = _buttonState.asStateFlow()
-//    fun setButtonStateAs(newState: ButtonState) {
-//        _buttonState.value = newState
-//    }
-//    fun updateButtonState(button: Screens, fromScreens: Screens) {
-//        when (button) {
-////            buttonSelected.value -> ButtonState.Selected
-//            fromScreens -> setButtonStateAs(ButtonState.From)
-//            else -> setButtonStateAs(ButtonState.NotSelected)
-//        }
-//        if (buttonState.value == ButtonState.From)infoLog("MainMenuAnimationViewModel::updateButtonState","${button.route} ${buttonState.value.name}" )
-//    }
     fun getAState(button: Screens, fromScreens: Screens): ButtonState {
         return when  {
             button == fromScreens -> ButtonState.From
-//            state == ButtonState.Selected -> ButtonState.Selected
             else -> ButtonState.NotSelected
         }
     }
@@ -82,16 +79,12 @@ class MainMenuAnimationViewModel(): ViewModel() {
             Screens.Profil.key ->
                 fadeIn(initialAlpha = 0.05F, tween(500))
             in Screens.Difficulty1.key..Screens.Difficulty5.key -> {
-//                    if (fromScreenId in Screens.Difficulty1.key..Screens.Difficulty5.key) {
                 if (buttonsId.IsPair())
                     slideInHorizontally(initialOffsetX = { +500 }, animationSpec = tween(400)) +
                             fadeIn(initialAlpha = 0.05F, animationSpec = tween(400))
                 else
                     slideInHorizontally(initialOffsetX = { -500 }, animationSpec = tween(400)) +
                             fadeIn(initialAlpha = 0.05F, animationSpec = tween(400))
-//                    }
-//                    else slideInHorizontally(initialOffsetX = { -500 }, animationSpec = tween(400)) +
-//                            fadeIn(animationSpec = tween(400))
             }
             Screens.Creator.key ->
                 slideInHorizontally( initialOffsetX = {(-300).toInt()}, animationSpec = tween(300) ) +

@@ -19,7 +19,7 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable

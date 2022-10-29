@@ -13,16 +13,11 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import backColor
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.configuration.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation
-import com.mobilegame.robozzle.presentation.ui.Navigator
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

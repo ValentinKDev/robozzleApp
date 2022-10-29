@@ -11,13 +11,14 @@ import com.mobilegame.robozzle.data.server.User.UltimateUserService
 import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.server.dto.UserRequest
 import com.mobilegame.robozzle.domain.User
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.state.UserConnectionState
 import com.mobilegame.robozzle.domain.model.data.store.TokenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.TokenState
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -95,7 +96,8 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                     RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
                 }
                 newUserRanking.await()
-                NavViewModel(navigator).navigateTo(Screens.UserInfo)
+//                NavViewModel(navigator).navigateTo(Screens.UserInfo)
+                NavViewModel(navigator).navigateToUserInfo()
             } else
                 showTaost()
         }
@@ -123,7 +125,8 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             setUserConnectionState(serverRetFromCreation.str)
 
             if (userConnectionState.value == UserConnectionState.Connected.str)
-                NavViewModel(navigator).navigateTo(Screens.UserInfo)
+//                NavViewModel(navigator).navigateTo(Screens.UserInfo)
+                NavViewModel(navigator).navigateToUserInfo()
             else
                 showTaost()
         }

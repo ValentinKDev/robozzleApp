@@ -1,6 +1,6 @@
 package com.mobilegame.robozzle.utils.Extensions
 
-
+import com.mobilegame.robozzle.analyse.verbalLog
 
 
 fun String.notEqual(str: String): Boolean {
@@ -32,3 +32,6 @@ fun String.containLetter(): Boolean {
 fun String.replaceAt(index: Int, char: Char): String {
     return this.replaceRange(index..index, char.toString())
 }
+
+fun String.getNavArguement(keyStr: String): String = this.plus("/{$keyStr}")
+fun String.addNavArg(arg: String): String = this.plus("/$arg")

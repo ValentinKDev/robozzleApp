@@ -3,8 +3,8 @@ package com.mobilegame.robozzle.domain.model.Screen.utils
 import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.OnTouchBounceState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +28,9 @@ class RankingIconViewModel(): ViewModel() {
             onTouchEnd = Calendar.getInstance().timeInMillis
             val diff = onTouchEnd - onTouchStart
             errorLog("diff ", "$diff")
-            NavViewModel(navigator).navigateTo(
-                destination = Screens.RanksLevel,
+            NavViewModel(navigator).navigateToRanksLevel(
+//            NavViewModel(navigator).navigateTo(
+//                destination = Screens.RanksLevel,
                 argStr = levelId.toString(),
                 delayTiming = when (diff) {
                     in 0..20 -> 100

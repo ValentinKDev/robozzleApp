@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -10,21 +11,23 @@ import androidx.compose.material.Text
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mobilegame.robozzle.R
-import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.myleveltest
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
 
 @Composable
 fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropCaseState = DragAndDropCaseState(), itemList: List<String> = itemListval) {
+    BackHandler {
+        NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Donation.route)
+    }
 
     Box(Modifier.fillMaxSize()) {
         val compo by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.toaster))

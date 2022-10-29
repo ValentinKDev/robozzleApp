@@ -20,12 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
@@ -33,13 +32,13 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 @Composable
 fun LevelsScreenByDifficultyList(
     navigator: Navigator,
-    screenVM: LevelsScreenByDifficultyViewModel,
+    vm: LevelsScreenByDifficultyViewModel,
     rankingIconVM: RankingIconViewModel = viewModel()
 ) {
-    val levelsList: List<LevelOverView> by screenVM.levelOverViewList.collectAsState()
+    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
 
     LaunchedEffect(key1 = true) {
-        Log.i("LevelsScreenByDifficultyList", "Start levelsList size ${levelsList.size}")
+        Log.d("LevelsScreenByDifficultyList", "Start levelsList size ${levelsList.size}")
     }
 
     Column() {
@@ -47,7 +46,7 @@ fun LevelsScreenByDifficultyList(
         if (levelsList.isNotEmpty()) {
             LazyColumn {
                 itemsIndexed(levelsList) { index, level ->
-                    DisplayLevelOverView(level, screenVM, rankingIconVM, navigator)
+                    DisplayLevelOverView(level, vm, rankingIconVM, navigator)
                 }
             }
         } else { Text(text = "Can't access the server and no level in the phone internal storage") }
@@ -55,8 +54,7 @@ fun LevelsScreenByDifficultyList(
 }
 
 @Composable
-fun DisplayLevelOverView(level: LevelOverView, screenVM: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) {
-    val ctxt = LocalContext.current
+fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) { val ctxt = LocalContext.current
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
@@ -69,19 +67,19 @@ fun DisplayLevelOverView(level: LevelOverView, screenVM: LevelsScreenByDifficult
             .fillMaxWidth()
             .height(100.dp)
             .clickable {
-                NavViewModel(navigator).storeIntAndNavigateTo(destination = Screens.Playing, int = level.id, context = ctxt)
-//                NavViewModel(navigator).navigateTo(Screens.Playing, level.id.toString())
+                vm.startExitAnimationAndPressLevel(level.id)
+//                vm.startExitAnimationAndPressBack()
+//                vm.navigateToLevel(navigator, level.id, ctxt)
             }
         ,
-//        elevation = 8.dp,
         elevation = 18.dp,
         backgroundColor = grayDark3
     ) {
         Row( modifier = Modifier.fillMaxSize() )
         {
             Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 80, map = level.map) }
-            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, screenVM, rankingIconVM,  navigator) }
-            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, screenVM, navigator) }
+            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, vm, rankingIconVM,  navigator) }
+            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, vm, navigator) }
         }
     }
 }

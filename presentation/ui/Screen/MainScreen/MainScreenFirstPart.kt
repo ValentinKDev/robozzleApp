@@ -2,6 +2,8 @@ package com.mobilegame.robozzle.presentation.ui.Screen.MainScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -11,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark2
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
@@ -23,7 +25,8 @@ fun MainScreenFirstPart(
     w: MainScreenWindowsInfos,
     vm: MainScreenViewModel
 ) {
-    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
+//    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
+    val visibleElements by remember {vm.visibleElements}.collectAsState(false)
     val name = vm.getName()
 
     Row( Modifier .fillMaxWidth(),
@@ -34,7 +37,10 @@ fun MainScreenFirstPart(
                 .align(CenterVertically)
             ,
         ) {
-            AnimatedVisibility(visible = visibleElements) {
+            AnimatedVisibility(
+                visible = visibleElements,
+                exit = fadeOut(0F, animationSpec = tween(150))
+            ) {
                 Text(
                     text = name,
                     color = whiteDark2

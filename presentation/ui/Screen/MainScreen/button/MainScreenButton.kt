@@ -16,33 +16,34 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
+import io.ktor.util.date.*
 
 const val goingTopTiming = 450
-
+//@Preview
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScreen: Screens, vm: MainScreenViewModel, w: MainScreenWindowsInfos, anim: MainMenuAnimationViewModel = viewModel()) {
     val ctxt = LocalContext.current
     val dens = LocalDensity.current
 
-
     var buttonState by remember { mutableStateOf(ButtonState.Unknown)}
 
     val xScale = remember{ Animatable(2F) }
 
     LaunchedEffect(key1 = true) {
+        anim.setVisibleButtonTargetSate(true)
         xScale.animateTo(
             targetValue = 1F,
             animationSpec = tween(
@@ -52,7 +53,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
         )
     }
 
-    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
+    val visibleButtonState by remember {anim.visibleButton}.collectAsState()
 
     if (buttonState != ButtonState.Selected) buttonState = anim.getAState(info.button, fromScreen)
 
@@ -67,10 +68,16 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
             }
         }
     ) { state ->
-        when (state) {
-            ButtonState.Selected -> w.getButtonSizeTarget(info.button.key, ctxt, dens)
+        when {
+            state == ButtonState.Selected -> w.getButtonSizeTarget(info.button.key, ctxt, dens)
+            state == ButtonState.NotSelected && anim.animationEnd() -> w.getButtonSizeTarget(info.button.key, ctxt, dens)
             else -> w.getButtonSize(info.button.key, ctxt, dens)
         }
+    }
+
+    if (anim.animationEnd() && buttonState == ButtonState.Selected) {
+        vm.changeScreen(navigator, info)
+        buttonState = ButtonState.NotSelected
     }
 
     Box(
@@ -83,7 +90,8 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
             }
     ) {
         AnimatedVisibility(
-            visible = visibleElements,
+//            visible = visibleElements,
+            visibleState = visibleButtonState,
             //todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
             enter = anim.enterTransitionByFrom(info.button.key, fromScreen.key, vm.getOffset(info.button)) ,
             exit = anim.exitTransitionByState(vm.buttonSelected.value.key, info.button.key, vm.getOffset(info.button), vm.animTriggeredButton.animationTime.value)
@@ -96,13 +104,15 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
                     )
                     .clickable(enabled = info.enable) {
                         //todo : make the screen unsensitive to click/tap during the whole animation + navigation process
+                        anim.setVisibleButtonTargetSate(false)
                         buttonState = ButtonState.Selected
                         vm.clickHandler(navigator, info)
                     }
                 ,
                 elevation = 15.dp,
                 shape = MaterialTheme.shapes.medium,
-                backgroundColor = info.color,
+//                backgroundColor = info.color,
+                backgroundColor = w.buttonColor,
             ) {
                 CenterText(text = info.text, color = whiteDark4)
             }

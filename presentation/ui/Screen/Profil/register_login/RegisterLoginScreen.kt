@@ -13,18 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark4
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.RegisterTab
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
 @Composable
@@ -33,7 +30,11 @@ fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
 
     LaunchedEffect(key1 = true) { verbalLog("Launch", "RegisterLoginScreen") }
 
-    BackHandler { NavViewModel(navigator).navigateTo(destination = Screens.MainMenu, argStr = Screens.RegisterLogin.route) }
+    BackHandler {
+//        NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Profil.route)
+        NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.RegisterLogin.route)
+//        NavViewModel(navigator).navigateTo(destination = Screens.MainMenu, argStr = Screens.RegisterLogin.route)
+    }
 
     Column {
         RegisterLoginTabsHead(tab)

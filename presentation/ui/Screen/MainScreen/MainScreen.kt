@@ -1,11 +1,13 @@
 package com.mobilegame.robozzle.presentation.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
@@ -20,6 +22,7 @@ fun MainScreen(
     //todo : use the fromButton to make coherent animations
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
 
+    BackHandler { }
 
     LaunchedEffect(key1 = true) {
         verbalLog("MainScreen", "launch / fromRoute: ${fromScreen.route}")

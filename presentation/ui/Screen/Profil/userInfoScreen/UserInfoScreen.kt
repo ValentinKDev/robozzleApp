@@ -12,6 +12,7 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.*
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenFirstPart
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenSecondPart
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenThirdPart

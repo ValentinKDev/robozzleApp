@@ -1,7 +1,9 @@
-package com.mobilegame.robozzle.presentation.ui
+package com.mobilegame.robozzle.presentation.ui.Navigation
 
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.presentation.ui.Screen.NavigationDestination
+import com.mobilegame.robozzle.utils.Extensions.addNavArg
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
@@ -11,8 +13,11 @@ class Navigator {
     var des: SharedFlow<String> = dest.asSharedFlow()
 
     suspend fun navig(destination: NavigationDestination, argumentStr: String = "") {
-        if (argumentStr.isEmpty()) dest.emit(destination.route)
-        else dest.emit(destination.route + "/" + argumentStr)
+        val fullRoute =
+            if (argumentStr.isEmpty()) destination.route
+            else destination.route.addNavArg(argumentStr)
+        infoLog("Navigator::navig", "fullRoute : $fullRoute")
+        dest.emit(fullRoute)
     }
 
     private var _forceReload  = MutableSharedFlow<String>()

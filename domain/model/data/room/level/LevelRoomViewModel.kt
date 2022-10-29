@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import com.mobilegame.robozzle.data.room.Level.LevelDataBase

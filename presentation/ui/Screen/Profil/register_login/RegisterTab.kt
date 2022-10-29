@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark2
-import com.mobilegame.robozzle.presentation.ui.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
 @Composable
 fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {

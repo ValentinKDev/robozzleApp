@@ -38,12 +38,17 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
                 ?.objectInstance
                 ?: Unknown
         }
+//        fun Screens.isLevelByDiff(): Boolean = Difficulty1.key <= this.key && this.key <= Difficulty5.key
+        fun Screens.isLevelByDiff(): Boolean = this.key in Difficulty1.key..Difficulty5.key
     }
 }
 
 sealed class Arguments(val key: String) {
     object LevelId: Arguments(key = "level_id_argument_key")
     object LevelDifficulty: Arguments(key = "level_difficulty_argument_key")
-    object Button: Arguments(key = "from_button_key")
+    object Button: Arguments(key = "button_screen_key")
+//    object From: Arguments(key = "from_screen_key")
+//    object From: Arguments(key = "from_screen_key")
+//    object OnBackPressed: Arguments(key = "onBack_key")
 }
 

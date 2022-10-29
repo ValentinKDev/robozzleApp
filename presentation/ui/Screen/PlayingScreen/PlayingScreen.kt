@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
@@ -14,15 +15,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.presentation.res.grayDark6
 import com.mobilegame.robozzle.presentation.res.grayDark7
 import com.mobilegame.robozzle.presentation.res.whiteDark6
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
 @Composable
-fun PlayingScreen( vm: GameDataViewModel = viewModel()) {
+fun PlayingScreen( navigator: Navigator,vm: GameDataViewModel = viewModel()) {
     errorLog("Launch", "Playing Screen")
 
+    BackHandler {
+        NavViewModel(navigator).navigateToScreenLevelByDiff(vm.level.difficulty.toString())
+    }
     LaunchedEffect(key1 = "PlayingScreenStart") {
         Log.i("", "_"); Log.e("LAUNCH LEVEL", "${vm.level.id} - ${vm.level.name}"); Log.i("", "_")
     }
@@ -39,9 +46,10 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
 
     val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
 
-    Box( Modifier
-        .fillMaxSize()
-        .background(if (displayInstructionMenu) vm.data.colors.darkerBackground else Color.Transparent)
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(if (displayInstructionMenu) vm.data.colors.darkerBackground else Color.Transparent)
         ,
         content = {
             content.invoke()

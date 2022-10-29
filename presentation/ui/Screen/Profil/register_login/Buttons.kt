@@ -15,12 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.domain.model.Screen.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
-import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
-import com.mobilegame.robozzle.presentation.ui.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
