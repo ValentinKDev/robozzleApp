@@ -101,10 +101,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         when (fromScreen) {
             Screens.Playing -> slideInHorizontally() + fadeIn()
             Screens.MainMenu -> slideInVertically()
-            else -> {
-                errorLog("LevelScreenByDifficultyViewModel::getExitTransitionForList", "ERROR from screen ${fromScreen.route}")
-                fadeIn()
-            }
+            else -> fadeIn()
         }
     }
     @OptIn(ExperimentalAnimationApi::class)
@@ -114,10 +111,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
                 slideOutHorizontally() + fadeOut()
             goToMainMenuState() ->
                 shrinkVertically( Alignment.Top, animationSpec = tween(200)) + fadeOut(animationSpec = tween(150))
-            else -> {
-                errorLog("LevelScreenByDifficultyViewModel::getExitTransitionForList", "ERROR")
-                fadeOut()
-            }
+            else -> fadeOut()
         }
     }
 
@@ -128,10 +122,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
                 slideOutHorizontally() + fadeOut()
             goToMainMenuState() ->
                 slideOutVertically(targetOffsetY = { +250 }) + fadeOut(targetAlpha = 0F)
-            else -> {
-                errorLog("LevelScreenByDifficultyViewModel::getExitTransitionForList", "ERROR")
-                fadeOut()
-            }
+            else -> fadeOut()
         }
     }
 }

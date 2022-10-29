@@ -125,17 +125,21 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             entry.arguments?.getInt(Arguments.Button.key)?.let { _levelDiff ->
                 infoLog("Navigation::LevelByDifficulty", "from : ${entry.destination.route}")
                 infoLog("Navigation::LevelByDifficulty", "${navController.previousBackStackEntry?.destination?.route}")
-                navController.previousBackStackEntry?.destination?.route.let { _fromScreen ->
+                infoLog("Navigation::LevelByDifficulty", "${navController.previousBackStackEntry?.destination?.route?.contains(Screens.Playing.route)}")
+                infoLog("Navigation::LevelByDifficulty", Screens.identify(navController.previousBackStackEntry?.destination?.route?:"").route )
+
+                navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
+                    val fromScreen =  Screens.identify(_previousRoute)
                     AnimateNavigation(
                         element = Screens.MainMenu,
                         enterTransition =
-                        if (_fromScreen == Screens.Playing.route)
+                        if (fromScreen == Screens.Playing)
                             slideInHorizontally(initialOffsetX = { -500 }, animationSpec = tween(400))
                         else
                             slideInVertically(initialOffsetY = {0}, animationSpec = tween(500))
                         ,
                         exitTransition = fadeOut(animationSpec = tween(400)),
-//                        if (_fromScreen == Screens.Playing.route)
+//                        if (fromScreen == Screens.Playing.route)
 //                        else
 //                            slideInVertically(initialOffsetY = {0}, animationSpec = tween(500))
 //                        ,
@@ -144,7 +148,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                         LevelsScreenByDifficulty(
                             navigator = navigator,
                             levelsDifficulty = _levelDiff,
-                            fromScreen = Screens.findScreen(routeToFind = _fromScreen),
+                            fromScreen = fromScreen,
                         )
                     }
 //                }

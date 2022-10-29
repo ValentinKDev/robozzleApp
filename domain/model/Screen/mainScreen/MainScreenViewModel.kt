@@ -15,7 +15,6 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens.Companion.isLevelByDiff
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import com.mobilegame.robozzle.utils.Extensions.addNavArg
 import io.ktor.util.date.*
