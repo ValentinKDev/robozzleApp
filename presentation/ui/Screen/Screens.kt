@@ -46,11 +46,7 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
                     _it.objectInstance?.route?.let { _route ->
                         routeToIdentify.contains(_route)
                     } == true
-//                    routeToIdentify.objectInstance?.route == routeToFind
-//                        ?: keyToFind?.let {  _it.objectInstance?.key == keyToFind }
-//                        ?: false
-                }
-                ?.objectInstance
+                }?.objectInstance
                 ?: Unknown
         }
     }

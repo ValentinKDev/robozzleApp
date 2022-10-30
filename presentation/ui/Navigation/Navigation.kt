@@ -130,28 +130,11 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
                 navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
                     val fromScreen =  Screens.identify(_previousRoute)
-                    AnimateNavigation(
-                        element = Screens.MainMenu,
-                        enterTransition =
-                        if (fromScreen == Screens.Playing)
-                            slideInHorizontally(initialOffsetX = { -500 }, animationSpec = tween(400))
-                        else
-                            slideInVertically(initialOffsetY = {0}, animationSpec = tween(500))
-                        ,
-                        exitTransition = fadeOut(animationSpec = tween(400)),
-//                        if (fromScreen == Screens.Playing.route)
-//                        else
-//                            slideInVertically(initialOffsetY = {0}, animationSpec = tween(500))
-//                        ,
-                        vm = animNav,
-                    ) {
-                        LevelsScreenByDifficulty(
-                            navigator = navigator,
-                            levelsDifficulty = _levelDiff,
-                            fromScreen = fromScreen,
-                        )
-                    }
-//                }
+                    LevelsScreenByDifficulty(
+                        navigator = navigator,
+                        levelsDifficulty = _levelDiff,
+                        fromScreen = fromScreen,
+                    )
                 }
             }
         }

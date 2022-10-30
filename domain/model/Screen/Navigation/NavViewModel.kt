@@ -18,12 +18,10 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
             Screens.Config -> navigateToConfig()
             Screens.Creator -> navigateToCreator()
             Screens.Donation -> navigateToDonation()
-            Screens.Difficulty1 , Screens.Difficulty2 , Screens.Difficulty3 , Screens.Difficulty4 , Screens.Difficulty5 ->
-//                navigateToScreenLevelByDiff(screen.key.toString(), fromScreen)
-                navigateToScreenLevelByDiff(screen.key.toString())
-//            navigateToScreenLevelByDiff(screen.key.toString(), fromScreen, delayTiming)
-                    Screens.UserInfo -> navigateToUserInfo()
+            Screens.UserInfo -> navigateToUserInfo()
             Screens.RegisterLogin -> navigateToRegisterLogin()
+            Screens.Difficulty1 , Screens.Difficulty2 , Screens.Difficulty3 , Screens.Difficulty4 , Screens.Difficulty5 ->
+                navigateToScreenLevelByDiff(screen.key.toString())
             else -> errorLog("NavViewModel::navigateToScreen", "ERROR with ${screen.route} param")
         }
     }
@@ -33,22 +31,14 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
     fun navigateToProfil() = navigateTo(Screens.Profil)
     fun navigateToUserInfo() = navigateTo(Screens.UserInfo)
     fun navigateToRegisterLogin() = navigateTo(Screens.RegisterLogin)
-//    fun navigateToRanksLevel(argStr: String, delayTiming: Long?) = navigateTo(Screens.RanksLevel, argStr, delayTiming)
     fun navigateToRanksLevel(argStr: String, delayTiming: Long?) = navigateTo(Screens.RanksLevel, argStr)
     fun navigateToMainMenu(fromScreen: String) = navigateTo(Screens.MainMenu, fromScreen)
     fun navigateToScreenLevelByDiff(levelDifficulty: String) {
-//        val argStr = levelDifficulty.plus("/$fromScreen")
         navigateTo( Screens.LevelByDifficulty, levelDifficulty)
     }
 
     //todo make it private
     private fun navigateTo(destination: NavigationDestination, argStr: String = "") {
-//        delayTiming?.let {
-//            viewModelScope.launch(Dispatchers.IO) {
-//                delay(delayTiming)
-//                navigator.navig(destination, argStr)
-//            }
-//        } ?:
         viewModelScope.launch {
             navigator.navig(destination, argStr)
         }
@@ -63,7 +53,6 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
         navigateTo(
             destination = Screens.Playing,
             argStr = levelId.toString(),
-//            delayTiming = delayTiming
         )
     }
     fun storeIntAndNavigateTo(destination: NavigationDestination, int: Int, delayTiming: Long? = null, context: Context) = runBlocking {
@@ -74,7 +63,6 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
         navigateTo(
             destination = destination,
             argStr = int.toString(),
-//            delayTiming = delayTiming
         )
     }
 }

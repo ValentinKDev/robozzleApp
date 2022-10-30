@@ -24,8 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
     var level: Level = LevelVM(getApplication()).getLevelArgument()
-//    var level: Level = mylevelTest2
-//    var level: Level = myleveltest
 
     val data = InGameData(level, getApplication() )
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)

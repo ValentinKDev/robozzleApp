@@ -3,39 +3,50 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
-import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.core.ExperimentalTransitionApi
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark6
-import com.mobilegame.robozzle.presentation.res.grayDark7
-import com.mobilegame.robozzle.presentation.res.whiteDark6
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
-import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayingScreen( navigator: Navigator,vm: GameDataViewModel = viewModel()) {
     errorLog("Launch", "Playing Screen")
 
-    BackHandler {
-        NavViewModel(navigator).navigateToScreenLevelByDiff(vm.level.difficulty.toString())
-    }
-    LaunchedEffect(key1 = "PlayingScreenStart") {
-        Log.i("", "_"); Log.e("LAUNCH LEVEL", "${vm.level.id} - ${vm.level.name}"); Log.i("", "_")
+    val backPress = remember { mutableStateOf(false) }
+    val animScreen = remember { MutableTransitionState(false) }
+
+    LaunchedEffect(key1 = true) {
+        Log.i("", "_");
+        Log.e("LAUNCH LEVEL", "${vm.level.id} - ${vm.level.name}"); Log.i("", "_")
+        animScreen.targetState = true
     }
 
-    PlayingScreenLayers(vm) {
-        DisplayAllParts(vm)
+    BackHandler {
+        animScreen.targetState = false
+        backPress.value = true
+    }
+    if (!animScreen.currentState && !animScreen.targetState && backPress.value) NavViewModel(navigator).navigateToScreenLevelByDiff(vm.level.difficulty.toString())
+
+    AnimatedVisibility(
+        visibleState = animScreen,
+        enter = slideInHorizontally(initialOffsetX = {300}) + fadeIn(),
+        exit = slideOutHorizontally(targetOffsetX = {300}, tween(150)) + fadeOut(animationSpec = tween(150)),
+    ) {
+        PlayingScreenLayers(vm) {
+            DisplayAllParts(vm)
+        }
     }
 }
 
@@ -66,4 +77,3 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
         }
     )
 }
-

@@ -43,6 +43,7 @@ fun LevelsScreenByDifficulty(
         vm.startExitAnimationAndPressBack()
     }
     vm.goingMainMenuListener(navigator, fromScreen, levelsDifficulty)
+
     vm.goingPlayScreenListener(navigator, ctxt)
 
     //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
