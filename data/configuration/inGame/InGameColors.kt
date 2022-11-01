@@ -12,8 +12,8 @@ object InGameColors {
     val popupElevation = 15.dp
 
     val actionRowCaseBorder = Color.Black
-    val actionRowCaseElevation = 10.dp
-    val actionRowCaseBiggerElevation = 15.dp
+    val actionRowCaseElevation = 5.dp
+    val actionRowCaseBiggerElevation = 5.dp
     val functionText = whiteDark4
     val functionBorder = Color.Black
     val functionCaseSelection = whiteDark3

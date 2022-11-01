@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.red9
@@ -15,7 +16,9 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun SecondScreenPart(vm: GameDataViewModel) {
-    Log.i("" , "SecondScreenPart")
+    LaunchedEffect(true) {
+        Log.i("" , "SecondScreenPart")
+    }
 
     Column(Modifier.fillMaxSize()) {
         Column(

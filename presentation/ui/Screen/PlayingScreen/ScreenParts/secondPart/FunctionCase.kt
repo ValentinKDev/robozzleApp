@@ -24,7 +24,7 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
         ,
         shape = RectangleShape
         ,
-        elevation = 50.dp
+        elevation = 20.dp
     ) {
         Box( Modifier.gradientBackground(mapCaseColorList(color, filter), 175f) ) {
             if (instructionChar != '.'){

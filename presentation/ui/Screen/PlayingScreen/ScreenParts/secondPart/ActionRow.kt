@@ -63,7 +63,7 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDrag = { change, _ ->
-                        infoLog( "onDrag", "position ${change.position}" )
+//                        infoLog( "onDrag", "position ${change.position}" )
                         vm.dragAndDropRow.onDrag( pointerInputChange = change)
                         vm.dragAndDropRow.move()?.let {
                             when (it) {

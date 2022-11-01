@@ -90,23 +90,20 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             ) { RegisterLoginScreen(navigator, Tab()) }
         }
         /** Main Menu Screen */
-        composable(route = Screens.MainMenu.route) {
-            AnimateNavigation(
+        composable(
+            route = Screens.MainMenu.route,
+        ) {
+            navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
+                val fromScreen =  Screens.identify(_previousRoute)
+                infoLog("Navigation::MainMenu", "from : $fromScreen")
+                MainScreen(
+                    navigator = navigator,
+                    fromScreen = fromScreen,
+                )
+            } ?: AnimateNavigation(
                 element = Screens.MainMenu,
                 vm = animNav,
             ) { MainScreen(navigator) }
-        }
-        composable(
-            route = Screens.MainMenu.route .plus("/{${Screens.None.route}}") ,
-            arguments = listOf(navArgument(Screens.None.route) {type = NavType.StringType}),
-        ) { entry ->
-            entry.arguments?.getString(Screens.None.route)?.let { _fromScreen ->
-                infoLog("Navigation::MainMenu", "from : $_fromScreen")
-                MainScreen(
-                    navigator = navigator,
-                    fromScreen = Screens.findScreen(routeToFind = _fromScreen),
-                )
-            }
         }
         /** Level By Difficulty Screen */
         composable(

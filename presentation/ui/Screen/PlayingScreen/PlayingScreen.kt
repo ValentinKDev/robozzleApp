@@ -71,7 +71,9 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
                 visible = visisbleMenu,
                 enter = fadeIn(),
                 exit = fadeOut()
-            ) { DisplayInstuctionMenu(vm) }
+            ) {
+                DisplayInstuctionMenu(vm)
+            }
 
             PlayingScreenPopupWin(vm = vm)
         }
