@@ -44,10 +44,10 @@ import kotlinx.coroutines.flow.*
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel()) {
-    infoLog("navigation", "...")
     val navController = rememberNavController()
 
     LaunchedEffect("navigation") {
+        infoLog("navigation", "...")
         navigator.des.onEach {
             navController.navigate(it)
         }.launchIn(this)
@@ -59,7 +59,6 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
         navController = navController,
         startDestination = Screens.MainMenu.route
 //        startDestination = Screens.Test.route
-//        startDestination = Screens.Creator.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         /** Config Screen */
@@ -111,23 +110,12 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
         }
         /** Level By Difficulty Screen */
         composable(
-            route = Screens.LevelByDifficulty
-                .route
-                .getNavArguement(Arguments.Button.key)
-//                .getNavArguement(Arguments.From.key)
-//                .getNavArguement(Arguments.From.key)
-            ,
+            route = Screens.LevelByDifficulty.route.getNavArguement(Arguments.Button.key) ,
             arguments = listOf(
                 navArgument(Arguments.Button.key) { type = NavType.IntType },
-//                navArgument(Arguments.From.key) { type = NavType.StringType },
             ),
         ) { entry ->
             entry.arguments?.getInt(Arguments.Button.key)?.let { _levelDiff ->
-                infoLog("Navigation::LevelByDifficulty", "from : ${entry.destination.route}")
-                infoLog("Navigation::LevelByDifficulty", "${navController.previousBackStackEntry?.destination?.route}")
-                infoLog("Navigation::LevelByDifficulty", "${navController.previousBackStackEntry?.destination?.route?.contains(Screens.Playing.route)}")
-                infoLog("Navigation::LevelByDifficulty", Screens.identify(navController.previousBackStackEntry?.destination?.route?:"").route )
-
                 navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
                     val fromScreen =  Screens.identify(_previousRoute)
                     LevelsScreenByDifficulty(

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
@@ -25,6 +26,8 @@ import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
@@ -36,13 +39,16 @@ fun LevelsScreenByDifficultyList(
     rankingIconVM: RankingIconViewModel = viewModel()
 ) {
     val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
+    val context = LocalContext.current
+    val density = LocalDensity.current
 
     LaunchedEffect(key1 = true) {
         Log.d("LevelsScreenByDifficultyList", "Start levelsList size ${levelsList.size}")
     }
 
+
     Column() {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height( MainScreenWindowsInfos().getButtonSizeTarget(Screens.Difficulty1.key, context, density).height.dp))
         if (levelsList.isNotEmpty()) {
             LazyColumn {
                 itemsIndexed(levelsList) { index, level ->
@@ -68,8 +74,6 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
             .height(100.dp)
             .clickable {
                 vm.startExitAnimationAndPressLevel(level.id)
-//                vm.startExitAnimationAndPressBack()
-//                vm.navigateToLevel(navigator, level.id, ctxt)
             }
         ,
         elevation = 18.dp,

@@ -54,10 +54,6 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
 
 sealed class Arguments(val key: String) {
     object LevelId: Arguments(key = "level_id_argument_key")
-    object LevelDifficulty: Arguments(key = "level_difficulty_argument_key")
     object Button: Arguments(key = "button_screen_key")
-//    object From: Arguments(key = "from_screen_key")
-//    object From: Arguments(key = "from_screen_key")
-//    object OnBackPressed: Arguments(key = "onBack_key")
 }
 
