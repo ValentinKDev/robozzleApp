@@ -67,6 +67,7 @@ class AnimationLogicViewModel(
                     delay(data.getAnimationDelay())
                 }
                 if (data.isPlayerOnStopMark()) {
+                    data.setPlayerAnimationState(PlayerAnimationState.OnPause)
                     data.mapCaseMakeStop(this)
                 }
 //                if (data.StarsListIsEmpty() || data.actionLost()) stop = true

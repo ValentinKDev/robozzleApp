@@ -109,10 +109,10 @@ class AnimationData(
     private val _mapCaseSelection = MutableStateFlow<List<Position>>(mutableListOf())
     val mapCaseSelection: StateFlow<List<Position>> = _mapCaseSelection.asStateFlow()
     fun mapCaseSelectionHandler(position: Position) = runBlocking(Dispatchers.Default) {
-        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
+//        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
         if (mapCaseSelection.value.contains(position)) deleteMapCaseStop(position)
         else addMapCaseStop(position)
-        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
+//        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
     }
     private suspend fun addMapCaseStop(position: Position) {
         val newList: MutableList<Position> = _mapCaseSelection.value.toMutableList()
