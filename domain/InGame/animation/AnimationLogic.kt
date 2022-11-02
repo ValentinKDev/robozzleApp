@@ -21,13 +21,9 @@ import com.mobilegame.robozzle.domain.res.TRUE
 import kotlinx.coroutines.*
 
 const val maxNumberActionToDisplay = 10
-//class AnimationLogicViewModel(private var mainVM: GameDataViewModel): ViewModel() {
-//class AnimationLogicViewModel(private var breadcrumb: Breadcrumb, private val level: Level): ViewModel() {
 class AnimationLogicViewModel(
     private val level: Level,
-//    private var data: AnimationData,
     private val VM: GameDataViewModel,
-//    private val bdVM: BreadcrumbViewModel
 ): ViewModel() {
     private var actionAdded = 0
 
@@ -35,14 +31,10 @@ class AnimationLogicViewModel(
 
     lateinit var stars: Stars
     lateinit var colorSwitches: ColorsMaps
-//    var stops: MutableList<Position> = mutableListOf()
     var actionIndexEnd: Int = UNKNOWN
     private var stop: Boolean = false
-    private var starsRemovedMap = mutableMapOf<Int, Point>()
-    private var addAction = initialPreloadActionsNumber
 
     private lateinit var data: AnimationData
-
 
     init { errorLog("init", "animation logic") }
 
@@ -77,8 +69,12 @@ class AnimationLogicViewModel(
                 if (data.isPlayerOnStopMark()) {
                     data.mapCaseMakeStop(this)
                 }
-//                if (data.StarsListIsEmpty() || data.actionEnd()) stop = true
-                if (data.StarsListIsEmpty() || data.actionLost()) stop = true
+//                if (data.StarsListIsEmpty() || data.actionLost()) stop = true
+                if (data.StarsListIsEmpty()
+                    || data.actionLost()
+                    || data.noMoreAction() )
+                    stop = true
+                verbalLog("actionList", "${animData.actionToRead}")
                 verbalLog("stop", "$stop")
             }
             Log.v(Thread.currentThread().name,"-----------------------------------------------------------------------------------")

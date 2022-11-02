@@ -43,35 +43,21 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
             level = level
         )
 
-        logInit?.let { errorLog("Init", "BreadCrumb")
+            errorLog("Init", "BreadCrumb")
             infoLog("numberActionToLoad", "${numberActionToLoad}")
             infoLog("addAction", "${addActions}")
-        }
     }
 
     fun getBreadCrumb(): Breadcrumb = runBlocking(Dispatchers.IO) {
         logInit?.let { errorLog("Init", "getBreadCrumb") }
         startLogic()
-//        errorLog("actionCount", "${bd.lastActionNumber}")
-//        infoLog("actionList.size", "${bd.actionsList.size}")
-//        bd.playerStateList.forEachIndexed { _i, _plr ->
-//            infoLog("$_i", "${_plr.pos}")
-//        }
-//        infoLog("stars number left", "${bd.starsNumberLeft}")
-//        infoLog("stars left", "${bd.starsPositionsLeft}")
-//        infoLog("stars removed left", "${bd.starsRemovalMap}")
         infoLog("win", "${bd.win}")
         infoLog("lose", "${bd.lost}")
-        verbalLog("playerstate size ", bd.playerStateList.size.toString())
-        verbalLog("currenaction size ", bd.currentInstructionList.size.toString())
-        verbalLog("actions length ", bd.actions.instructions.length.toString())
-        verbalLog("actions instructions ", bd.actions.instructions)
-        verbalLog("actions colors ", bd.actions.colors)
-//        bd.playerStateList.forEach {
-//            verbalLog("player pos ", it.pos.toString())
-//        }
-//        bd.actionsList.printList()
-//        verbalLog("list action", "${bd.}")
+        infoLog("playerstate size ", bd.playerStateList.size.toString())
+        infoLog("currentInstructionList size ", bd.currentInstructionList.size.toString())
+        infoLog("actions length ", bd.actions.instructions.length.toString())
+        infoLog("actions instructions ", bd.actions.instructions)
+        infoLog("actions colors ", bd.actions.colors)
         bd
     }
 

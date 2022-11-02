@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.runBlocking
+import kotlin.math.max
 
 class AnimationData(
     private val level: Level,
@@ -47,9 +48,11 @@ class AnimationData(
 
     fun actionEnd(): Boolean {
         return if (bd.win != UNKNOWN && bd.lost != UNKNOWN) false
+//        else if (getActionToRead() == maxAction) true
         else getActionToRead() == bd.win || getActionToRead() == bd.lost
     }
-    fun actionNotEnd(): Boolean = !actionEnd()
+    fun noMoreAction(): Boolean = getActionToRead() == maxAction
+//    fun actionNotEnd(): Boolean = !actionEnd()
     fun actionLost(): Boolean = getActionToRead() == bd.lost
     fun actionWin(): Boolean = getActionToRead() == bd.win
 
