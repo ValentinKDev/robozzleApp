@@ -17,7 +17,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun SecondScreenPart(vm: GameDataViewModel) {
-    val visibleFunctions by remember {vm.data.layout.secondPart.initiated}.collectAsState()
+//    val visibleFunctions by remember {vm.data.layout.secondPart.initiated}.collectAsState()
 
     LaunchedEffect(true) {
         Log.i("" , "SecondScreenPart")
@@ -51,13 +51,13 @@ fun SecondScreenPart(vm: GameDataViewModel) {
         }
         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
         ) {
-            if (visibleFunctions)
+//            if (visibleFunctions)
                 DisplayFunctionsPart(vm)
-            else {
-                CenterComposable {
-                    LoadingAnimation()
-                }
-            }
+//            else {
+//                CenterComposable {
+//                    LoadingAnimation()
+//                }
+//            }
         }
     }
 }

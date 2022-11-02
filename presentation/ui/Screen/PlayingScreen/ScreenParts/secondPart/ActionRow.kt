@@ -190,7 +190,7 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
             angle = 175F
         )
         ) {
-            InstructionIconsActionRow(case.instruction, vm, filter)
+            InstructionIconsActionRow(case.instruction, vm, filter, bigger)
         }
     }
 }

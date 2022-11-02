@@ -23,7 +23,7 @@ object InGameSecondPart {
     private val _initiated = MutableStateFlow<Boolean>(false)
     val initiated: StateFlow<Boolean> = _initiated.asStateFlow()
 
-    var caseColoringIcon: CaseColoringIcon = CaseColoringIcon(0F, 0F)
+    var caseColoringIcon: CaseColoringIcon = CaseColoringIcon(0F, 0F, ratios.functionCaseColoring)
 
     object Ratios {
         const val height: Float = 6F
@@ -38,6 +38,8 @@ object InGameSecondPart {
         const val actionRowSurronderBlackLineHeight = 0.05F
         const val actionRowSurronderEmptyLineHeight = 0.08F
         const val actionRowBorder = 0.08F
+        const val actionRowIcon = 1.7F
+        const val functionRowIcon = 0.7F
 
         const val functionsRowPartHeight = 5F
         const val minimumFunctionRowPaddingHeight = 0.07F
@@ -47,10 +49,14 @@ object InGameSecondPart {
         const val biggerFunctionCaseRatio = 0.3F
 //        const val selectionCaseHalo = 0.15F
         const val selectionCaseHalo = 0.10F
-        const val caseColoringIcon = 0.85F
-        const val caseColoringIconBorder = 0.07F
+//        const val caseColoringIcon = 0.85F
+        const val functionCaseColoring = 0.52F
+//        const val caseColoringIcon = 2F
+//        const val caseColoringIconBorder = 0.07F
 
+        const val actionRowCaseColoringIcon = 1.15F
     }
+
 
     object Sizes {
         var width: Float = 0F
@@ -78,9 +84,9 @@ object InGameSecondPart {
         var twoThirdFunctionCase: Int = 0
         var selectionCaseHaloStroke: Float = 0F
         var caseColoringIcon: Float = 0F
-        var caseColoringIconDp: Dp = Dp.Unspecified
-        var caseColoringIconBorder: Float = 0F
-        var caseColoringIconBorderDp: Dp = Dp.Unspecified
+//        var caseColoringIconDp: Dp = Dp.Unspecified
+//        var caseColoringIconBorder: Float = 0F
+//        var caseColoringIconBorderDp: Dp = Dp.Unspecified
 
         var actionRowCase: Float = 0F
         var actionRowCaseDp: Dp = Dp.Unspecified
@@ -88,10 +94,12 @@ object InGameSecondPart {
         var actionRowCaseBiggerDp: Dp = Dp.Unspecified
         var actionRowIcon: Float = 0F
         var actionRowIconDp: Dp = Dp.Unspecified
+        var actionRowBiggerIcon: Float = 0F
+        var actionRowBiggerIconDp: Dp = Dp.Unspecified
     }
 
     object ActionRow {
-        var caseColoringIcon: CaseColoringIcon = CaseColoringIcon(0F,0F)
+        var caseColoringIcon: CaseColoringIcon = CaseColoringIcon(0F,0F, 0F)
     }
 
     const val actionToDisplayNumber = 9
@@ -135,7 +143,7 @@ object InGameSecondPart {
             }
         }
 
-        size.functionCaseIcon = size.functionCase
+        size.functionCaseIcon = size.functionCase * ratios.functionRowIcon
         size.functionCaseIconDp = size.functionCaseIcon.toDp(density)
         size.bigFunctionCase = size.functionCase * ( 1F + ratios.biggerFunctionCaseRatio )
         size.bigFunctionCaseDp = size.bigFunctionCase.toDp(density)
@@ -144,10 +152,10 @@ object InGameSecondPart {
         size.twoThirdFunctionCase = (size.functionCase * (2F/3F)).toInt()
         size.functionCasePadding = (size.functionCase * ratios.functionCasePadding).toInt()
         size.selectionCaseHaloStroke = size.functionCase * ratios.selectionCaseHalo
-        size.caseColoringIcon = size.functionCase * ratios.caseColoringIcon
-        size.caseColoringIconDp = size.caseColoringIcon.toDp(density)
-        size.caseColoringIconBorder = size.caseColoringIcon * ratios.caseColoringIconBorder
-        size.caseColoringIconBorderDp = size.caseColoringIconBorder.toDp(density)
+//        size.caseColoringIcon = size.functionCase * ratios.caseColoringIcon
+//        size.caseColoringIconDp = size.caseColoringIcon.toDp(density)
+//        size.caseColoringIconBorder = size.caseColoringIcon * ratios.caseColoringIconBorder
+//        size.caseColoringIconBorderDp = size.caseColoringIconBorder.toDp(density)
 
         infoLog("init", "\tfunctions part")
         infoLog("rows", "$rows")
@@ -179,10 +187,12 @@ object InGameSecondPart {
         size.actionRowCaseBiggerDp = size.actionRowCaseBigger.toDp(density)
 
 //        size.actionRowCaseBorder = ( size.actionRowCase * ratios.actionRowBorder ).toInt()
-        size.actionRowIcon = size.actionRowCase
+        size.actionRowIcon = size.actionRowCase * ratios.actionRowIcon
         size.actionRowIconDp = size.actionRowIcon.toDp(density)
+        size.actionRowBiggerIcon = size.actionRowCase * ratios.actionRowCaseBigger * ratios.actionRowIcon
+        size.actionRowBiggerIconDp = size.actionRowBiggerIcon.toDp(density)
 //        act
-        actionRow.caseColoringIcon = CaseColoringIcon(size.actionRowCase, density)
+        actionRow.caseColoringIcon = CaseColoringIcon(size.actionRowCase, density, ratios.actionRowCaseColoringIcon)
 
         infoLog("init", "\tactionRow part")
         infoLog("actionRowCase", "${size.actionRowCase}")
@@ -206,7 +216,7 @@ object InGameSecondPart {
 
         initFunctionInstructionsRows(level, density)
         initActionRow(density)
-        caseColoringIcon = CaseColoringIcon(size.functionCase, density)
+        caseColoringIcon = CaseColoringIcon(size.functionCase, density, ratios.functionCaseColoring)
         errorLog(".....................................", "caseColoring radius = ${caseColoringIcon.radiusIn}")
         _initiated.value = true
     }

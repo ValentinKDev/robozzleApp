@@ -25,6 +25,8 @@ object InGameInstructionMenu {
 
         const val casePadding = 0.1F
         const val iconBiggerThanCase = 0.15F
+        const val icon = 1.6F
+        const val caseColoringIcon = 1.15F
     }
 
     object Sizes {
@@ -48,11 +50,10 @@ object InGameInstructionMenu {
         size.caseWithPadding = (size.width / maxCases)
         size.casePadding = 0F
         size.case = size.caseWithPadding - (2F * Sizes.casePadding)
-        size.icon = size.case
+        size.icon = size.case * ratios.icon
         size.iconDp = size.icon.toDp(density)
-        caseColoringIcon = CaseColoringIcon(size.case, density)
+        caseColoringIcon = CaseColoringIcon(size.case, density, ratios.caseColoringIcon)
 
-        initiated = true
         infoLog(" maxCases ", "${maxCases}")
         infoLog(" full width ", "$widthFull")
         infoLog(" full width ", "${widthFull * 0.9}")

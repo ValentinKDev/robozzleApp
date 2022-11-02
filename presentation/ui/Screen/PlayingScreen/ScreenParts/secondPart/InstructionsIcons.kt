@@ -21,7 +21,7 @@ fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel, darkFilt
     InstructionIcons(
         instruction,
 //        vm.data.layout.secondPart.caseColoringIcon,
-        vm.data.layout.secondPart.actionRow.caseColoringIcon,
+        vm.data.layout.secondPart.caseColoringIcon,
         vm.data.colors,
         vm.data.layout.secondPart.size.functionCaseIconDp,
         darkFilter
@@ -29,12 +29,17 @@ fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel, darkFilt
 }
 
 @Composable
-fun InstructionIconsActionRow(instruction: Char, vm: GameDataViewModel, darkFilter: Boolean) {
+fun InstructionIconsActionRow(
+    instruction: Char,
+    vm: GameDataViewModel,
+    darkFilter: Boolean,
+    bigger: Boolean
+) {
     InstructionIcons(
         instruction,
         vm.data.layout.secondPart.actionRow.caseColoringIcon,
         vm.data.colors,
-        vm.data.layout.secondPart.size.actionRowIconDp,
+        if (bigger) vm.data.layout.secondPart.size.actionRowBiggerIconDp else vm.data.layout.secondPart.size.actionRowIconDp,
         darkFilter
     )
 }

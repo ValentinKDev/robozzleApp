@@ -10,8 +10,10 @@ import com.mobilegame.robozzle.utils.Extensions.toDp
 data class CaseColoringIcon(
     val boxSize: Float,
     val density: Float,
+    val ratio: Float,
 ) {
-    var ratioCanvas: Float = 0.75F
+//    var ratioCanvas: Float = 0.75F
+    var ratioCanvas: Float = 1.4F * ratio
     var canvasSize: Float = 0F
     var canvasSizeDp: Dp = Dp.Unspecified
     var radiusForBorder: Float = 0F

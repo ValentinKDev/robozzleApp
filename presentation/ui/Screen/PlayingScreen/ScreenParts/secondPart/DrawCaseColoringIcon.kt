@@ -31,12 +31,12 @@ fun test() {
     val density = LocalDensity.current.density
 
     val dataColors = InGameColors
-    val data = CaseColoringIcon(40F * 2.75F, density)
+//    val data = CaseColoringIcon(40F * 2.75F, density)
 //    val data = CaseColoringIcon().init(40F * 2.75F, density)
 
-    Box(Modifier.size(40.dp).gradientBackground(dataColors.gradientOfGray, 175F)){
-        DrawCaseColoringIcon(CaseColor.Green, data, dataColors, false)
-    }
+//    Box(Modifier.size(40.dp).gradientBackground(dataColors.gradientOfGray, 175F)){
+//        DrawCaseColoringIcon(CaseColor.Green, data, dataColors, false)
+//    }
 }
 
 @Composable
