@@ -22,12 +22,5 @@ class InGameData(lvl: Level, context: Context) {
     init {
         infoLog("Init", "In Game Data")
         infoLog("lvl.playerInGame", "${lvl.playerInitial}")
-//        val screenData = ScreenDataStoreViewModel(context)
-//        val dens = screenData.density
-//        val windowCoordinates: Rect = screenData.getWindowCoordinates() ?: Rect.Zero
-//        errorLog("density", "$dens")
-//        errorLog("windowRect", "${windowCoordinates}")
-//        errorLog("density", "${context.resources.displayMetrics.heightPixels}")
-
     }
 }

@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.utils.Extensions.replaceAt
@@ -24,6 +25,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     var level: Level = LevelVM(getApplication()).getLevelArgument()
 
     val data = InGameData(level, getApplication() )
+
     private val bdVM = BreadcrumbViewModel(level, level.funInstructionsList)
     var breadcrumb = bdVM.getBreadCrumb()
     var animData = AnimationData(level, breadcrumb)

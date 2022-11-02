@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.data.configuration.inGame.layouts
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.analyse.errorLog
@@ -9,12 +10,20 @@ import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIc
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.utils.Extensions.getSmallerFloat
 import com.mobilegame.robozzle.utils.Extensions.toDp
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 object InGameSecondPart {
     var size = Sizes
     var ratios = Ratios
     var actionRow = ActionRow
-    lateinit var caseColoringIcon: CaseColoringIcon
+//    var initiated = false
+
+    private val _initiated = MutableStateFlow<Boolean>(false)
+    val initiated: StateFlow<Boolean> = _initiated.asStateFlow()
+
+    var caseColoringIcon: CaseColoringIcon = CaseColoringIcon(0F, 0F)
 
     object Ratios {
         const val height: Float = 6F
@@ -82,7 +91,7 @@ object InGameSecondPart {
     }
 
     object ActionRow {
-        lateinit var caseColoringIcon: CaseColoringIcon
+        var caseColoringIcon: CaseColoringIcon = CaseColoringIcon(0F,0F)
     }
 
     const val actionToDisplayNumber = 9
@@ -99,15 +108,15 @@ object InGameSecondPart {
         level.funInstructionsList.forEach {
             if (it.instructions.length in maxCasesNumber..9) maxCasesNumber = it.instructions.length
         }
+        size.functionRowPaddingHeight = 20F
+
         val functionCaseByHeight: Float =
             (size.functionPartHeight - (level.funInstructionsList.size * size.functionRowPaddingHeight)) / (rows + 1)
-//            (size.functionPartHeight - (level.funInstructionsList.size * size.functionRowPaddingHeight)) / rows
+
         val functionCaseByWidth: Float = (size.width * ratios.maxFunctionRowWidth) / maxCasesNumber
         size.functionCase = getSmallerFloat(functionCaseByHeight, functionCaseByWidth)
         size.functionCaseDp = size.functionCase.toDp(density)
 
-//        size.functionRowPaddingHeight = (size.height - (rows * size.functionCase)) / (rows + 2)
-//        size.functionRowPaddingHeight = (size.height - (rows * size.functionCase)) / (level.funInstructionsList.size * 2)
         size.functionRowPaddingHeight = (size.height - (rows * size.functionCase)) / (rows * 2)
         size.functionRowPaddingHeightDp = size.functionRowPaddingHeight.toDp(density)
 
@@ -199,6 +208,6 @@ object InGameSecondPart {
         initActionRow(density)
         caseColoringIcon = CaseColoringIcon(size.functionCase, density)
         errorLog(".....................................", "caseColoring radius = ${caseColoringIcon.radiusIn}")
-        
+        _initiated.value = true
     }
 }

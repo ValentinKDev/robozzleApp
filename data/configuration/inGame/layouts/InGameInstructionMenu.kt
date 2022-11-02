@@ -14,6 +14,7 @@ object InGameInstructionMenu {
     val ratios = Ratios
     private var maxCases = 0
     lateinit var caseColoringIcon: CaseColoringIcon
+    var initiated = false
 //    var case
 
     object Ratios {
@@ -51,6 +52,7 @@ object InGameInstructionMenu {
         size.iconDp = size.icon.toDp(density)
         caseColoringIcon = CaseColoringIcon(size.case, density)
 
+        initiated = true
         infoLog(" maxCases ", "${maxCases}")
         infoLog(" full width ", "$widthFull")
         infoLog(" full width ", "${widthFull * 0.9}")

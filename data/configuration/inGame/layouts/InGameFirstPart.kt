@@ -13,6 +13,7 @@ object InGameFirstPart {
     val size = Sizes
     val star = StarIcon
     val player = PlayerIcon
+    var initiated = false
 
     object Ratios {
         const val height = 4F
@@ -204,7 +205,7 @@ object InGameFirstPart {
 
         initStarCanvasData(density)
         initPlayerIcon()
-
+        initiated = true
     }
 
     fun initPlayerIcon() {

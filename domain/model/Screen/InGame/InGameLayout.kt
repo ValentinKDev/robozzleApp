@@ -13,6 +13,7 @@ class InGameLayout(level: Level, context: Context) {
     val thirdPart = InGameThirdPart
     val popup = InGamePopupWin
     val menu = InGameInstructionMenu
+    var initiated = false
 
     private var density = 0F
     private var layoutCoordinates: LayoutCoordinates? = null
@@ -28,4 +29,5 @@ class InGameLayout(level: Level, context: Context) {
         verbalLog("init", "initMenu")
         InGameInstructionMenu.init(context , level)
     }
+
 }

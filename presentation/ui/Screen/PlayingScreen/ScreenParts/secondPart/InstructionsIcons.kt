@@ -20,7 +20,8 @@ import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel, darkFilter: Boolean) {
     InstructionIcons(
         instruction,
-        vm.data.layout.secondPart.caseColoringIcon,
+//        vm.data.layout.secondPart.caseColoringIcon,
+        vm.data.layout.secondPart.actionRow.caseColoringIcon,
         vm.data.colors,
         vm.data.layout.secondPart.size.functionCaseIconDp,
         darkFilter

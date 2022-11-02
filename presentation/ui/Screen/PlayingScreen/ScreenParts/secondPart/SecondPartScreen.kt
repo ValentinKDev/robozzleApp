@@ -3,19 +3,22 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.red9
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.LoadingAnimation
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.ActionRowSurronder
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayActionsRow
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.DisplayFunctionsPart
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun SecondScreenPart(vm: GameDataViewModel) {
+    val visibleFunctions by remember {vm.data.layout.secondPart.initiated}.collectAsState()
+
     LaunchedEffect(true) {
         Log.i("" , "SecondScreenPart")
     }
@@ -48,7 +51,13 @@ fun SecondScreenPart(vm: GameDataViewModel) {
         }
         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
         ) {
-            DisplayFunctionsPart(vm)
+            if (visibleFunctions)
+                DisplayFunctionsPart(vm)
+            else {
+                CenterComposable {
+                    LoadingAnimation()
+                }
+            }
         }
     }
 }

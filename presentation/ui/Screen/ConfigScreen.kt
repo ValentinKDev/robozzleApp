@@ -4,20 +4,23 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,41 +44,29 @@ import kotlinx.coroutines.flow.asStateFlow
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
-//    val animVisibleState = remember { MutableTransitionState(false) }
-    val animVisibleState = remember {vm.visibleState}.collectAsState()
 
+
+    var circleScale by remember {
+        mutableStateOf(0f)
+    }
+    val circleScaleAnimate = animateFloatAsState(
+        targetValue = circleScale,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 600
+            )
+        )
+    )
     LaunchedEffect(key1 = true) {
-        vm.setVisibleTargetStateAs(true)
-//        animVisibleState.targetState = true
         Log.e("ConfigScreen", "Start")
-        vm.update()
+        circleScale = 1f
     }
-    val backClicked by remember {vm.onBackClick}.collectAsState()
-    BackHandler {
-        vm.setVisibleTargetStateAs(false)
-//        animVisibleState.targetState = false
-        vm.setOnBackClickTo(true)
-    }
-
-    val visible by remember(vm){vm.visible}.collectAsState()
-    val visible2 by remember(vm){vm.visible2}.collectAsState()
-
-//    if (backClicked && !animVisibleState.targetState && !animVisibleState.currentState ) {
-    if (backClicked && !animVisibleState.value.targetState && !animVisibleState.value.currentState ) {
-//        NavViewModel(navigator).navigateToMainMenu()
-        NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Config.route)
-    }
-//    else infoLog("animVisibleState", ".\ntargetState\t${animVisibleState.targetState}\ncurrent\t${animVisibleState.currentState}\nonBack\t$backClicked")
-    else infoLog("animVisibleState", ".\ntargetState\t${animVisibleState.value.targetState}\ncurrent\t${animVisibleState.value.currentState}\nonBack\t$backClicked")
-
     Row {
         Column() {
             Text(text = "Config")
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 onClick = {
-                    vm.changeVisible()
-//                vm.setVisible(false)
                 },
             ) {
                 Text(text = "1")
@@ -83,8 +74,6 @@ fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 onClick = {
-                    vm.changeVisible2()
-//                vm.setVisible2(false)
                 },
             ) {
                 Text(text = "2")
@@ -92,19 +81,10 @@ fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
             Button(
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 onClick = {
-//                vm.setVisibleTargetStateAs(false)
-//                animVisibleState.targetState = false
-//                animVisibleState.currentState = true
-//                vm.handler()
                 },
             ) {
-                Text(text = "3")
             }
-//        AnimatedVisibility(visibleState = animVisibleState) {
-            AnimatedVisibility(visibleState = animVisibleState.value) {
                 Column() {
-                    AnimatedVisibility( visible = visible, enter = fadeIn(), exit = fadeOut()
-                    ) {
                         Box(
                             modifier = Modifier
                                 .size(100.dp)
@@ -112,9 +92,6 @@ fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
                             ,
                         ) {
                         }
-                    }
-                    AnimatedVisibility( visible = visible2, enter = fadeIn(), exit = fadeOut()
-                    ) {
                         Box(
                             modifier = Modifier
                                 .size(100.dp)
@@ -122,8 +99,6 @@ fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
                             ,
                         ) {
                         }
-                    }
-                }
             }
         }
         Column {
@@ -133,7 +108,30 @@ fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
                     .backColor(gray9)
                 ,
             ) { }
-            Constraints()
+            Box(
+                modifier = Modifier
+                    .size(size = 64.dp)
+                    .scale(scale = circleScaleAnimate.value)
+                    .border(
+                        width = 4.dp,
+                        color = gray9.copy(alpha = 1 - circleScaleAnimate.value),
+                        shape = CircleShape
+                    )
+            ) {
+
+            }
+            Box(
+                modifier = Modifier
+                    .size(size = 64.dp)
+                    .scale(scale = circleScaleAnimate.value)
+                    .border(
+                        width = 4.dp,
+                        color = gray9.copy(alpha = 1 - circleScaleAnimate.value),
+                        shape = RectangleShape
+                    )
+            ) {
+
+            }
         }
     }
 

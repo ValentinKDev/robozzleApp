@@ -7,6 +7,7 @@ import com.mobilegame.robozzle.analyse.infoLog
 object InGameThirdPart {
     val ratios = Ratios
     val size = Sizes
+    var initiated = false
 
     object Ratios {
         const val height = 1F
@@ -36,6 +37,8 @@ object InGameThirdPart {
 //        size.button = (size.widthDp * ratios.height).toInt()
         size.buttonWidth = (size.widthDp * ratios.buttonWidth).toInt()
         size.buttonHeight = (size.heightDp * ratios.buttonHeight).toInt()
+
+        initiated = true
         infoLog(" width ", "${size.width}")
         infoLog(" widthDp ", "${size.widthDp}")
         infoLog(" height ", "${size.height}")
