@@ -21,8 +21,6 @@ import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 @Composable
 fun DragAndDropOverlay(vm: GameDataViewModel) {
     val dragRepresentationOffset: Offset by vm.dragAndDropCase.dragRepresentationOffset.collectAsState()
-//    val itemUnderVisible: Boolean by vm.dragAndDrop.elements.itemUnderVisible.collectAsState()
-//    val visibleItermUnder: Boolean by remember(vm) {vm.dragAndDrop.elements.itemUnderVisible}.collectAsState()
     val itemUnderCornerOffset: Offset? by vm.dragAndDropCase.elements.itemUnderCorner.collectAsState()
     val dragStart: Boolean by vm.dragAndDropCase.dragStart.collectAsState()
     val visibleDragDropOverLay by remember(vm) {vm.dragAndDropCase.dragStart}.collectAsState(false)

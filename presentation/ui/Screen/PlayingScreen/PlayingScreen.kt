@@ -70,9 +70,6 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-//                errorLog("TEST", "${vm.animData.playerAnimationState.value.key}")
-
-//                if (vm.isInstructionMenuAvailable())
                     DisplayInstuctionMenu(vm)
             }
 

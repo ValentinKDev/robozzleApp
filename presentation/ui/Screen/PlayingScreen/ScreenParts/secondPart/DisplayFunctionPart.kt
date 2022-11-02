@@ -44,29 +44,31 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             vm.dragAndDropCase.elements.setDraggableParentOffset(it)
         }
         .pointerInput(Unit) {
-            detectDragGestures(
-                onDrag = { change, _ ->
-                    infoLog("onDrag", "position ${change.position}")
-                    vm.dragAndDropCase.onDrag(
-                        pointerInputChange = change,
-                        list = vm.instructionsRows
-                    )
-//                    infoLog("vm.dragstrt", "${vm.dragAndDrop.dragStart.value}")
-                },
-                onDragStart = { _offset ->
-                    infoLog("onDragStart", "started")
-                    vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
-                    infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")
-                },
-                onDragEnd = {
-                    vm.dragAndDropCase.onDragEnd(vm)
-                    errorLog("onDragEnd", "end")
-                },
-                onDragCancel = {
-                    vm.dragAndDropCase.onDragCancel()
-                    errorLog("onDragCanceled", "cancel")
-                }
-            )
+                detectDragGestures(
+                    onDrag = { change, _ ->
+                        infoLog("onDrag", "position ${change.position}")
+                        vm.dragAndDropCase.onDrag(
+                            pointerInputChange = change,
+                            list = vm.instructionsRows
+                        )
+                    },
+                    onDragStart = { _offset ->
+                        errorLog("TEST", "${vm.animData.playerAnimationState.value.key}")
+                        infoLog("onDragStart", "started")
+                        if (vm.isDragAndDropAvailable()) {
+                            vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
+                        }
+                        infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")
+                    },
+                    onDragEnd = {
+                        vm.dragAndDropCase.onDragEnd(vm)
+                        errorLog("onDragEnd", "end")
+                    },
+                    onDragCancel = {
+                        vm.dragAndDropCase.onDragCancel()
+                        errorLog("onDragCanceled", "cancel")
+                    }
+                )
         }
     ) {
         functions.forEachIndexed { functionNumber, function ->
