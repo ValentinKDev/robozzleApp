@@ -22,8 +22,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.Displ
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayingScreen( navigator: Navigator,vm: GameDataViewModel = viewModel()) {
-    errorLog("Launch", "Playing Screen")
-
     val backPress = remember { mutableStateOf(false) }
     val animScreen = remember { MutableTransitionState(false) }
 
@@ -72,7 +70,10 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                DisplayInstuctionMenu(vm)
+//                errorLog("TEST", "${vm.animData.playerAnimationState.value.key}")
+
+//                if (vm.isInstructionMenuAvailable())
+                    DisplayInstuctionMenu(vm)
             }
 
             PlayingScreenPopupWin(vm = vm)

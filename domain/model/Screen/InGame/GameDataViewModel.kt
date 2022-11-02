@@ -15,8 +15,7 @@ import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropRow.DragAndDropRowState
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.presentation.ui.mylevelTest2
-import com.mobilegame.robozzle.presentation.ui.myleveltest
+import com.mobilegame.robozzle.utils.Extensions.getSafe
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -140,10 +139,11 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         animationLogicVM.stepByStep(AnimationStream.Backward)
         logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
     }
+    fun isInstructionMenuAvailable(): Boolean = animData.playerAnimationState.value.isInstructionMenuAvailable()
 
     init {
-        logInit?.let { errorLog("init", "GameDataViewModel") }
-        level.map.printMap()
-        level.starsList.printList()
+                logInit?.let { errorLog("init", "GameDataViewModel") }
+                level.map.printMap()
+                level.starsList.printList()
     }
 }

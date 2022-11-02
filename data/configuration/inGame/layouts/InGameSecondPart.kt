@@ -36,7 +36,8 @@ object InGameSecondPart {
         const val functionRowPaddingWidth = 0.05F
         const val functionCasePadding = 0.1F
         const val biggerFunctionCaseRatio = 0.3F
-        const val selectionCaseHalo = 0.15F
+//        const val selectionCaseHalo = 0.15F
+        const val selectionCaseHalo = 0.10F
         const val caseColoringIcon = 0.85F
         const val caseColoringIconBorder = 0.07F
 

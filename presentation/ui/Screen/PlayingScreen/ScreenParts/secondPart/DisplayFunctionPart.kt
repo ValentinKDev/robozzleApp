@@ -1,13 +1,15 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -15,6 +17,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
@@ -70,7 +73,7 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             VerticalSpace(heightDp = vm.data.layout.secondPart.size.functionRowPaddingHeightDp)
             Box{
                 DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
-                DisplayCurrentInstructionHighlighted(functionNumber, function, vm, displayInstructionMenu)
+                DisplayCurrentInstructionHighlighted(functionNumber, function, vm)
             }
         }
         VerticalSpace(heightDp = vm.data.layout.secondPart.size.functionRowPaddingHeightDp)
@@ -118,7 +121,9 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                 )
                             }
                             .clickable {
-                                if (vm.dragAndDropCase.dragStart.value Is false) {
+                                if (vm.dragAndDropCase.dragStart.value Is false
+                                    && vm.isInstructionMenuAvailable()
+                                ) {
                                     vm.ChangeInstructionMenuState()
                                     vm.setSelectedFunctionCase(functionNumber, _index)
                                 }
@@ -150,7 +155,9 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                     )
                                 }
                                 .clickable {
-                                    if (vm.dragAndDropCase.dragStart.value Is false) {
+                                    if (vm.dragAndDropCase.dragStart.value Is false
+                                        && vm.isInstructionMenuAvailable()
+                                    ) {
                                         vm.ChangeInstructionMenuState()
                                         vm.setSelectedFunctionCase(functionNumber, index)
                                     }
@@ -170,14 +177,16 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel, displayInstructionMenu: Boolean) {
+fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel) {
     val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
     val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
 
     val doubleRow: Boolean = function.instructions.length == 10
     val listInstructions1 = if (doubleRow) function.instructions.substring(0..4) else function.instructions
+    var visibleElement by remember{ mutableStateOf(false) }
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -192,9 +201,10 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
             color = vm.data.colors.functionText
         )
         Column {
-            Column( Modifier
-                .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
-                .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
+            Column(
+                Modifier
+                    .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
+                    .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
             ) {
                 Row( Modifier.fillMaxWidth()
                     ,
@@ -203,16 +213,26 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                     listInstructions1.forEachIndexed { _index, _ ->
                         Box( Modifier.size(vm.data.layout.secondPart.size.functionCaseDp)
                         ) {
+                            var display = false
                             if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
-                                && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
+                                && ( (currentAction == 0 && functionNumber == 0 && _index == 0) ||
+                                                vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)) )
                                 && playerAnimationState.runningInBackground() )
                             {
+//                                visibleElement = true
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
                                     stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
-                                    vm = vm
+                                    vm = vm,
+//                                    enableAnimation = true
                                 )
                             }
+//                            AnimatedVisibility(
+//                                visible = visibleElement,
+//                                enter = fadeIn(),
+//                                exit = fadeOut()
+//                            ) {
+//                            }
                         }
                     }
                 }

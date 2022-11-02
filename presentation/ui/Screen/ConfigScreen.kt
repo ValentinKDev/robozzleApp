@@ -62,6 +62,7 @@ fun ConfigScreen(navigator: Navigator, vm: TestVM = viewModel()) {
 
 //    if (backClicked && !animVisibleState.targetState && !animVisibleState.currentState ) {
     if (backClicked && !animVisibleState.value.targetState && !animVisibleState.value.currentState ) {
+//        NavViewModel(navigator).navigateToMainMenu()
         NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Config.route)
     }
 //    else infoLog("animVisibleState", ".\ntargetState\t${animVisibleState.targetState}\ncurrent\t${animVisibleState.currentState}\nonBack\t$backClicked")

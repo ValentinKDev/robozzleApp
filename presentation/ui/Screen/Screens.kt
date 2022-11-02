@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen
 
 import android.content.ContentProvider.CallingIdentity
+import com.mobilegame.robozzle.analyse.infoLog
 
 interface NavigationDestination {
     val route: String
@@ -41,13 +42,23 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
                 ?: Unknown
         }
         fun identify(routeToIdentify: String): Screens {
+//            infoLog("Screens::identify", "routeToIdentify = $routeToIdentify")
+//            var ret = Screens::class.sealedSubclasses
             return Screens::class.sealedSubclasses
                 .firstOrNull { _it ->
                     _it.objectInstance?.route?.let { _route ->
+//                        infoLog("Screens::identify", "${routeToIdentify.contains(_route)}")
                         routeToIdentify.contains(_route)
                     } == true
-                }?.objectInstance
-                ?: Unknown
+                }?.objectInstance ?: Unknown
+//            infoLog("Screens::identify", "ret ${ret.route}")
+//            infoLog("Screens::identify", "ret ${routeToIdentify.last()}")
+//            infoLog("Screens::identify", "ret ${routeToIdentify.last().isDigit()}")
+//            infoLog("Screens::identify", "ret ${routeToIdentify.last().toString().toInt()}")
+//            if (ret == LevelByDifficulty && routeToIdentify.last().isDigit()) {
+//                ret = findScreen(keyToFind = routeToIdentify.last().toString().toInt())
+//            }
+//            return  ret
         }
     }
 }
@@ -55,5 +66,6 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
 sealed class Arguments(val key: String) {
     object LevelId: Arguments(key = "level_id_argument_key")
     object Button: Arguments(key = "button_screen_key")
+    object From: Arguments(key = "from_screen_key")
 }
 

@@ -17,17 +17,17 @@ fun MainScreen(
     fromScreen: Screens = Screens.None,
     w: MainScreenWindowsInfos = MainScreenWindowsInfos(),
     vm: MainScreenViewModel = viewModel(),
+) {
 
-    ) {
     //todo : use the fromButton to make coherent animations
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
 
     BackHandler { }
 
     LaunchedEffect(key1 = true) {
-        verbalLog("MainScreen", "launch / fromRoute: ${fromScreen.route}")
         vm.changeVisibility()
         vm.updateButtonSelected(Screens.None)
+        verbalLog("MainScreen", "launch / fromRoute: ${fromScreen.route}")
     }
 
     Box(Modifier.fillMaxSize()) {

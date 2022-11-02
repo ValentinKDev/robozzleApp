@@ -1,11 +1,9 @@
 package com.mobilegame.robozzle.presentation.ui
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.graphics.alpha
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -38,6 +36,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
+import com.mobilegame.robozzle.utils.Extensions.addNavArg
 import com.mobilegame.robozzle.utils.Extensions.getNavArguement
 import kotlinx.coroutines.flow.*
 
@@ -57,8 +56,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         /** Config Screen */
@@ -90,36 +89,39 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             ) { RegisterLoginScreen(navigator, Tab()) }
         }
         /** Main Menu Screen */
-        composable(
-            route = Screens.MainMenu.route,
-        ) {
-            navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
-                val fromScreen =  Screens.identify(_previousRoute)
-                infoLog("Navigation::MainMenu", "from : $fromScreen")
-                MainScreen(
-                    navigator = navigator,
-                    fromScreen = fromScreen,
-                )
-            } ?: AnimateNavigation(
+        composable(route = Screens.MainMenu.route) {
+            AnimateNavigation(
                 element = Screens.MainMenu,
                 vm = animNav,
             ) { MainScreen(navigator) }
         }
+        composable(
+            route = Screens.MainMenu.route .plus("/{${Screens.None.route}}") ,
+            arguments = listOf(navArgument(Screens.None.route) {type = NavType.StringType}),
+        ) { entry ->
+            entry.arguments?.getString(Screens.None.route)?.let { _fromScreen ->
+                infoLog("Navigation::MainMenu", "from : $_fromScreen")
+                MainScreen(
+                    navigator = navigator,
+                    fromScreen = Screens.identify(_fromScreen),
+                )
+            }
+        }
         /** Level By Difficulty Screen */
         composable(
             route = Screens.LevelByDifficulty.route.getNavArguement(Arguments.Button.key) ,
-            arguments = listOf(
-                navArgument(Arguments.Button.key) { type = NavType.IntType },
-            ),
+            arguments = listOf( navArgument(Arguments.Button.key) { type = NavType.IntType }, ),
         ) { entry ->
-            entry.arguments?.getInt(Arguments.Button.key)?.let { _levelDiff ->
-                navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
-                    val fromScreen =  Screens.identify(_previousRoute)
-                    LevelsScreenByDifficulty(
-                        navigator = navigator,
-                        levelsDifficulty = _levelDiff,
-                        fromScreen = fromScreen,
-                    )
+            navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
+                entry.arguments?.getInt(Arguments.Button.key)?.let { _levelDiff ->
+                    navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
+                        val fromScreen =  Screens.identify(_previousRoute)
+                        LevelsScreenByDifficulty(
+                            navigator = navigator,
+                            levelsDifficulty = _levelDiff,
+                            fromScreen = fromScreen,
+                        )
+                    }
                 }
             }
         }
@@ -134,7 +136,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 }
             }
         }
-        /** Game Screen */
+        /** Playing Screen */
         composable(
             route = Screens.Playing.route + "/{" + Arguments.LevelId.key + "}",
             arguments = listOf(navArgument(Arguments.LevelId.key) { type = NavType.IntType })
@@ -160,6 +162,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
     }
 //}
 }
+
 val myleveltest = Level(
     name = "zipline",
     id = 3,
