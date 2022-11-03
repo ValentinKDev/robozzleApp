@@ -1,28 +1,25 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
-import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIcon
+import com.mobilegame.robozzle.data.layout.inGame.InGameColors
+import com.mobilegame.robozzle.data.layout.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.presentation.res.blue9
 import com.mobilegame.robozzle.presentation.res.gray9
 import com.mobilegame.robozzle.presentation.res.green9
 import com.mobilegame.robozzle.presentation.res.red9
 import com.mobilegame.robozzle.presentation.ui.elements.CaseColor
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import gradientBackground
 
 @Preview
 @Composable

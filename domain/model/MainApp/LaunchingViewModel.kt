@@ -7,8 +7,9 @@ import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.configuration.RobuzzleConfiguration
+import com.mobilegame.robozzle.data.layout.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.AppConfigDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.appConfig.AppConfigServerViewModel
@@ -24,6 +25,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
     private val appConfigServerVM = AppConfigServerViewModel()
     private val screenDataStore = ScreenDataStoreViewModel(context)
     private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
+    private val configData = ConfigRoomViewModel(context)
     private val rankVM = RankVM(context)
 
 //    fun launch(layoutCoordinates: LayoutCoordinates, navigator: Navigator) {
@@ -40,6 +42,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
 
             loadAndCheckAppVersion()
 
+            configData.initiateConfig()
             infoLog("get list level Id", "local")
             val localListLevelsId: List<Int> = levelRoomVM.getLevelIds()
             infoLog("-> local list level Id", "$localListLevelsId")

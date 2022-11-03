@@ -9,15 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
-import com.mobilegame.robozzle.data.configuration.inGame.layouts.InGameFirstPart
-import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
-import com.mobilegame.robozzle.presentation.ui.myleveltest
+import com.mobilegame.robozzle.data.layout.inGame.InGameColors
+import com.mobilegame.robozzle.presentation.ui.Navigation.myleveltest
 
 @Preview
 @Composable

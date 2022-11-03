@@ -1,9 +1,9 @@
 package com.mobilegame.robozzle.domain.model.Screen.mainScreen
 
 import androidx.lifecycle.ViewModel
-import com.mobilegame.robozzle.data.configuration.mainScreen.MainMenuColor
-import com.mobilegame.robozzle.data.configuration.mainScreen.MainMenuRatios
-import com.mobilegame.robozzle.data.configuration.mainScreen.MainMenuText
+import com.mobilegame.robozzle.data.layout.mainScreen.MainMenuColor
+import com.mobilegame.robozzle.data.layout.mainScreen.MainMenuRatios
+import com.mobilegame.robozzle.data.layout.mainScreen.MainMenuText
 
 class MainScreenData(): ViewModel() {
     val text = MainMenuText

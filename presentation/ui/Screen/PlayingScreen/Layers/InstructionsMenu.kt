@@ -18,8 +18,7 @@ import backColor
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.mapCaseColorList
-import com.mobilegame.robozzle.presentation.res.redDark1
+import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.InstructionIconsMenu
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
@@ -36,6 +35,8 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     Box(
         Modifier
             .fillMaxSize()
+//            .background(gray9)
+            .background(black7)
             .clickable(
                 interactionSource = interactionExtMenu,
                 indication = null
@@ -44,8 +45,6 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     PaddingComposable(
         topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
         bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
-//        startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
-//        endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
     ) {
     CenterComposableHorizontally {
             Box(

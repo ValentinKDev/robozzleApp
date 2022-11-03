@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.ui.layout.LayoutCoordinates
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.configuration.inGame.layouts.*
+import com.mobilegame.robozzle.data.layout.inGame.layouts.*
 import com.mobilegame.robozzle.domain.model.level.Level
 
 class InGameLayout(level: Level, context: Context) {

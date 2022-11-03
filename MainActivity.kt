@@ -13,10 +13,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import backColor
-import com.mobilegame.robozzle.data.configuration.RobuzzleConfiguration
+import com.mobilegame.robozzle.data.layout.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.Navigation
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigation
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
 class MainActivity : ComponentActivity() {

@@ -1,26 +1,19 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TurnedIn
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.icons.twotone.North
-import androidx.compose.material.icons.twotone.TurnedIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
-import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIcon
+import com.mobilegame.robozzle.data.layout.inGame.InGameColors
+import com.mobilegame.robozzle.data.layout.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
@@ -99,7 +92,11 @@ fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp, darkFilter: Boolean) {
                 'x' -> Icons.Outlined.Close
                 else -> iconByInt(instruction.toString().toInt())
             },
-            tint = grayDark6,
+            tint =
+//            if (instruction == 'x') redDark4
+//            else if (darkFilter) grayDark8
+//            else
+                grayDark6,
             contentDescription = "instructionBack",
             modifier = Modifier
                 .size((sizeIconDp.value * 1.1F).dp)
@@ -113,9 +110,11 @@ fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp, darkFilter: Boolean) {
                 'x' -> Icons.Outlined.Close
                 else -> iconByInt(instruction.toString().toInt())
             },
-            tint = if (instruction == 'x') redDark1
-            else if (darkFilter) whiteDark8
-            else whiteDark6,
+            tint =
+//            if (instruction == 'x') redDark1
+//            else if (darkFilter) whiteDark8
+//            else
+                whiteDark6,
             contentDescription = "instruction",
             modifier = Modifier
                 .size(sizeIconDp)

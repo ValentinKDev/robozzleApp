@@ -1,15 +1,8 @@
 package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.content.Context
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.unit.Density
-import androidx.datastore.dataStore
-import androidx.lifecycle.ViewModel
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.configuration.inGame.*
-import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
+import com.mobilegame.robozzle.data.layout.inGame.*
 import com.mobilegame.robozzle.domain.model.level.Level
 
 

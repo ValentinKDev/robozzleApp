@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilegame.robozzle.data.configuration.donation.DonationScreenText
+import com.mobilegame.robozzle.data.layout.donation.DonationScreenText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

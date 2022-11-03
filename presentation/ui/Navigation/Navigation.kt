@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.presentation.ui
+package com.mobilegame.robozzle.presentation.ui.Navigation
 
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
@@ -8,26 +8,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 
-//import androidx.navigation.navArgument
-//import androidx.navigation.navArgument
-//import androidx.navigation.compose.NavHost
-//import androidx.navigation.compose.rememberNavController
-//import com.google.accompanist.navigation.animation.AnimatedNavHost
-//import com.google.accompanist.navigation.animation.composable
-//import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-
-//import androidx.navigation.navArgument
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.presentation.ui.Navigation.AnimateNavigation
-import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
+import com.mobilegame.robozzle.presentation.ui.MainScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
+import com.mobilegame.robozzle.presentation.ui.Screen.Config.ConfigScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Creator.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.PlayingScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.RegisterLoginScreen
@@ -36,7 +27,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.UserInfoScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevelScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
-import com.mobilegame.robozzle.utils.Extensions.addNavArg
 import com.mobilegame.robozzle.utils.Extensions.getNavArguement
 import kotlinx.coroutines.flow.*
 
@@ -56,8 +46,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Test.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         /** Config Screen */
@@ -157,9 +147,10 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
-            PlayingScreen(navigator)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+//            PlayingScreen(navigator)
 //            CreatorScreen(navigator = navigator)
+            ConfigScreen(navigator = navigator)
         }
     }
 //}

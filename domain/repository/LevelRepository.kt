@@ -7,8 +7,6 @@ import com.mobilegame.robozzle.domain.model.level.LevelState
 
 class LevelRepository(private val levelDao: LevelDao) {
 
-    var aLevelData: LevelData? = null
-
     fun getAllLevelsIds(): List<Int> {
         return levelDao.getAllIds()
     }
