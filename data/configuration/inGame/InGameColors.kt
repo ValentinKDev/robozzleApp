@@ -14,7 +14,8 @@ object InGameColors {
     val actionRowCaseBorder = Color.Black
     val actionRowCaseElevation = 5.dp
     val actionRowCaseBiggerElevation = 5.dp
-    val functionText = whiteDark4
+    val functionText = whiteDark6Plus
+    val functionTextDark = whiteDark8
     val functionBorder = Color.Black
     val functionCaseSelection = whiteDark3
     val coloringCaseIconBorder = Color.Black

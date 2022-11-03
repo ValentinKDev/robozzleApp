@@ -8,12 +8,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -22,6 +24,7 @@ import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.presentation.res.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
@@ -44,31 +47,31 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             vm.dragAndDropCase.elements.setDraggableParentOffset(it)
         }
         .pointerInput(Unit) {
-                detectDragGestures(
-                    onDrag = { change, _ ->
-                        infoLog("onDrag", "position ${change.position}")
-                        vm.dragAndDropCase.onDrag(
-                            pointerInputChange = change,
-                            list = vm.instructionsRows
-                        )
-                    },
-                    onDragStart = { _offset ->
-                        errorLog("TEST", "${vm.animData.playerAnimationState.value.key}")
-                        infoLog("onDragStart", "started")
-                        if (vm.isDragAndDropAvailable()) {
-                            vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
-                        }
-                        infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")
-                    },
-                    onDragEnd = {
-                        vm.dragAndDropCase.onDragEnd(vm)
-                        errorLog("onDragEnd", "end")
-                    },
-                    onDragCancel = {
-                        vm.dragAndDropCase.onDragCancel()
-                        errorLog("onDragCanceled", "cancel")
+            detectDragGestures(
+                onDrag = { change, _ ->
+                    infoLog("onDrag", "position ${change.position}")
+                    vm.dragAndDropCase.onDrag(
+                        pointerInputChange = change,
+                        list = vm.instructionsRows
+                    )
+                },
+                onDragStart = { _offset ->
+                    errorLog("TEST", "${vm.animData.playerAnimationState.value.key}")
+                    infoLog("onDragStart", "started")
+                    if (vm.isDragAndDropAvailable()) {
+                        vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
                     }
-                )
+                    infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")
+                },
+                onDragEnd = {
+                    vm.dragAndDropCase.onDragEnd(vm)
+                    errorLog("onDragEnd", "end")
+                },
+                onDragCancel = {
+                    vm.dragAndDropCase.onDragCancel()
+                    errorLog("onDragCanceled", "cancel")
+                }
+            )
         }
     ) {
         functions.forEachIndexed { functionNumber, function ->
@@ -93,9 +96,15 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = vm.data.text.functionText(functionNumber),
-            color = vm.data.colors.functionText
+//        Text(
+//            text = vm.data.text.functionText(functionNumber),
+//            color = vm.data.colors.functionText
+//        )
+        Icon(
+            imageVector = iconByInt(functionNumber),
+            tint = if (displayInstructionMenu) vm.data.colors.functionTextDark else vm.data.colors.functionText,
+            contentDescription = "function $functionNumber",
+            modifier = Modifier.size(vm.data.layout.secondPart.size.twoThirdFunctionCaseDp)
         )
         Column {
             val doubleRow: Boolean = function.instructions.length == 10
@@ -179,7 +188,6 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel) {
     val currentAction: Int by vm.animData.actionToRead.collectAsState()
@@ -198,10 +206,16 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = vm.data.text.functionText(functionNumber),
-            color = vm.data.colors.functionText
-        )
+//        Icon(painter = a, contentDescription = a)
+//        Text(
+//            text = vm.data.text.functionText(functionNumber),
+//            color = vm.data.colors.functionText
+//        )
+//        Icon(
+//            imageVector = iconByInt(functionNumber),
+//            tint = whiteDark2,
+//            contentDescription = "function $functionNumber"
+//        )
         Column {
             Column(
                 Modifier
@@ -215,26 +229,17 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                     listInstructions1.forEachIndexed { _index, _ ->
                         Box( Modifier.size(vm.data.layout.secondPart.size.functionCaseDp)
                         ) {
-                            var display = false
                             if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                 && ( (currentAction == 0 && functionNumber == 0 && _index == 0) ||
                                                 vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)) )
                                 && playerAnimationState.runningInBackground() )
                             {
-//                                visibleElement = true
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
                                     stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
                                     vm = vm,
-//                                    enableAnimation = true
                                 )
                             }
-//                            AnimatedVisibility(
-//                                visible = visibleElement,
-//                                enter = fadeIn(),
-//                                exit = fadeOut()
-//                            ) {
-//                            }
                         }
                     }
                 }

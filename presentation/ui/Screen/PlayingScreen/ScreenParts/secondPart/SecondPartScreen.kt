@@ -51,13 +51,7 @@ fun SecondScreenPart(vm: GameDataViewModel) {
         }
         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
         ) {
-//            if (visibleFunctions)
-                DisplayFunctionsPart(vm)
-//            else {
-//                CenterComposable {
-//                    LoadingAnimation()
-//                }
-//            }
+            DisplayFunctionsPart(vm)
         }
     }
 }

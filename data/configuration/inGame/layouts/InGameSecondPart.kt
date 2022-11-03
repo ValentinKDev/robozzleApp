@@ -82,6 +82,7 @@ object InGameSecondPart {
         var halfFunctionCase: Int = 0
         var oneThirdFunctionCase: Int = 0
         var twoThirdFunctionCase: Int = 0
+        var twoThirdFunctionCaseDp: Dp = Dp.Unspecified
         var selectionCaseHaloStroke: Float = 0F
         var caseColoringIcon: Float = 0F
 //        var caseColoringIconDp: Dp = Dp.Unspecified
@@ -150,6 +151,7 @@ object InGameSecondPart {
         size.halfFunctionCase = (size.functionCase / 2F).toInt()
         size.oneThirdFunctionCase = (size.functionCase * (1F/3F)).toInt()
         size.twoThirdFunctionCase = (size.functionCase * (2F/3F)).toInt()
+        size.twoThirdFunctionCaseDp = size.twoThirdFunctionCase.toFloat().toDp(density)
         size.functionCasePadding = (size.functionCase * ratios.functionCasePadding).toInt()
         size.selectionCaseHaloStroke = size.functionCase * ratios.selectionCaseHalo
 //        size.caseColoringIcon = size.functionCase * ratios.caseColoringIcon
