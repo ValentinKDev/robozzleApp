@@ -7,7 +7,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.North
+//import androidx.compose.material.icons.Icons
+//import androidx.compose.material.icons.outlined.North
+//import androidx.compose.material.icons.outlined.Update
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -21,6 +27,8 @@ import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropC
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 
 
 @Composable
@@ -29,12 +37,48 @@ fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropCaseState = Dr
         NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Donation.route)
     }
 
-    Box(Modifier.fillMaxSize()) {
-        val compo by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.toaster))
-        LottieAnimation(
-            compo,
-            modifier = Modifier.size(100.dp),
-            iterations = LottieConstants.IterateForever,
+    Column {
+        Box(Modifier) {
+            val compo by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.toaster))
+            LottieAnimation(
+                compo,
+                modifier = Modifier.size(100.dp),
+                iterations = LottieConstants.IterateForever,
+            )
+        }
+        VerticalSpace(20)
+        Box(
+            Modifier
+                .size(50.dp)
+                .background(whiteDark6)) {
+            Box {
+                Icon(
+                    imageVector = Icons.Outlined.North,
+                    contentDescription ="truc",
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .background(whiteDark8)
+                )
+            }
+            CenterComposable {
+                Icon(
+                    imageVector = Icons.Outlined.North,
+                    contentDescription ="truc",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(40.dp)
+                )
+            }
+        }
+        VerticalSpace(20)
+        Icon(
+            imageVector = Icons.Outlined.North,
+            contentDescription ="truc",
+            tint = Color.White,
+            modifier = Modifier
+                .size(200.dp)
+                .background(whiteDark8)
         )
     }
 }

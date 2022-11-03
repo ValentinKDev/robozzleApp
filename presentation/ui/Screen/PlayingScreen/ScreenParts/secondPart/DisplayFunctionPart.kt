@@ -27,6 +27,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
+import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
 
@@ -97,16 +98,13 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-//        Text(
-//            text = vm.data.text.functionText(functionNumber),
-//            color = vm.data.colors.functionText
-//        )
         Icon(
             imageVector = iconByInt(functionNumber),
             tint = if (displayInstructionMenu) vm.data.colors.functionTextDark else vm.data.colors.functionText,
             contentDescription = "function $functionNumber",
             modifier = Modifier.size(vm.data.layout.secondPart.size.twoThirdFunctionCaseDp)
         )
+        Box(Modifier.size(5.dp)) { }
         Column {
             val doubleRow: Boolean = function.instructions.length == 10
             val listInstructions1 = if (doubleRow) function.instructions.substring(0..4) else function.instructions
@@ -207,22 +205,13 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-//        Icon(painter = a, contentDescription = a)
-//        Text(
-//            text = vm.data.text.functionText(functionNumber),
-//            color = vm.data.colors.functionText
-//        )
-//        Icon(
-//            imageVector = iconByInt(functionNumber),
-//            tint = whiteDark2,
-//            contentDescription = "function $functionNumber"
-//        )
         Icon(
             imageVector = iconByInt(functionNumber),
             tint = Color.Transparent,
             contentDescription = "function $functionNumber",
             modifier = Modifier.size(vm.data.layout.secondPart.size.twoThirdFunctionCaseDp)
         )
+        Box(Modifier.size(5.dp)) { }
         Column {
             Column(
                 Modifier
