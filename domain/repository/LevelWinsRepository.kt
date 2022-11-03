@@ -16,6 +16,10 @@ class LevelWinsRepository(private val levelWinDao: LevelWinDao) {
         return levelWinDao.getPointsForId(levelId)
     }
 
+    fun getLevelWinIds(): List<Int> {
+        return levelWinDao.getIds()
+    }
+
     fun getLevelWinData(idLevel: Int): LevelWinData? {
         return levelWinDao.getLevelLevelWinData(idLevel)
     }

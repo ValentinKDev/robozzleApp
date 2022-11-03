@@ -13,7 +13,6 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.repository.LevelWinsRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -52,6 +51,10 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
 
     fun getAllLevelWins(): List<LevelWin> = runBlocking(Dispatchers.IO) {
         repo.getListLevelWinsData().toLevelWinList()
+    }
+
+    fun getAllWinIdsInList() = runBlocking(Dispatchers.IO) {
+        repo.getLevelWinIds()
     }
 
     fun getALevelWinSolution(id: Int): List<FunctionInstructions>? = runBlocking(Dispatchers.IO) {

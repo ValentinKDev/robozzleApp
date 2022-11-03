@@ -15,6 +15,9 @@ interface LevelWinDao {
     @Query("SELECT points FROM level_win_table WHERE levelId = :idLevel")
     fun getPointsForId(idLevel: Int): Int?
 
+
+    @Query("SELECT levelId FROM level_win_table")
+    fun getIds(): List<Int>
 //    @Query("SELECT * FROM player_ranks_table WHERE points IN (:diff)")
 //    fun loadAll(diff: IntArray): List<LevelResolvedData>
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
@@ -28,6 +29,13 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     val levelOverViewList: StateFlow<List<LevelOverView>> = _levelOverViewList
 
     private val levelRoomViewModel = LevelRoomViewModel(getApplication())
+    private val levelVM = LevelVM(getApplication())
+
+    fun loadLevelListById(levelDifficulty: Int) {
+        infoLog("load Level list by diff", "start")
+//        _levelOverViewList.value  = levelRoomViewModel.getAllLevelOverViewFromDifficulty(levelDifficulty)
+        _levelOverViewList.value  = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty)
+    }
 
     private val _visibleHeaderState = MutableStateFlow(MutableTransitionState(true))
     val visibleHeaderState = _visibleHeaderState.asStateFlow()
@@ -48,12 +56,6 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     val returnToMainMenuState: StateFlow<Boolean> = _returnToMainMenuState.asStateFlow()
     fun setRetToMainMenuState(state: Boolean) { _returnToMainMenuState.value = state }
     fun goToMainMenuState(): Boolean = _returnToMainMenuState.value
-
-    fun loadLevelListById(levelDifficulty: Int) {
-        infoLog("load Level list by diff", "start")
-        _levelOverViewList.value  = levelRoomViewModel.getAllLevelOverViewFromDifficulty(levelDifficulty)
-    }
-
 
     fun setVisibilityAndLoadLevelList(levelsDifficulty: Int, timeMillis: Long) {
         setVisibleHeaderTargetStateAs(true)

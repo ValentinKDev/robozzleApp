@@ -1,10 +1,9 @@
 package com.mobilegame.robozzle.domain.repository
 
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
-import kotlinx.coroutines.InternalCoroutinesApi
+import com.mobilegame.robozzle.domain.model.level.LevelState
 
 class LevelRepository(private val levelDao: LevelDao) {
 
@@ -29,6 +28,10 @@ class LevelRepository(private val levelDao: LevelDao) {
     fun getNamesByDifficulty(diff: Int): List<String> {
         return levelDao.getAllNameFromDifficulty(diff)
     }
+
+//    fun getStatesByDifficulty(diff: Int): List<LevelState> {
+//        return levelDao.getAllLevelStatesByDifficulty(diff)
+//    }
 
     fun getMapJsonByDifficulty(diff: Int): List<String> {
         return levelDao.getAllMapJsonFromDifficulty(diff)

@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -153,7 +156,13 @@ fun DisplayLevelState(level: LevelOverView, vm: LevelsScreenByDifficultyViewMode
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Column(Modifier.weight(1f)) {
-                Text(text = "X", modifier = Modifier.align(Alignment.CenterHorizontally))
+                if (level.state.isWin()) {
+                    Icon(
+                        imageVector = Icons.Outlined.Check,
+                        tint = greendark3,
+                        contentDescription = "win",
+                    )
+                }
             }
         }
     }

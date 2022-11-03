@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
@@ -216,6 +217,12 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
 //            tint = whiteDark2,
 //            contentDescription = "function $functionNumber"
 //        )
+        Icon(
+            imageVector = iconByInt(functionNumber),
+            tint = Color.Transparent,
+            contentDescription = "function $functionNumber",
+            modifier = Modifier.size(vm.data.layout.secondPart.size.twoThirdFunctionCaseDp)
+        )
         Column {
             Column(
                 Modifier

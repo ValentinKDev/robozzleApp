@@ -4,9 +4,11 @@ import android.content.Context
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.room.buildLevelOverViewList
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.ui.utils.MapCleaner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -52,5 +54,16 @@ class LevelVM (
             if (same) robuzzleLevel.funInstructionsList = _solutionFunctionList.toMutableList()
         }
         robuzzleLevel
+    }
+
+    fun getAllLevelOverViewFromDifficulty(diff: Int): List<LevelOverView> = runBlocking(Dispatchers.IO) {
+        val listIdByDifficulty: List<Int> = levelRoomVM.getIdByDifficulty(diff)
+        val listName: List<String> = levelRoomVM.getNamesByDifficulty(diff)
+        val listMapJson: List<String> = levelRoomVM.getMapJsonByDifficulty(diff)
+
+        var listWin: List<Int> = levelWinRoomVM.getAllWinIdsInList()
+
+        listWin = listIdByDifficulty.filter { listWin.contains(it) }
+        buildLevelOverViewList(ids = listIdByDifficulty, names = listName, mapsJson = listMapJson, winList = listWin)
     }
 }

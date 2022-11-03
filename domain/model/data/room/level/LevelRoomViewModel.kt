@@ -2,15 +2,12 @@ package com.mobilegame.robozzle.domain.model.data.room.level
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import com.mobilegame.robozzle.data.room.Level.LevelDataBase
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
-import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.data.room.*
@@ -18,9 +15,9 @@ import com.mobilegame.robozzle.domain.model.data.room.toLevel
 import com.mobilegame.robozzle.domain.model.data.room.toLevelData
 import com.mobilegame.robozzle.domain.model.data.room.toLevelDataList
 import com.mobilegame.robozzle.domain.model.data.room.toLevelList
+import com.mobilegame.robozzle.domain.model.level.LevelState
 import com.mobilegame.robozzle.domain.repository.LevelRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -64,14 +61,25 @@ class LevelRoomViewModel(context: Context): ViewModel() {
         levelIds
     }
 
-    fun getAllLevelOverViewFromDifficulty(diff: Int): List<LevelOverView> = runBlocking(Dispatchers.IO) {
-        //todo : Bad coroutine design
-        val listId: List<Int> = repo.getIdByDifficulty(diff)
-        val listName: List<String> = repo.getNamesByDifficulty(diff)
-        val listMapJson: List<String> = repo.getMapJsonByDifficulty(diff)
-
-        buildLevelOverViewList(ids = listId, names = listName, mapsJson = listMapJson)
+    fun getIdByDifficulty(difficutly: Int) = runBlocking(Dispatchers.IO) {
+        repo.getIdByDifficulty(difficutly)
     }
+    fun getNamesByDifficulty(diff: Int) = runBlocking(Dispatchers.IO) {
+        repo.getNamesByDifficulty(diff)
+    }
+    fun getMapJsonByDifficulty(difficutly: Int) = runBlocking(Dispatchers.IO) {
+        repo.getMapJsonByDifficulty(difficutly)
+    }
+
+//    fun getAllLevelOverViewFromDifficulty(diff: Int): List<LevelOverView> = runBlocking(Dispatchers.IO) {
+//        val listId: List<Int> = repo.getIdByDifficulty(diff)
+//        val listName: List<String> = repo.getNamesByDifficulty(diff)
+//        val listMapJson: List<String> = repo.getMapJsonByDifficulty(diff)
+//        val listStates: List<LevelState> = repo.getStatesByDifficulty(diff)
+
+//        buildLevelOverViewList(ids = listId, names = listName, mapsJson = listMapJson, states = listStates)
+//        buildLevelOverViewList(ids = listId, names = listName, mapsJson = listMapJson)
+//    }
 
     fun getLevelOverViewInList(listWin: List<LevelWin>): List<LevelOverView> = runBlocking(Dispatchers.IO) {
         val mutableList: MutableList<LevelOverView> = mutableListOf()

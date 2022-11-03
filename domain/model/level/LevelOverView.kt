@@ -4,5 +4,6 @@ data class LevelOverView(
     val id: Int,
     val diff: Int,
     val name: String,
-    val map: List<String>
+    val map: List<String>,
+    val state : LevelState = LevelState.NeverOpened,
 )

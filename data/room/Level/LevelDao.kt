@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.data.room.Level
 
 import androidx.room.*
+import com.mobilegame.robozzle.domain.model.level.LevelState
 
 @Dao
 interface LevelDao {
@@ -18,6 +19,9 @@ interface LevelDao {
 
     @Query("SELECT name FROM level_table WHERE difficulty = :diff")
     fun getAllNameFromDifficulty(diff: Int): List<String>
+
+//    @Query("SELECT state_key FROM level_table WHERE difficulty = :diff")
+//    fun getAllLevelStatesByDifficulty(diff: Int): List<LevelState>
 
     @Query("SELECT map_json FROM level_table WHERE difficulty = :diff")
     fun getAllMapJsonFromDifficulty(diff: Int): List<String>

@@ -10,6 +10,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
+import com.mobilegame.robozzle.domain.model.level.LevelState
 
 private val MutableListStringType = object : TypeToken<MutableList<String>>() {}.type!!
 
@@ -38,6 +39,7 @@ internal fun String.toLevelData(): LevelData {
         funInstructionsListJson = gson.toJson(level.funInstructionsList),
         playerInitalJson = gson.toJson(level.playerInitial),
         starsListJson = gson.toJson(level.starsList),
+//        state = LevelState.NeverOpened.key
     )
 }
 
@@ -83,24 +85,35 @@ internal fun List<LevelData>.toLevelList(): List<Level> {
     return levelList
 }
 
-internal fun buildLevelOverView(id: Int, difficulty: Int = 0, name: String, mapJson: String): LevelOverView {
+internal fun buildLevelOverView(id: Int, difficulty: Int = 0, name: String, mapJson: String, state: LevelState = LevelState.NeverOpened): LevelOverView {
     val gson = Gson()
     return LevelOverView(
         id = id,
         diff = difficulty,
         name = name,
-        map = gson.fromJson(mapJson, ListStringType)
+        map = gson.fromJson(mapJson, ListStringType),
+        state = state
     )
 }
 
-internal fun buildLevelOverViewList(ids: List<Int>, diffs: List<Int> = emptyList(), names: List<String>, mapsJson: List<String>): List<LevelOverView> {
+internal fun buildLevelOverViewList(ids: List<Int>, diffs: List<Int> = emptyList(), names: List<String>, mapsJson: List<String>, winList: List<Int>): List<LevelOverView> {
+//internal fun buildLevelOverViewList(ids: List<Int>, diffs: List<Int> = emptyList(), names: List<String>, mapsJson: List<String>): List<LevelOverView> {
     val mutableList: MutableList<LevelOverView> = mutableListOf()
     ids.forEachIndexed { index, id ->
-        mutableList.add( element = buildLevelOverView(id = id, name = names[index], mapJson = mapsJson[index]) )
+        mutableList.add(
+            element = buildLevelOverView(
+                id = id,
+                name = names[index],
+                mapJson = mapsJson[index],
+                state = if (winList.contains(id)) LevelState.Win else LevelState.NeverOpened
+            )
+//                state = states[index])
+        )
     }
     return mutableList.toList()
 }
 
 internal fun LevelData.toLevelOverView(): LevelOverView {
+//    return LevelOverView(id = this.id, diff = this.difficulty, name = this.name, map = Gson().fromJson(this.mapJson, ListStringType), LevelState.findState(this.stateKey))
     return LevelOverView(id = this.id, diff = this.difficulty, name = this.name, map = Gson().fromJson(this.mapJson, ListStringType))
 }

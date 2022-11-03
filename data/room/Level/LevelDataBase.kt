@@ -6,7 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [LevelData::class], version = 5, exportSchema = false)
+@Database(entities = [LevelData::class], version = 9, exportSchema = false)
+//@Database(entities = [LevelData::class], version = 9, exportSchema = true)
 abstract class LevelDataBase: RoomDatabase() {
     abstract fun levelDao(): LevelDao
     companion object{
@@ -15,13 +16,16 @@ abstract class LevelDataBase: RoomDatabase() {
         fun getInstance(context: Context): LevelDataBase {
             var instance = INSTANCE
             if (instance == null){
-                instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    LevelDataBase::class.java,
-                    "level_database"
-                ).fallbackToDestructiveMigration()
-                    .build()
-                INSTANCE = instance
+//                synchronized(this) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        LevelDataBase::class.java,
+                        "level_database"
+//                    )
+                    ).fallbackToDestructiveMigration()
+                        .build()
+                    INSTANCE = instance
+//                }
             }
             return instance
         }
