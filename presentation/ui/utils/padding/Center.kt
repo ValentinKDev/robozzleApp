@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
+import backColor
 
 @Composable
 fun CenterComposable(content: @Composable () -> Unit) {
@@ -47,8 +48,11 @@ fun CenterComposableVertically(content: @Composable () -> Unit) {
 
 @Composable
 fun CenterComposableHorizontally(content: @Composable () -> Unit) {
-    Column( modifier = Modifier.fillMaxWidth() ) {
+    Column( modifier = Modifier.fillMaxWidth()
+//        .backColor(Color.Transparent)
+    ) {
         Row( modifier = Modifier
+//            .backColor(Color.Transparent)
             .wrapContentHeight()
             .align(Alignment.CenterHorizontally) ) {
             Box( modifier = Modifier.align(Alignment.CenterVertically)

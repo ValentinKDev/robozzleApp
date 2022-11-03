@@ -14,10 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import backColor
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
+import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.mapCaseColorList
+import com.mobilegame.robozzle.presentation.res.redDark1
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.InstructionIconsMenu
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import gradientBackground
 
@@ -27,7 +33,8 @@ import gradientBackground
 @Composable
 fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     val interactionExtMenu = remember { MutableInteractionSource() }
-    Box( Modifier
+    Box(
+        Modifier
             .fillMaxSize()
             .clickable(
                 interactionSource = interactionExtMenu,
@@ -37,34 +44,33 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     PaddingComposable(
         topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
         bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
-        startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
-        endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
+//        startPaddingRatio = vm.data.layout.menu.ratios.startPadding,
+//        endPaddingRatio = vm.data.layout.menu.ratios.endPadding,
     ) {
-        Card(
-            Modifier
-//                        .wrapContentSize()
-                .clickable { vm.ChangeInstructionMenuState() }
-                .background(Color.Transparent)
-            ,
-            shape = RectangleShape,
-            elevation = 25.dp,
-//                    contentColor = Color.Transparent
-        ){
-            Column(
+    CenterComposableHorizontally {
+            Box(
                 Modifier
-                    .wrapContentSize()
-                    .background(Color.Transparent)
-            ) {
-                vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
-                    Row( Modifier.width(vm.data.layout.menu.size.width.dp)
-                        ,
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        instructions.instructions.toList().forEachIndexed { index, c ->
-                            //todo: InstructionMenuCase()
-                            InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
+                    .clickable { vm.ChangeInstructionMenuState() }
+                ,
+            ){
+                Column(
+                    Modifier
+                        .width(vm.data.layout.menu.size.windowWidth.dp)
+                        .background(Color.Transparent)
+                ) {
+                    vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
+                        Row( Modifier .background(Color.Transparent)
+                            ,
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center,
+                        ) {
+                            instructions.instructions.toList().forEachIndexed { index, c ->
+                                InstructionCase(vm, FunctionInstruction(c, instructions.colors.first()))
+                            }
                         }
+                    }
+                    CenterComposableHorizontally {
+                        InstructionCase(vm = vm, case = FunctionInstruction(instruction = 'x', color = 'g'))
                     }
                 }
             }
@@ -81,7 +87,10 @@ fun InstructionCase(vm: GameDataViewModel, case: FunctionInstruction) {
                 175f
             )
             .clickable {
-                vm.replaceInstruction(vm.selectedCase, case)
+                vm.replaceInstruction(
+                    vm.selectedCase,
+                    if (case.isDelete()) FunctionInstruction('.', 'g') else case
+                )
                 vm.ChangeInstructionMenuState()
             }
             .size(vm.data.layout.menu.size.case.dp)

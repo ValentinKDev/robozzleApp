@@ -4,16 +4,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import backColor
 import com.mobilegame.robozzle.data.configuration.inGame.InGameColors
 import com.mobilegame.robozzle.data.configuration.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.presentation.res.red1
+import com.mobilegame.robozzle.presentation.res.redDark1
+import com.mobilegame.robozzle.presentation.res.redDark4
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
 @Composable
@@ -70,11 +77,11 @@ fun InstructionIcons(
                 dataColors = colors,
                 darkFilter =  darkFilter
             )
-//            MyIconCaseColoring(instruction, gameDataViewModel)
         }
-        instruction.toString().matches("[url0-6]".toRegex()) -> {
+        instruction.toString().matches("[urlx0-6]".toRegex()) -> {
             SelectGoogleIcons(instruction, sizeInstruction )
         }
+//        instruction == 'x' -
         else -> { }
     }
 }
@@ -89,6 +96,7 @@ fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp) {
                 'l' -> Icons.Outlined.Undo
                 'u' -> Icons.Outlined.ArrowUpward
                 '0' -> Icons.Outlined.ExposureZero
+                'x' -> Icons.Outlined.Close
                 '1' -> Icons.Outlined.LooksOne
                 '2' -> Icons.Outlined.LooksTwo
                 '3' -> Icons.Outlined.Looks3
@@ -97,6 +105,7 @@ fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp) {
                 '6' -> Icons.Outlined.Looks6
                 else -> Icons.Default.Home
             },
+            tint = if (instruction == 'x') redDark1 else LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
             contentDescription = "instruction",
             modifier = Modifier
                 .size(sizeIconDp)
