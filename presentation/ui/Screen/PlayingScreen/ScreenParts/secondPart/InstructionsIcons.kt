@@ -24,7 +24,7 @@ fun InstructionsIconsFunction(instruction: Char, vm: GameDataViewModel, darkFilt
         instruction,
         vm.data.layout.secondPart.caseColoringIcon,
         vm.data.colors,
-        vm.data.layout.secondPart.size.functionCaseIconDp,
+        vm.data.layout.secondPart.sizes.functionCaseIconDp,
         darkFilter
     )
 }
@@ -40,7 +40,7 @@ fun InstructionIconsActionRow(
         instruction,
         vm.data.layout.secondPart.actionRow.caseColoringIcon,
         vm.data.colors,
-        if (bigger) vm.data.layout.secondPart.size.actionRowBiggerIconDp else vm.data.layout.secondPart.size.actionRowIconDp,
+        if (bigger) vm.data.layout.secondPart.sizes.actionRowBiggerIconDp else vm.data.layout.secondPart.sizes.actionRowIconDp,
         darkFilter
     )
 }
@@ -51,7 +51,7 @@ fun InstructionIconsMenu(instruction: Char, vm: GameDataViewModel) {
         instruction,
         vm.data.layout.menu.caseColoringIcon,
         vm.data.colors,
-        vm.data.layout.menu.size.iconDp
+        vm.data.layout.menu.sizes.iconDp
     )
 }
 
@@ -93,9 +93,9 @@ fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp, darkFilter: Boolean) {
                 else -> iconByInt(instruction.toString().toInt())
             },
             tint =
-//            if (instruction == 'x') redDark4
+            if (instruction == 'x') redDark4
 //            else if (darkFilter) grayDark8
-//            else
+            else
                 grayDark6,
             contentDescription = "instructionBack",
             modifier = Modifier
@@ -111,9 +111,9 @@ fun SelectGoogleIcons(instruction: Char, sizeIconDp: Dp, darkFilter: Boolean) {
                 else -> iconByInt(instruction.toString().toInt())
             },
             tint =
-//            if (instruction == 'x') redDark1
+            if (instruction == 'x') redDark1
 //            else if (darkFilter) whiteDark8
-//            else
+            else
                 whiteDark6,
             contentDescription = "instruction",
             modifier = Modifier

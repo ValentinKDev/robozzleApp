@@ -13,6 +13,7 @@ import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.utils.Extensions.getSafe
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +24,17 @@ typealias DragAndDropCaseList = MutableList<Rect>
 infix fun Boolean.not(check: Boolean) = this != check
 
 class DragAndDropCaseElements {
+    private val _leftTrashHighlight = MutableStateFlow<Boolean>(false)
+    val leftTrashHighLight: StateFlow<Boolean> = _leftTrashHighlight.asStateFlow()
+    fun setLeftTrashHighlightTo(state : Boolean) {
+        if (leftTrashHighLight.value != state) _leftTrashHighlight.value = state
+    }
+    private val _rightTrashHighlight = MutableStateFlow<Boolean>(false)
+    val rightTrashHighlight: StateFlow<Boolean> = _rightTrashHighlight.asStateFlow()
+    fun setRightTrashHighlightTo(state: Boolean) {
+        if (rightTrashHighlight.value != state) _rightTrashHighlight.value = state
+    }
+
     var parentOffset: Offset = Offset.Zero
     fun  setDraggableParentOffset(layoutCoordinates: LayoutCoordinates) {
         if (parentOffset == Offset.Zero) {
@@ -37,12 +49,6 @@ class DragAndDropCaseElements {
     var itemSelectedOneThirdHeight: Float? = null
     var itemSelectedTwoThirdHeight: Float? = null
 
-//    private val _itemUnderVisible = MutableStateFlow<Boolean>(false)
-//    val itemUnderVisible: StateFlow<Boolean> = _itemUnderVisible.asStateFlow()
-//    fun setUnderVisibleTo(value: Boolean) = runBlocking {
-//        _itemUnderVisible.emit(value)
-//    }
-
     var itemUnderPosition: Position? = null
     var itemUnder: FunctionInstruction? = null
     private val _itemUnderCorner = MutableStateFlow<Offset?>(null)
@@ -50,8 +56,6 @@ class DragAndDropCaseElements {
     var itemUnderTopLeftOffset: Offset? = null
     fun clearItemUnder() {
         errorLog("clear", "item Under")
-//        setUnderVisibleTo(false)
-//        _itemUnderVisible.value = false
         itemUnderPosition = null
         itemUnder = null
         itemUnderTopLeftOffset = null
@@ -59,7 +63,7 @@ class DragAndDropCaseElements {
     }
 
     var rowsList: MutableList<DragAndDropRow> = mutableListOf()
-    private var allreadyIn: MutableList<Position> = mutableListOf()
+    private var alreadyIn: MutableList<Position> = mutableListOf()
 
     fun addDroppableRow(row: Int, layoutCoordinates: LayoutCoordinates) {
         val rect = layoutCoordinates.boundsInRoot()
@@ -74,14 +78,14 @@ class DragAndDropCaseElements {
         val case = layoutCoordinates.boundsInRoot()
         val casesList = rowsList[rowIndex].second
 
-        if (allreadyIn.containsNot(item) && case.isValid()) {
+        if (alreadyIn.containsNot(item) && case.isValid()) {
             casesList += case
-            allreadyIn.add(item)
+            alreadyIn.add(item)
             verbalLog("add", "\tdroppable case $rowIndex, $columnIndex")
         }
     }
 
-    fun findSelectedItem(offset: Offset, list: List<FunctionInstructions>) {
+    fun findSelectedItem(offset: Offset, list: List<FunctionInstructions>): Boolean {
         var found = false
         rowsList.forEachIndexed { rowIndex, row ->
             if (row.first.contains(offset)) {
@@ -106,11 +110,11 @@ class DragAndDropCaseElements {
                 }
             }
         }
-        if (found) verbalLog("item", "founded offSet $offset")
+        if (found) verbalLog("DragAndDropCaseElement::findSelectedItem", "founded offSet $offset")
         else {
-            errorLog("error", "not found, offSet $offset")
-            errorLog("conditions", "${rowsList[0].first.contains(offset)} ${rowsList[0].second[0].contains(offset)}${rowsList[0].second[1].contains(offset)}${rowsList[0].second[2].contains(offset)}${rowsList[0].second[3].contains(offset)}")
+            errorLog("DragAndDropCaseElement::findSelectedItem", "not found, offSet $offset")
         }
+        return found
     }
 
     fun findItemUnderItem(offset: Offset, list: List<FunctionInstructions>) {

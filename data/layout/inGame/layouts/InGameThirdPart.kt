@@ -5,7 +5,7 @@ import com.mobilegame.robozzle.analyse.infoLog
 
 object InGameThirdPart {
     val ratios = Ratios
-    val size = Sizes
+    val sizes = Sizes
     var initiated = false
 
     object Ratios {
@@ -29,20 +29,20 @@ object InGameThirdPart {
         val heightFull = context.resources.displayMetrics.heightPixels
         val density = context.resources.displayMetrics.density
 
-        size.width = (widthFull).toInt()
-        size.widthDp = (size.width / density).toInt()
-        size.height = (heightFull * (Ratios.height / (Ratios.height + InGameFirstPart.ratios.height + InGameSecondPart.ratios.height))).toInt()
-        size.heightDp = (size.height / density).toInt()
+        sizes.width = (widthFull).toInt()
+        sizes.widthDp = (sizes.width / density).toInt()
+        sizes.height = (heightFull * (Ratios.height / (Ratios.height + InGameFirstPart.ratios.height + InGameSecondPart.ratios.height))).toInt()
+        sizes.heightDp = (sizes.height / density).toInt()
 //        size.button = (size.widthDp * ratios.height).toInt()
-        size.buttonWidth = (size.widthDp * ratios.buttonWidth).toInt()
-        size.buttonHeight = (size.heightDp * ratios.buttonHeight).toInt()
+        sizes.buttonWidth = (sizes.widthDp * ratios.buttonWidth).toInt()
+        sizes.buttonHeight = (sizes.heightDp * ratios.buttonHeight).toInt()
 
         initiated = true
-        infoLog(" width ", "${size.width}")
-        infoLog(" widthDp ", "${size.widthDp}")
-        infoLog(" height ", "${size.height}")
-        infoLog(" heightDp ", "${size.heightDp}")
-        infoLog(" buttonWidth ", "${size.buttonWidth}")
-        infoLog(" buttonHeight ", "${size.buttonWidth}")
+        infoLog(" width ", "${sizes.width}")
+        infoLog(" widthDp ", "${sizes.widthDp}")
+        infoLog(" height ", "${sizes.height}")
+        infoLog(" heightDp ", "${sizes.heightDp}")
+        infoLog(" buttonWidth ", "${sizes.buttonWidth}")
+        infoLog(" buttonHeight ", "${sizes.buttonWidth}")
     }
 }

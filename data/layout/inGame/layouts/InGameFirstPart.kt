@@ -10,7 +10,7 @@ import com.mobilegame.robozzle.utils.Extensions.toDp
 
 object InGameFirstPart {
     val ratios = Ratios
-    val size = Sizes
+    val sizes = Sizes
     val star = StarIcon
     val player = PlayerIcon
     var initiated = false
@@ -99,32 +99,32 @@ object InGameFirstPart {
     }
 
     fun initStarCanvasData(density: Float) {
-        size.starBox = size.mapCase * ratios.starBox
-        size.starBoxDp = size.starBox.toDp(density)
-        size.starCanvas = size.starBox * ratios.starCanvas
-        size.starCanvasDp = size.starCanvas.toDp(density)
-        size.starCanvasBigger = size.starBox * 1.2F
-        size.starCanvasBiggerDp = size.starCanvas.toDp(density)
+        sizes.starBox = sizes.mapCase * ratios.starBox
+        sizes.starBoxDp = sizes.starBox.toDp(density)
+        sizes.starCanvas = sizes.starBox * ratios.starCanvas
+        sizes.starCanvasDp = sizes.starCanvas.toDp(density)
+        sizes.starCanvasBigger = sizes.starBox * 1.2F
+        sizes.starCanvasBiggerDp = sizes.starCanvas.toDp(density)
 
-        star.starNeonBoxFront = size.starBox * ratios.starBoxNeon
+        star.starNeonBoxFront = sizes.starBox * ratios.starBoxNeon
         star.starNeonBoxFrontDp = star.starNeonBoxFront.toDp(density)
-        val sizeCanvas = if (size.starCanvas != 0F) size.starCanvas else 55F
+        val sizeCanvas = if (sizes.starCanvas != 0F) sizes.starCanvas else 55F
         val center = Offset(x = sizeCanvas / 2F, y = sizeCanvas / 2F)
         val vertical1 = (0.022F * sizeCanvas)
         val vertical2 = center.x - (0.118F * sizeCanvas)
         val vertical3 = center.x + (0.118F * sizeCanvas)
         val horizontal = 0.343F * sizeCanvas
         star.center = center
-        star.decenterRight = Offset(x = center.x + (0.01F * size.starCanvas), y = center.x + (0.01F * size.starCanvas))
-        star.decenterLeft = Offset(x = center.x - (0.01F * size.starCanvas), y = center.x + (0.01F * size.starCanvas))
+        star.decenterRight = Offset(x = center.x + (0.01F * sizes.starCanvas), y = center.x + (0.01F * sizes.starCanvas))
+        star.decenterLeft = Offset(x = center.x - (0.01F * sizes.starCanvas), y = center.x + (0.01F * sizes.starCanvas))
         star.pTop = Offset(x = center.x, y = vertical1)
         star.pLeft = Offset(x = vertical2, y =  horizontal)
         star.pRight = Offset(x = vertical3, y = horizontal)
         star.stroke = sizeCanvas / 50F
 
         star.centerBigger = center
-        star.decenterRightBigger = Offset(x = center.x + (0.01F * size.starCanvasBigger), y = center.x + (0.01F * size.starCanvasBigger))
-        star.decenterLeftBigger = Offset(x = center.x - (0.01F * size.starCanvasBigger), y = center.x + (0.01F * size.starCanvasBigger))
+        star.decenterRightBigger = Offset(x = center.x + (0.01F * sizes.starCanvasBigger), y = center.x + (0.01F * sizes.starCanvasBigger))
+        star.decenterLeftBigger = Offset(x = center.x - (0.01F * sizes.starCanvasBigger), y = center.x + (0.01F * sizes.starCanvasBigger))
         star.pTopBigger = Offset(x = center.x, y = vertical1)
         star.pLeftBigger = Offset(x = vertical2, y =  horizontal)
         star.pRightBigger = Offset(x = vertical3, y = horizontal)
@@ -145,63 +145,63 @@ object InGameFirstPart {
         val heightFull = context.resources.displayMetrics.heightPixels
         val density = context.resources.displayMetrics.density
 
-        size.width = widthFull.toFloat()
-        size.widthDp = size.width.toDp(density)
-        size.height = heightFull * (Ratios.height / (Ratios.height + InGameSecondPart.Ratios.height + InGameThirdPart.Ratios.height))
-        size.heightDp = size.height.toDp(density)
+        sizes.width = widthFull.toFloat()
+        sizes.widthDp = sizes.width.toDp(density)
+        sizes.height = heightFull * (Ratios.height / (Ratios.height + InGameSecondPart.Ratios.height + InGameThirdPart.Ratios.height))
+        sizes.heightDp = sizes.height.toDp(density)
 
-        size.mapLayoutWidth = size.width * ratios.mapWidth
-        size.mapLayoutWidthDp = size.mapLayoutWidth.toDp(density)
-        size.mapLayoutHeight = size.height * ratios.mapHeight
-        size.mapLayoutHeightDp = size.mapLayoutHeight.toDp(density)
+        sizes.mapLayoutWidth = sizes.width * ratios.mapWidth
+        sizes.mapLayoutWidthDp = sizes.mapLayoutWidth.toDp(density)
+        sizes.mapLayoutHeight = sizes.height * ratios.mapHeight
+        sizes.mapLayoutHeightDp = sizes.mapLayoutHeight.toDp(density)
 
-        val casePaddingByHeight = size.mapLayoutHeight * ratios.mapCasePadding
-        val casePaddingByWidth = size.mapLayoutWidth * ratios.mapCasePadding
-        size.mapCasePadding = getSmallerFloat(casePaddingByHeight, casePaddingByWidth)
-        size.mapCasePaddingDp = size.mapCasePadding.toDp(density)
-        val mapCaseByWidth = (size.mapLayoutWidth - ((1 + level.map.first().length ) * size.mapCasePadding)) / level.map.first().length
-        val mapCaseByHeight = (size.mapLayoutHeight - ((1 + level.map.size ) * size.mapCasePadding)) / level.map.size
-        size.mapCase = getSmallerFloat(mapCaseByWidth, mapCaseByHeight)
-        size.mapCaseDp = size.mapCase.toDp(density)
+        val casePaddingByHeight = sizes.mapLayoutHeight * ratios.mapCasePadding
+        val casePaddingByWidth = sizes.mapLayoutWidth * ratios.mapCasePadding
+        sizes.mapCasePadding = getSmallerFloat(casePaddingByHeight, casePaddingByWidth)
+        sizes.mapCasePaddingDp = sizes.mapCasePadding.toDp(density)
+        val mapCaseByWidth = (sizes.mapLayoutWidth - ((1 + level.map.first().length ) * sizes.mapCasePadding)) / level.map.first().length
+        val mapCaseByHeight = (sizes.mapLayoutHeight - ((1 + level.map.size ) * sizes.mapCasePadding)) / level.map.size
+        sizes.mapCase = getSmallerFloat(mapCaseByWidth, mapCaseByHeight)
+        sizes.mapCaseDp = sizes.mapCase.toDp(density)
 //        size.mapCaseStrokeDp = (size.mapCase * ratios.mapCaseStroke).toDp(density)
-        size.mapCaseStroke = 3F
+        sizes.mapCaseStroke = 3F
 
-        size.mapWidth = ((size.mapCase + size.mapCasePadding) * level.map.first().length) - size.mapCasePadding
-        size.mapWidthDp = size.mapWidth.toDp(density)
-        size.mapHeight = ((size.mapCase + size.mapCasePadding) * level.map.size) - size.mapCasePadding
-        size.mapHeightDp = size.mapHeight.toDp(density)
+        sizes.mapWidth = ((sizes.mapCase + sizes.mapCasePadding) * level.map.first().length) - sizes.mapCasePadding
+        sizes.mapWidthDp = sizes.mapWidth.toDp(density)
+        sizes.mapHeight = ((sizes.mapCase + sizes.mapCasePadding) * level.map.size) - sizes.mapCasePadding
+        sizes.mapHeightDp = sizes.mapHeight.toDp(density)
 
-        size.playerBox = size.mapCase * ratios.playerBox
-        size.playerBoxDp = size.playerBox.toDp(density)
-        size.playerCanvas = size.playerBox * ratios.playerCanvas
-        size.playerCanvasDp = size.playerCanvas.toDp(density)
+        sizes.playerBox = sizes.mapCase * ratios.playerBox
+        sizes.playerBoxDp = sizes.playerBox.toDp(density)
+        sizes.playerCanvas = sizes.playerBox * ratios.playerCanvas
+        sizes.playerCanvasDp = sizes.playerCanvas.toDp(density)
 
 
         infoLog(" density ", "${density}")
-        infoLog(" width ", "${size.width}")
+        infoLog(" width ", "${sizes.width}")
 
-        infoLog(" widthDp ", "${size.widthDp}")
-        infoLog(" mapWidth ", "${size.mapWidth}")
-        infoLog(" mapLayoutWidth ", "${size.mapLayoutWidth}")
-        infoLog(" height ", "${size.height}")
-        infoLog(" heightDp ", "${size.heightDp}")
-        infoLog(" mapHeight ", "${size.mapHeightDp}")
-        infoLog(" mapLayoutHeight ", "${size.mapLayoutHeight}")
-        infoLog(" mapCasePadding ", "${size.mapCasePadding}")
-        infoLog(" mapCasePaddingDp ", "${size.mapCasePaddingDp}")
-        infoLog(" mapCase ", "${size.mapCase}")
-        infoLog(" mapCaseDp ", "${size.mapCaseDp}")
+        infoLog(" widthDp ", "${sizes.widthDp}")
+        infoLog(" mapWidth ", "${sizes.mapWidth}")
+        infoLog(" mapLayoutWidth ", "${sizes.mapLayoutWidth}")
+        infoLog(" height ", "${sizes.height}")
+        infoLog(" heightDp ", "${sizes.heightDp}")
+        infoLog(" mapHeight ", "${sizes.mapHeightDp}")
+        infoLog(" mapLayoutHeight ", "${sizes.mapLayoutHeight}")
+        infoLog(" mapCasePadding ", "${sizes.mapCasePadding}")
+        infoLog(" mapCasePaddingDp ", "${sizes.mapCasePaddingDp}")
+        infoLog(" mapCase ", "${sizes.mapCase}")
+        infoLog(" mapCaseDp ", "${sizes.mapCaseDp}")
 
-        infoLog(" playerBox ", "${size.playerBox}")
-        infoLog(" playerBoxDp ", "${size.playerBoxDp}")
-        infoLog(" playerCanvas ", "${size.playerCanvas}")
-        infoLog(" playerCanvasDp ", "${size.playerCanvasDp}")
+        infoLog(" playerBox ", "${sizes.playerBox}")
+        infoLog(" playerBoxDp ", "${sizes.playerBoxDp}")
+        infoLog(" playerCanvas ", "${sizes.playerCanvas}")
+        infoLog(" playerCanvasDp ", "${sizes.playerCanvasDp}")
 //        infoLog(" playerCanvasWidth ", "${size.}")
 
-        infoLog(" starBox ", "${size.starBox}")
-        infoLog(" starBoxDp ", "${size.starBoxDp}")
-        infoLog(" starCanvas ", "${size.starCanvas}")
-        infoLog(" starCanvasDp ", "${size.starCanvasDp}")
+        infoLog(" starBox ", "${sizes.starBox}")
+        infoLog(" starBoxDp ", "${sizes.starBoxDp}")
+        infoLog(" starCanvas ", "${sizes.starCanvas}")
+        infoLog(" starCanvasDp ", "${sizes.starCanvasDp}")
 
         initStarCanvasData(density)
         initPlayerIcon()
@@ -209,7 +209,7 @@ object InGameFirstPart {
     }
 
     fun initPlayerIcon() {
-        val sizeCanvas = if (size.playerCanvas != 0F) size.playerCanvas else 55F
+        val sizeCanvas = if (sizes.playerCanvas != 0F) sizes.playerCanvas else 55F
         val center = Offset(x = sizeCanvas / 2F, y = sizeCanvas / 2F)
 
         player.pCenter = center
@@ -225,7 +225,7 @@ object InGameFirstPart {
         player.strokeWidthSmall = sizeCanvas * 0.02F
 
         infoLog(" ", "\t init player canvas")
-        infoLog(" sizeCanvas ", "${size.playerCanvas}")
+        infoLog(" sizeCanvas ", "${sizes.playerCanvas}")
         infoLog(" pBottomCenter ", "${player.pBottomCenter}")
 //        player.decenterLeft = Offset(x = center.x - (0.05F * sizeCanvas), y = center.y)
     }

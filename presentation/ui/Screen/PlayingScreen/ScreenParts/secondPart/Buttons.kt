@@ -36,8 +36,8 @@ fun NextButton(vm: GameDataViewModel, enable: Boolean) {
         },
         modifier = Modifier
             .testTag(TAG_BUTTON_PREV)
-            .height(vm.data.layout.thirdPart.size.buttonHeight.dp)
-            .width(vm.data.layout.thirdPart.size.buttonWidth.dp)
+            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
             .background(vm.data.colors.buttonGameBackground)
             .graphicsLayer { shadowElevation = vm.data.colors.buttonElevation.toPx()}
         ,
@@ -60,8 +60,8 @@ fun BackButton(vm: GameDataViewModel, enable: Boolean) {
         },
         modifier = Modifier
             .testTag(TAG_BUTTON_PREV)
-            .height(vm.data.layout.thirdPart.size.buttonHeight.dp)
-            .width(vm.data.layout.thirdPart.size.buttonWidth.dp)
+            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
             .background(vm.data.colors.buttonGameBackground)
         ,
         enabled = enable,
@@ -78,8 +78,8 @@ fun PlayPauseButton(vm: GameDataViewModel) {
     Box(
         modifier = Modifier
             .testTag(TAG_BUTTON_PLAY)
-            .height(vm.data.layout.thirdPart.size.buttonHeight.dp)
-            .width(vm.data.layout.thirdPart.size.buttonWidth.dp)
+            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
             .background(vm.data.colors.buttonGameBackground)
             .clickable {
                 vm.clickPlayPauseButtonHandler()
@@ -102,8 +102,8 @@ fun ResetButton(vm: GameDataViewModel) {
         Modifier
             .testTag(TAG_BUTTON_RESET)
             .background(vm.data.colors.buttonGameBackground)
-            .height(vm.data.layout.thirdPart.size.buttonHeight.dp)
-            .width(vm.data.layout.thirdPart.size.buttonWidth.dp)
+            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
             .clickable {
                 vm.clickResetButtonHandler()
             }

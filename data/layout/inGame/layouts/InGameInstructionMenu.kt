@@ -9,7 +9,7 @@ import com.mobilegame.robozzle.utils.Extensions.getSmallerFloat
 import com.mobilegame.robozzle.utils.Extensions.toDp
 
 object InGameInstructionMenu {
-    val size = Sizes
+    val sizes = Sizes
     val ratios = Ratios
     private var maxCases = 0
     private var maxLines = 0
@@ -48,34 +48,34 @@ object InGameInstructionMenu {
 
         maxCases = level.instructionsMenu.first().instructions.length
         maxLines = level.instructionsMenu.size + 1
-        size.width = ((widthFull * (1F - ratios.startPadding - ratios.endPadding))) / density
-        size.height = ((heightFull *(1F - ratios.topPadding - ratios.bottomPadding))) / density
+        sizes.width = ((widthFull * (1F - ratios.startPadding - ratios.endPadding))) / density
+        sizes.height = ((heightFull *(1F - ratios.topPadding - ratios.bottomPadding))) / density
 //        size.width = widthFull / density
 //        size.caseWithPadding = ((size.width / maxCases) - (maxCases))
-        size.caseWithPadding = getSmallerFloat(size.width / maxCases, size.height / maxLines)
-        size.casePadding = 0F
-        size.case = size.caseWithPadding - (2F * Sizes.casePadding)
-        size.icon = size.case * ratios.icon
-        size.iconDp = size.icon.toDp(density)
-        caseColoringIcon = CaseColoringIcon(size.case, density, ratios.caseColoringIcon)
+        sizes.caseWithPadding = getSmallerFloat(sizes.width / maxCases, sizes.height / maxLines)
+        sizes.casePadding = 0F
+        sizes.case = sizes.caseWithPadding - (2F * Sizes.casePadding)
+        sizes.icon = sizes.case * ratios.icon
+        sizes.iconDp = sizes.icon.toDp(density)
+        caseColoringIcon = CaseColoringIcon(sizes.case, density, ratios.caseColoringIcon)
 //        size.windowWidth = if (size.width / maxCases < size.height / maxLines ) size.caseWithPadding * maxCases else size.casePadding * maxLines
 //        size.windowHeight = if (size.width / maxCases < size.height / maxLines ) size.caseWithPadding * maxCases else size.casePadding * maxLines
-        size.windowWidth = size.caseWithPadding * maxCases
-        size.windowHeight = size.caseWithPadding * maxLines
+        sizes.windowWidth = sizes.caseWithPadding * maxCases
+        sizes.windowHeight = sizes.caseWithPadding * maxLines
 
         infoLog(" maxCases ", "${maxCases}")
         infoLog(" maxLines ", "${maxLines}")
         infoLog(" full width ", "$widthFull")
 //        infoLog(" full width ", "${widthFull * 0.9}")
-        infoLog(" width ", "${size.width}")
-        infoLog(" height ", "${size.height}")
-        infoLog(" window width ", "${size.windowWidth}")
-        infoLog(" window height ", "${size.windowHeight}")
-        infoLog(" caseWithPadding ", "${size.caseWithPadding}")
+        infoLog(" width ", "${sizes.width}")
+        infoLog(" height ", "${sizes.height}")
+        infoLog(" window width ", "${sizes.windowWidth}")
+        infoLog(" window height ", "${sizes.windowHeight}")
+        infoLog(" caseWithPadding ", "${sizes.caseWithPadding}")
 //        size.caseWithPadding = (size.height / maxLines)
 //        infoLog(" caseWithPadding ", "${size.caseWithPadding}")
-        infoLog(" casePaddinng ", "${size.casePadding}")
-        infoLog(" case ", "${size.case}")
-        infoLog(" icon ", "${size.icon}")
+        infoLog(" casePaddinng ", "${sizes.casePadding}")
+        infoLog(" case ", "${sizes.case}")
+        infoLog(" icon ", "${sizes.icon}")
     }
 }

@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.logAnimMap
-import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
@@ -47,8 +46,8 @@ fun MapViewInGame(
     var casePosition = Position.Error
     Box(
         Modifier
-            .height(vm.data.layout.firstPart.size.mapHeightDp)
-            .width(vm.data.layout.firstPart.size.mapWidthDp)
+            .height(vm.data.layout.firstPart.sizes.mapHeightDp)
+            .width(vm.data.layout.firstPart.sizes.mapWidthDp)
     ) {
         Column( Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,8 +67,8 @@ fun MapViewInGame(
                             )
                             if (caseStop.contains(casePosition)) {
                                 WhiteSquare(
-                                    sizeDp = vm.data.layout.firstPart.size.mapCaseDp,
-                                    stroke = vm.data.layout.firstPart.size.mapCaseStroke,
+                                    sizeDp = vm.data.layout.firstPart.sizes.mapCaseDp,
+                                    stroke = vm.data.layout.firstPart.sizes.mapCaseStroke,
                                     vm = vm
                                 )
                             }
@@ -93,13 +92,13 @@ fun DrawMapCase(
     Box(
         Modifier
             .background(Color.Transparent)
-            .size(vm.data.layout.firstPart.size.mapCaseDp),
+            .size(vm.data.layout.firstPart.sizes.mapCaseDp),
     ) {
         if (caseColor != '.') {
             Card(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(vm.data.layout.firstPart.size.mapCasePaddingDp),
+                    .padding(vm.data.layout.firstPart.sizes.mapCasePaddingDp),
                 shape = RectangleShape,
                 elevation = 7.dp,
             ) {

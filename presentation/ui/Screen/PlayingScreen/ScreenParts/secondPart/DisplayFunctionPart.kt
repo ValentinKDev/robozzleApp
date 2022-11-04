@@ -1,15 +1,10 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,14 +15,11 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
-import com.mobilegame.robozzle.presentation.ui.utils.spacer.HorizontalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
 
@@ -77,13 +69,13 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
         }
     ) {
         functions.forEachIndexed { functionNumber, function ->
-            VerticalSpace(heightDp = vm.data.layout.secondPart.size.functionRowPaddingHeightDp)
+            VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
             Box{
                 DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
                 DisplayCurrentInstructionHighlighted(functionNumber, function, vm)
             }
         }
-        VerticalSpace(heightDp = vm.data.layout.secondPart.size.functionRowPaddingHeightDp)
+        VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
     }
 }
 
@@ -102,7 +94,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
             imageVector = iconByInt(functionNumber),
             tint = if (displayInstructionMenu) vm.data.colors.functionTextDark else vm.data.colors.functionText,
             contentDescription = "function $functionNumber",
-            modifier = Modifier.size(vm.data.layout.secondPart.size.twoThirdFunctionCaseDp)
+            modifier = Modifier.size(vm.data.layout.secondPart.sizes.twoThirdFunctionCaseDp)
         )
         Box(Modifier.size(5.dp)) { }
         Column {
@@ -110,8 +102,8 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
             val listInstructions1 = if (doubleRow) function.instructions.substring(0..4) else function.instructions
             Column(
                 Modifier
-                    .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
-                    .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
+                    .height(vm.data.layout.secondPart.sizes.functionRowHeightListDp[functionNumber])
+                    .width(vm.data.layout.secondPart.sizes.functionRowWidthListDp[functionNumber])
                     .background(vm.data.colors.functionBorder)
                 ,
             ) {
@@ -122,7 +114,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                     listInstructions1.forEachIndexed { _index, _ ->
                         val caseColor = function.colors[_index]
                         Box(Modifier
-                            .size(vm.data.layout.secondPart.size.functionCaseDp)
+                            .size(vm.data.layout.secondPart.sizes.functionCaseDp)
                             .onGloballyPositioned {
                                 vm.dragAndDropCase.elements.addDroppableCase(
                                     rowIndex = functionNumber,
@@ -156,7 +148,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                         val index = _index + 5
                             val caseColor = function.colors[index]
                             Box(Modifier
-                                .size(vm.data.layout.secondPart.size.functionCaseDp)
+                                .size(vm.data.layout.secondPart.sizes.functionCaseDp)
                                 .onGloballyPositioned {
                                     vm.dragAndDropCase.elements.addDroppableCase(
                                         rowIndex = functionNumber,
@@ -209,21 +201,21 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
             imageVector = iconByInt(functionNumber),
             tint = Color.Transparent,
             contentDescription = "function $functionNumber",
-            modifier = Modifier.size(vm.data.layout.secondPart.size.twoThirdFunctionCaseDp)
+            modifier = Modifier.size(vm.data.layout.secondPart.sizes.twoThirdFunctionCaseDp)
         )
         Box(Modifier.size(5.dp)) { }
         Column {
             Column(
                 Modifier
-                    .height(vm.data.layout.secondPart.size.functionRowHeightListDp[functionNumber])
-                    .width(vm.data.layout.secondPart.size.functionRowWidthListDp[functionNumber])
+                    .height(vm.data.layout.secondPart.sizes.functionRowHeightListDp[functionNumber])
+                    .width(vm.data.layout.secondPart.sizes.functionRowWidthListDp[functionNumber])
             ) {
                 Row( Modifier.fillMaxWidth()
                     ,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     listInstructions1.forEachIndexed { _index, _ ->
-                        Box( Modifier.size(vm.data.layout.secondPart.size.functionCaseDp)
+                        Box( Modifier.size(vm.data.layout.secondPart.sizes.functionCaseDp)
                         ) {
                             if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                 && ( (currentAction == 0 && functionNumber == 0 && _index == 0) ||
@@ -231,8 +223,8 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                                 && playerAnimationState.runningInBackground() )
                             {
                                 WhiteSquare(
-                                    sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
-                                    stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
+                                    sizeDp =  vm.data.layout.secondPart.sizes.functionCaseDp,
+                                    stroke = vm.data.layout.secondPart.sizes.selectionCaseHaloStroke,
                                     vm = vm,
                                 )
                             }
@@ -247,15 +239,15 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                         function.instructions.substring(5..9).forEachIndexed { _index, _ ->
                             val index = _index + 5
                             Box(Modifier
-                                .size(vm.data.layout.secondPart.size.functionCaseDp)
+                                .size(vm.data.layout.secondPart.sizes.functionCaseDp)
                             ) {
                                 if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                     && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
                                     && playerAnimationState.runningInBackground() )
                                 {
                                     WhiteSquare(
-                                        sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
-                                        stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
+                                        sizeDp =  vm.data.layout.secondPart.sizes.functionCaseDp,
+                                        stroke = vm.data.layout.secondPart.sizes.selectionCaseHaloStroke,
                                         vm = vm
                                     )
                                 }

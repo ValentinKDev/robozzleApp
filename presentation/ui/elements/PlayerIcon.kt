@@ -31,7 +31,7 @@ fun test() {
 
 //    val color = 'B'
     val color = 'G'
-    Canvas(Modifier.size(data.size.playerBoxDp)) {
+    Canvas(Modifier.size(data.sizes.playerBoxDp)) {
         drawRect(
             brush = Brush.linearGradient(
                 mapCaseColorList(color)
@@ -44,7 +44,7 @@ fun test() {
 @Composable
 fun PlayerIcon(direction: Direction, data: InGameFirstPart, colors: InGameColors, caseColor: CaseColor) {
     Box(modifier = Modifier
-        .size(data.size.playerBoxDp)
+        .size(data.sizes.playerBoxDp)
     ) {
         PlayerGlowingEffect(direction = direction, data, colors, caseColor)
         Player(direction = direction, data, colors)
@@ -67,10 +67,10 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InG
             )
         )
 
-        Box(Modifier.size( if (isMoving) data.size.playerBoxDp else data.size.playerBoxDp * ratioAnim ))
+        Box(Modifier.size( if (isMoving) data.sizes.playerBoxDp else data.sizes.playerBoxDp * ratioAnim ))
         {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                Color
+//                Color
                 rotate(
                     pivot = center,
                     degrees = when (direction.ToChar()) {
@@ -107,7 +107,7 @@ fun PlayerGlowingEffect(direction: Direction, data: InGameFirstPart, colors: InG
 @Composable
 fun Player(direction: Direction, data: InGameFirstPart, colors: InGameColors) {
     CenterComposable {
-        Canvas(modifier = Modifier.size(data.size.playerCanvasDp)) {
+        Canvas(modifier = Modifier.size(data.sizes.playerCanvasDp)) {
             val armorColor = Color.Black
             val cap = StrokeCap.Round
 

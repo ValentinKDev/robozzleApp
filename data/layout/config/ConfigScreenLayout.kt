@@ -40,7 +40,7 @@ object ConfigScreenLayout {
 
     object List {
         val ratios = Ratios
-        val sizes = Sizes
+        internal val sizes = Sizes
         val texts = Texts
         val colors = Colors
 
@@ -52,7 +52,7 @@ object ConfigScreenLayout {
             var description = 9F
             var optionText = 0.22F
         }
-        object Sizes {
+        internal object Sizes {
             const val rowToDisplay = 10
             var height = 0F
             var width = 0F

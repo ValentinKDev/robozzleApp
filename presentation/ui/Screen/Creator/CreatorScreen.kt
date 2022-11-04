@@ -7,79 +7,35 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.North
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.geometry.Offset
 //import androidx.compose.material.icons.Icons
 //import androidx.compose.material.icons.outlined.North
 //import androidx.compose.material.icons.outlined.Update
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.mobilegame.robozzle.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
+import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameSecondPart
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Navigation.myleveltest
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
+import com.mobilegame.robozzle.presentation.ui.elements.TrashIcone
+import com.mobilegame.robozzle.utils.Extensions.isOnLeft
+import com.mobilegame.robozzle.utils.Extensions.toDp
 
 
 @Composable
-fun CreatorScreen(navigator: Navigator, dragAndDropVM: DragAndDropCaseState = DragAndDropCaseState(), itemList: List<String> = itemListval) {
+fun CreatorScreen(navigator: Navigator) {
     BackHandler {
         NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Donation.route)
-    }
-
-    Column {
-        Box(Modifier) {
-            val compo by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.toaster))
-            LottieAnimation(
-                compo,
-                modifier = Modifier.size(100.dp),
-                iterations = LottieConstants.IterateForever,
-            )
-        }
-        VerticalSpace(20)
-        Box(
-            Modifier
-                .size(50.dp)
-                .background(whiteDark6)) {
-            Box {
-                Icon(
-                    imageVector = Icons.Outlined.North,
-                    contentDescription ="truc",
-                    tint = Color.Black,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(whiteDark8)
-                )
-            }
-            CenterComposable {
-                Icon(
-                    imageVector = Icons.Outlined.North,
-                    contentDescription ="truc",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(40.dp)
-                )
-            }
-        }
-        VerticalSpace(20)
-        Icon(
-            imageVector = Icons.Outlined.North,
-            contentDescription ="truc",
-            tint = Color.White,
-            modifier = Modifier
-                .size(200.dp)
-                .background(whiteDark8)
-        )
     }
 }
 

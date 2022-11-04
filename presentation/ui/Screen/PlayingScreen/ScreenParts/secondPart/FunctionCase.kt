@@ -18,8 +18,8 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
         modifier = Modifier.size(
 //            if (bigger) vm.data.layout.secondPart.size.bigFunctionCase.dp
 //            else vm.data.layout.secondPart.size.functionCase.dp
-            if (bigger) vm.data.layout.secondPart.size.bigFunctionCaseDp
-            else vm.data.layout.secondPart.size.functionCaseDp
+            if (bigger) vm.data.layout.secondPart.sizes.bigFunctionCaseDp
+            else vm.data.layout.secondPart.sizes.functionCaseDp
         )
         ,
         shape = RectangleShape

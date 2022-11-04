@@ -32,9 +32,11 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     var animationLogicVM = AnimationLogicViewModel(level,this)
 
     val popup = PopupViewModel()
-    val dragAndDropCase = DragAndDropCaseState()
     val dragAndDropRow = DragAndDropRowState()
+    val dragAndDropCase = DragAndDropCaseState(data.layout.trash)
     private var animationJob: Job? = null
+
+
 
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {

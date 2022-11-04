@@ -3,7 +3,6 @@ package com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
-import androidx.compose.animation.core.ExperimentalTransitionApi
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -13,11 +12,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.TrashOverlay
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -54,7 +53,6 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
     val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
-
     Box(
         Modifier
             .fillMaxSize()
@@ -63,14 +61,17 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
         content = {
             content.invoke()
 
+            TrashOverlay(vm)
+
             DragAndDropOverlay(vm)
+
 
             AnimatedVisibility(
                 visible = visisbleMenu,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                    DisplayInstuctionMenu(vm)
+                DisplayInstuctionMenu(vm)
             }
 
             PlayingScreenPopupWin(vm = vm)

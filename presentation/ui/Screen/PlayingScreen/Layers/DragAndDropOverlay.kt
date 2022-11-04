@@ -46,8 +46,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                 }
                             ) {
                                 WhiteSquare(
-                                    sizeDp =  vm.data.layout.secondPart.size.functionCaseDp,
-                                    stroke = vm.data.layout.secondPart.size.selectionCaseHaloStroke,
+                                    sizeDp =  vm.data.layout.secondPart.sizes.functionCaseDp,
+                                    stroke = vm.data.layout.secondPart.sizes.selectionCaseHaloStroke,
                                     vm = vm
                                 )
                             }
@@ -72,8 +72,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                         Box(Modifier
                             .offset {
                                 IntOffset(
-                                    x = vm.dragAndDropCase.underPointerOffset.x.toInt(),
-                                    y = vm.dragAndDropCase.underPointerOffset.y.toInt(),
+                                    x = vm.dragAndDropCase.pointerOffset.x.toInt(),
+                                    y = vm.dragAndDropCase.pointerOffset.y.toInt(),
                                 )
                             }
                             .size(5.dp)

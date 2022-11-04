@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.ui.layout.LayoutCoordinates
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
 import com.mobilegame.robozzle.data.layout.inGame.layouts.*
 import com.mobilegame.robozzle.domain.model.level.Level
 
@@ -13,13 +14,11 @@ class InGameLayout(level: Level, context: Context) {
     val thirdPart = InGameThirdPart
     val popup = InGamePopupWin
     val menu = InGameInstructionMenu
-    var initiated = false
+    var trash: Trash
 
-    private var density = 0F
     private var layoutCoordinates: LayoutCoordinates? = null
 
     init {
-        infoLog("density", "$density ")
         verbalLog("init", "first Part")
         InGameFirstPart.init(context, level)
         verbalLog("init", "second Part")
@@ -28,6 +27,8 @@ class InGameLayout(level: Level, context: Context) {
         InGameThirdPart.init(context)
         verbalLog("init", "initMenu")
         InGameInstructionMenu.init(context , level)
+        verbalLog("init", "trash")
+        trash = Trash(context, secondPart)
     }
 
 }

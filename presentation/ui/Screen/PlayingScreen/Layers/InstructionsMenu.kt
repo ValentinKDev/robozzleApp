@@ -6,23 +6,18 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import backColor
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.InstructionIconsMenu
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import gradientBackground
 
@@ -54,7 +49,7 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
             ){
                 Column(
                     Modifier
-                        .width(vm.data.layout.menu.size.windowWidth.dp)
+                        .width(vm.data.layout.menu.sizes.windowWidth.dp)
                         .background(Color.Transparent)
                 ) {
                     vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
@@ -92,9 +87,9 @@ fun InstructionCase(vm: GameDataViewModel, case: FunctionInstruction) {
                 )
                 vm.ChangeInstructionMenuState()
             }
-            .size(vm.data.layout.menu.size.case.dp)
+            .size(vm.data.layout.menu.sizes.case.dp)
             .border(
-                width = vm.data.layout.menu.size.casePadding.dp,
+                width = vm.data.layout.menu.sizes.casePadding.dp,
                 color = vm.data.colors.menuCaseBorder
             )
     ) {

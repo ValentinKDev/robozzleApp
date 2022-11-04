@@ -4,14 +4,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.InGame.InGameData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
-class DragAndDropCaseState() {
+class DragAndDropCaseState(val trash: Trash) {
     val elements = DragAndDropCaseElements()
 
     private val _dragStart = MutableStateFlow<Boolean>(false)
@@ -34,7 +37,7 @@ class DragAndDropCaseState() {
     fun setOffsets(localOffset: Offset) {
         setTouchOffset(localOffset)
         setDraggedRepresentationOffset()
-        setPointerUnderOffset()
+        setPointOffset()
     }
 
     private val _touchOffSet = MutableStateFlow<Offset>(Offset(0F,0F))
@@ -59,16 +62,21 @@ class DragAndDropCaseState() {
         )
     }
 
-    var underPointerOffset = Offset.Zero
-    fun setPointerUnderOffset() {
+    var pointerOffset = Offset.Zero
+    fun setPointOffset() {
         val elementHalfHeight: Float = elements.itemSelectedHalfHeight ?: 0F
         val elementTwoThirdHeight: Float = elements.itemSelectedTwoThirdHeight ?: 0F
         val elementOneThirdHeight: Float = elements.itemSelectedOneThirdHeight ?: 0F
 
-        underPointerOffset = Offset(
+        pointerOffset = Offset(
             x = touchOffSet.value.x - elementOneThirdHeight,
             y = touchOffSet.value.y - elementHalfHeight - elementTwoThirdHeight,
         )
+    }
+
+    private fun upDateTrashState() {
+        elements.setLeftTrashHighlightTo(trash.leftContains(pointerOffset) )
+        elements.setRightTrashHighlightTo(trash.rightContains(pointerOffset))
     }
 
     fun isSwitchingCase(row: Int, column: Int): Boolean {
@@ -77,15 +85,17 @@ class DragAndDropCaseState() {
 
     fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
         setOffsets(pointerInputChange.position)
-        elements.findItemUnderItem(underPointerOffset, list)
+        upDateTrashState()
+        elements.findItemUnderItem(pointerOffset, list)
     }
 
     fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
         setTouchOffSetStart(offset)
         touchOffSetStart ?: setTouchOffSetStart(offset)
         setOffsets(offset)
-        elements.findSelectedItem(touchOffSetStart ?: Offset.Zero, list)
-        setDragStart(true)
+        if (elements.findSelectedItem(touchOffSetStart ?: Offset.Zero, list)) {
+            setDragStart(true)
+        }
     }
 
     fun onDragCancel() = runBlocking {
@@ -106,38 +116,22 @@ class DragAndDropCaseState() {
     }
 
     private fun switch(vm: GameDataViewModel) {
-        elements.itemSelectedPosition?.let { _selectedP ->
-            elements.itemUnder?.let { _underD ->
-                elements.itemUnderPosition?.let { _underP ->
-                    elements.itemSelected?.let { _selectedD ->
-                        vm.replaceInstruction(_selectedP, _underD)
-                        vm.replaceInstruction(_underP, _selectedD)
-                    } ?: errorLog("ERROR", "dragAndDropState.elements.itemSelected == null")
-                } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnderPosition == null")
-            } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnder == null")
-        } ?: errorLog("ERROR", "dragAndDropState.elements.itemSelected == null")
-    }
-
-    private fun switchCases(list: List<FunctionInstructions>) {
-        elements.itemSelectedPosition?.let { _selectedP ->
-            elements.itemUnder?.let { _underD ->
-                elements.itemUnderPosition?.let { _underP ->
-                    errorLog("list", "$list")
-
-                    elements.itemSelected?.let { _selectedD ->
-                        list[_selectedP.line].instructions =
-                            list[_selectedP.line].instructions.replaceRange(_selectedP.column.._selectedP.column, _underD.instruction.toString())
-                        list[_selectedP.line].colors =
-                            list[_selectedP.line].colors.replaceRange(_selectedP.column.._selectedP.column, _underD.color.toString())
-
-                        list[_underP.line].instructions =
-                            list[_underP.line].instructions.replaceRange(_underP.column.._underP.column, _selectedD.instruction.toString())
-                        list[_underP.line].colors =
-                            list[_underP.line].colors.replaceRange(_underP.column.._underP.column, _selectedD.color.toString())
-                    }
-                    verbalLog("list", "$list")
-                }
+        if (trash.contains(pointerOffset)) {
+            elements.itemSelectedPosition?.let { _selectedP ->
+                vm.replaceInstruction(_selectedP, FunctionInstruction.empty)
             }
+        }
+        else {
+            elements.itemSelectedPosition?.let { _selectedP ->
+                elements.itemUnder?.let { _underD ->
+                    elements.itemUnderPosition?.let { _underP ->
+                        elements.itemSelected?.let { _selectedD ->
+                            vm.replaceInstruction(_selectedP, _underD)
+                            vm.replaceInstruction(_underP, _selectedD)
+                        } ?: errorLog("ERROR", "dragAndDropState.elements.itemSelected == null")
+                    } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnderPosition == null")
+                } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnder == null")
+            } ?: errorLog("ERROR", "dragAndDropState.elements.itemSelected == null")
         }
     }
 }

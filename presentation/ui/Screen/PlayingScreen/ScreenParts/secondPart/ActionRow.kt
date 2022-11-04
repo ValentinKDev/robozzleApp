@@ -47,7 +47,7 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
     val visibleAnimDelay: Int = (animDelay / 7).toInt()
 
     logLayoutSecondPart?.let {
-        infoLog("action row case size", "${vm.data.layout.secondPart.size.actionRowCase}")
+        infoLog("action row case size", "${vm.data.layout.secondPart.sizes.actionRowCase}")
         verbalLog("action to read", vm.animData.actionToRead.value.toString())
         verbalLog("Display vm.ActionsList ", "${vm.animData.actionRowList.value}")
         verbalLog("number of action to display", "${vm.data.layout.secondPart.actionToDisplayNumber}")
@@ -164,9 +164,9 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
         Modifier
             .size(
                 if (bigger)
-                    vm.data.layout.secondPart.size.actionRowCaseBigger.dp
+                    vm.data.layout.secondPart.sizes.actionRowCaseBigger.dp
                 else
-                    vm.data.layout.secondPart.size.actionRowCase.dp
+                    vm.data.layout.secondPart.sizes.actionRowCase.dp
             )
             .border(
                 border = BorderStroke(

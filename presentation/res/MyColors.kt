@@ -7,6 +7,19 @@ import androidx.compose.ui.graphics.Color
 //sealed class MyColors(color: Color) {
 //}
 
+inline class MyColor(val color: Color){
+    companion object {
+        val oui = 1
+    }
+}
+
+val white0 = Color(0xFFFFFFFF)
+val white1 = Color(0xDFFFFFFF)
+val white2 = Color(0xBFFFFFFF)
+val white3 = Color(0x9FFFFFFF)
+val white4 = Color(0x7FFFFFFF)
+val white5 = Color(0x5FFFFFFF)
+
 val whiteDark0 = Color(0xFFFFFFFF)
 val whiteDark1 = Color(0xFFEEEEEE)
 val whiteDark2 = Color(0xFFDDDDDD)
@@ -146,6 +159,7 @@ val red6= Color(0x3FFF0000)
 val red7= Color(0x1FFF0000)
 val red8= Color(0x0EFF0000)
 val red9= Color(0x0CFF0000)
+val red10= Color(0x0AFF0000)
 val redDark0= Color(0xFFFF0000)
 val redDark1= Color(0xFFDF0000)
 val redDark2= Color(0xFFCF0000)

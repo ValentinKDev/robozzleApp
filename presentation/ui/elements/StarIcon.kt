@@ -23,7 +23,7 @@ fun testView() {
     val ctxt = LocalContext.current
     val data = InGameFirstPart
     data.init(ctxt, myleveltest)
-    Canvas(Modifier.size(data.size.starBoxDp)) {
+    Canvas(Modifier.size(data.sizes.starBoxDp)) {
         drawRect(
             brush = Brush.linearGradient(
 //                InGameColors.gradientOfBlue
@@ -60,7 +60,7 @@ fun DrawFrontNeonEffect(data: InGameFirstPart, colors: InGameColors) {
     )
 
     Box(modifier = Modifier
-        .size(data.size.starBoxDp)
+        .size(data.sizes.starBoxDp)
     ){
         CenterComposable {
             Canvas(modifier = Modifier.size(data.star.starNeonBoxFrontDp * ratioAnim)) {
@@ -128,7 +128,7 @@ private fun DrawBackGlowingEffect(
         Color.Transparent
     )
 
-    val sizeDp = data.size.starBoxDp
+    val sizeDp = data.sizes.starBoxDp
     Box(modifier = Modifier
         .size(sizeDp)
     ){
@@ -156,13 +156,13 @@ private fun DrawStarPart(
     data: InGameFirstPart,
     colors: InGameColors,
 ) {
-    val sizeDp = data.size.starBoxDp
+    val sizeDp = data.sizes.starBoxDp
     Box(modifier = Modifier
         .size(sizeDp)
     ){
         CenterComposable {
             Canvas(modifier = Modifier
-                .size(data.size.starCanvasDp)
+                .size(data.sizes.starCanvasDp)
             ){
                 val starPart = Path().apply {
                     moveTo(data.star.pTop.x, data.star.pTop.y)
