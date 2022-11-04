@@ -85,7 +85,7 @@ class DragAndDropCaseState(val trash: Trash) {
 
     fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
         setOffsets(pointerInputChange.position)
-        upDateTrashState()
+        if (trash.displayTrash) upDateTrashState()
         elements.findItemUnderItem(pointerOffset, list)
     }
 
@@ -116,7 +116,7 @@ class DragAndDropCaseState(val trash: Trash) {
     }
 
     private fun switch(vm: GameDataViewModel) {
-        if (trash.contains(pointerOffset)) {
+        if (trash.displayTrash && trash.contains(pointerOffset)) {
             elements.itemSelectedPosition?.let { _selectedP ->
                 vm.replaceInstruction(_selectedP, FunctionInstruction.empty)
             }

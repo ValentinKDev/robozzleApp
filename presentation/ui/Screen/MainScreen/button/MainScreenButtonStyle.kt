@@ -28,7 +28,7 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
         NavigationButtonInfo(
             button = Screens.Creator ,
             text = "creator",
-            enable = true)
+            enable = false)
     )
     object Donation: MainScreenButtonStyle(
         NavigationButtonInfo(

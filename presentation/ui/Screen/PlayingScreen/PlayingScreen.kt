@@ -61,7 +61,7 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
         content = {
             content.invoke()
 
-            TrashOverlay(vm)
+            if (vm.data.layout.trash.displayTrash) TrashOverlay(vm)
 
             DragAndDropOverlay(vm)
 

@@ -12,6 +12,7 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
+import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
@@ -30,11 +31,13 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
 
     private val levelRoomViewModel = LevelRoomViewModel(getApplication())
     private val levelVM = LevelVM(getApplication())
+    private val configRoom = ConfigRoomViewModel(getApplication())
+    private val displayLevelWin = configRoom.getDisplayLevelWinInListState()
 
     fun loadLevelListById(levelDifficulty: Int) {
         infoLog("load Level list by diff", "start")
 //        _levelOverViewList.value  = levelRoomViewModel.getAllLevelOverViewFromDifficulty(levelDifficulty)
-        _levelOverViewList.value  = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty)
+        _levelOverViewList.value  = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin)
     }
 
     private val _visibleHeaderState = MutableStateFlow(MutableTransitionState(true))

@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Dp
 import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameSecondPart
 import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameThirdPart
+import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.utils.Extensions.toDp
 
 data class Trash(
@@ -13,6 +14,9 @@ data class Trash(
     val data: InGameSecondPart,
     val widthRatioTrash: Float = 0.05F,
 ) {
+    val configRoom = ConfigRoomViewModel(context)
+    val displayTrash = configRoom.getTrashesInGameState()
+
     val emptyWidthRatio = 1F - widthRatioTrash
     val width = context.resources.displayMetrics.widthPixels
     val heightTrash = data.sizes.functionPartHeight
