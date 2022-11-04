@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.Density
 import androidx.lifecycle.ViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

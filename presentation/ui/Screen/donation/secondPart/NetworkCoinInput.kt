@@ -25,9 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark3
-import com.mobilegame.robozzle.presentation.res.grayDark5
-import com.mobilegame.robozzle.presentation.res.greendark2
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.ButtonRegister
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically

@@ -3,6 +3,22 @@ package com.mobilegame.robozzle.data.layout.inGame
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark2
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark7
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark6
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark6Plus
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark8
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow1
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow2
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow5
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow6
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow7
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellowDark2
 
 object InGameColors {
     val darkerBackground = grayDark7

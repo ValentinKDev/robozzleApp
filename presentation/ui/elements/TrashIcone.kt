@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.red3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.red4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.red6
 import com.mobilegame.robozzle.utils.Extensions.isOnLeft
 import com.mobilegame.robozzle.utils.Extensions.isOnRight
 

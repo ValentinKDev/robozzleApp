@@ -1,7 +1,8 @@
 package com.mobilegame.robozzle.data.layout.donation
 
-import com.mobilegame.robozzle.presentation.res.whiteDark4
-import com.mobilegame.robozzle.presentation.res.whiteDark5
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark5
+
 
 object DonationScreenColors {
     val textColor = whiteDark4

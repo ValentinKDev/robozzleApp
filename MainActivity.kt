@@ -16,6 +16,7 @@ import backColor
 import com.mobilegame.robozzle.data.layout.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark5
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigation
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 

@@ -8,8 +8,8 @@ import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomView
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
-import com.mobilegame.robozzle.presentation.res.grayDark3
-import com.mobilegame.robozzle.presentation.res.whiteDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

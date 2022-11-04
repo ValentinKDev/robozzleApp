@@ -30,8 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewModel
-import com.mobilegame.robozzle.presentation.res.gray5
-import com.mobilegame.robozzle.presentation.res.grayDark3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @OptIn(ExperimentalAnimationApi::class)

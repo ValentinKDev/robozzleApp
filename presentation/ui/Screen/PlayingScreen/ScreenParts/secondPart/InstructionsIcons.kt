@@ -16,6 +16,10 @@ import com.mobilegame.robozzle.data.layout.inGame.InGameColors
 import com.mobilegame.robozzle.data.layout.inGame.elements.CaseColoringIcon
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark6
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.redDark1
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.redDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark6
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
 @Composable

@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.presentation.res.grayDark5
-import com.mobilegame.robozzle.presentation.res.whiteDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark5
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 
 @Composable
 fun TextWithShadow(

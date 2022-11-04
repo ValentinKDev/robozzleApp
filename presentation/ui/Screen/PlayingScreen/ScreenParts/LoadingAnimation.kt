@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.presentation.res.gray9
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.gray9
 
 @Composable
 fun LoadingAnimation() {

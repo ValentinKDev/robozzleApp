@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.yellow0
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow0
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 

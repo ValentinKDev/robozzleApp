@@ -7,8 +7,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark4
-import com.mobilegame.robozzle.presentation.res.whiteDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 
 @Composable
 fun UserInfoScreenSecondPart(vm: UserInfosScreenViewModel) {

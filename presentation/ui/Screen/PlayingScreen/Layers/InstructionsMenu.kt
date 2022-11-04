@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.black7
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.InstructionIconsMenu
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable

@@ -14,10 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.data.layout.inGame.InGameColors
 import com.mobilegame.robozzle.data.layout.inGame.elements.CaseColoringIcon
-import com.mobilegame.robozzle.presentation.res.blue9
-import com.mobilegame.robozzle.presentation.res.gray9
-import com.mobilegame.robozzle.presentation.res.green9
-import com.mobilegame.robozzle.presentation.res.red9
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.blue9
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.gray9
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.green9
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.red9
 import com.mobilegame.robozzle.presentation.ui.elements.CaseColor
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 

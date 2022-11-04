@@ -12,8 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark3
-import com.mobilegame.robozzle.presentation.res.whiteDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens

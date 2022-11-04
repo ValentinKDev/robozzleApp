@@ -24,6 +24,7 @@ import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameSecondPart
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.gray7
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Navigation.myleveltest
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -38,22 +39,6 @@ fun CreatorScreen(navigator: Navigator) {
         NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Donation.route)
     }
 }
-
-
-@Composable
-fun Handle(rowIndex: Int, columnIndex: Int, s: String, dragAndDropVM: DragAndDropCaseState) {
-    var selectColor: Color = remember { gray7 }
-
-    Box(
-        Modifier
-            .wrapContentSize()
-            .background(selectColor)
-    ) {
-        Text(text = s, color = whiteDark4)
-    }
-}
-
-
 
 val itemListval = listOf(
     "Item 1",
@@ -77,33 +62,6 @@ val itemListval = listOf(
     "Item 19",
     "Item 20"
 ).toMutableStateList()
-
-@Composable
-fun Neon() {
-    Canvas(
-        modifier = Modifier.size(100.dp),
-    ) {
-        val canvasWidth = size.width
-        val canvasHeight = size.height
-
-        drawCircle(
-            brush = Brush.radialGradient(
-                colors = listOf(green0, green9)
-            ),
-            radius = (canvasWidth / 2) - 5,
-            center = center,
-            style = Stroke(width = canvasWidth * 0.075f)
-        )
-        drawCircle(
-            brush = Brush.radialGradient(
-                colors = listOf(green0, green9)
-            ),
-            radius = canvasWidth / 2,
-            center = center,
-            style = Stroke(width = canvasWidth * 0.075f)
-        )
-    }
-}
 
 val mapTest4 = listOf(
 /*                               1 1 1 1 1 1      */

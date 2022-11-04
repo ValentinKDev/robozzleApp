@@ -11,6 +11,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.blueDark1
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.blueDark5
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.greendark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.greendark9
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.redDark8
 import gradientBackground
 
 @Composable

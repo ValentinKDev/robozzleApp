@@ -7,6 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import backColor
 import com.mobilegame.robozzle.presentation.res.*
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.blueDark2
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.greendark2
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.redDark2
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellowDark2
 
 @Composable
 fun PaddingComposable(

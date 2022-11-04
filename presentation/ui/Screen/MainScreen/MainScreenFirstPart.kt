@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
-import com.mobilegame.robozzle.presentation.res.whiteDark2
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens

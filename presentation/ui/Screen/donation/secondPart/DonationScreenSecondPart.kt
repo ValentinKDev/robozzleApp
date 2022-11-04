@@ -18,7 +18,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewModel
-import com.mobilegame.robozzle.presentation.res.grayDark4
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark4
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.secondPart.NetworkAndNameInput
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
