@@ -1,14 +1,12 @@
-package com.mobilegame.robozzle.domain.model.Screen
+package com.mobilegame.robozzle.domain.model.LevelsScreenByDiff
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.AndroidViewModel
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
@@ -26,8 +24,9 @@ import kotlinx.coroutines.flow.asStateFlow
 class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewModel(application) {
     private var levelSelectedId: Int? = null
 
-    private val _levelOverViewList = MutableStateFlow<List<LevelOverView>>(mutableListOf())
-    val levelOverViewList: StateFlow<List<LevelOverView>> = _levelOverViewList
+//    private val _levelOverViewList = MutableStateFlow<List<LevelOverView>>(mutableListOf())
+//    val levelOverViewList: StateFlow<List<LevelOverView>> = _levelOverViewList
+var levelOverViewList: MutableList<LevelOverView> = mutableListOf()
 
     private val levelRoomViewModel = LevelRoomViewModel(getApplication())
     private val levelVM = LevelVM(getApplication())
@@ -36,8 +35,17 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
 
     fun loadLevelListById(levelDifficulty: Int) {
         infoLog("load Level list by diff", "start")
-//        _levelOverViewList.value  = levelRoomViewModel.getAllLevelOverViewFromDifficulty(levelDifficulty)
-        _levelOverViewList.value  = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin)
+//        _levelOverViewList.value  = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin)
+        levelOverViewList = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin).toMutableList()
+    }
+    val mapViewParamList: MutableList<Pair<Int, MapViewParam>> = mutableListOf()
+
+    fun loadMapViewParams() {
+//        levelOverViewList.value.forEach {
+        levelOverViewList.forEach {
+//            list += Pair(1, )
+            mapViewParamList.add(element = Pair(it.id, MapViewParam(it.map)))
+        }
     }
 
     private val _visibleHeaderState = MutableStateFlow(MutableTransitionState(true))
@@ -64,8 +72,8 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         setVisibleHeaderTargetStateAs(true)
         setVisibleListTargetStateAs(true)
         loadLevelListById(levelsDifficulty)
+        loadMapViewParams()
 
-        Log.e("LevelScreenByDiffVM::setVisibilityAndLoad", "xxxxxxxxxxxxxxxxxxxxx${timeMillis - getTimeMillis()}")
     }
     fun startExitAnimationAndPressBack() = runBlocking(Dispatchers.IO) {
         setVisibleListTargetStateAs(false)

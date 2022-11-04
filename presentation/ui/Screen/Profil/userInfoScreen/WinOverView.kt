@@ -70,10 +70,10 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                     .weight(0.3F)
             ) {
                 CenterComposable {
-                    MapView(
-                        widthInt = vm.uiData.thirdPart.winOverView.mapWidthInt,
-                        mapParam = levelMap,
-                    )
+//                    MapView(
+//                        widthInt = vm.uiData.thirdPart.winOverView.mapWidthInt,
+//                        map = levelMap,
+//                    )
                 }
             }
             Column( Modifier

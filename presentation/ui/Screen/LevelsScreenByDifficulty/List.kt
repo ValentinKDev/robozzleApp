@@ -23,11 +23,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDifficultyViewModel
-import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
+import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.MapViewParam
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
-import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.greendark3
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
@@ -44,7 +43,8 @@ fun LevelsScreenByDifficultyList(
     vm: LevelsScreenByDifficultyViewModel,
     rankingIconVM: RankingIconViewModel = viewModel()
 ) {
-    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
+//    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
+    val levelsList: List<LevelOverView> = vm.levelOverViewList
     val context = LocalContext.current
     val density = LocalDensity.current
 
@@ -87,7 +87,8 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
     ) {
         Row( modifier = Modifier.fillMaxSize() )
         {
-            Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 80, map = level.map) }
+//            Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 80, map = level.map) }
+            Box(Modifier.weight(1.0f)) { vm.mapViewParamList.find { it.first == level.id } ?.let { DisplayLevelMap(it.second) } }
             Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, vm, rankingIconVM,  navigator) }
             Box(Modifier.weight(1.0f)) { DisplayLevelState(level, vm, navigator) }
         }
@@ -172,7 +173,7 @@ fun DisplayLevelState(level: LevelOverView, vm: LevelsScreenByDifficultyViewMode
 }
 
 @Composable
-fun DisplayLevelMap(widthInt: Int, map: List<String>) {
+fun DisplayLevelMap(param: MapViewParam) {
     Box(modifier = Modifier
         .fillMaxSize()
         ,
@@ -180,7 +181,7 @@ fun DisplayLevelMap(widthInt: Int, map: List<String>) {
         Row(modifier = Modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
             Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
                     Box(modifier = Modifier.padding(5.dp)) {
-                        MapView(widthInt = widthInt, mapParam = map)
+                        MapView(param)
                     }
             }
         }

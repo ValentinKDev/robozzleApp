@@ -169,6 +169,29 @@ inline class MyColor(val color: Color){
         val redDark10= Color(0xFF5F0000)
         val redDark11= Color(0xFF4F0000)
         val redDark12= Color(0xFF3F0000)
+
+
+        val redListDark: List<Color> = listOf(Color(0xff110000), Color(0xff650000), Color(0xff990000))
+        val redListLight = listOf(Color(0xff750000), Color(0xff920000), Color(0xffad0000))
+
+        val blueListDar: List<Color> = listOf(Color(0xff000011), Color(0xff000065), Color(0xff000099))
+        val blueListLight = listOf(Color(0xff000078), Color(0xff000098), Color(0xff0000ba))
+
+        val greenListDark: List<Color> = listOf(Color(0xff001100), Color(0xff006500), Color(0xff008800))
+        val greenListLight: List<Color> = listOf(Color(0xff005500), Color(0xff008000), Color(0xff00a900))
+
+        private val g1 = grayDark(2, 1)
+        private val g2 = grayDark(4, 1)
+        private val g3 = grayDark(6, 3)
+        private val darkgray1 = grayDark(4, 1)
+        private val darkgray2 = grayDark(6, 1)
+        private val darkgray3 = grayDark(10, 3)
+
+
+        val grayListDark: List<Color> =  listOf(darkgray3, darkgray2, darkgray1)
+        val grayListLight =  listOf(g3, g2, g1)
+
+        val errorColor: List<Color> = listOf(Color.Yellow, Color.Green, Color.Blue)
     }
 }
 
