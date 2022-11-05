@@ -35,6 +35,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindo
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 
 @Composable
@@ -88,15 +89,16 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
         Row( modifier = Modifier.fillMaxSize() )
         {
 //            Box(Modifier.weight(1.0f)) { DisplayLevelMap(widthInt = 80, map = level.map) }
-            Box(Modifier.weight(1.0f)) { vm.mapViewParamList.find { it.first == level.id } ?.let { DisplayLevelMap(it.second) } }
-            Box(Modifier.weight(2.0f)) { DisplayLevelDescription(level, vm, rankingIconVM,  navigator) }
-            Box(Modifier.weight(1.0f)) { DisplayLevelState(level, vm, navigator) }
+            Box(Modifier.weight(1.2f)) { vm.mapViewParamList.find { it.first == level.id } ?.let { DisplayLevelMap(it.second) } }
+            Box(Modifier.weight(1.6f)) { DisplayLevelDescription(level, vm, rankingIconVM,  navigator) }
+            Box(Modifier.weight(0.5f)) { DisplayLevelState(level, vm, navigator) }
+            Box(Modifier.weight(0.7f)) { DisplayRankingIcon(rankingIconVM, navigator, level.id)}
         }
     }
 }
 
 @Composable
-fun DisplayLevelDescription(level: LevelOverView, screenVM: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) {
+fun DisplayRankingIcon(rankingIconVM: RankingIconViewModel, navigator: Navigator, id: Int) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -104,72 +106,81 @@ fun DisplayLevelDescription(level: LevelOverView, screenVM: LevelsScreenByDiffic
 //        true -> screenVM.rankingIconIsPressed()
 //        false -> screenVM.rankingIconIsReleased(navigator, level.id)
         true -> rankingIconVM.rankingIconIsPressed()
-        false -> rankingIconVM.rankingIconIsReleased(navigator, level.id)
+        false -> rankingIconVM.rankingIconIsReleased(navigator, id)
     }
+
+//    Box(
+//        modifier = Modifier .weight(5f)
+//        ,
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Column( modifier = Modifier.fillMaxSize()
+//        ) {
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .align(Alignment.CenterHorizontally)
+//            ) {
+    CenterComposable {
+        Box( modifier = Modifier
+            .wrapContentSize()
+            .clickable(
+                interactionSource = interactionSource,
+                indication = rememberRipple(color = Color.Transparent)
+            ) {
+                infoLog("clickable", "ranking icon")
+            }
+        ) {
+            RankingIconBouncing(sizeAtt = 35, rankingIconVM = rankingIconVM, isPressed = isPressed, enableShadow = true)
+        }
+    }
+//            }
+//        }
+//    }
+}
+
+@Composable
+fun DisplayLevelDescription(level: LevelOverView, screenVM: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) {
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Box(modifier = Modifier.weight(4f)
-//            .background(Color.Red)
-        ){
+//        Box(modifier = Modifier.weight(4f)
+//        ){
             CenterText(
-                text = "${level.id} - ${level.name}",
+//                text = "${level.id} - ${level.name}",
+                text = "${level.name}",
                 color = whiteDark4,
                 modifier = Modifier
                     .padding(start = 5.dp)
                 ,
             )
-        }
-        Box(
-            modifier = Modifier .weight(5f)
-            ,
-            contentAlignment = Alignment.Center
-        ) {
-            Column( modifier = Modifier.fillMaxSize()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    Box( modifier = Modifier
-                        .wrapContentSize()
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = rememberRipple(color = Color.Transparent)
-                        ) {
-                            infoLog("clickable", "ranking icon")
-                        }
-                    ) {
-                        RankingIconBouncing(sizeAtt = 35, rankingIconVM = rankingIconVM, isPressed = isPressed, enableShadow = true)
-                    }
-                }
-            }
-        }
+//        }
     }
 }
 
 @Composable
 fun DisplayLevelState(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) {
-    Box(Modifier.fillMaxSize()){
-        Row(
-            modifier = Modifier.fillMaxSize() ,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Column(Modifier.weight(1f)) {
-                if (level.state.isWin()) {
-                    Icon(
-                        imageVector = Icons.Outlined.Check,
-                        tint = greendark3,
-                        contentDescription = "win",
-                    )
-                }
-            }
+//    Box(Modifier.fillMaxSize()){
+//        Row(
+//            modifier = Modifier.fillMaxSize() ,
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.SpaceEvenly
+//        ) {
+//            Column(Modifier.weight(1f)) {
+    if (level.state.isWin()) {
+        CenterComposable {
+            Icon(
+                imageVector = Icons.Outlined.Check,
+                tint = greendark3,
+                contentDescription = "win",
+            )
         }
     }
+//            }
+//        }
+//    }
 }
 
 @Composable

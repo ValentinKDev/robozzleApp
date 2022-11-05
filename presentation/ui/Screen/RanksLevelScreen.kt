@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -16,6 +13,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.Screen.RanksLevelScreenViewModel
+import com.mobilegame.robozzle.presentation.res.MyColor
+import com.mobilegame.robozzle.utils.Extensions.IsPair
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @Composable
@@ -23,9 +22,10 @@ fun RanksLevelScreen(levelId: Int, levelName: String, vm: RanksLevelScreenViewMo
 //    vm.load(levelId, LocalContext.current)
     val list by remember(vm) {vm.rankingList}.collectAsState(initial = emptyList())
 
-    infoLog("list", "size ${list.size}")
-    if (list.isEmpty()) vm.load(levelId)
-
+    LaunchedEffect(true) {
+        infoLog("RanksLevelScreent", "Start")
+        vm.load(levelId)
+    }
 
     Column(
         modifier = Modifier
@@ -48,7 +48,7 @@ fun RanksLevelScreen(levelId: Int, levelName: String, vm: RanksLevelScreenViewMo
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(0.5F)
-                        .background(Color.Gray)
+                        .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5)
                     ,
                 ) {
 
