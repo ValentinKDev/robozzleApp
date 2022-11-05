@@ -77,7 +77,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             AnimateNavigation(
                 element = Screens.RegisterLogin,
                 vm = animNav,
-            ) { RegisterLoginScreen(navigator, Tab()) }
+//            ) { RegisterLoginScreen(navigator, Tab()) }
+            ) { RegisterLoginScreen(navigator) }
         }
         /** Main Menu Screen */
         composable(route = Screens.MainMenu.route) {
@@ -150,7 +151,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
 //            PlayingScreen(navigator)
-            UserInfoScreen(navigator = navigator)
+            RegisterLoginScreen(navigator = navigator)
+//            UserInfoScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
 //            ConfigScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)

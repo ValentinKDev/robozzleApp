@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinDao
 import com.mobilegame.robozzle.data.room.levelWins.LevelWinData
@@ -42,6 +43,7 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
     }
 
     fun addLevelWinDataList(list: List<LevelWin>) {
+        errorLog("LevelWinRoomVM::addLevelWinDataList", "list $list")
         viewModelScope.launch(Dispatchers.IO) {
             list.forEach {
                 repo.addLevelWinData(it.toLevelWinData())

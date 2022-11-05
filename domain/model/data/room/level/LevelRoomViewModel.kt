@@ -15,7 +15,6 @@ import com.mobilegame.robozzle.domain.model.data.room.toLevel
 import com.mobilegame.robozzle.domain.model.data.room.toLevelData
 import com.mobilegame.robozzle.domain.model.data.room.toLevelDataList
 import com.mobilegame.robozzle.domain.model.data.room.toLevelList
-import com.mobilegame.robozzle.domain.model.level.LevelState
 import com.mobilegame.robozzle.domain.repository.LevelRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,7 +83,7 @@ class LevelRoomViewModel(context: Context): ViewModel() {
     fun getLevelOverViewInList(listWin: List<LevelWin>): List<LevelOverView> = runBlocking(Dispatchers.IO) {
         val mutableList: MutableList<LevelOverView> = mutableListOf()
         listWin.forEach { win ->
-            repo.getALevel(win.levelId)?.let { levelData ->
+            repo.getALevel(win.lvl_id)?.let { levelData ->
                 mutableList.add(levelData.toLevelOverView())
             }
         }

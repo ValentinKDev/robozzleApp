@@ -18,11 +18,9 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
-import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
-import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.TextWithShadow
@@ -35,7 +33,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
 
     when (isPressed) {
         true -> vm.logic.rankingIconVM.rankingIconIsPressed()
-        false -> vm.logic.rankingIconVM.rankingIconIsReleased(navigator, levelWin.levelId)
+        false -> vm.logic.rankingIconVM.rankingIconIsReleased(navigator, levelWin.lvl_id)
     }
 
     Card(
@@ -63,7 +61,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                 .fillMaxWidth()
                 .weight(0.1F)
             ) {
-                TextWithShadow(text = "level ${levelWin.levelId}", modifier = Modifier.align(Center))
+                TextWithShadow(text = "level ${levelWin.lvl_id}", modifier = Modifier.align(Center))
             }
             Row( Modifier
                     .wrapContentWidth()
@@ -96,10 +94,10 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                         ) {
                             Column() {
                                 Box() {
-                                    Text("level ${levelWin.levelName}", color = whiteDark4, )
+                                    Text("level ${levelWin.lvl_name}", color = whiteDark4, )
                                 }
                                 Box() {
-                                    Text( "instructions ${levelWin.winDetails.instructionsNumber}", color = whiteDark4, )
+                                    Text( "instructions ${levelWin.details.instructionsNumber}", color = whiteDark4, )
                                 }
                             }
                         }

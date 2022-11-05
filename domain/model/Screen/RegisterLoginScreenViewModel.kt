@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.domain.model.Screen
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.server.JwtToken.JWTTokenService
@@ -20,6 +21,7 @@ import com.mobilegame.robozzle.domain.res.NOTOKEN
 import com.mobilegame.robozzle.domain.state.TokenState
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -76,27 +78,34 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     val tokenState: StateFlow<String> = _tokenState.asStateFlow()
 
     fun loginOnClickListner(navigator: Navigator) {
-        infoLog("login", "onclicklistner()")
+        infoLog("RegisterLoginScreenVM::loginOnClickListner", "start")
         viewModelScope.launch {
-            verbalLog("get a token", "start")
+            errorLog ("get a token", "start")
             getAToken(name.value, password.value)
             waitForToken()
+            errorLog ("setUserCoState", "start")
+            errorLog ("tokenState.value", "${tokenState.value}")
             setUserConnectionState(
-                stateStr =
-                if (tokenState.value == TokenState.Invalid.ret) UserConnectionState.InvalidNameOrPassword.str
-                else getUserFromServerAndStore(
-                        userName = name.value,
-                        expectedState = UserConnectionState.Verified,
-                        errorState = UserConnectionState.IssueWithServer
+                stateStr = if (tokenState.value == TokenState.Valid.ret) getUserFromServerAndStore(
+                    userName = name.value,
+//                    expectedState = UserConnectionState.Verified,
+                    expectedState = UserConnectionState.Connected,
+                    errorState = UserConnectionState.IssueWithServer
                 ).str
+                else
+                    UserConnectionState.InvalidNameOrPassword.str
             )
+            errorLog("time", "${getTimeMillis()}")
             delay(500)
+            errorLog("time", "${getTimeMillis()}")
+            errorLog("userConnectionState.value", "${userConnectionState.value}")
             if (userConnectionState.value == UserConnectionState.Connected.str) {
                 val newUserRanking = viewModelScope.async(Dispatchers.IO) {
                     RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
                 }
                 newUserRanking.await()
                 NavViewModel(navigator).navigateToUserInfo()
+//                NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
             } else
                 showTaost()
         }
@@ -118,13 +127,13 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                 serverRetFromCreation = getUserFromServerAndStore(
                     userName = name.value,
                     expectedState = UserConnectionState.Verified,
+//                    expectedState = UserConnectionState.Connected,
                     errorState = UserConnectionState.IssueWithServer
                 )
             }
             setUserConnectionState(serverRetFromCreation.str)
 
             if (userConnectionState.value == UserConnectionState.Connected.str)
-//                NavViewModel(navigator).navigateTo(Screens.UserInfo)
                 NavViewModel(navigator).navigateToUserInfo()
             else
                 showTaost()
@@ -142,9 +151,10 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     }
 
     suspend fun getUserFromServerAndStore(userName: String, expectedState: UserConnectionState, errorState: UserConnectionState): UserConnectionState {
-        infoLog("connectUserToServer", "userName : ${userName}")
+        infoLog("RegisterLoginScreenViewModel::getUserFromserverAndStore", "userName : ${userName}")
 //        todo : what about the token State when it is deprecated and the server tels us so ?
         val ultimateUser: UltimateUserRequest? = getUltimateUserFromServer()
+        infoLog("RegisterLoginScreenViewModel::getUserFromserverAndStore", "userNameFormServer : ${ultimateUser?.let { it.name }}")
         return (
                 if (ultimateUser != null)
                 {
@@ -157,8 +167,9 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                     )
                     expectedState
                 }
-                else
+                else {
                     errorState
+                }
                 )
     }
 

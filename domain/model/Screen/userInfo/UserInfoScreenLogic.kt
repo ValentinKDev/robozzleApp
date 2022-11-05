@@ -52,7 +52,7 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
     fun logingOut(navigator: Navigator) {
         UserDataStoreViewModel(application).clearUser()
         LevelWinRoomViewModel(application).deleteAllLevelWinRoom()
-        NavViewModel(navigator).navigateToMainMenu(Screens.Profil.route)
+        NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
     }
 
     fun setVisibilityAtLaunch() {
@@ -76,7 +76,7 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
     fun sortByDiff(difficulty: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val levelByDiff = levelRoomVM.getIdByDifficulty(difficulty)
-            upDateLevelWinListTo( allLevelWinList.filter { levelByDiff.contains(it.levelId) } )
+            upDateLevelWinListTo( allLevelWinList.filter { levelByDiff.contains(it.lvl_id) } )
         }
     }
 }

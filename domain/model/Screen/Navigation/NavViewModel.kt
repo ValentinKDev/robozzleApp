@@ -14,7 +14,7 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
 
     fun navigateToScreen(screen: Screens) {
         when (screen) {
-            Screens.Profil -> navigateToProfil()
+            Screens.Profile -> navigateToProfil()
             Screens.Config -> navigateToConfig()
             Screens.Creator -> navigateToCreator()
             Screens.Donation -> navigateToDonation()
@@ -28,7 +28,7 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
     fun navigateToConfig() = navigateTo(Screens.Config)
     fun navigateToCreator() = navigateTo(Screens.Creator)
     fun navigateToDonation() = navigateTo(Screens.Donation)
-    fun navigateToProfil() = navigateTo(Screens.Profil)
+    fun navigateToProfil() = navigateTo(Screens.Profile)
     fun navigateToUserInfo() = navigateTo(Screens.UserInfo)
     fun navigateToRegisterLogin() = navigateTo(Screens.RegisterLogin)
     fun navigateToRanksLevel(argStr: String, delayTiming: Long?) = navigateTo(Screens.RanksLevel, argStr)

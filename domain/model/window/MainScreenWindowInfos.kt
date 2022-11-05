@@ -42,7 +42,7 @@ class MainScreenWindowsInfos(): ViewModel() {
         val screenHeight: Float = context.resources.displayMetrics.heightPixels / density.density
 
         when (buttonId) {
-            Screens.Profil.key-> Size(width = (profileButtonWidthRatioTarget * screenWidth), height = (profileButtonHeightRatioTarget * screenHeight))
+            Screens.Profile.key-> Size(width = (profileButtonWidthRatioTarget * screenWidth), height = (profileButtonHeightRatioTarget * screenHeight))
             in Screens.Difficulty1.key..Screens.Difficulty5.key -> Size(width = levelDifficultyButtonWidthRatioTarget * screenWidth, height =  levelDifficultyButtonHeightRatioTarget * screenHeight )
             Screens.Creator.key, Screens.Config.key -> Size(width = creatorButtonWidthRatioTarget * screenWidth, height =  creatorButtonHeightRatioTarget * screenHeight )
             Screens.Donation.key -> Size(width = donationButtonWidthRatioTarget * screenWidth, height =  donationButtonHeightRatioTarget * screenHeight )
@@ -55,7 +55,7 @@ class MainScreenWindowsInfos(): ViewModel() {
         val screenHeight: Float = context.resources.displayMetrics.heightPixels / density.density
 
         when (buttonId) {
-            Screens.Profil.key -> Size(width = (profileButtonWidthRatio * screenWidth), height = (profileButtonHeightRatio * screenHeight))
+            Screens.Profile.key -> Size(width = (profileButtonWidthRatio * screenWidth), height = (profileButtonHeightRatio * screenHeight))
             in Screens.Difficulty1.key..Screens.Difficulty5.key  -> Size(width = levelDifficultyButtonWidthRatio * screenWidth, height =  levelDifficultyButtonHeightRatio * screenHeight )
             Screens.Creator.key, Screens.Config.key -> Size(width = creatorButtonWidthRatio * screenWidth, height =  creatorButtonHeightRatio * screenHeight )
             Screens.Donation.key -> Size(width = donationButtonWidthRatio * screenWidth, height =  donationButtonHeightRatio * screenHeight )

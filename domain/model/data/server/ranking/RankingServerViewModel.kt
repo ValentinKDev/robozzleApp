@@ -16,6 +16,7 @@ import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 
 class RankingServerViewModel(
     context: Context
@@ -52,6 +53,11 @@ class RankingServerViewModel(
     }
 
     fun getLevelWins(): List<LevelWin> = runBlocking(Dispatchers.IO) {
-        service.getPlayerWinJson(userDataStore.getUser()).toListLevelWin()
+        val json =
+            service.getPlayerWinJson(userDataStore.getUser())
+        errorLog("RankingServerVM::getLevelWins", "Json : ${json}}")
+        val list = json.toListLevelWin()
+        errorLog("RankingServerVM::getLevelWins", "list : ${list}}")
+        list
     }
 }

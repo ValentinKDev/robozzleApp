@@ -25,7 +25,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.flow.*
 
 @Composable
-fun RegisterLoginScreen(navigator: Navigator, tab: Tab) {
+fun RegisterLoginScreen(navigator: Navigator, tab: Tab = Tab()) {
     val tabSelected: Int by tab.selected.collectAsState()
 
     LaunchedEffect(key1 = true) { verbalLog("Launch", "RegisterLoginScreen") }

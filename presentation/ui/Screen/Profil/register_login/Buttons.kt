@@ -47,7 +47,7 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
             Text(text = "Register")
         }
         if (showErrorMessage > 0)
-            Toast.makeText( ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_LONG).show()
+            Toast.makeText( ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -86,6 +86,6 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
 //    if (showErrorMessage > 0) Toast.makeText(ctxt, "Can't reach Servers", Toast.LENGTH_LONG).show()
 //    if (showErrorMessage < 0) Toast.makeText(ctxt, "Wrong login", Toast.LENGTH_LONG).show()
     if (showErrorMessage != 0)
-        Toast.makeText(ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_LONG).show()
+        Toast.makeText(ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_SHORT).show()
 
 }

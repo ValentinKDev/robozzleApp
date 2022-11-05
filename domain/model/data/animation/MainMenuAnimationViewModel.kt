@@ -2,19 +2,13 @@ package com.mobilegame.robozzle.domain.model.data.animation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.geometry.Offset
-import androidx.core.graphics.scaleMatrix
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.goingTopTiming
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.utils.Extensions.IsPair
 import io.ktor.util.date.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -68,7 +62,7 @@ class MainMenuAnimationViewModel(): ViewModel() {
         when (buttonsId) {
             fromScreenId -> {
                 when (buttonsId) {
-                    Screens.Profil.key ->
+                    Screens.Profile.key ->
                         slideInHorizontally( initialOffsetX = {(0).toInt()}, animationSpec = tween(400) ) +
                                 fadeIn( initialAlpha = 0.02F, animationSpec = tween(400) )
                     in Screens.Difficulty1.key..Screens.Difficulty5.key ->
@@ -76,7 +70,7 @@ class MainMenuAnimationViewModel(): ViewModel() {
                     else -> fadeIn(initialAlpha = 0F, animationSpec = tween(500))
                 }
             }
-            Screens.Profil.key ->
+            Screens.Profile.key ->
                 fadeIn(initialAlpha = 0.05F, tween(500))
             in Screens.Difficulty1.key..Screens.Difficulty5.key -> {
                 if (buttonsId.IsPair())
@@ -106,14 +100,14 @@ class MainMenuAnimationViewModel(): ViewModel() {
     fun exitTransitionByState(buttonSelected: Int, button: Int, offset: Offset, value: Long): ExitTransition = runBlocking {
         if (buttonSelected == button){
             when (button) {
-                Screens.Profil.key -> slideOutHorizontally( targetOffsetX = {(0).toInt()}, animationSpec = tween(340) ) + fadeOut( targetAlpha = 0.02F, animationSpec = tween(400) )
+                Screens.Profile.key -> slideOutHorizontally( targetOffsetX = {(0).toInt()}, animationSpec = tween(340) ) + fadeOut( targetAlpha = 0.02F, animationSpec = tween(400) )
                 in Screens.Difficulty1.key..Screens.Difficulty5.key -> slideOutVertically(targetOffsetY = {offset.y.toInt() * -1}, animationSpec = tween(value.toInt()))
                 else -> fadeOut(targetAlpha = 0F, animationSpec = tween(310))
             }
         }
         else {
             when (button) {
-                Screens.Profil.key -> {
+                Screens.Profile.key -> {
                     fadeOut(animationSpec = tween(250))
                 }
                 in Screens.Difficulty1.key..Screens.Difficulty5.key -> {

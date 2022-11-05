@@ -1,8 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen
 
-import android.content.ContentProvider.CallingIdentity
-import com.mobilegame.robozzle.analyse.infoLog
-
 interface NavigationDestination {
     val route: String
 }
@@ -12,7 +9,7 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
     object  None: Screens("none_screen", -1)
     object  MainMenu: Screens("main_menu_screen", -42)
     object  LevelByDifficulty: Screens("levelsBydifficulty", -42)
-    object  Profil: Screens("profile_screen_id0", 0)
+    object  Profile: Screens("profile_screen_id0", 0)
     object  RegisterLogin: Screens("registerlogin_screen", 0)
     object  UserInfo: Screens("userinfo_screen", 0)
     object  Difficulty1: Screens("levels_by_difficulty_id1", 1)
