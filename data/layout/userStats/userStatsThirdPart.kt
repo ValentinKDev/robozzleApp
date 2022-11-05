@@ -14,7 +14,7 @@ object userStatsThirdPart {
     val winOverView = WinOverView
 
     object Dimensions {
-        const val heightWeight = 0.85f
+        const val heightWeight = 0.80f
         var height: Float = 0F
         var heightDp: Dp = 0.dp
         var width: Float = 0F

@@ -16,7 +16,6 @@ import kotlinx.coroutines.runBlocking
 //todo : declare the service here by using the context direction in the param ?
 class UserDataStoreViewModel (
     context: Context
-//    private val service: DataStoreService
 ) : ViewModel() {
     private val service = DataStoreService.createUserService(context)
 

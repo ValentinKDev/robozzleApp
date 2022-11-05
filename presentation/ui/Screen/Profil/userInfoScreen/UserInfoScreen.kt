@@ -22,51 +22,27 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.User
 @Composable
 fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
 
-    val ctxt = LocalContext.current
-    val dens = LocalDensity.current
-
     val listVisible by remember(vm){ vm.logic.gridVisible}.collectAsState()
-    LaunchedEffect(key1 = "Launch LevelsScreenByDifficulty") {
+
+    LaunchedEffect(true) {
         vm.logic.setVisibilityAtLaunch()
-//        vm.data.setLevelsListsAtLaunch()
     }
 
     errorLog("Launch", "UserInfoScreen()")
 
     Column() {
-        Box( modifier = Modifier
-            .fillMaxWidth()
-//            .weight(vm.uiData.firstPartScreenWeight)
-//            .weight(vm.uiData.secondPart.ratio.heightWeight)
-            .weight(vm.uiData.secondPart.dimensions.heightWeight)
-        ) {
-            UserInfoScreenFirstPart(
-                vm = vm,
-                navigator = navigator
-            )
+        Box( Modifier.fillMaxWidth().weight(vm.uiData.secondPart.dimensions.heightWeight) ) {
+            UserInfoScreenFirstPart( vm = vm, navigator = navigator )
         }
-        Box( modifier = Modifier
-            .fillMaxWidth()
-//            .weight(vm.uiData.secondPartScreenWeight)
-//            .weight(vm.uiData.secondPart.ratio.heightWeight)
-            .weight(vm.uiData.secondPart.dimensions.heightWeight)
-        ) {
+        Box(Modifier.fillMaxWidth() .weight(vm.uiData.secondPart.dimensions.heightWeight) ) {
             UserInfoScreenSecondPart(vm = vm)
         }
-        Column( Modifier
-//            .weight(vm.uiData.thirdPartScreenWeight)
-//            .weight(vm.uiData.thirdPart.ratio.heightWeight)
-            .weight(vm.uiData.thirdPart.dimensions.heightWeight)
-            .fillMaxWidth()
-        ) {
+        Column( Modifier.fillMaxWidth().weight(vm.uiData.thirdPart.dimensions.heightWeight) ) {
             AnimatedVisibility(
                 visible = listVisible,
                 enter = slideInVertically(),
-                exit = slideOutVertically(animationSpec = tween(300)) + fadeOut(
-                    animationSpec = tween(
-                        300
-                    )
-                )
+                exit = slideOutVertically(animationSpec = tween(300))
+                        + fadeOut( animationSpec = tween( 300 ))
             ) {
                 UserInfoScreenThirdPart(
                     vm = vm,

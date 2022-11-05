@@ -47,8 +47,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
         /** Config Screen */
@@ -148,8 +148,9 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
-            PlayingScreen(navigator)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+//            PlayingScreen(navigator)
+            UserInfoScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
 //            ConfigScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)

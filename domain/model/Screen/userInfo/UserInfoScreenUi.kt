@@ -24,9 +24,9 @@ class UserInfoScreenUi(context: Context): ViewModel() {
     /** Elements */
     val logoutButtonRatioHeight = 0.05f
 
-    val filterListButtonElevation = 8.dp
+//    val filterListButtonElevation = 8.dp
 
-    val cardNameElevation = 15.dp
+//    val cardNameElevation = 15.dp
     //    val cardNamePadding = 0.07f
     //todo: test the name with the maximum name lenght
     val cardNameRatioWidth = 0.30f

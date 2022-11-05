@@ -96,7 +96,6 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                     RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
                 }
                 newUserRanking.await()
-//                NavViewModel(navigator).navigateTo(Screens.UserInfo)
                 NavViewModel(navigator).navigateToUserInfo()
             } else
                 showTaost()

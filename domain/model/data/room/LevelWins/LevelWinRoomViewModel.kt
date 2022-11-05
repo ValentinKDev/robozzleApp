@@ -53,7 +53,7 @@ class LevelWinRoomViewModel(context: Context): ViewModel() {
         repo.getListLevelWinsData().toLevelWinList()
     }
 
-    fun getAllWinIdsInList() = runBlocking(Dispatchers.IO) {
+    fun getAllWinIdsInList(): List<Int> = runBlocking(Dispatchers.IO) {
         repo.getLevelWinIds()
     }
 
