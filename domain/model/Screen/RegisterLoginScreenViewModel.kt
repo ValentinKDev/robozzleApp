@@ -104,8 +104,8 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                     RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
                 }
                 newUserRanking.await()
-                NavViewModel(navigator).navigateToUserInfo()
-//                NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
+//                NavViewModel(navigator).navigateToUserInfo()
+                NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
             } else
                 showTaost()
         }
@@ -126,15 +126,16 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                 infoLog("getUserFromServerAndStore", "start")
                 serverRetFromCreation = getUserFromServerAndStore(
                     userName = name.value,
-                    expectedState = UserConnectionState.Verified,
-//                    expectedState = UserConnectionState.Connected,
+//                    expectedState = UserConnectionState.Verified,
+                    expectedState = UserConnectionState.Connected,
                     errorState = UserConnectionState.IssueWithServer
                 )
             }
             setUserConnectionState(serverRetFromCreation.str)
 
             if (userConnectionState.value == UserConnectionState.Connected.str)
-                NavViewModel(navigator).navigateToUserInfo()
+//                NavViewModel(navigator).navigateToUserInfo()
+                NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
             else
                 showTaost()
         }
