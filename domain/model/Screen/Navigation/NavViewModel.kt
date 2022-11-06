@@ -31,7 +31,7 @@ class NavViewModel(private val navigator: Navigator): ViewModel() {
     fun navigateToProfil() = navigateTo(Screens.Profile)
     fun navigateToUserInfo() = navigateTo(Screens.UserInfo)
     fun navigateToRegisterLogin() = navigateTo(Screens.RegisterLogin)
-    fun navigateToRanksLevel(argStr: String, delayTiming: Long?) = navigateTo(Screens.RanksLevel, argStr)
+    fun navigateToRanksLevel(argStr: String) = navigateTo(Screens.RanksLevel, argStr)
     fun navigateToMainMenu(fromScreen: String) = navigateTo(Screens.MainMenu, fromScreen)
     fun navigateToScreenLevelByDiff(levelDifficulty: String) {
         navigateTo( Screens.LevelByDifficulty, levelDifficulty)

@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -42,7 +41,8 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 fun LevelsScreenByDifficultyList(
     navigator: Navigator,
     vm: LevelsScreenByDifficultyViewModel,
-    rankingIconVM: RankingIconViewModel = viewModel()
+//    rankingIconVM: RankingIconViewModel = viewModel()
+    rankingIconVM: RankingIconViewModel = RankingIconViewModel().create(35)
 ) {
 //    val levelsList: List<LevelOverView> by vm.levelOverViewList.collectAsState()
     val levelsList: List<LevelOverView> = vm.levelOverViewList
@@ -103,40 +103,28 @@ fun DisplayRankingIcon(rankingIconVM: RankingIconViewModel, navigator: Navigator
     val isPressed by interactionSource.collectIsPressedAsState()
 
     when (isPressed) {
-//        true -> screenVM.rankingIconIsPressed()
-//        false -> screenVM.rankingIconIsReleased(navigator, level.id)
         true -> rankingIconVM.rankingIconIsPressed()
-        false -> rankingIconVM.rankingIconIsReleased(navigator, id)
+        false -> rankingIconVM.rankingIconIsReleased()
     }
 
-//    Box(
-//        modifier = Modifier .weight(5f)
-//        ,
-//        contentAlignment = Alignment.Center
-//    ) {
-//        Column( modifier = Modifier.fillMaxSize()
-//        ) {
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxHeight()
-//                    .align(Alignment.CenterHorizontally)
-//            ) {
-    CenterComposable {
-        Box( modifier = Modifier
-            .wrapContentSize()
-            .clickable(
-                interactionSource = interactionSource,
-                indication = rememberRipple(color = Color.Transparent)
-            ) {
-                infoLog("clickable", "ranking icon")
-            }
+    Box( modifier = Modifier
+        .fillMaxSize()
+        .clickable(
+            interactionSource = interactionSource,
+            indication = rememberRipple(color = Color.Transparent)
         ) {
-            RankingIconBouncing(sizeAtt = 35, rankingIconVM = rankingIconVM, isPressed = isPressed, enableShadow = true)
+            infoLog("clickable", "ranking icon")
+        }
+    ) {
+        CenterComposable {
+            RankingIconBouncing(
+                vm = rankingIconVM,
+                enableShadow = true,
+                navigator = navigator,
+                levelId = id
+            )
         }
     }
-//            }
-//        }
-//    }
 }
 
 @Composable

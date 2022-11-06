@@ -1,36 +1,33 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Canvas
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.material.ripple.rememberRipple
 //import androidx.compose.material.icons.Icons
 //import androidx.compose.material.icons.outlined.North
 //import androidx.compose.material.icons.outlined.Update
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
-import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameSecondPart
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
-import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
-import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.gray7
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.green10
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
-import com.mobilegame.robozzle.presentation.ui.Navigation.myleveltest
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import com.mobilegame.robozzle.presentation.ui.elements.TrashIcone
-import com.mobilegame.robozzle.utils.Extensions.isOnLeft
-import com.mobilegame.robozzle.utils.Extensions.toDp
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 
 @Composable
@@ -38,108 +35,63 @@ fun CreatorScreen(navigator: Navigator) {
     BackHandler {
         NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Donation.route)
     }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    var animIcon by remember { mutableStateOf(false) }
+
+    when (isPressed) {
+        true -> {
+            animIcon = true
+        }
+        false -> {
+            animIcon = false
+        }
+    }
+
+    Column(Modifier.fillMaxSize()) {
+        Button(onClick = {
+            animIcon = true
+        }) {
+            Text(text = "Flash")
+        }
+        Spacer(modifier = Modifier.size(100.dp))
+        Box(
+            Modifier
+                .wrapContentSize()
+//                .size(150.dp)
+                .background(green10)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = rememberRipple(color = Color.Transparent)
+                ) { infoLog("clickable", "ranking icon") }
+        ) {
+            CenterComposable {
+                animCol(isPressed = isPressed, animState = animIcon, height = 300F ) {
+                    errorLog("aniCol", "******* animFinisher *******")
+                }
+            }
+        }
+    }
 }
 
-val itemListval = listOf(
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-    "Item 5",
-    "Item 6",
-    "Item 7",
-    "Item 8",
-    "Item 9",
-    "Item 10",
-    "Item 11",
-    "Item 12",
-    "Item 13",
-    "Item 14",
-    "Item 15",
-    "Item 16",
-    "Item 17",
-    "Item 18",
-    "Item 19",
-    "Item 20"
-).toMutableStateList()
-
-val mapTest4 = listOf(
-/*                               1 1 1 1 1 1      */
-/*           0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5      */
-/*0*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*0*/
-/*1*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*0*/
-     ". . . . . . . . . . . . . . . .".replace(" ", "") ,
-/*3*/". . . R G G G R . B B B . . . .".replace(" ", "") , /*2*/
-     ". . R G G R . G . B B B B . . .".replace(" ", "") ,
-/*5*/". . G G . G . G . B . B B . . .".replace(" ", "") , /*4*/
-     ". . G R G R . G . B B B B . . .".replace(" ", "") ,
-/*7*/". . G . . . . G . . . . B . . .".replace(" ", "") , /*6*/
-     ". . R . . . . B B B B B B . . .".replace(" ", "") ,
-/*9*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*8*/
-     ". . . . . . . . . . . . . . . .".replace(" ", "") ,
-/*11*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*10*/
-)
-
-
-val mapTest3 = listOf(
-/*                               1 1 1 1 1 1      */
-/*           0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5      */
-/*0*/". R . . . . . . . . . . . . . .".replace(" ", "") , /*0*/
-    ". G B B B G . . . . . . . . . .".replace(" ", "") ,
-/*2*/". G B B B B B G . . . . . . . .".replace(" ", "") , /*2*/
-     ". G . . . . . . . . . . . . . .".replace(" ", "") ,
-/*4*/". G B G . . . . . . . . . . . .".replace(" ", "") , /*4*/
-     ". G . . . . . . . . . . . . . .".replace(" ", "") ,
-/*6*/". G B B B B B B B B G . . . . .".replace(" ", "") , /*6*/
-     ". G . . . . . . . . . . . . . .".replace(" ", "") ,
-/*8*/". G B B B B B B B B B B B B B .".replace(" ", "") , /*8*/
-     ". G B B B B B B B B B B G . . .".replace(" ", "") ,
-/*10*/". G B B B B B B B G . . . . . .".replace(" ", "") , /*10*/
-     ". G B B B B B B B B B G . . . .".replace(" ", "") ,
-)
-val mapTest2 = listOf(
-    /*                               1 1 1 1 1 1      */
-    /*           0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5      */
-   /*0*/". . . . . . . . . . . R R R . G".replace(" ", "") , /*0*/
-        ". R G G G R . . . . . R R R B G".replace(" ", "") ,
-   /*2*/". R G B G R G R G R . R R R B G".replace(" ", "") , /*2*/
-        ". R G B R B B B B . . . B B B G".replace(" ", "") ,
-   /*4*/". R G B B B B B B . . . B B B G".replace(" ", "") , /*4*/
-        ". R G B G B B B B R B B B B B G".replace(" ", "") ,
-   /*6*/". R R B R B B B B G B . . . B G".replace(" ", "") , /*6*/
-        ". B B B G R G R G R B . . . B G".replace(" ", "") ,
-   /*8*/". B B B B B B B B B B B B B B G".replace(" ", "") , /*8*/
-        "B B B B B B B B B G B G B G B G".replace(" ", "") ,
-   /*10*/"B R R R R R R R R R B R R R B R".replace(" ", "") , /*10*/
-        ". . . . . . . . . . . . . . . .".replace(" ", "") ,
-)
-val mapTest1 = listOf(
-/*                               1 1 1 1 1 1      */
-/*            0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5      */
-        /*0*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*0*/
-             ". . . . . . . . . . . . . . . .".replace(" ", "") ,
-        /*2*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*2*/
-             ". . . . . B . . B B B . . . . .".replace(" ", "") ,
-        /*4*/". . . . B R B . B B B B . . . .".replace(" ", "") , /*4*/
-             ". . . . B B R . B B B B . . . .".replace(" ", "") ,
-        /*6*/". . . . B B R B B B R B . . . .".replace(" ", "") , /*6*/
-             ". . . . B R B . B B B B . . . .".replace(" ", "") ,
-        /*8*/". . . . . B R . B B B . . . . .".replace(" ", "") , /*8*/
-             ". . . . . . . . . . . . . . . .".replace(" ", "") ,
-       /*10*/". . . . . . . . . . . . . . . .".replace(" ", "") , /*10*/
-             ". . . . . . . . . . . . . . . .".replace(" ", "") ,
-)
-val mapTest5 = listOf(
-/*               0123456789012345     */
-"................", /*0*/
-".......RR.......",
-".......BB.......", /*2*/
-".......GG.......",
-".......RR.......", /*4*/
-".......BR.......",
-".......RR.......", /*6*/
-".......GG.......",
-".......BB.......", /*8*/
-".......RR.......",
-"................", /*10*/
-)
+@Composable
+fun animCol(animState: Boolean, isPressed: Boolean, height: Float, animFinished: (Dp) -> Unit):Dp {
+    val animatedHeight: Dp by animateDpAsState(
+        targetValue = when {
+            animState && isPressed -> height.dp
+            else -> (0.5F * height).dp
+        },
+        animationSpec = when {
+            animState && isPressed-> { spring(dampingRatio = Spring.DampingRatioLowBouncy) }
+            else -> { spring(dampingRatio = 0.18F, stiffness = Spring.StiffnessMedium) }
+        },
+        finishedListener = animFinished
+    )
+    Column( modifier = Modifier
+        .height(animatedHeight)
+        .width(10.dp)
+        .background(Color.Blue)
+        ,
+    ) { }
+    return animatedHeight
+}

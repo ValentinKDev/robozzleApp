@@ -32,8 +32,12 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
     val isPressed by interactionSource.collectIsPressedAsState()
 
     when (isPressed) {
-        true -> vm.logic.rankingIconVM.rankingIconIsPressed()
-        false -> vm.logic.rankingIconVM.rankingIconIsReleased(navigator, levelWin.lvl_id)
+        true -> {
+//            vm.logic.rankingIconVM.rankingIconIsPressed()
+        }
+        false -> {
+//            vm.logic.rankingIconVM.rankingIconIsReleased(navigator, levelWin.lvl_id)
+        }
     }
 
     Card(
@@ -113,7 +117,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                             ,
                             horizontalArrangement = Arrangement.End
                         ) {
-                            RankingIconBouncing(sizeAtt = 35, rankingIconVM = vm.logic.rankingIconVM, isPressed = isPressed, enableShadow = false)
+//                            RankingIconBouncing(sizeAtt = 35, vm = vm.logic.rankingIconVM, isPressed = isPressed, enableShadow = false, navigator, levelWin.lvl_id)
                         }
                     }
                 }
