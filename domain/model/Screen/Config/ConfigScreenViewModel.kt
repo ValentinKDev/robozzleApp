@@ -5,18 +5,24 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.layout.config.ConfigScreenLayout
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.utils.AnimateHeaderAndListViewModel
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.ConfigOption
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ConfigScreenViewModel(application: Application): AndroidViewModel(application) {
-    val data = ConfigRoomViewModel(getApplication())
-    val configData = data.getConfigData()
+    val dataVM = ConfigRoomViewModel(getApplication())
+    val animVM = AnimateHeaderAndListViewModel()
+    val configData = dataVM.getConfigData()
     val layout = ConfigScreenLayout.init(getApplication())
     var recompositionListner = 0
     fun recomposeConfigScreen() {recompositionListner += 1}
@@ -65,7 +71,7 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
         recomposeConfigScreen()
         if (state != switchToTrash) {
             switchToTrash = state
-            data.updateTrashesInGameStateTo(state)
+            dataVM.updateTrashesInGameStateTo(state)
         }
         infoLog("switchToTrash", "$switchToTrash")
 
@@ -76,9 +82,20 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
         recomposeConfigScreen()
         if (state != switchToDisplayLevelWin) {
             switchToDisplayLevelWin = state
-            data.updateDisplayLevelWinInListStateTo(state)
+            dataVM.updateDisplayLevelWinInListStateTo(state)
         }
         infoLog("switchToDisplayLevelWin", "$switchToDisplayLevelWin")
     }
 
+    fun startExitAnimationAndPressBack() = runBlocking(Dispatchers.IO) {
+        animVM.setVisibleListTargetStateAs(false)
+//        setRetToMainMenuState(true)
+    }
+
+    fun goingMainMenuListener(navigator: Navigator) {
+        if (animVM.headerAnimationEnd() && animVM.listAnimationEnd())
+            NavViewModel(navigator).navigateToMainMenu(Screens.Config.route)
+        if (animVM.listAnimationEnd())
+            animVM.setVisibleHeaderTargetStateAs(false)
+    }
 }

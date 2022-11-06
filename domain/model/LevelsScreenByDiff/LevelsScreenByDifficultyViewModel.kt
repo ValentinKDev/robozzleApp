@@ -110,7 +110,7 @@ var levelOverViewList: MutableList<LevelOverView> = mutableListOf()
     }
 
     @OptIn(ExperimentalAnimationApi::class)
-    fun getEnterTransitionForHeader(fromScreen: Screens): EnterTransition = runBlocking {
+    fun getEnterTransitionForList(fromScreen: Screens): EnterTransition = runBlocking {
         when (fromScreen) {
             Screens.Playing -> slideInHorizontally() + fadeIn()
             Screens.MainMenu -> slideInVertically()

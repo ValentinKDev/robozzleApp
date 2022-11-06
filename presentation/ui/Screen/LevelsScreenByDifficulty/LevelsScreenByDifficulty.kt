@@ -51,17 +51,16 @@ fun LevelsScreenByDifficulty(
     Box(modifier = Modifier
         .fillMaxSize()
     ) {
-            AnimatedVisibility(
-                visibleState = visibleListState ,
-                enter = vm.getEnterTransitionForHeader(fromScreen) ,
-                exit = vm.getExitTransitionForHeader() ,
-            ) {
-                LevelsScreenByDifficultyList(
-                    navigator = navigator,
-                    vm = vm
-                )
-            }
-
+        AnimatedVisibility(
+            visibleState = visibleListState ,
+            enter = vm.getEnterTransitionForList(fromScreen) ,
+            exit = vm.getExitTransitionForHeader() ,
+        ) {
+            LevelsScreenByDifficultyList(
+                navigator = navigator,
+                vm = vm
+            )
+        }
         AnimatedVisibility(
             visibleState = visibleHeaderState,
             enter = fadeIn(initialAlpha = 1F),

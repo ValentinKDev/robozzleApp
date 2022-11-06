@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor
@@ -39,12 +40,15 @@ class RankingIconViewModel(): ViewModel() {
     fun finisherAction(type: ColumColor, navigator: Navigator, levelId: Int): (Dp) -> Unit {
         when (type) {
             ColumColor.Red -> {
+                infoLog("RankingViewModel::finisherAction", "AnimationFinished Red")
                 finisherRed.value = true
             }
             ColumColor.Blue -> {
+                infoLog("RankingViewModel::finisherAction", "AnimationFinished Blue")
                 finisherBlue.value = true
             }
             ColumColor.Green -> {
+                infoLog("RankingViewModel::finisherAction", "AnimationFinished Green")
                 finisherGreen.value = true
             }
         }
@@ -77,8 +81,10 @@ class RankingIconViewModel(): ViewModel() {
                 else -> { spring(dampingRatio = 0.18F, stiffness = Spring.StiffnessMedium) }
             }
             ColumColor.Blue -> when {
-                isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy)
-                else -> { spring(dampingRatio = 0.25F, stiffness = Spring.StiffnessLow) }
+//                isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessHigh)
+//                else -> { spring(dampingRatio = 0.25F, stiffness = Spring.StiffnessLow) }
+                isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
+                else -> { spring(dampingRatio = 0.5F, stiffness = Spring.StiffnessHigh) }
             }
             ColumColor.Green -> when {
                 isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessVeryLow)
@@ -108,10 +114,13 @@ data class RankingIconPresentationData(
 ) {
     val height: Float = boxHeight * 0.85F
     val width: Float = height * (6.0F / 7.0F)
-    val redTargetHeight: Dp = (0.65 * (4.0F/5.0F) * height).dp
+//    val redTargetHeight: Dp = (0.65 * (4.0F/5.0F) * height).dp
+    val redTargetHeight: Dp = (0.55 * (4.0F/5.0F) * height).dp
     val redHeight: Dp = ((4.0F/5.0F) * height).dp
-    val blueTargetHeight: Dp = (0.70F  * height).dp
+//    val blueTargetHeight: Dp = (0.70F  * height).dp
+    val blueTargetHeight: Dp = (0.60F  * height).dp
     val blueHeight: Dp = (height).dp
-    val greenTargetHeight: Dp = (0.75 * (3.0F/5.0F) * height).dp
+//    val greenTargetHeight: Dp = (0.75 * (3.0F/5.0F) * height).dp
+    val greenTargetHeight: Dp = (0.65 * (3.0F/5.0F) * height).dp
     val greenHeight: Dp =  ((3.0F/5.0F) * height).dp
 }
