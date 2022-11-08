@@ -51,6 +51,9 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         _name.value = newName
         _validName.value = newName.isValid()
     }
+    fun filterName() {
+        set_name(name.value.filterAuthorizedName())
+    }
 
     private val _tokenJwt = MutableStateFlow("")
     val tokenJwt: StateFlow<String> = _tokenJwt.asStateFlow()
@@ -79,6 +82,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     fun loginOnClickListner(navigator: Navigator) {
         infoLog("RegisterLoginScreenVM::loginOnClickListner", "start")
+        filterName()
         viewModelScope.launch {
             errorLog ("get a token", "start")
             getAToken(name.value, password.value)
@@ -112,8 +116,10 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     }
 
     fun registerOnClickListner(navigator: Navigator) {
+        filterName()
         infoLog("register", "onclicklistner()")
         infoLog("UserConnectionState 0 ", userConnectionState.value)
+        name
         viewModelScope.launch {
             infoLog("createnewsuerandgetState", "start")
             var serverRetFromCreation = createANewUserAndGetState()

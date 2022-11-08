@@ -304,8 +304,6 @@ class BreadcrumbViewModel(val level: Level, instructionRows: List<FunctionInstru
     private fun IsLost(): Boolean {return (bd.lost >= TRUE)}
     private fun IsWin(): Boolean {return (bd.win >= TRUE)}
 
-//    fun IsWin(): Boolean {return (win > -1)}
-//    fun NoEnd(): Boolean {return !(IsWin() || IsLost())}
     private fun NotFinished(): Boolean {return (bd.win.isUnknown() && bd.lost.isUnknown())}
 
     private enum class InstructionType {
