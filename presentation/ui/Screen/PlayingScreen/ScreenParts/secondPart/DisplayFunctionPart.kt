@@ -53,6 +53,7 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
                     errorLog("TEST", "${vm.animData.playerAnimationState.value.key}")
                     infoLog("onDragStart", "started")
                     if (vm.isDragAndDropAvailable()) {
+                        vm.clickResetButtonHandler()
                         vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
                     }
                     infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")

@@ -47,7 +47,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun replaceInstruction(pos: Position, case: FunctionInstruction) = runBlocking() {
-        infoLog("replace", "$case $pos ")
+        infoLog("GameDataVM::replaceInstruction", "replacing $case $pos ")
         val function: FunctionInstructions = instructionsRows[pos.line]
         function.colors =
             function.colors.replaceAt(pos.column, case.color)
@@ -68,14 +68,14 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     private fun updateAnimData() { animData.updateExpandedBreadCrumb(breadcrumb) }
     fun updateBreadcrumbAndData(bd: Breadcrumb) {
-        verbalLog("GameDataViewModel", ":updateBreadcrumbAndData")
+        verbalLog("GameDataVM::updateBreadcumbAndData", "start")
         breadcrumb = bd
         updateAnimData()
     }
 
     fun startPlayerAnimation() {
-        verbalLog("startPlayerAnimation", "job is active ${animationJob?.isActive}")
-        verbalLog("startPlayerAnimation", "job is canceled ${animationJob?.isCancelled}")
+        verbalLog("GameDataVM::startPlayerAnimation", "job is active ${animationJob?.isActive}")
+        verbalLog("GameDataVM::startPlayerAnimation", "job is canceled ${animationJob?.isCancelled}")
         animationJob = animationLogicVM.start(breadcrumb, animData)
     }
 
@@ -89,29 +89,31 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     private val _displayInstructionsMenu = MutableStateFlow(false)
     val displayInstructionsMenu: StateFlow<Boolean> = _displayInstructionsMenu.asStateFlow()
     fun ChangeInstructionMenuState() {
-        Log.v("DisplayMenu", "ChangeState ${_displayInstructionsMenu.value} to ${!_displayInstructionsMenu.value!!}")
+        Log.v("GameDataVM::ChangeInstructionMenuState", "ChangeState ${_displayInstructionsMenu.value} to ${!_displayInstructionsMenu.value!!}")
         _displayInstructionsMenu.value =! _displayInstructionsMenu.value!!
     }
 
     fun backNavHandler() {
         clickResetButtonHandler()
-        prettyPrint("instructions saved", instructionsRows)
+        prettyPrint("GameDataVM::backNavHandler","instructions saved", instructionsRows)
         levelVM.saveFunctionsInstructions(level = level, newFunciontInstructionList = instructionsRows)
     }
 
-    fun clickResetButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { verbalLog("click reset vm handler", "start ${animData.getPlayerAnimationState().key}") }
-        animData.setPlayerAnimationState(PlayerAnimationState.NotStarted)
-        animationJob?.cancel()
-        animData.reset()
-        logClick?.let {
-            errorLog("click reset vm handler", "end ${animData.getPlayerAnimationState().key}")
-            infoLog("animData", "${animData.getActionToRead()}")
+    fun clickResetButtonHandler() {
+        viewModelScope.launch(Dispatchers.IO) {
+            logClick?.let { verbalLog("GameDataVM::clickResetButtonHandler", "start ${animData.getPlayerAnimationState().key}") }
+            animData.setPlayerAnimationState(PlayerAnimationState.NotStarted)
+            animationJob?.cancel()
+            animData.reset()
+            logClick?.let {
+                errorLog("GameDataVM::clickResetButtonHandler", "end ${animData.getPlayerAnimationState().key}")
+                infoLog("GameDataVM::clickResetButtonHandler", "${animData.getActionToRead()}")
+            }
         }
     }
 
     fun clickPlayPauseButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { verbalLog("click play pause vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { verbalLog("GameDataVM:clickPlayPauseButton", "start ${animData.getPlayerAnimationState().key}") }
         when (animData.getPlayerAnimationState()) {
             PlayerAnimationState.IsPlaying -> {
                 animationJob?.cancel()
@@ -127,27 +129,27 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
             }
             else -> { logClick?.let { errorLog("ERROR", "GameButton playerAnimationState is neither IsPlaying or OnPause") } }
         }
-        logClick?.let { errorLog("click play pause vm handler", "end ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { errorLog("GameDataVM:clickPlayPauseButton", "end ${animData.getPlayerAnimationState().key}") }
     }
 
     fun clickNextButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { verbalLog("click next vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { verbalLog("GameDataVM::clickNextButton", "start ${animData.getPlayerAnimationState().key}") }
         if (animData.isOnPause()) { animationLogicVM.stepByStep(AnimationStream.Forward) }
         else if (animData.hasNotStarted()) {
             animationLogicVM.initialize(breadcrumb, animData)
             animData.setPlayerAnimationState(PlayerAnimationState.OnPause)
             animationLogicVM.stepByStep(AnimationStream.Forward)
         }
-        else { infoLog("next", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
-        logClick?.let { errorLog("click next vm handler", "end ${animData.getPlayerAnimationState().key}") }
+        else { infoLog("GameDataVM::clickNextButton", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
+        logClick?.let { errorLog("GameDataVM::clickNextButton", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun clickBackButtonHandler() = runBlocking(Dispatchers.Default) {
-        logClick?.let { verbalLog("click back vm handler", "start ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { verbalLog("GameDataVM::clickBackButtonHandler", "start ${animData.getPlayerAnimationState().key}") }
         animationLogicVM.stepByStep(AnimationStream.Backward)
-        logClick?.let { errorLog("click back vm handler", "end ${animData.getPlayerAnimationState().key}") }
+        logClick?.let { errorLog("GameDataVM::clickBackButtonHandler", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun isInstructionMenuAvailable(): Boolean = animData.playerAnimationState.value.isTheBreadcrumbModifiable()
-    fun isDragAndDropAvailable(): Boolean = animData.playerAnimationState.value.isTheBreadcrumbModifiable()
+    fun isDragAndDropAvailable(): Boolean = animData.playerAnimationState.value.runningInBackgroundIs(false)
 
     init {
                 logInit?.let { errorLog("init", "GameDataViewModel") }

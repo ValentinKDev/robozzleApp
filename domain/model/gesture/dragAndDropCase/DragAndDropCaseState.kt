@@ -3,16 +3,16 @@ package com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.Screen.InGame.InGameData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
+import kotlin.reflect.KFunction0
 
 class DragAndDropCaseState(val trash: Trash) {
     val elements = DragAndDropCaseElements()
