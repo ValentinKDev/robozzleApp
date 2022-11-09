@@ -20,15 +20,11 @@ interface LevelDao {
     @Query("SELECT name FROM level_table WHERE difficulty = :diff")
     fun getAllNameFromDifficulty(diff: Int): List<String>
 
-//    @Query("SELECT state_key FROM level_table WHERE difficulty = :diff")
-//    fun getAllLevelStatesByDifficulty(diff: Int): List<LevelState>
-
     @Query("SELECT map_json FROM level_table WHERE difficulty = :diff")
     fun getAllMapJsonFromDifficulty(diff: Int): List<String>
 
     @Query("SELECT * FROM level_table WHERE id = :id")
     fun getALevel(id: Int): LevelData?
-
 
     @Query("SELECT * FROM level_table WHERE id IN (:id)")
     fun loadAllByIds(id: IntArray): List<LevelData>
@@ -39,8 +35,11 @@ interface LevelDao {
     @Insert
     fun insertAll(vararg levelData: LevelData)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLevel(lvl: LevelData)
+
+//    @Insert(onConflict = OnConflictStrategy.IGNORE)
+//    suspend fun addLevel(lvl: LevelData)
 
     @Query("DELETE FROM level_table")
     fun deleteAll()
@@ -51,4 +50,6 @@ interface LevelDao {
     @Update
     fun updateLevels(vararg levelData: LevelData)
 
+//    @Update(onConflict = OnConflictStrategy.REPLACE)
+//    fun updateFunctionInstructions(id: Int, funInt: String)
 }

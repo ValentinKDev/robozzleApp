@@ -51,6 +51,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
+
         /** Config Screen */
         composable(route = Screens.Config.route) {
             AnimateNavigation(
@@ -58,6 +59,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 vm = animNav,
             ) { ConfigScreen(navigator) }
         }
+
         /** Donation Screen */
         composable(route = Screens.Donation.route ) {
             AnimateNavigation(
@@ -65,6 +67,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 vm = animNav,
             ) { DonationScreen(navigator) }
         }
+
         /** UserInfo Screen */
         composable(route = Screens.UserInfo.route) {
             AnimateNavigation(
@@ -72,14 +75,15 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 vm = animNav,
             ) { UserInfoScreen(navigator) }
         }
+
         /** RegisterLogin Screen */
         composable(route = Screens.RegisterLogin.route) {
             AnimateNavigation(
                 element = Screens.RegisterLogin,
                 vm = animNav,
-//            ) { RegisterLoginScreen(navigator, Tab()) }
             ) { RegisterLoginScreen(navigator) }
         }
+
         /** Main Menu Screen */
         composable(route = Screens.MainMenu.route) {
             AnimateNavigation(
@@ -99,6 +103,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 )
             }
         }
+
         /** Level By Difficulty Screen */
         composable(
             route = Screens.LevelByDifficulty.route.getNavArguement(Arguments.Button.key) ,
@@ -117,6 +122,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 }
             }
         }
+
         /** Ranks Level Screen Screen */
         composable(
             route = Screens.RanksLevel.route + "/{" + Arguments.LevelId.key + "}",
@@ -128,6 +134,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
                 }
             }
         }
+
         /** Playing Screen */
         composable(
             route = Screens.Playing.route + "/{" + Arguments.LevelId.key + "}",

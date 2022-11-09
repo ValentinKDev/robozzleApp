@@ -7,13 +7,13 @@ import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.level.LevelState
 
 private val MutableListStringType = object : TypeToken<MutableList<String>>() {}.type!!
 
+//private val StringType = object : TypeToken<List<String>>() {}.type!!
 private val ListStringType = object : TypeToken<List<String>>() {}.type!!
 private val ListFunctionInstructionType = object : TypeToken<List<FunctionInstructions>>() {}.type!!
 private val ListPostionType = object : TypeToken<List<Position>>() {}.type!!
@@ -57,20 +57,20 @@ internal fun LevelData.toLevel(): Level {
     )
 }
 
-internal fun LevelData.toRobuzzleLevel(): RobuzzleLevel {
-    val gson = Gson()
-    val playerInitial : List<Position> = gson.fromJson(this.playerInitalJson, ListPostionType)
-    return RobuzzleLevel(
-        id = this.id,
-        name = this.name,
-        difficulty = this.difficulty,
-        map = gson.fromJson(this.mapJson, ListStringType),
-        instructionsMenu = gson.fromJson<List<FunctionInstructions>?>(this.instructionsMenuJson, ListFunctionInstructionType).toMutableList(),
-        funInstructionsList = gson.fromJson(this.funInstructionsListJson, ListFunctionInstructionType),
-        playerInitial = playerInitial.toPlayerInGame(),
-        starsList = gson.fromJson(this.starsListJson, ListPostionType)
-    )
-}
+//internal fun LevelData.toRobuzzleLevel(): RobuzzleLevel {
+//    val gson = Gson()
+//    val playerInitial : List<Position> = gson.fromJson(this.playerInitalJson, ListPostionType)
+//    return RobuzzleLevel(
+//        id = this.id,
+//        name = this.name,
+//        difficulty = this.difficulty,
+//        map = gson.fromJson(this.mapJson, ListStringType),
+//        instructionsMenu = gson.fromJson<List<FunctionInstructions>?>(this.instructionsMenuJson, ListFunctionInstructionType).toMutableList(),
+//        funInstructionsList = gson.fromJson(this.funInstructionsListJson, ListFunctionInstructionType),
+//        playerInitial = playerInitial.toPlayerInGame(),
+//        starsList = gson.fromJson(this.starsListJson, ListPostionType)
+//    )
+//}
 
 private fun List<Position>.toPlayerInGame(): PlayerInGame = PlayerInGame(
     Position(this[0].line, this[0].column),
@@ -111,6 +111,20 @@ internal fun buildLevelOverViewList(ids: List<Int>, diffs: List<Int> = emptyList
         )
     }
     return mutableList.toList()
+}
+
+internal fun Level.updateFunctionInstructionListWith(newFunctionInstructionList: List<FunctionInstructions>): LevelData {
+    val gson = Gson()
+    return LevelData (
+        name = gson.toJson(this.name, String::class.java),
+        id = this.id,
+        difficulty = this.difficulty,
+        mapJson = gson.toJson(this.map, ListStringType),
+        instructionsMenuJson = gson.toJson(this.instructionsMenu, ListFunctionInstructionType),
+        funInstructionsListJson = gson.toJson(newFunctionInstructionList, ListFunctionInstructionType),
+        playerInitalJson = gson.toJson(this.playerInitial, ListPostionType),
+        starsListJson = gson.toJson(this.starsList, ListPostionType)
+    )
 }
 
 internal fun LevelData.toLevelOverView(): LevelOverView {

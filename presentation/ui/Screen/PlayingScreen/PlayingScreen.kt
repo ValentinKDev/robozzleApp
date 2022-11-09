@@ -20,7 +20,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.Trash
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun PlayingScreen( navigator: Navigator,vm: GameDataViewModel = viewModel()) {
+fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
     val backPress = remember { mutableStateOf(false) }
     val animScreen = remember { MutableTransitionState(false) }
 
@@ -31,9 +31,15 @@ fun PlayingScreen( navigator: Navigator,vm: GameDataViewModel = viewModel()) {
     }
 
     BackHandler {
+        //reset Game
+        //create a level
+        //replace level in room
+
+        vm.backNavHandler()
         animScreen.targetState = false
         backPress.value = true
     }
+
     if (!animScreen.currentState && !animScreen.targetState && backPress.value) NavViewModel(navigator).navigateToScreenLevelByDiff(vm.level.difficulty.toString())
 
     AnimatedVisibility(

@@ -7,7 +7,7 @@ import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import com.mobilegame.robozzle.data.room.Level.LevelDataBase
 import com.mobilegame.robozzle.domain.Player.LevelWin
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.domain.model.data.room.*
@@ -32,10 +32,10 @@ class LevelRoomViewModel(context: Context): ViewModel() {
         level
     }
 
-    fun getRobuzzle(id: Int): RobuzzleLevel? = runBlocking(Dispatchers.IO) {
-        val robuzzleLevel = repo.getALevel(id)?.toRobuzzleLevel()
-        robuzzleLevel
-    }
+//    fun getRobuzzle(id: Int): RobuzzleLevel? = runBlocking(Dispatchers.IO) {
+//        val robuzzleLevel = repo.getALevel(id)?.toRobuzzleLevel()
+//        robuzzleLevel
+//    }
 
     fun getAllLevels(): List<Level> = runBlocking(Dispatchers.IO) {
         val listLevelData: List<LevelData> = repo.getAllLevelsFromRoom()
@@ -70,16 +70,6 @@ class LevelRoomViewModel(context: Context): ViewModel() {
         repo.getMapJsonByDifficulty(difficutly)
     }
 
-//    fun getAllLevelOverViewFromDifficulty(diff: Int): List<LevelOverView> = runBlocking(Dispatchers.IO) {
-//        val listId: List<Int> = repo.getIdByDifficulty(diff)
-//        val listName: List<String> = repo.getNamesByDifficulty(diff)
-//        val listMapJson: List<String> = repo.getMapJsonByDifficulty(diff)
-//        val listStates: List<LevelState> = repo.getStatesByDifficulty(diff)
-
-//        buildLevelOverViewList(ids = listId, names = listName, mapsJson = listMapJson, states = listStates)
-//        buildLevelOverViewList(ids = listId, names = listName, mapsJson = listMapJson)
-//    }
-
     fun getLevelOverViewInList(listWin: List<LevelWin>): List<LevelOverView> = runBlocking(Dispatchers.IO) {
         val mutableList: MutableList<LevelOverView> = mutableListOf()
         listWin.forEach { win ->
@@ -88,6 +78,10 @@ class LevelRoomViewModel(context: Context): ViewModel() {
             }
         }
         mutableList.toList()
+    }
+
+    fun updateFunctionsInstructions(level: Level, newFunctionInstructionsList: List<FunctionInstructions>) = viewModelScope.launch(Dispatchers.IO) {
+        repo.addLevel(level.updateFunctionInstructionListWith(newFunctionInstructionsList))
     }
 }
 

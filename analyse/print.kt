@@ -1,12 +1,12 @@
 package com.mobilegame.robozzle.analyse
 
 import android.util.Log
+import com.google.gson.GsonBuilder
 import com.mobilegame.robozzle.utils.Extensions.Contains
 import com.mobilegame.robozzle.domain.InGame.Breadcrumb
 import com.mobilegame.robozzle.domain.InGame.DivineGuideLine
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
 
 //fun errorLog(secondpart: String, firstpart: String = "") = Log.e(firstpart, secondpart)
 //fun verbalLog(secondpart: String, firstpart: String = "") = Log.v(firstpart, secondpart)
@@ -23,6 +23,15 @@ fun errorLog(firstpart: String = "", secondpart: String) = Log.e(firstpart, seco
 fun verbalLog(firstpart: String = "", secondpart: String) = Log.v(firstpart, secondpart)
 fun infoLog(firstpart: String = "", secondpart: String) = Log.i(firstpart, secondpart)
 
+
+
+fun <T>prettyPrint(tag: String, name: String, element: T, logType: Int? = Log.INFO) {
+    val prettyPrinter = GsonBuilder().setPrettyPrinting().create()
+    val prettyJsonString = prettyPrinter.toJson(element)
+    if (name.isNotEmpty())
+        Log.i(tag,"$name ")
+    Log.i(tag, prettyJsonString)
+}
 
 fun Print_breadcrumb(breadcrumb: Breadcrumb) {
     var playerStateList = breadcrumb.playerStateList
@@ -116,19 +125,19 @@ fun <U> List<U>.printList() {
     }
 }
 
-fun Print_rb_Level(lvl: RobuzzleLevel) {
-    Log.i("Print Level", lvl.name)
-    Log.i("", "${lvl.id}")
-    Log.i("", "${lvl.difficulty}")
-    lvl.map.forEach {
-        Log.i("", it)
-    }
+//fun Print_rb_Level(lvl: RobuzzleLevel) {
+//    Log.i("Print Level", lvl.name)
+//    Log.i("", "${lvl.id}")
+//    Log.i("", "${lvl.difficulty}")
+//    lvl.map.forEach {
+//        Log.i("", it)
+//    }
 //    Log.i("", "${lvl}")
-    Print_FunInstructionList(lvl.instructionsMenu)
-    Print_FunInstructionList(lvl.funInstructionsList)
-    Log.i("", "player (${lvl.playerInitial.pos.line}, ${lvl.playerInitial.pos.column})")
-    Print_List_Position("stars", lvl.starsList)
-}
+//    Print_FunInstructionList(lvl.instructionsMenu)
+//    Print_FunInstructionList(lvl.funInstructionsList)
+//    Log.i("", "player (${lvl.playerInitial.pos.line}, ${lvl.playerInitial.pos.column})")
+//    Print_List_Position("stars", lvl.starsList)
+//}
 
 fun List<String>.printMap() {
     var u = 0
@@ -170,3 +179,6 @@ fun String.toListOfChar(): List<Char> {
     }
     return mutableList.toList()
 }
+
+
+

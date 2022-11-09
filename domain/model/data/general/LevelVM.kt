@@ -2,7 +2,7 @@ package com.mobilegame.robozzle.domain.model.data.general
 
 import android.content.Context
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.domain.RobuzzleLevel.RobuzzleLevel
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.room.buildLevelOverViewList
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
@@ -43,18 +43,6 @@ class LevelVM (
             level
         }
     }
-    fun getRobuzzleLevel(id: Int): RobuzzleLevel = runBlocking(Dispatchers.IO) {
-        val robuzzleLevel: RobuzzleLevel = levelRoomVM.getRobuzzle(id)!!
-        levelWinRoomVM.getALevelWinSolution(id)?.let { _solutionFunctionList ->
-            var same = true
-            _solutionFunctionList.forEachIndexed { _index, _solutionFunction ->
-                if (_solutionFunction.instructions.length != robuzzleLevel.funInstructionsList[_index].instructions.length)
-                    same = false
-            }
-            if (same) robuzzleLevel.funInstructionsList = _solutionFunctionList.toMutableList()
-        }
-        robuzzleLevel
-    }
 
     fun getAllLevelOverViewFromDifficulty(diff: Int, displayLevelWin: Boolean): List<LevelOverView> = runBlocking(Dispatchers.IO) {
         var listIdByDifficulty: List<Int> = levelRoomVM.getIdByDifficulty(diff)
@@ -66,5 +54,9 @@ class LevelVM (
         listWin = listIdByDifficulty.filter { listWin.contains(it) }
         if (!displayLevelWin) listIdByDifficulty = listIdByDifficulty.filterNot { listWin.contains(it) }
         buildLevelOverViewList(ids = listIdByDifficulty, names = listName, mapsJson = listMapJson, winList = listWin)
+    }
+
+    fun saveFunctionsInstructions(level: Level, newFunciontInstructionList: List<FunctionInstructions>) {
+        levelRoomVM.updateFunctionsInstructions(level, newFunciontInstructionList)
     }
 }

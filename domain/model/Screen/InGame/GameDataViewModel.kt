@@ -2,7 +2,6 @@ package com.mobilegame.robozzle.domain.model.Screen.InGame
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.*
 import com.mobilegame.robozzle.utils.Extensions.replaceAt
@@ -22,7 +21,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GameDataViewModel(application: Application): AndroidViewModel(application) {
-    var level: Level = LevelVM(getApplication()).getLevelArgument()
+    private val levelVM = LevelVM(getApplication())
+    var level: Level = levelVM.getLevelArgument()
 
     val data = InGameData(level, getApplication() )
 
@@ -35,8 +35,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     val dragAndDropRow = DragAndDropRowState()
     val dragAndDropCase = DragAndDropCaseState(data.layout.trash)
     private var animationJob: Job? = null
-
-
 
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {
@@ -93,6 +91,12 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     fun ChangeInstructionMenuState() {
         Log.v("DisplayMenu", "ChangeState ${_displayInstructionsMenu.value} to ${!_displayInstructionsMenu.value!!}")
         _displayInstructionsMenu.value =! _displayInstructionsMenu.value!!
+    }
+
+    fun backNavHandler() {
+        clickResetButtonHandler()
+        prettyPrint("instructions saved", instructionsRows)
+        levelVM.saveFunctionsInstructions(level = level, newFunciontInstructionList = instructionsRows)
     }
 
     fun clickResetButtonHandler() = runBlocking(Dispatchers.Default) {
