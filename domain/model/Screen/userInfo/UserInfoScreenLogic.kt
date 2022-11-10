@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
+import com.mobilegame.robozzle.domain.model.data.general.TokenVM
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
@@ -50,6 +51,7 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
     }
 
     fun logingOut(navigator: Navigator) {
+        TokenVM(application).deleteToken()
         UserDataStoreViewModel(application).clearUser()
         LevelWinRoomViewModel(application).deleteAllLevelWinRoom()
         NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)

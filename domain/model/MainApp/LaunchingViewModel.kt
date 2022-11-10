@@ -83,7 +83,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
                     }
                     //check if user in data store exist
                     //if it does check if levelWins are stored in room
-                    rankVM.compareLocalAndServerLevelWin()
+                    rankVM.compareLocalToServerLevelWin()
                     //if it does load the wins from the server for this player
                     //compare them
                     //add the ones from room to server

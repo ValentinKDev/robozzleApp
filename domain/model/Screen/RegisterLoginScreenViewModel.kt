@@ -104,11 +104,8 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             errorLog("time", "${getTimeMillis()}")
             errorLog("userConnectionState.value", "${userConnectionState.value}")
             if (userConnectionState.value == UserConnectionState.Connected.str) {
-                val newUserRanking = viewModelScope.async(Dispatchers.IO) {
-                    RankVM (getApplication()).wipeRoomRankinAndDLUsersRanking()
-                }
-                newUserRanking.await()
-//                NavViewModel(navigator).navigateToUserInfo()
+                RankVM(getApplication()).upDateServerLevelWinFromRoom()
+                RankVM(getApplication()).upDateLevelWinRoomFromServer()
                 NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
             } else
                 showTaost()
@@ -139,9 +136,10 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
             }
             setUserConnectionState(serverRetFromCreation.str)
 
-            if (userConnectionState.value == UserConnectionState.Connected.str)
-//                NavViewModel(navigator).navigateToUserInfo()
+            if (userConnectionState.value == UserConnectionState.Connected.str) {
+                RankVM(getApplication()).upDateServerLevelWinFromRoom()
                 NavViewModel(navigator).navigateToMainMenu(Screens.Profile.route)
+            }
             else
                 showTaost()
         }

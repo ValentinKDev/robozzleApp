@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.prettyPrint
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.WinDetails.WinDetails
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.server.ranking.RankingServerViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
+import com.mobilegame.robozzle.utils.Extensions.containsNotAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -62,19 +64,44 @@ class RankVM(
         }
     }
 
-    fun compareLocalAndServerLevelWin() {
-        infoLog("compare Local and Server LevelWin", "start")
+    fun compareLocalToServerLevelWin() {
+        viewModelScope.launch(Dispatchers.IO) {
+//            infoLog("RankVM::compareLocalToServerLevelWin", "start")
+            val roomList: List<LevelWin> = levelWinRoomVM.getAllLevelWins()
+            val serverList: List<LevelWin> = rankingServerVM.getLevelWins()
+
+            if (serverList.containsNotAll(roomList)) {
+                if (roomList.containsAll(serverList)) {
+                    roomList.forEach { rankingServerVM.postPlayerWin(levelId = it.lvl_id, points = it.points, winDetails = it.details) }
+//                rankingServerVM.postListLevelWin(roomList, userDataStore.getUser())
+                }
+                else {
+                    //todo : wipe data process ?
+                    errorLog("RankVM::compareLocalToServerLevelWin", "level win data seems to be corrupted")
+                }
+            }
+        }
+    }
+
+    fun upDateServerLevelWinFromRoom() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val roomList: List<LevelWin> = levelWinRoomVM.getAllLevelWins()
+            val serverList: List<LevelWin> = rankingServerVM.getLevelWins()
+
+            if (serverList.containsNotAll(roomList)) {
+                val listToPost = roomList.filterNot { serverList.contains(it) }
+//                prettyPrint( "RankVM::updateServerLevelWinFromRoom", "serverListFiltered ", listToPost )
+                listToPost.forEach { rankingServerVM.postPlayerWin(levelId = it.lvl_id, points = it.points, winDetails = it.details) }
+            }
+        }
+    }
+    fun upDateLevelWinRoomFromServer() {
         val roomList: List<LevelWin> = levelWinRoomVM.getAllLevelWins()
         val serverList: List<LevelWin> = rankingServerVM.getLevelWins()
 
-        if (!serverList.containsAll(roomList)) {
-            if (roomList.containsAll(serverList)) {
-                rankingServerVM.postListLevelWin(roomList, userDataStore.getUser())
-            }
-            else {
-                //todo : wipe data process ?
-                errorLog("server and local listOf LevelWin", "seems to be corrupted")
-            }
+        if (roomList.containsNotAll(serverList)) {
+            val listToAdd = serverList.filterNot { roomList.contains(it) }
+            levelWinRoomVM.addLevelWinDataList(listToAdd)
         }
     }
 }

@@ -32,11 +32,12 @@ class RankingServerViewModel(
             service.getWinnerListJson(levelId).toListPlayerWin()
     }
 
-    fun postListLevelWin(listLevelWin: List<LevelWin>, user: User) {
-        viewModelScope.launch(Dispatchers.IO) {
-            service.postLevelWinListJson(listLevelWin.toJsonString(), user)
-        }
-    }
+//    fun postListLevelWin(listLevelWin: List<LevelWin>, user: User) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            service.postLevelWinListJson(listLevelWin.toJsonString(), user)
+//            service.postLevelWinListJson(listLevelWin.toString(), user)
+//        }
+//    }
 
     fun postPlayerWin(levelId: Int, points: Int, winDetails: WinDetails): String = runBlocking(Dispatchers.IO) {
         var ret = "no user"

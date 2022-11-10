@@ -24,6 +24,10 @@ class TokenDataStoreViewModel (
         service.getString(KeyProvider.Token.key)
     }
 
+    fun delTokenData() = runBlocking(Dispatchers.IO) {
+        service.delString(KeyProvider.Token.key)
+    }
+
     fun getToken(): String {
         return getTokenData() ?: NOTOKEN
     }

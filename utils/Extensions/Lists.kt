@@ -165,6 +165,8 @@ fun MutableList<FunctionInstructions>.countInstruction(): Int {
     return count
 }
 
+fun <T> List<T>.containsNotAll(list: List<T>): Boolean = !this.containsAll(list)
+
 //fun MutableList<FunctionInstructions>.countInstructions(): Int {
 //    Print_FunInstructionList(this)
 //    var count: Int = 0
