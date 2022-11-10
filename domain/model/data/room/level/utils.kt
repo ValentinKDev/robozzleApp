@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.model.data.room
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.mobilegame.robozzle.analyse.prettyPrint
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
@@ -116,7 +117,7 @@ internal fun buildLevelOverViewList(ids: List<Int>, diffs: List<Int> = emptyList
 internal fun Level.updateFunctionInstructionListWith(newFunctionInstructionList: List<FunctionInstructions>): LevelData {
     val gson = Gson()
     return LevelData (
-        name = gson.toJson(this.name, String::class.java),
+        name = this.name,
         id = this.id,
         difficulty = this.difficulty,
         mapJson = gson.toJson(this.map, ListStringType),

@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
@@ -90,6 +91,7 @@ class DragAndDropCaseState(val trash: Trash) {
     }
 
     fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
+        verbalLog("DragAndDropVM::onDragStart", "start")
         setTouchOffSetStart(offset)
         touchOffSetStart ?: setTouchOffSetStart(offset)
         setOffsets(offset)

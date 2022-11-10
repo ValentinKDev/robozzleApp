@@ -73,7 +73,7 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
             VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
             Box{
                 DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu)
-                DisplayCurrentInstructionHighlighted(functionNumber, function, vm)
+                DisplayCurrentInstructionHighlighted(functionNumber, function, vm, displayInstructionMenu)
             }
         }
         VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
@@ -83,6 +83,7 @@ fun DisplayFunctionsPart(vm: GameDataViewModel) {
 
 @Composable
 fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel, displayInstructionMenu: Boolean) {
+//    val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
     Row(modifier = Modifier
         .fillMaxWidth()
         .onGloballyPositioned {
@@ -135,7 +136,12 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                             val instructionChar = function.instructions[_index]
                             Box( Modifier .fillMaxSize()
                             ) {
-                                FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm, filter = displayInstructionMenu)
+                                FunctionCase(
+                                    color = caseColor,
+                                    instructionChar = instructionChar,
+                                    vm = vm,
+                                    filter = displayInstructionMenu && !vm.selectedCase.Match(Position(functionNumber, _index))
+                                )
                             }
                         }
                     }
@@ -169,7 +175,12 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                 val instructionChar = function.instructions[index]
                                 Box( Modifier .fillMaxSize()
                                 ) {
-                                    FunctionCase(color = caseColor, instructionChar = instructionChar, vm = vm, filter = displayInstructionMenu)
+                                    FunctionCase(
+                                        color = caseColor,
+                                        instructionChar = instructionChar,
+                                        vm = vm,
+                                        filter = displayInstructionMenu && !vm.selectedCase.Match(Position(functionNumber, _index))
+                                    )
                                 }
                             }
                         }
@@ -181,14 +192,18 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
 }
 
 @Composable
-fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: FunctionInstructions, vm: GameDataViewModel) {
+fun DisplayCurrentInstructionHighlighted(
+    functionNumber: Int,
+    function: FunctionInstructions,
+    vm: GameDataViewModel,
+    displayInstructionMenu: Boolean
+) {
     val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
     val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
 
     val doubleRow: Boolean = function.instructions.length == 10
     val listInstructions1 = if (doubleRow) function.instructions.substring(0..4) else function.instructions
-    var visibleElement by remember{ mutableStateOf(false) }
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -218,10 +233,14 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                     listInstructions1.forEachIndexed { _index, _ ->
                         Box( Modifier.size(vm.data.layout.secondPart.sizes.functionCaseDp)
                         ) {
-                            if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
+                            if (( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                 && ( (currentAction == 0 && functionNumber == 0 && _index == 0) ||
                                                 vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)) )
                                 && playerAnimationState.runningInBackground() )
+                                || (vm.selectedCase.Match(Position(line = functionNumber, column = _index))
+                                        && vm.animData.getPlayerAnimationState().isTheBreadcrumbModifiable()
+                                        && displayInstructionMenu )
+                            )
                             {
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.sizes.functionCaseDp,
@@ -242,9 +261,15 @@ fun DisplayCurrentInstructionHighlighted(functionNumber: Int, function: Function
                             Box(Modifier
                                 .size(vm.data.layout.secondPart.sizes.functionCaseDp)
                             ) {
-                                if ( vm.breadcrumb.currentInstructionList.isNotEmpty()
-                                    && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)))
-                                    && playerAnimationState.runningInBackground() )
+                                if (
+                                    ( vm.breadcrumb.currentInstructionList.isNotEmpty()
+                                            && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, index)))
+                                            && playerAnimationState.runningInBackground() )
+                                    || (vm.selectedCase.Match(Position(line = functionNumber, column = index + 5))
+                                            && vm.animData.getPlayerAnimationState().isTheBreadcrumbModifiable()
+                                            && displayInstructionMenu
+                                            )
+                                )
                                 {
                                     WhiteSquare(
                                         sizeDp =  vm.data.layout.secondPart.sizes.functionCaseDp,

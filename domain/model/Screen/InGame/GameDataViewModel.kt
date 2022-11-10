@@ -149,7 +149,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         logClick?.let { errorLog("GameDataVM::clickBackButtonHandler", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun isInstructionMenuAvailable(): Boolean = animData.playerAnimationState.value.isTheBreadcrumbModifiable()
-    fun isDragAndDropAvailable(): Boolean = animData.playerAnimationState.value.runningInBackgroundIs(false)
+    fun isDragAndDropAvailable(): Boolean = animData.playerAnimationState.value == PlayerAnimationState.OnPause || animData.playerAnimationState.value == PlayerAnimationState.NotStarted
 
     init {
                 logInit?.let { errorLog("init", "GameDataViewModel") }
