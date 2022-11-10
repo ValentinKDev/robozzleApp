@@ -7,13 +7,15 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.prettyPrint
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
-import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LazyListStateViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import io.ktor.util.date.*
 import kotlinx.coroutines.*
@@ -24,27 +26,34 @@ import kotlinx.coroutines.flow.asStateFlow
 class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewModel(application) {
     private var levelSelectedId: Int? = null
 
-//    private val _levelOverViewList = MutableStateFlow<List<LevelOverView>>(mutableListOf())
-//    val levelOverViewList: StateFlow<List<LevelOverView>> = _levelOverViewList
-var levelOverViewList: MutableList<LevelOverView> = mutableListOf()
-
-    private val levelRoomViewModel = LevelRoomViewModel(getApplication())
     private val levelVM = LevelVM(getApplication())
     private val configRoom = ConfigRoomViewModel(getApplication())
     private val displayLevelWin = configRoom.getDisplayLevelWinInListState()
+    lateinit var lazyListVM: LazyListStateViewModel
 
-    fun loadLevelListById(levelDifficulty: Int) {
-        infoLog("load Level list by diff", "start")
-//        _levelOverViewList.value  = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin)
-        levelOverViewList = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin).toMutableList()
-    }
     val mapViewParamList: MutableList<Pair<Int, MapViewParam>> = mutableListOf()
 
+    private val _levelOverviewList = MutableStateFlow(mutableListOf<LevelOverView>())
+    val levelOverviewList = _levelOverviewList.asStateFlow()
+
+    fun init(difficulty: Int) {
+        lazyListVM = LazyListStateViewModel(getApplication(), difficulty)
+        setVisibilityAndLoadLevelList()
+        loadLevelListById(difficulty)
+        loadMapViewParams()
+    }
+
+    fun loadLevelListById(levelDifficulty: Int) {
+        infoLog("LevelsScreensByDifficultyVM:loadLevelListById", "start")
+        _levelOverviewList.value = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin) .toMutableList()
+    }
+
     fun loadMapViewParams() {
-//        levelOverViewList.value.forEach {
-        levelOverViewList.forEach {
-//            list += Pair(1, )
-            mapViewParamList.add(element = Pair(it.id, MapViewParam(it.map, 80)))
+        infoLog("LevelsScreensByDifficultyVM::loadMapViewParams", "start")
+        viewModelScope.launch(Dispatchers.IO) {
+            levelOverviewList.value.forEach {
+                mapViewParamList.add(element = Pair(it.id, MapViewParam(it.map, 80)))
+            }
         }
     }
 
@@ -68,12 +77,9 @@ var levelOverViewList: MutableList<LevelOverView> = mutableListOf()
     fun setRetToMainMenuState(state: Boolean) { _returnToMainMenuState.value = state }
     fun goToMainMenuState(): Boolean = _returnToMainMenuState.value
 
-    fun setVisibilityAndLoadLevelList(levelsDifficulty: Int, timeMillis: Long) {
+    fun setVisibilityAndLoadLevelList() {
         setVisibleHeaderTargetStateAs(true)
         setVisibleListTargetStateAs(true)
-        loadLevelListById(levelsDifficulty)
-        loadMapViewParams()
-
     }
     fun startExitAnimationAndPressBack() = runBlocking(Dispatchers.IO) {
         setVisibleListTargetStateAs(false)

@@ -10,6 +10,11 @@ val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name 
 val Context.appPrefDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.App.pref)
 val Context.screenDimensionsDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Screen.pref)
 val Context.argumentsDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.Arg.pref)
+val Context.lazyListState1: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState1.pref)
+val Context.lazyListState2: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState2.pref)
+val Context.lazyListState3: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState3.pref)
+val Context.lazyListState4: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState4.pref)
+val Context.lazyListState5: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState5.pref)
 
 interface DataStoreService {
     suspend fun getBoolean(key: String): Boolean?
@@ -47,6 +52,16 @@ interface DataStoreService {
 
         fun createArgumentsService(context: Context): DataStoreService {
             return DataStoreImplementation(context.argumentsDataStore)
+        }
+
+        fun createLazyListStateService(context: Context, id: Int): DataStoreService {
+            return when (id) {
+                1 -> DataStoreImplementation(context.lazyListState1)
+                2 -> DataStoreImplementation(context.lazyListState2)
+                3 -> DataStoreImplementation(context.lazyListState3)
+                4 -> DataStoreImplementation(context.lazyListState4)
+                else -> DataStoreImplementation(context.lazyListState5)
+            }
         }
     }
 }

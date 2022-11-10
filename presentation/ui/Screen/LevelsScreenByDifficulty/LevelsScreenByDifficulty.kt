@@ -35,13 +35,13 @@ fun LevelsScreenByDifficulty(
 
     LaunchedEffect(key1 = true) {
         Log.e("LevelsScreen", "Start")
-        vm.setVisibilityAndLoadLevelList(levelsDifficulty, getTimeMillis())
+        vm.init(levelsDifficulty)
     }
-    Log.e("LevelsScreen", "$")
 
     BackHandler {
         vm.startExitAnimationAndPressBack()
     }
+
     vm.goingMainMenuListener(navigator, fromScreen, levelsDifficulty)
 
     vm.goingPlayScreenListener(navigator, ctxt)
