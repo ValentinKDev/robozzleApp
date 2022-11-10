@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class UserInfoScreenLogic(val application: Application): ViewModel() {
 
     val name = UserDataStoreViewModel(application).getName()
-    val rankingIconVM = RankingIconViewModel()
+    val rankingIconVM = RankingIconViewModel().create(35)
 
     private val levelWinRoomVM = LevelWinRoomViewModel(application)
     private val levelRoomVM = LevelRoomViewModel(application)

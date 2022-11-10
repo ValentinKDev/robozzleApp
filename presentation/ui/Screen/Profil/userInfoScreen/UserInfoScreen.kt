@@ -26,9 +26,9 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
 
     LaunchedEffect(true) {
         vm.logic.setVisibilityAtLaunch()
+        errorLog("Launch", "UserInfoScreen()")
     }
 
-    errorLog("Launch", "UserInfoScreen()")
 
     Column() {
         Box( Modifier.fillMaxWidth().weight(vm.uiData.secondPart.dimensions.heightWeight) ) {

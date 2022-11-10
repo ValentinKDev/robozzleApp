@@ -3,8 +3,8 @@ package com.mobilegame.robozzle.domain.model.LevelsScreenByDiff
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-class MapViewParam(val map: List<String>) {
-    val widthInt = 80
+class MapViewParam(val map: List<String>, val widthInt: Int) {
+//    var widthInt: Int = 0
     val caseNumberWidth = map[0].length
     val caseNumberHeight = map.size
 
@@ -16,5 +16,9 @@ class MapViewParam(val map: List<String>) {
         if (calulByWidth) widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
         else widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))
     val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
-    val mapWidthtDP: Dp = widthInt.dp
+    val mapWidthDP: Dp = widthInt.dp
+
+//    fun create(width: Int): MapViewParam {
+//        widthInt = width
+//    }
 }

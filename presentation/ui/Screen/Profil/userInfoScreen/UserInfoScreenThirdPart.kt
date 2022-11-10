@@ -26,10 +26,8 @@ fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) 
             bottom = 1.dp
         ),
         content = {
-//            items(vm.logic.levelWinList.size) {_index ->
             items(levelWinList.size) {_index ->
                 DisplayWinOverView(
-//                    levelWin = vm.logic.levelWinList[_index],
                     levelWin = levelWinList[_index],
                     navigator = navigator,
                     levelMap = vm.logic.maps[_index],

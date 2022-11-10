@@ -44,7 +44,7 @@ var levelOverViewList: MutableList<LevelOverView> = mutableListOf()
 //        levelOverViewList.value.forEach {
         levelOverViewList.forEach {
 //            list += Pair(1, )
-            mapViewParamList.add(element = Pair(it.id, MapViewParam(it.map)))
+            mapViewParamList.add(element = Pair(it.id, MapViewParam(it.map, 80)))
         }
     }
 

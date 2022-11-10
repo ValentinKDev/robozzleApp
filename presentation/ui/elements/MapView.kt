@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.MapViewParam
 import com.mobilegame.robozzle.presentation.res.*
@@ -16,26 +15,9 @@ import gradientBackground
 
 @Composable
 fun MapView(param: MapViewParam) {
-    //todo : put those calculs in a VM ?
-//    val map = MapCleaner() clean mapParam
-//    val map = mapParam
-
-//    val caseNumberWidth = param.map[0].length
-//    val caseNumberHeight = param.map.size
-//
-//    val calulByWidth = if (caseNumberWidth > caseNumberHeight) true else false
-//
-//    val padingRatio: Float = 1.0f / 20.0f
-//
-//    val caseSize: Float =
-//        if (calulByWidth) param.widthInt.toFloat() / (caseNumberWidth.toFloat() * (padingRatio + 1f))
-//        else param.widthInt.toFloat() / (caseNumberHeight.toFloat() * (padingRatio + 1f))
-//    val mapHeightDP: Dp = (caseSize * caseNumberHeight).dp
-//    val mapWidthtDP: Dp = param.widthInt.dp
-
     Box(Modifier
         .height(param.mapHeightDP)
-        .width(param.mapWidthtDP)
+        .width(param.mapWidthDP)
         .background(grayDark3)
     ) {
         Column(

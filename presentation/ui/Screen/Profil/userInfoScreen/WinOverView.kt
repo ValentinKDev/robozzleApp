@@ -17,10 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
+import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.MapViewParam
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.elements.MapView
 import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.TextWithShadow
@@ -32,12 +34,8 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
     val isPressed by interactionSource.collectIsPressedAsState()
 
     when (isPressed) {
-        true -> {
-//            vm.logic.rankingIconVM.rankingIconIsPressed()
-        }
-        false -> {
-//            vm.logic.rankingIconVM.rankingIconIsReleased(navigator, levelWin.lvl_id)
-        }
+        true -> vm.logic.rankingIconVM.rankingIconIsPressed()
+        false -> vm.logic.rankingIconVM.rankingIconIsReleased()
     }
 
     Card(
@@ -67,18 +65,22 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
             ) {
                 TextWithShadow(text = "level ${levelWin.lvl_id}", modifier = Modifier.align(Center))
             }
-            Row( Modifier
+            Row(
+                Modifier
                     .wrapContentWidth()
                     .weight(0.3F)
             ) {
                 CenterComposable {
-//                    MapView(
-//                        widthInt = vm.uiData.thirdPart.winOverView.mapWidthInt,
-//                        map = levelMap,
-//                    )
+                    MapView(
+                        MapViewParam(
+                            levelMap,
+                            vm.uiData.thirdPart.winOverView.mapWidthInt
+                        )
+                    )
                 }
             }
-            Column( Modifier
+            Column(
+                Modifier
                     .fillMaxWidth()
                     .weight(0.2F)
                 ,
@@ -90,7 +92,8 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                 ) {
                     Row(Modifier .fillMaxWidth()
                     ) {
-                        Row ( Modifier
+                        Row (
+                            Modifier
                                 .wrapContentHeight()
                                 .weight(6F)
                             ,
@@ -117,7 +120,12 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                             ,
                             horizontalArrangement = Arrangement.End
                         ) {
-//                            RankingIconBouncing(sizeAtt = 35, vm = vm.logic.rankingIconVM, isPressed = isPressed, enableShadow = false, navigator, levelWin.lvl_id)
+                            RankingIconBouncing(
+                                vm = vm.logic.rankingIconVM,
+                                enableShadow = false,
+                                navigator = navigator,
+                                levelId = levelWin.lvl_id
+                            )
                         }
                     }
                 }
