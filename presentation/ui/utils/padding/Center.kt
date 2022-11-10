@@ -20,16 +20,16 @@ import backColor
 
 @Composable
 fun CenterComposable(content: @Composable () -> Unit) {
-    Column( modifier = Modifier.fillMaxSize() ) {
-        Row( modifier = Modifier
-            .fillMaxHeight()
-            .align(Alignment.CenterHorizontally) ) {
-            Box( modifier = Modifier.align(Alignment.CenterVertically)
+//    Column( modifier = Modifier.fillMaxSize() ) {
+//        Row( modifier = Modifier
+//            .fillMaxHeight()
+//            .align(Alignment.CenterHorizontally) ) {
+            Box( modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
                 content.invoke()
             }
-        }
-    }
+//        }
+//    }
 }
 
 @Composable

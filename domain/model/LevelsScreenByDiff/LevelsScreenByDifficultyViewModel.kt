@@ -11,11 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.prettyPrint
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LazyListStateViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import io.ktor.util.date.*
 import kotlinx.coroutines.*

@@ -8,29 +8,29 @@ import com.mobilegame.robozzle.domain.InGame.DivineGuideLine
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 
-//fun errorLog(secondpart: String, firstpart: String = "") = Log.e(firstpart, secondpart)
-//fun verbalLog(secondpart: String, firstpart: String = "") = Log.v(firstpart, secondpart)
-//fun infoLog(secondpart: String, firstpart: String = "") = Log.i(firstpart, secondpart)
-//var log = Logcat
-//fun logger(t: LogType?, firstpart: String = "", secondpart: String) {
-//    t?.let {
-//        when {
-//
-//        }
-//    }
-//}
 fun errorLog(firstpart: String = "", secondpart: String) = Log.e(firstpart, secondpart)
 fun verbalLog(firstpart: String = "", secondpart: String) = Log.v(firstpart, secondpart)
 fun infoLog(firstpart: String = "", secondpart: String) = Log.i(firstpart, secondpart)
 
 
 
-fun <T>prettyPrint(tag: String, name: String, element: T, logType: Int? = Log.INFO) {
+fun <T>prettyPrint(tag: String, name: String, element: T, logType: Int = Log.INFO) {
     val prettyPrinter = GsonBuilder().setPrettyPrinting().create()
     val prettyJsonString = prettyPrinter.toJson(element)
     if (name.isNotEmpty())
-        Log.i(tag,"$name ")
-    Log.i(tag, prettyJsonString)
+        priorityLog(logType, tag,"$name ")
+    priorityLog(logType, tag, prettyJsonString)
+}
+
+fun priorityLog(priority: Int, tag: String, message: String) {
+    when (priority) {
+        Log.INFO -> Log.i(tag, message)
+        Log.VERBOSE -> Log.v(tag, message)
+        Log.ERROR -> Log.e(tag, message)
+        Log.DEBUG -> Log.d(tag, message)
+        Log.WARN -> Log.w(tag, message)
+        else -> Log.i(tag, message)
+    }
 }
 
 fun Print_breadcrumb(breadcrumb: Breadcrumb) {
