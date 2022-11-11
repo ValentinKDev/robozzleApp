@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.layout.config.ConfigScreenLayout
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
-import com.mobilegame.robozzle.domain.model.Screen.utils.AnimateHeaderAndListViewModel
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.ConfigOption

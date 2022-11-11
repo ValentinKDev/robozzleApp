@@ -1,15 +1,15 @@
-package com.mobilegame.robozzle.domain.model.LevelsScreenByDiff
+package com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff
 
 import android.app.Application
 import android.content.Context
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.prettyPrint
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
@@ -35,6 +35,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
 
     private val _levelOverviewList = MutableStateFlow(mutableListOf<LevelOverView>())
     val levelOverviewList = _levelOverviewList.asStateFlow()
+    var levelsNumber = 0F
 
     fun init(difficulty: Int) {
         lazyListVM = LazyListStateViewModel(getApplication(), difficulty)
@@ -46,16 +47,31 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun loadLevelListById(levelDifficulty: Int) {
         infoLog("LevelsScreensByDifficultyVM:loadLevelListById", "start")
         _levelOverviewList.value = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin) .toMutableList()
+        levelsNumber = _levelOverviewList.value.size.toFloat() - 5F
     }
 
     fun loadMapViewParams() {
         infoLog("LevelsScreensByDifficultyVM::loadMapViewParams", "start")
-        viewModelScope.launch(Dispatchers.IO) {
+//        viewModelScope.launch(Dispatchers.IO) {
             levelOverviewList.value.forEach {
                 mapViewParamList.add(element = Pair(it.id, MapViewParam(it.map, 80)))
             }
-        }
+//        }
     }
+
+    private val _progress = MutableStateFlow<Float>(0.01F)
+    val progress: StateFlow<Float> = _progress.asStateFlow()
+    fun updateProgress(scrollState: LazyListState) {
+        val progression = scrollState.firstVisibleItemIndex.toFloat() / levelsNumber
+        _progress.value = if (progression == 0F) 0.01F else progression
+        infoLog("porgress", "progress ${_progress.value}")
+    }
+
+    private val _visibleProgressBar = MutableStateFlow(MutableTransitionState(false))
+    val visibleProgressBar = _visibleProgressBar.asStateFlow()
+    fun setVisibleProgressBarAs(state: Boolean) { _visibleProgressBar.value.targetState = state}
+    fun visibleProgressBarAnimationEnd() = !_visibleProgressBar.value.targetState && !_visibleProgressBar.value.currentState
+
 
     private val _visibleHeaderState = MutableStateFlow(MutableTransitionState(true))
     val visibleHeaderState = _visibleHeaderState.asStateFlow()

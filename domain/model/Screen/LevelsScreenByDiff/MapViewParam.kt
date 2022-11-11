@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.model.LevelsScreenByDiff
+package com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

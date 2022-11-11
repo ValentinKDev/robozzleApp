@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow0
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow5
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 
@@ -77,7 +78,7 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                 )
                             }
                             .size(5.dp)
-                            .backColor(yellow0)
+                            .backColor(yellow5)
                         ) { }
                     }
                 }

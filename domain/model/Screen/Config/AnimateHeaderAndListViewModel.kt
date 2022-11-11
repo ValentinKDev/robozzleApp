@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.domain.model.Screen.utils
+package com.mobilegame.robozzle.domain.model.Screen.Config
 
 import androidx.compose.animation.core.MutableTransitionState
 import kotlinx.coroutines.Dispatchers

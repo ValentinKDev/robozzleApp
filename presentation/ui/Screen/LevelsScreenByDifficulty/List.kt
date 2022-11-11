@@ -1,66 +1,24 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty
 
-import android.content.ClipData
-import android.content.Context
 import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.data.store.DataStoreService
-import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
-import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.MapViewParam
+import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
-import com.mobilegame.robozzle.domain.model.data.store.KeyProvider
-import com.mobilegame.robozzle.domain.model.data.store.LazyListStateDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.blue8
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.blue9
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.greendark3
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.red8
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import com.mobilegame.robozzle.presentation.ui.elements.MapView
-import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.CenterText
-import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlin.random.Random
 
 @Composable
 fun LevelsScreenByDifficultyList(
@@ -88,20 +46,25 @@ fun LevelsScreenByDifficultyList(
 
     Column() {
         Spacer(modifier = Modifier.height( MainScreenWindowsInfos().getButtonSizeTarget(Screens.Difficulty1.key, context, density).height.dp))
-        if (levelsList.isNotEmpty()) {
-            LazyColumn(
-                state = scrollState
-            ) {
-                items(
-                    items = levelsList,
-                    key = { levelsOverView ->
-                        levelsOverView.id
+        Box {
+            if (levelsList.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                    ,
+                    state = scrollState
+                ) {
+                    itemsIndexed(
+                        items = levelsList,
+                    ) { index, levelOverView ->
+                        vm.lazyListVM.state.value.layoutInfo.totalItemsCount
+                        vm.lazyListVM.state.value.interactionSource.interactions
+                        DisplayLevelOverView(levelOverView, vm, rankingIconVM, navigator)
                     }
-                ) { levelOverView ->
-                    DisplayLevelOverView(levelOverView, vm, rankingIconVM, navigator)
                 }
-            }
-        } else { Text(text = "Can't access the server and no level in the phone internal storage") }
+            } else { Text(text = "Can't access the server and no level in the phone internal storage") }
+            ListProgressBar(vm, scrollState)
+        }
     }
+
 }
 

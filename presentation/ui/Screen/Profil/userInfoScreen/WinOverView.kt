@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
-import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.MapViewParam
+import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.MapViewParam
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4

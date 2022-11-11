@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.domain.model.LevelsScreenByDiff.MapViewParam
+import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.MapViewParam
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import gradientBackground
