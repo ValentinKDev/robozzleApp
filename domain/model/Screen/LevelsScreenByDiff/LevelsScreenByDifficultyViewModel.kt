@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
@@ -64,7 +65,6 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun updateProgress(scrollState: LazyListState) {
         val progression = scrollState.firstVisibleItemIndex.toFloat() / levelsNumber
         _progress.value = if (progression == 0F) 0.01F else progression
-        infoLog("porgress", "progress ${_progress.value}")
     }
 
     private val _visibleProgressBar = MutableStateFlow(MutableTransitionState(false))
@@ -135,7 +135,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun getEnterTransitionForList(fromScreen: Screens): EnterTransition = runBlocking {
         when (fromScreen) {
             Screens.Playing -> slideInHorizontally() + fadeIn()
-            Screens.MainMenu -> slideInVertically()
+            Screens.MainMenu -> slideInVertically(animationSpec = tween(600))
             else -> fadeIn()
         }
     }

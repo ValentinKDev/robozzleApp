@@ -12,6 +12,7 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 
 interface AppConfigService {
@@ -49,7 +50,12 @@ interface AppConfigService {
                         })
                         install(ResponseObserver) {
                             onResponse { response ->
-                                Log.d("HTTP status:", "${response.status.value}")
+                                Log.d("AppConfigService::ResponseObserver", "content : ${response.content}")
+                                Log.d("AppConfigService::ResponseObserver", "call : ${response.call}")
+                                Log.d("AppConfigService::ResponseObserver", "status : ${response.status}")
+                                Log.d("AppConfigService::ResponseObserver", "status value : ${response.status.value}")
+                                Log.d("AppConfigService::ResponseObserver", "status description : ${response.status.description}")
+                                Log.d("AppConfigService::ResponseObserver", "request : ${response.request}")
                             }
                         }
                         install(DefaultRequest) {

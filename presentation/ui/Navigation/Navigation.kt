@@ -10,6 +10,7 @@ import androidx.navigation.compose.*
 
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
@@ -47,8 +48,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Test.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -112,6 +113,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
                 entry.arguments?.getInt(Arguments.Button.key)?.let { _levelDiff ->
                     navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
+                        verbalLog("Navigation", "previousRoute $_previousRoute")
                         val fromScreen =  Screens.identify(_previousRoute)
                         LevelsScreenByDifficulty(
                             navigator = navigator,

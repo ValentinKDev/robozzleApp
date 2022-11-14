@@ -5,9 +5,8 @@ interface NavigationDestination {
 }
 
 sealed class Screens(override val route: String, val key: Int): NavigationDestination {
-    object  LoadingData: Screens("loading_data_screen", -42)
-    object  None: Screens("none_screen", -1)
     object  MainMenu: Screens("main_menu_screen", -42)
+    object  LoadingData: Screens("loading_data_screen", -42)
     object  LevelByDifficulty: Screens("levelsBydifficulty", -42)
     object  Profile: Screens("profile_screen_id0", 0)
     object  RegisterLogin: Screens("registerlogin_screen", 0)
@@ -26,6 +25,7 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
     object  Unknown: Screens("unknown_screen", 42)
 
     object Loading: Screens("loading_screen", -42)
+    object  None: Screens("none_screen", -1)
 
     companion object {
         fun findScreen(routeToFind: String? = null, keyToFind: Int? = null): Screens {

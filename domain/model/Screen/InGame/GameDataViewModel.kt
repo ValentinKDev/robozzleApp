@@ -48,12 +48,14 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     fun replaceInstruction(pos: Position, case: FunctionInstruction) = runBlocking() {
         infoLog("GameDataVM::replaceInstruction", "replacing $case $pos ")
+
         val function: FunctionInstructions = instructionsRows[pos.line]
         function.colors =
             function.colors.replaceAt(pos.column, case.color)
-        function.instructions =
-            function.instructions.replaceAt(pos.column, case.instruction)
-
+        if (case.instruction != 'n') {
+            function.instructions =
+                function.instructions.replaceAt(pos.column, case.instruction)
+        }
         upDateInstructionRows(line = pos.line, newFunction = function)
         updateBreadcrumbInstructions()
         updateAnimData()
