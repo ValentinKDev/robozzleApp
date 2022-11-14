@@ -81,14 +81,14 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     val tokenState: StateFlow<String> = _tokenState.asStateFlow()
 
     fun loginOnClickListner(navigator: Navigator) {
-        infoLog("RegisterLoginScreenVM::loginOnClickListner", "start")
+//        infoLog("RegisterLoginScreenVM::loginOnClickListner", "start")
         filterName()
         viewModelScope.launch {
-            errorLog ("get a token", "start")
+//            errorLog ("get a token", "start")
             getAToken(name.value, password.value)
             waitForToken()
-            errorLog ("setUserCoState", "start")
-            errorLog ("tokenState.value", "${tokenState.value}")
+//            errorLog ("setUserCoState", "start")
+//            errorLog ("tokenState.value", "${tokenState.value}")
             setUserConnectionState(
                 stateStr = if (tokenState.value == TokenState.Valid.ret) getUserFromServerAndStore(
                     userName = name.value,
@@ -99,10 +99,10 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                 else
                     UserConnectionState.InvalidNameOrPassword.str
             )
-            errorLog("time", "${getTimeMillis()}")
+//            errorLog("time", "${getTimeMillis()}")
             delay(500)
-            errorLog("time", "${getTimeMillis()}")
-            errorLog("userConnectionState.value", "${userConnectionState.value}")
+//            errorLog("time", "${getTimeMillis()}")
+//            errorLog("userConnectionState.value", "${userConnectionState.value}")
             if (userConnectionState.value == UserConnectionState.Connected.str) {
                 RankVM(getApplication()).upDateServerLevelWinFromRoom()
                 RankVM(getApplication()).upDateLevelWinRoomFromServer()
@@ -114,19 +114,19 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     fun registerOnClickListner(navigator: Navigator) {
         filterName()
-        infoLog("register", "onclicklistner()")
-        infoLog("UserConnectionState 0 ", userConnectionState.value)
+//        infoLog("register", "onclicklistner()")
+//        infoLog("UserConnectionState 0 ", userConnectionState.value)
         name
         viewModelScope.launch {
-            infoLog("createnewsuerandgetState", "start")
+//            infoLog("createnewsuerandgetState", "start")
             var serverRetFromCreation = createANewUserAndGetState()
             if (serverRetFromCreation == UserConnectionState.CreatedAndNotVerified) {
-                infoLog("getAToken", "start")
+//                infoLog("getAToken", "start")
                 getAToken(name.value, password.value)
                 delay(300)
-                infoLog("waitfortoken", "start")
+//                infoLog("waitfortoken", "start")
                 waitForToken()
-                infoLog("getUserFromServerAndStore", "start")
+//                infoLog("getUserFromServerAndStore", "start")
                 serverRetFromCreation = getUserFromServerAndStore(
                     userName = name.value,
 //                    expectedState = UserConnectionState.Verified,
@@ -189,11 +189,11 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     }
 
     private suspend fun createANewUserAndGetState(): UserConnectionState {
-        infoLog("createANewUserAndGetState()", "start")
+        infoLog("RegisterLoginScreenVM::createANewUserAndGetState", "start")
         val ultimateUserService: UltimateUserService = UltimateUserService.create(token = NOTOKEN)
         val newUserRequest = UserRequest(name.value, password.value)
         val serverRet: String = ultimateUserService.postNewUser(newUserRequest)
-        infoLog("user connection state before", userConnectionState.value)
+        infoLog("RegisterLoginScreenVM::createANewUserAndGetState", "userconnectionState.value ${userConnectionState.value}")
 
         return when (serverRet) {
             ServerRet.Positiv.ret -> UserConnectionState.CreatedAndNotVerified
@@ -205,7 +205,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     //todo : do i have to store the token?
     suspend fun getAToken(name: String, password: String) {
-        infoLog("userVM", "getAToken()")
+        infoLog("RegisterLoginScreenVM::getAToken", "start")
 //        var token = NOTOKEN
         val jwtTokenService: JWTTokenService = JWTTokenService.create(name, password,"")
         val tokenServer: String? = jwtTokenService.getJwtToken()
@@ -223,7 +223,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     private suspend fun waitForToken() {
         while (tokenState.value == TokenState.NoToken.ret) {
-            infoLog("wait", "token")
+            infoLog("RegisterLoginScreenVM::waitForToken", "token")
             delay(50)
         }
     }
@@ -261,21 +261,23 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     fun getNameInputFieldLabel(): String {
         //todo: protect against illegal character
-        infoLog("getNameInputFieldLabel", "is Empty ${name.value.isEmpty()} / is Valid ${name.value.isValid()} / is Short ${name.value.isShort()}")
-        return if (name.value.isEmpty()) { "name or email" }
-        else if (name.value.isShort()) { "your name can't be less than 3 characters" }
-        else if (name.value.isValid()) "your login name :"
-        else { "your name is incorrect" }
+        infoLog("RegisterLoginScrennVM::getNameInputFieldLabel", "is Empty ${name.value.isEmpty()} / is Valid ${name.value.isValid()} / is Short ${name.value.isShort()} / is Long ${name.value.isLong()}")
+        return if (name.value.isEmpty()) { "name : " }
+        else if (name.value.isShort()) { "your name must be longer" }
+        else if (name.value.isLong()) { "your name must be shorter" }
+        else { "your name is :" }
     }
 
-    private fun String.isValid(): Boolean = this.length >= 3
+    private fun String.isValid(): Boolean = !this.isShort() && !this.isLong()
     private fun String.isShort(): Boolean = this.length < 3
+    private fun String.isLong(): Boolean = this.length > 15
 
     private fun String.filterAuthorizedName(): String {
         val nameLastIndex = this.lastIndex
         //todo: add tabulation and other weird shit in the unauthorized characters
-        return if (this.isNotEmpty() && "[./:*?<>|~#%&+{}()\\[\\]-]".toRegex().matches(this[nameLastIndex].toString())) {
-            this.substringBefore(this[nameLastIndex])
-        } else { this }
+        return (this.replace("[@.,/:*?<>|~#%&+{}()\\[\\]-]".toRegex(), ""))
+//        return if (this.isNotEmpty() && "[@./:*?<>|~#%&+{}()\\[\\]-]".toRegex().matches(this[nameLastIndex].toString())) {
+//            this.substringBefore(this[nameLastIndex])
+//        } else { this }
     }
 }

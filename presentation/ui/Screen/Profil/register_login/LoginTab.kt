@@ -32,12 +32,12 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     Column( )
     {
         //todo: check if the inputs are resistant to application switching
-        if (!isValidName)
-            Text(
-                color = whiteDark2,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "Player name \'$name\' is can't",
-            )
+//        if (!isValidName)
+//            Text(
+//                color = whiteDark2,
+//                modifier = Modifier.align(Alignment.CenterHorizontally),
+//                text = "Player name \'$name\' ",
+//            )
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             value = name,
