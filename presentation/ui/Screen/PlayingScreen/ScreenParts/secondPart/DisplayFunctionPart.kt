@@ -188,7 +188,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                         color = caseColor,
                                         instructionChar = instructionChar,
                                         vm = vm,
-                                        filter = displayInstructionMenu && !vm.selectedCase.Match(Position(functionNumber, _index))
+                                        filter = displayInstructionMenu && !vm.selectedCase.Match(Position(functionNumber, index))
                                     )
                                 }
                             }
@@ -274,7 +274,7 @@ fun DisplayCurrentInstructionHighlighted(
                                     ( vm.breadcrumb.currentInstructionList.isNotEmpty()
                                             && ( (currentAction == 0 && functionNumber == 0 && _index == 0) || vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, index)))
                                             && playerAnimationState.runningInBackground() )
-                                    || (vm.selectedCase.Match(Position(line = functionNumber, column = index + 5))
+                                    || (vm.selectedCase.Match(Position(line = functionNumber, column = index))
                                             && vm.animData.getPlayerAnimationState().isTheBreadcrumbModifiable()
                                             && displayInstructionMenu
                                             )
