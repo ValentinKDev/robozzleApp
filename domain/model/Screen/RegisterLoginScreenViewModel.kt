@@ -34,6 +34,8 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     val tokenDataVm = TokenDataStoreViewModel( getApplication() )
     val userDataStoreVM = UserDataStoreViewModel( getApplication() )
 
+    private var serverRet: ServerRet = ServerRet.NotAttribution
+
     private val _userConnectionState = MutableStateFlow(UserConnectionState.NoUser.str)
     val userConnectionState: StateFlow<String> = _userConnectionState
     fun setUserConnectionState(stateStr: String) {
@@ -119,7 +121,12 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         name
         viewModelScope.launch {
 //            infoLog("createnewsuerandgetState", "start")
-            var serverRetFromCreation = createANewUserAndGetState()
+            var ret = createANewUserAndGetState()
+            serverRet = ret
+            var serverRetFromCreation: UserConnectionState = when (ret) {
+                ServerRet.Positiv -> UserConnectionState.CreatedAndNotVerified
+                else -> UserConnectionState.NotCreated
+            }
             if (serverRetFromCreation == UserConnectionState.CreatedAndNotVerified) {
 //                infoLog("getAToken", "start")
                 getAToken(name.value, password.value)
@@ -146,12 +153,18 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     }
 
     fun getConnectionErrorMessage(): String {
-        return when (userConnectionState.value) {
-            UserConnectionState.ServerNotReached.str -> "can't reach servers"
-            UserConnectionState.IssueWithServer.str -> "issue with the servers"
-            UserConnectionState.Connected.str -> "created"
-            UserConnectionState.NotCreated.str -> "impossible to create user"
-            else -> "default"
+        return when (serverRet) {
+            ServerRet.Conflict -> "This name is already taken"
+            ServerRet.Exception -> "Server is unavailable for the moment"
+            else -> {
+                when (userConnectionState.value) {
+                    UserConnectionState.ServerNotReached.str -> "can't reach servers"
+                    UserConnectionState.IssueWithServer.str -> "issue with the servers"
+                    UserConnectionState.Connected.str -> "created"
+                    UserConnectionState.NotCreated.str -> "impossible to create user"
+                    else -> "default"
+                }
+            }
         }
     }
 
@@ -161,8 +174,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         val ultimateUser: UltimateUserRequest? = getUltimateUserFromServer()
         infoLog("RegisterLoginScreenViewModel::getUserFromserverAndStore", "userNameFormServer : ${ultimateUser?.let { it.name }}")
         return (
-                if (ultimateUser != null)
-                {
+                if (ultimateUser != null) {
                     userDataStoreVM.saveUser(
                         User(
                             ultimateUser.id.toInt(),
@@ -173,6 +185,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                     expectedState
                 }
                 else {
+                    infoLog("RegisterLoginScreenViewModel::getUserFromserverAndStore", "ERROR -> ultimateUser = $ultimateUser")
                     errorState
                 }
                 )
@@ -188,17 +201,18 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         return ultimateUser
     }
 
-    private suspend fun createANewUserAndGetState(): UserConnectionState {
+    private suspend fun createANewUserAndGetState(): ServerRet {
         infoLog("RegisterLoginScreenVM::createANewUserAndGetState", "start")
         val ultimateUserService: UltimateUserService = UltimateUserService.create(token = NOTOKEN)
         val newUserRequest = UserRequest(name.value, password.value)
-        val serverRet: String = ultimateUserService.postNewUser(newUserRequest)
+        val serverRet: ServerRet = ultimateUserService.postNewUser(newUserRequest)
         infoLog("RegisterLoginScreenVM::createANewUserAndGetState", "userconnectionState.value ${userConnectionState.value}")
 
-        return when (serverRet) {
-            ServerRet.Positiv.ret -> UserConnectionState.CreatedAndNotVerified
-            else -> UserConnectionState.NotCreated
-        }
+        return serverRet
+//        return when (serverRet) {
+//            ServerRet.Positiv.ret -> UserConnectionState.CreatedAndNotVerified
+//            else -> UserConnectionState.NotCreated
+//        }
     }
 
     fun checkConnectionState(): Boolean = userConnectionState.value != UserConnectionState.Verified.str

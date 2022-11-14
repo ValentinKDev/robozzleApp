@@ -86,6 +86,7 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
 //    if (showErrorMessage > 0) Toast.makeText(ctxt, "Can't reach Servers", Toast.LENGTH_LONG).show()
 //    if (showErrorMessage < 0) Toast.makeText(ctxt, "Wrong login", Toast.LENGTH_LONG).show()
     if (showErrorMessage != 0)
-        Toast.makeText(ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(ctxt, "Nope", Toast.LENGTH_SHORT).show()
 
 }

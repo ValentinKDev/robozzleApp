@@ -1,13 +1,14 @@
 package com.mobilegame.robozzle.data.server
 
-sealed class ServerRet(val ret: String) {
-    object Positiv: ServerRet("positiv_ret")
-    object Error200: ServerRet("error200_ret")
-    object Error300: ServerRet("error300_ret")
-    object Error400: ServerRet("error400_ret")
-    object Error500: ServerRet("error500_ret")
-    object Exception: ServerRet("exception_ret")
-    object NotAttribution: ServerRet("not_received_ret")
+sealed class ServerRet(val ret: String, val value: Int) {
+    object Positiv: ServerRet("positiv_ret", -1)
+    object Error200: ServerRet("error200_ret", -200)
+    object Error300: ServerRet("error300_ret", -300)
+    object Error400: ServerRet("error400_ret", -400)
+    object Error500: ServerRet("error500_ret", -500)
+    object Exception: ServerRet("exception_ret", -42)
+    object NotAttribution: ServerRet("not_received_ret", 0)
+    object Conflict: ServerRet("conflict_ret", 409)
 }
 
 sealed class UserState(val status: String) {

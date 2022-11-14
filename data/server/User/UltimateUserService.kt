@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.data.server.User
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
 import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
+import com.mobilegame.robozzle.data.server.ServerRet
 import com.mobilegame.robozzle.data.server.dto.UltimateUserRequest
 import com.mobilegame.robozzle.data.server.dto.UserRequest
 import io.ktor.client.*
@@ -15,6 +16,7 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 
 
@@ -22,7 +24,7 @@ interface UltimateUserService {
     suspend fun getUltimateUser(name: String): UltimateUserRequest?
 
     //todo : return a value to know if the user is already in the database ?
-    suspend fun postNewUser(user: UserRequest): String
+    suspend fun postNewUser(user: UserRequest): ServerRet
 
     companion object {
         fun create(token: String): UltimateUserService {
@@ -56,7 +58,13 @@ interface UltimateUserService {
                         })
                         install(ResponseObserver) {
                             onResponse { response ->
-                                Log.d("HTTP status:", "${response.status.value}")
+//                                Log.d("HTTP status:", "${response.status.value}")
+//                                Log.d("UltimateUserService::ResponseObserver", "content : ${response.content}")
+//                                Log.d("UltimateUserService::ResponseObserver", "call : ${response.call}")
+//                                Log.d("UltimateUserService::ResponseObserver", "status : ${response.status}")
+//                                Log.d("UltimateUserService::ResponseObserver", "status value : ${response.status.value}")
+//                                Log.d("UltimateUserService::ResponseObserver", "status description : ${response.status.description}")
+//                                Log.d("UltimateUserService::ResponseObserver", "request : ${response.request}")
                             }
                         }
 
