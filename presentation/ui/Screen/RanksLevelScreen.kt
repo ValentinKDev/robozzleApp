@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,14 +22,17 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.utils.Extensions.IsPair
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: RanksLevelScreenViewModel = viewModel()) {
+    val visibleScreen by remember { vm.visibleScreen }.collectAsState()
     val list by remember(vm) {vm.rankingList}.collectAsState(initial = emptyList())
     val context = LocalContext.current
 
     LaunchedEffect(true) {
         infoLog("RanksLevelScreent", "Start")
         vm.load(levelId)
+        vm.setVisibleScreenTo(true)
     }
 
     BackHandler {
@@ -37,58 +41,48 @@ fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: R
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+    AnimatedVisibility(
+        visible = visibleScreen,
+        enter = slideInVertically(),
+        exit = slideOutVertically()
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .weight(1F)
-                .fillMaxWidth()
+                .fillMaxSize()
         ) {
-            Text(text = "Level : ${levelName}")
-        }
-        LazyColumn(
-            modifier = Modifier
-                .weight(10F)
-                .fillMaxHeight()
-        ) {
-            itemsIndexed(list) { index, _rowElement ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.5F)
-                        .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5)
-                    ,
-                ) {
-
-                    Column(
+            Row(
+                modifier = Modifier
+                    .weight(1F)
+                    .fillMaxWidth()
+            ) {
+                Text(text = "Level : ${levelName}")
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .weight(10F)
+                    .fillMaxHeight()
+            ) {
+                itemsIndexed(list) { index, _rowElement ->
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .weight(0.5F)
+                            .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5)
                         ,
                     ) {
-                        Text("player ${_rowElement.playerName}")
-                        Text("instruction ${_rowElement.winDetails.instructionsNumber}")
-                        Text("points ${_rowElement.points}")
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                            ,
+                        ) {
+                            Text("player ${_rowElement.playerName}")
+                            Text("instruction ${_rowElement.winDetails.instructionsNumber}")
+                            Text("points ${_rowElement.points}")
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ColumnPlyOverView(list: List<PlayerWin>) {
-    infoLog("check", "${list}")
-}
-
-@Composable
-fun PlayerWinOverview(playerWin: PlayerWin) {
-    Column(
-        modifier = Modifier
-    ) {
-        Text("player ${playerWin.playerName}")
-        Text("instruction ${playerWin.winDetails.instructionsNumber}")
-        Text("points ${playerWin.points}")
     }
 }

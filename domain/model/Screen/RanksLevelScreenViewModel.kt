@@ -7,10 +7,15 @@ import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class RanksLevelScreenViewModel(application: Application): AndroidViewModel(application) {
     private val _rankingList = MutableStateFlow<List<PlayerWin>>(emptyList())
     val rankingList: StateFlow<List<PlayerWin>> = _rankingList
+
+    private val _visibleScreen = MutableStateFlow<Boolean>(false)
+    val visibleScreen: StateFlow<Boolean> = _visibleScreen.asStateFlow()
+    fun setVisibleScreenTo(state: Boolean) { _visibleScreen.value = state }
 
 
     var firstColRankingList: List<PlayerWin> = emptyList()
@@ -22,4 +27,5 @@ class RanksLevelScreenViewModel(application: Application): AndroidViewModel(appl
         _rankingList.value = RankVM(getApplication()).getLevelRanking(levelId)
         infoLog("RanksLevelScreenVM::load", "rankinglist = ${rankingList.value}")
     }
+
 }
