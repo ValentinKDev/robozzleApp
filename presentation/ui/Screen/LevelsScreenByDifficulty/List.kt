@@ -24,7 +24,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 fun LevelsScreenByDifficultyList(
     navigator: Navigator,
     vm: LevelsScreenByDifficultyViewModel,
-    rankingIconVM: RankingIconViewModel = RankingIconViewModel().create(35)
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -58,7 +57,7 @@ fun LevelsScreenByDifficultyList(
                     ) { index, levelOverView ->
                         vm.lazyListVM.state.value.layoutInfo.totalItemsCount
                         vm.lazyListVM.state.value.interactionSource.interactions
-                        DisplayLevelOverView(levelOverView, vm, rankingIconVM, navigator)
+                        DisplayLevelOverView(levelOverView, vm, navigator)
                     }
                 }
             } else { Text(text = "Can't access the server and no level in the phone internal storage") }

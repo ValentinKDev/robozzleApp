@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.MapViewParam
-import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
@@ -31,7 +30,7 @@ import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Composable
-fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, rankingIconVM: RankingIconViewModel, navigator: Navigator) { val ctxt = LocalContext.current
+fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) { val ctxt = LocalContext.current
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
@@ -55,19 +54,19 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
             Box(Modifier.weight(1.2f)) { vm.mapViewParamList.find { it.first == level.id } ?.let { DisplayLevelMap(it.second) } }
             Box(Modifier.weight(1.6f)) { DisplayLevelDescription(level) }
             Box(Modifier.weight(0.5f)) { DisplayLevelState(level, vm, navigator) }
-            Box(Modifier.weight(0.7f)) { DisplayRankingIcon(rankingIconVM, navigator, level.id)}
+            Box(Modifier.weight(0.7f)) { DisplayRankingIcon(vm, navigator, level.id)}
         }
     }
 }
 
 @Composable
-fun DisplayRankingIcon(rankingIconVM: RankingIconViewModel, navigator: Navigator, id: Int) {
+fun DisplayRankingIcon(vm: LevelsScreenByDifficultyViewModel, navigator: Navigator, id: Int) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
     when (isPressed) {
-        true -> rankingIconVM.rankingIconIsPressed()
-        false -> rankingIconVM.rankingIconIsReleased()
+        true -> vm.rankingIconVM.rankingIconIsPressed()
+        false -> vm.rankingIconVM.rankingIconIsReleased()
     }
 
     Box( modifier = Modifier
@@ -81,10 +80,11 @@ fun DisplayRankingIcon(rankingIconVM: RankingIconViewModel, navigator: Navigator
     ) {
         CenterComposable {
             RankingIconBouncing(
-                vm = rankingIconVM,
+                vm = vm.rankingIconVM,
                 enableShadow = true,
                 navigator = navigator,
-                levelId = id
+                levelId = id,
+//                exit = LevelsScreenByDifficultyViewModel::startExitAnimationAndPressRankingLevel
             )
         }
     }

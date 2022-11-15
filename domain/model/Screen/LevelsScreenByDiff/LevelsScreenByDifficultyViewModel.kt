@@ -2,22 +2,24 @@ package com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
+import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.utils.Extensions.Is
 import io.ktor.util.date.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +33,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     private val configRoom = ConfigRoomViewModel(getApplication())
     private val displayLevelWin = configRoom.getDisplayLevelWinInListState()
     lateinit var lazyListVM: LazyListStateViewModel
+    val rankingIconVM: RankingIconViewModel = RankingIconViewModel().create(35)
 
     val mapViewParamList: MutableList<Pair<Int, MapViewParam>> = mutableListOf()
 
@@ -83,10 +86,16 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun setVisibleListTargetStateAs(state: Boolean) {_visibleListState.value.targetState = state}
     fun listAnimationEnd(): Boolean = !_visibleListState.value.targetState && !_visibleListState.value.currentState
 
+    fun headerAndListAnimationEnd(): Boolean = headerAnimationEnd() && listAnimationEnd()
+
     private val _goToLevelPlayState = MutableStateFlow<Boolean>(false)
     val goToLevelPlayState: StateFlow<Boolean> = _goToLevelPlayState.asStateFlow()
     fun setGotoPlayScreenStateAs(state: Boolean) {_goToLevelPlayState.value = state}
     fun goToLevelPlayState(): Boolean = _goToLevelPlayState.value
+
+    private var _goToRanksLevelState: Boolean = false
+    fun setGoToRanksLevelScreenAs(state: Boolean) { _goToRanksLevelState = state }
+    fun goToRanksLevelState(): Boolean = _goToRanksLevelState
 
     private val _returnToMainMenuState = MutableStateFlow<Boolean>(false)
     val returnToMainMenuState: StateFlow<Boolean> = _returnToMainMenuState.asStateFlow()
@@ -117,6 +126,21 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         setVisibleHeaderTargetStateAs(false)
         setGotoPlayScreenStateAs(true)
     }
+
+    fun startExitAnimationAndPressRankingLevel(levelId: Int) = runBlocking(Dispatchers.IO) {
+        Log.d("LevelScreenByDiffVM::startExitAnimationAndPressRankingLevel", "start")
+        levelSelectedId = levelId
+        setVisibleListTargetStateAs(false)
+        setVisibleHeaderTargetStateAs(false)
+        _goToRanksLevelState = true
+    }
+    fun goingRankingLevelListener(navigator: Navigator, levelId: Int) {
+        if (rankingIconVM.isAnimationFinished() && _goToRanksLevelState.Is(false)) startExitAnimationAndPressRankingLevel(levelId)
+
+        if (_goToRanksLevelState && headerAndListAnimationEnd())
+            NavViewModel(navigator).navigateToRanksLevel(rankingIconVM.levelSelected.value.toString())
+    }
+
     private fun goingPlayScreenAnimationEnd() =
         headerAnimationEnd() && listAnimationEnd() && goToLevelPlayState()
     fun goingPlayScreenListener(navigator: Navigator, ctxt: Context) {
@@ -136,28 +160,49 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         when (fromScreen) {
             Screens.Playing -> slideInHorizontally() + fadeIn()
             Screens.MainMenu -> slideInVertically(animationSpec = tween(600))
+//            Screens.RanksLevel -> slid
             else -> fadeIn()
         }
     }
     @OptIn(ExperimentalAnimationApi::class)
-    fun getExitTransitionForHeader(): ExitTransition = runBlocking {
+    fun getExitTransitionForList(): ExitTransition = runBlocking {
         when  {
             goToLevelPlayState() ->
                 slideOutHorizontally() + fadeOut()
             goToMainMenuState() ->
                 shrinkVertically( Alignment.Top, animationSpec = tween(200)) + fadeOut(animationSpec = tween(150))
+            goToRanksLevelState() -> {
+                slideOutVertically(
+                    targetOffsetY = { +250 },
+                    animationSpec = tween(600)
+                ) + fadeOut(
+                    targetAlpha = 0F,
+                    animationSpec = tween(600)
+                )
+            }
             else -> fadeOut()
         }
     }
 
     @OptIn(ExperimentalAnimationApi::class)
-    fun getExitTransitionForList(): ExitTransition = runBlocking {
+    fun getExitTransitionForHeader(): ExitTransition = runBlocking {
+//        errorLog("LevelsScreenByDiffVM::getExitTransitionForHeader", "Screens -> LevelPlay ${goToLevelPlayState()} MainMenu ${goToMainMenuState()} RankingLevel ${goToRanksLevelState()}")
         when {
             goToLevelPlayState() ->
                 slideOutHorizontally() + fadeOut()
             goToMainMenuState() ->
                 slideOutVertically(targetOffsetY = { +250 }) + fadeOut(targetAlpha = 0F)
+            goToRanksLevelState() -> {
+                slideOutVertically(
+                    targetOffsetY = { +250 },
+                    animationSpec = tween(600)
+                ) + fadeOut(
+                    targetAlpha = 0F,
+                    animationSpec = tween(600)
+                )
+            }
             else -> fadeOut()
         }
     }
+
 }

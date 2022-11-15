@@ -48,8 +48,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -132,7 +132,11 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _levelId ->
                 LevelRoomViewModel(context).getLevel(_levelId)?.let { _level ->
-                    RanksLevelScreen(levelId = _levelId, levelName = _level.name)
+                    RanksLevelScreen(
+                        navigator = navigator,
+                        levelId = _levelId,
+                        levelName = _level.name
+                    )
                 }
             }
         }
@@ -163,7 +167,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            RegisterLoginScreen(navigator = navigator)
             LevelsScreenByDifficulty(
                 navigator = navigator,
-                levelsDifficulty = 3,
+                levelsDifficulty = 1,
                 fromScreen = Screens.MainMenu,
             )
 //            UserInfoScreen(navigator = navigator)

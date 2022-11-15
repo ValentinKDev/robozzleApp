@@ -15,7 +15,6 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyHeader
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyList
-import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.ListProgressBar
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import io.ktor.util.date.*
 
@@ -29,6 +28,7 @@ fun LevelsScreenByDifficulty(
 ) {
     val visibleHeaderState by remember {vm.visibleHeaderState}.collectAsState()
     val visibleListState by remember {vm.visibleListState}.collectAsState()
+    val rankingLevelIdSelected by remember {vm.rankingIconVM.levelSelected}.collectAsState()
 
     //todo: get rid of this ctxt
     val ctxt = LocalContext.current
@@ -47,6 +47,10 @@ fun LevelsScreenByDifficulty(
 
     vm.goingPlayScreenListener(navigator, ctxt)
 
+    rankingLevelIdSelected?.let {
+        vm.goingRankingLevelListener(navigator, it)
+    }
+
     //todo: find a way to triger recomposition to reload list if server no access and need to reload the level list from internal data
 
     Box(modifier = Modifier
@@ -55,7 +59,7 @@ fun LevelsScreenByDifficulty(
         AnimatedVisibility(
             visibleState = visibleListState ,
             enter = vm.getEnterTransitionForList(fromScreen) ,
-            exit = vm.getExitTransitionForHeader() ,
+            exit = vm.getExitTransitionForList() ,
         ) {
             LevelsScreenByDifficultyList(
                 navigator = navigator,
@@ -65,7 +69,7 @@ fun LevelsScreenByDifficulty(
         AnimatedVisibility(
             visibleState = visibleHeaderState,
             enter = fadeIn(initialAlpha = 1F),
-            exit = vm.getExitTransitionForList()
+            exit = vm.getExitTransitionForHeader()
         ) {
             LevelsScreenByDifficultyHeader(
                 navigator = navigator,

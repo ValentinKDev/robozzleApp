@@ -120,12 +120,12 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                             ,
                             horizontalArrangement = Arrangement.End
                         ) {
-                            RankingIconBouncing(
-                                vm = vm.logic.rankingIconVM,
-                                enableShadow = false,
-                                navigator = navigator,
-                                levelId = levelWin.lvl_id
-                            )
+//                            RankingIconBouncing(
+//                                vm = vm.logic.rankingIconVM,
+//                                enableShadow = false,
+//                                navigator = navigator,
+//                                levelId = levelWin.lvl_id
+//                            )
                         }
                     }
                 }

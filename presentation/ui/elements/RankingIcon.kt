@@ -7,12 +7,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import gradientBackground
+import kotlin.reflect.KFunction2
 
 @Composable
-fun RankingIconBouncing(vm: RankingIconViewModel, enableShadow: Boolean, navigator: Navigator, levelId: Int) {
+fun RankingIconBouncing(
+    vm: RankingIconViewModel,
+    enableShadow: Boolean,
+    navigator: Navigator,
+    levelId: Int,
+//    exit: KFunction2<LevelsScreenByDifficultyViewModel, Int, Unit>
+//    exit: (Unit) -> Unit
+) {
     Box(
          Modifier
             .width(vm.gui.width.dp)

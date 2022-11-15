@@ -14,6 +14,8 @@ import com.mobilegame.robozzle.presentation.res.MyColor.Companion.redDark8
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.elements.ColumColor
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class RankingIconViewModel(): ViewModel() {
 
@@ -27,10 +29,20 @@ class RankingIconViewModel(): ViewModel() {
     private fun isAnimated(): Boolean = _animationState.value
     fun changeAnimationStateTo(state: Boolean) { _animationState.value = state }
 
+//    var levelSelected: Int? = null
+    private val _levelSelected = MutableStateFlow<Int?>(null)
+    val levelSelected: StateFlow<Int?> = _levelSelected.asStateFlow()
+    private fun setLevelSelcted(id : Int) {
+        _levelSelected.value ?: run {
+            _levelSelected.value = id
+            infoLog("RankingViewModel::finisherAction", "level Selected ${_levelSelected.value}")
+        }
+    }
+
     private val finisherRed = mutableStateOf(false)
     private val finisherBlue = mutableStateOf(false)
     private val finisherGreen = mutableStateOf(false)
-    private fun isAnimationFinished(): Boolean = finisherBlue.value && finisherRed.value && finisherGreen.value
+    fun isAnimationFinished(): Boolean = finisherBlue.value && finisherRed.value && finisherGreen.value
 
     fun rankingIconIsReleased() { changeAnimationStateTo(false) }
     fun rankingIconIsPressed() {
@@ -38,6 +50,8 @@ class RankingIconViewModel(): ViewModel() {
     }
 
     fun finisherAction(type: ColumColor, navigator: Navigator, levelId: Int): (Dp) -> Unit {
+        setLevelSelcted(levelId)
+
         when (type) {
             ColumColor.Red -> {
                 infoLog("RankingViewModel::finisherAction", "AnimationFinished Red")
@@ -54,7 +68,7 @@ class RankingIconViewModel(): ViewModel() {
         }
         if ( isAnimationFinished()) {
             verbalLog("RankingViewModel::finisherAction", "AnimationFinished")
-            NavViewModel(navigator).navigateToRanksLevel(levelId.toString())
+//            NavViewModel(navigator).navigateToRanksLevel(levelId.toString())
         }
         return {}
     }
