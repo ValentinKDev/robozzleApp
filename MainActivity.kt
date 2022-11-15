@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
@@ -39,41 +40,22 @@ fun LaunchingApp(navigator: Navigator, window: Window, content: @Composable () -
     var launch by remember { mutableStateOf(true) }
     var composer = currentComposer
 
-//    val recompose by remember(navigator) { navigator.forceReload }.collectAsState(initial = false)
-
-//    LaunchedEffect(true) {
-//        navigator.forceReload.collect {
-//            if (it) {
-//                errorLog(
-//                    "RECOMPOSITION",
-//                    "***********************************************************************"
-//                )
-//                composer.composition.recompose()
-//            }
-//        }
-//    }
-
-//    if (relaunch) {
-//        errorLog("RECOMPOSITION", "***********************************************************************")
-//        currentComposer.composition.recompose()
-//    }
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
     window.statusBarColor = grayDark5.toArgb()
+
     Box(
         Modifier
             .fillMaxSize()
             .backColor(RobuzzleConfiguration.applicationBackgroundColor)
             .onGloballyPositioned {
-//                verbalLog("LaunchingApp", "recompose $recompose")
                 if (launch) {
-//                    LaunchingViewModel(context).launch(it, navigator)
                     LaunchingViewModel(context).launch(it)
                     launch = false
                 }
             }
     ) {
         Navigation(Navigator())
-//        content.invoke()
     }
 }
 

@@ -43,9 +43,6 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
         userDataStoreVM.saveUserConnectionState(stateStr)
     }
 
-//    private val _connectionEstablished = MutableStateFlow<Boolean>(false)
-//    val connectionEstablished: StateFlow<Boolean> = _connectionEstablished
-
     private val _name = MutableStateFlow<String>("")
     val name: StateFlow<String> = _name.asStateFlow()
     fun set_name(newName: String) {

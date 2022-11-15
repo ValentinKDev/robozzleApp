@@ -25,10 +25,6 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
     val showErrorMessage by vm.showToast.collectAsState()
     val ctxt = LocalContext.current
 
-//    val keyboard = KeyboardActions {  }
-////To hide keyboard
-////To show keyboard
-//    keyboardController?.show()
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -43,7 +39,6 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
             },
             enabled = enable
         ) {
-//            Text(text = "Register", Modifier.align(Alignment.Center))
             Text(text = "Register")
         }
         if (showErrorMessage > 0)
@@ -55,17 +50,9 @@ fun ButtonRegister(enable: Boolean, name: String, password: String, vm: Register
 @Composable
 fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLoginViewModel, navigator: Navigator) {
     val keyboardController = LocalSoftwareKeyboardController.current
-//    val connectionEstablished by vm.connectionEstablished.collectAsState()
-//    val showErrorMessage by vm.canNotLog.collectAsState()
     val showErrorMessage by vm.showToast.collectAsState()
     val ctxt = LocalContext.current
 
-//    errorLog("connectionEstablished", "${}")
-
-//    if (connectionEstablished)
-//        NavViewModel(navigator).navigateTo(
-//            UserDataStoreViewModel(ctxt).getName()?.let { Screens.RegisterLogin }?: Screens.UserInfo
-//        )
     Box(Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier
@@ -83,10 +70,7 @@ fun ButtonLogin(enable: Boolean, name: String, password: String, vm: RegisterLog
             Text(text = "Login")
         }
     }
-//    if (showErrorMessage > 0) Toast.makeText(ctxt, "Can't reach Servers", Toast.LENGTH_LONG).show()
-//    if (showErrorMessage < 0) Toast.makeText(ctxt, "Wrong login", Toast.LENGTH_LONG).show()
     if (showErrorMessage != 0)
-//        Toast.makeText(ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_SHORT).show()
         Toast.makeText(ctxt, "Nope", Toast.LENGTH_SHORT).show()
 
 }

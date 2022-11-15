@@ -19,7 +19,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @Composable
 fun RanksLevelScreen(levelId: Int, levelName: String, vm: RanksLevelScreenViewModel = viewModel()) {
-//    vm.load(levelId, LocalContext.current)
     val list by remember(vm) {vm.rankingList}.collectAsState(initial = emptyList())
 
     LaunchedEffect(true) {
