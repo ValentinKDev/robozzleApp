@@ -28,7 +28,7 @@ class RankingServerViewModel(
         errorLog("Ranking server VM", "init")
     }
 
-    fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
+    fun getLevelRanking(levelId: Int): List<PlayerWin>? = runBlocking(Dispatchers.IO) {
             service.getWinnerListJson(levelId).toListPlayerWin()
     }
 

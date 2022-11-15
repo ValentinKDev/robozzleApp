@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class RanksLevelScreenViewModel(application: Application): AndroidViewModel(application) {
-    private val _rankingList = MutableStateFlow<List<PlayerWin>>(emptyList())
-    val rankingList: StateFlow<List<PlayerWin>> = _rankingList
+    private val _rankingList = MutableStateFlow<List<PlayerWin>?>(null)
+    val rankingList: StateFlow<List<PlayerWin>?> = _rankingList
 
     private val _visibleScreen = MutableStateFlow<Boolean>(false)
     val visibleScreen: StateFlow<Boolean> = _visibleScreen.asStateFlow()

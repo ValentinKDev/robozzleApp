@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -26,7 +27,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: RanksLevelScreenViewModel = viewModel()) {
     val visibleScreen by remember { vm.visibleScreen }.collectAsState()
-    val list by remember(vm) {vm.rankingList}.collectAsState(initial = emptyList())
+    val list: List<PlayerWin>? by remember(vm) {vm.rankingList}.collectAsState(initial = emptyList())
     val context = LocalContext.current
 
     LaunchedEffect(true) {
@@ -46,43 +47,46 @@ fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: R
         enter = slideInVertically(),
         exit = slideOutVertically()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Row(
+            Column(
                 modifier = Modifier
-                    .weight(1F)
-                    .fillMaxWidth()
+                    .fillMaxSize()
             ) {
-                Text(text = "Level : ${levelName}")
-            }
-            LazyColumn(
-                modifier = Modifier
-                    .weight(10F)
-                    .fillMaxHeight()
-            ) {
-                itemsIndexed(list) { index, _rowElement ->
-                    Row(
+                Row(
+                    modifier = Modifier
+                        .weight(1F)
+                        .fillMaxWidth()
+                ) {
+                    Text(text = "Level : ${levelName}")
+                }
+                list?.let {
+                    LazyColumn(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.5F)
-                            .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5)
-                        ,
+                            .weight(10F)
+                            .fillMaxHeight()
                     ) {
+                        itemsIndexed(list) { index, _rowElement ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.5F)
+                                    .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5),
+                            ) {
 
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                            ,
-                        ) {
-                            Text("player ${_rowElement.playerName}")
-                            Text("instruction ${_rowElement.winDetails.instructionsNumber}")
-                            Text("points ${_rowElement.points}")
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                ) {
+                                    Text("player ${_rowElement.playerName}")
+                                    Text("instruction ${_rowElement.winDetails.instructionsNumber}")
+                                    Text("points ${_rowElement.points}")
+                                }
+                            }
                         }
                     }
+                } ?: run {
+                    val ctxt = LocalContext.current
+                    Toast.makeText( ctxt, "Can't access the server for ranks", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
     }
 }

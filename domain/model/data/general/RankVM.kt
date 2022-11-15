@@ -53,7 +53,7 @@ class RankVM(
         }
     }
 
-    fun getLevelRanking(levelId: Int): List<PlayerWin> = runBlocking(Dispatchers.IO) {
+    fun getLevelRanking(levelId: Int): List<PlayerWin>? = runBlocking(Dispatchers.IO) {
         rankingServerVM.getLevelRanking(levelId)
     }
 
