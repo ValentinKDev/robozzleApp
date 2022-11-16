@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.sp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayUIData
 import com.mobilegame.robozzle.utils.Extensions.toDp
 import com.mobilegame.robozzle.utils.Extensions.toSp
 
@@ -65,9 +66,10 @@ object ConfigScreenLayout {
             var optionTextSp = 0.sp
         }
         object Texts {
-            const val lightThemeLine = "Switch from dark theme to light theme"
-            const val dragAndDropToTrash = "Switch from no trashe to trashe in Game"
-            const val displayLevelWin = "Switch on to display levels you won in the list"
+            const val lightThemeLine = "Switch to set light theme"
+            const val dragAndDropToTrash = "Switch to remove or put back trash in Game"
+            const val displayLevelWin = "Switch to display levels you won in the list"
+            const val orientation = "Switch off to use the app in landscape orientation"
         }
         object Colors {
             val optionText = whiteDark4
@@ -97,20 +99,22 @@ object ConfigScreenLayout {
         list.sizes.optionText = list.sizes.rowHeight * list.ratios.optionText
         list.sizes.optionTextSp = list.sizes.optionText.toSp(density)
 
-        verbalLog("ConfigScreenLayout::init", "Start")
-        infoLog("heightFull", "$heightFull")
-        infoLog("header.size.text", "${header.sizes.text}")
-        infoLog("header.size.textDp", "${header.sizes.textDp}")
-        infoLog("header.size.textSp", "${header.sizes.textSp}")
+        displayUIData?.let {
+            verbalLog("ConfigScreenLayout::init", "Start")
+            infoLog("heightFull", "$heightFull")
+            infoLog("header.size.text", "${header.sizes.text}")
+            infoLog("header.size.textDp", "${header.sizes.textDp}")
+            infoLog("header.size.textSp", "${header.sizes.textSp}")
 
-        infoLog("list.size.height", "${list.sizes.height}")
-        infoLog("list.sizes.rowToDisplay", "${list.sizes.rowToDisplay}")
-        infoLog("list.sizes.row", "${list.sizes.rowHeight}")
-        infoLog("list.sizes.rowDp", "${list.sizes.rowHeightDp}")
-        infoLog("list.sizes.rowPadding", "${list.sizes.rowWidthPadding}")
-        infoLog("list.sizes.rowPaddingDp", "${list.sizes.rowWidthPaddingDp}")
-        infoLog("list.sizes.optionText", "${list.sizes.optionText}")
-        infoLog("list.sizes.optionTextSp", "${list.sizes.optionTextSp}")
+            infoLog("list.size.height", "${list.sizes.height}")
+            infoLog("list.sizes.rowToDisplay", "${list.sizes.rowToDisplay}")
+            infoLog("list.sizes.row", "${list.sizes.rowHeight}")
+            infoLog("list.sizes.rowDp", "${list.sizes.rowHeightDp}")
+            infoLog("list.sizes.rowPadding", "${list.sizes.rowWidthPadding}")
+            infoLog("list.sizes.rowPaddingDp", "${list.sizes.rowWidthPaddingDp}")
+            infoLog("list.sizes.optionText", "${list.sizes.optionText}")
+            infoLog("list.sizes.optionTextSp", "${list.sizes.optionTextSp}")
+        }
         return this
     }
 }

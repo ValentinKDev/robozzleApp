@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.domain.model.Screen.Config
 
 import android.app.Application
+import android.content.pm.ActivityInfo
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.infoLog
@@ -10,6 +11,8 @@ import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.ConfigOption
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.utils.Extensions.Is
+import com.mobilegame.robozzle.utils.Extensions.Not
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,6 +50,9 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
     }
     fun getRoast(): String {
         return when (showToast.value) {
+            9 -> "Stop it... Get some help"
+            8 -> "Nah"
+            7 -> "Might give it an other try ?"
             6 -> "I was made to prevent you from doing this mistake"
             5 -> "I can do this all day"
             4 -> "Hitting again and again won't change anything"
@@ -61,7 +67,7 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
         when (optionType) {
             ConfigOption.ToTrash -> handleSwitchToTrashes(state)
             ConfigOption.DisplayWinLevel -> handleSwitchToDisplayLevelWin(state)
-            else -> infoLog("handlebyoption", "nothing")
+            ConfigOption.Orientation -> handleSwitchOrientation(state)
         }
     }
 
@@ -72,8 +78,7 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
             switchToTrash = state
             dataVM.updateTrashesInGameStateTo(state)
         }
-        infoLog("switchToTrash", "$switchToTrash")
-
+        infoLog("ConfigScreeVM::handleSwitchToTrash", "$switchToTrash")
     }
 
     var switchToDisplayLevelWin = configData.displayLevelWinInList
@@ -83,7 +88,30 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
             switchToDisplayLevelWin = state
             dataVM.updateDisplayLevelWinInListStateTo(state)
         }
-        infoLog("switchToDisplayLevelWin", "$switchToDisplayLevelWin")
+        infoLog("ConfigScreeVM::handleSwitchToDisplayLevelWin", "$switchToDisplayLevelWin")
+    }
+
+    var switchOrientation = (configData.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    private fun handleSwitchOrientation(state: Boolean) {
+        recomposeConfigScreen()
+//        when {
+//            state Is true && switchOrientation Not ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> {
+//                switchOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//                dataVM.updateOrientation(switchOrientation)
+//            }
+//            state Is false && switchOrientation Not ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE -> {
+//                switchOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//                dataVM.updateOrientation(switchOrientation)
+//            }
+//        }
+        if (state != switchOrientation) {
+            switchOrientation = state
+            dataVM.updateOrientation(getOrientation())
+        }
+        infoLog("ConfigScreeVM::handleSwitchOrientation", "$switchOrientation")
+    }
+    private fun getOrientation(): Int {
+        return if (switchOrientation) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 
     fun startExitAnimationAndPressBack() = runBlocking(Dispatchers.IO) {

@@ -48,13 +48,13 @@ fun ConfigScreen(navigator: Navigator, vm: ConfigScreenViewModel = viewModel()) 
                 enter =  fadeIn(),
                 exit = fadeOut()
             ) {
-                    CenterComposable {
-                        Text(
-                            text = vm.layout.header.text.line,
-                            color = vm.layout.header.colors.text,
-                            fontSize = vm.layout.header.sizes.textSp,
-                        )
-                    }
+                CenterComposable {
+                    Text(
+                        text = vm.layout.header.text.line,
+                        color = vm.layout.header.colors.text,
+                        fontSize = vm.layout.header.sizes.textSp,
+                    )
+                }
             }
         }
         Column(
@@ -66,10 +66,8 @@ fun ConfigScreen(navigator: Navigator, vm: ConfigScreenViewModel = viewModel()) 
                     visibleState = visibleListState,
                     enter = expandVertically(),
                     exit = shrinkVertically()
-//                    expandVertically(expandFrom = Alignment.Top)
                 ) {
                     Column {
-
                         SwitchLightTheme(
                             configVM = vm
                         )
@@ -85,9 +83,14 @@ fun ConfigScreen(navigator: Navigator, vm: ConfigScreenViewModel = viewModel()) 
                             startState = vm.switchToDisplayLevelWin,
                             text = vm.layout.list.texts.displayLevelWin
                         )
+                        SwitchOption(
+                            optionType = ConfigOption.Orientation,
+                            configVM = vm,
+                            startState = vm.switchOrientation,
+                            text = vm.layout.list.texts.displayLevelWin
+                        )
                     }
             }
         }
     }
-    //todo: afficher les niveaux terminé
 }

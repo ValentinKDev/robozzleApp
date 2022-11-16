@@ -1,8 +1,8 @@
 package com.mobilegame.robozzle.domain.model
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.lifecycle.*
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
@@ -18,23 +18,32 @@ import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import kotlinx.coroutines.*
 
-class LaunchingViewModel(context: Context): ViewModel() {
+//class LaunchingViewModel(context: Context): ViewModel() {
+class LaunchingViewModel(application: Application): AndroidViewModel(application) {
 
-    private val levelRoomVM = LevelRoomViewModel(context)
+//    private val levelRoomVM = LevelRoomViewModel(context)
+//    private val levelServerVM = LevelServerViewModel()
+//    private val appConfigServerVM = AppConfigServerViewModel()
+//    private val screenDataStore = ScreenDataStoreViewModel(context)
+//    private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
+//    private val rankVM = RankVM(context)
+//    val configData = ConfigRoomViewModel(context)
+    private val levelRoomVM = LevelRoomViewModel(getApplication())
     private val levelServerVM = LevelServerViewModel()
     private val appConfigServerVM = AppConfigServerViewModel()
-    private val screenDataStore = ScreenDataStoreViewModel(context)
-    private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
-    private val configData = ConfigRoomViewModel(context)
-    private val rankVM = RankVM(context)
+    private val screenDataStore = ScreenDataStoreViewModel(getApplication())
+    private val appConfigDataStoreVM = AppConfigDataStoreViewModel(getApplication())
+    private val rankVM = RankVM(getApplication())
+    val configData = ConfigRoomViewModel(getApplication())
 
 //    fun launch(layoutCoordinates: LayoutCoordinates, navigator: Navigator) {
-    fun launch(layoutCoordinates: LayoutCoordinates) {
+//    fun launch(layoutCoordinates: LayoutCoordinates) {
+    fun launch() {
 
         errorLog("LaunchingApp", "Composable call.........................................................")
         viewModelScope.launch {
             Log.e("init", "LaunchingViewModel::launch")
-            screenDataStore.configure(layoutCoordinates)
+//            screenDataStore.configure(layoutCoordinates)
 
             //load and check versions
 
@@ -42,7 +51,7 @@ class LaunchingViewModel(context: Context): ViewModel() {
 
             loadAndCheckAppVersion()
 
-            configData.initiateConfig()
+//            configData.instantiateConfig()
             infoLog("get list level Id", "local")
             val localListLevelsId: List<Int> = levelRoomVM.getLevelIds()
             infoLog("-> local list level Id", "$localListLevelsId")

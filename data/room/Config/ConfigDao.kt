@@ -23,10 +23,15 @@ interface ConfigDao {
     @Query("SELECT display_level_win_list FROM config_table WHERE id = 0")
     fun getDisplayLevelWinListState(): Boolean
 
+    @Query("SELECT orientation FROM config_table WHERE id = 0")
+    fun getOrientation(): Int
 
     @Query("UPDATE config_table SET trashes_in_Game = :state WHERE id = 0 ")
     fun upDateTrashesInGameStateTo(state: Boolean)
 
     @Query("UPDATE config_table SET display_level_win_list = :state WHERE id = 0 ")
     fun upDateDisplayLevelWinListTo(state: Boolean)
+
+    @Query("UPDATE config_table SET orientation = :state WHERE id = 0 ")
+    fun updateOrientation(state: Int)
 }

@@ -10,13 +10,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Config.ConfigScreenViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.black8
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Local
 
 @Composable
 fun SwitchLightTheme(configVM: ConfigScreenViewModel) {

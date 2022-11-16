@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import backColor
 import com.mobilegame.robozzle.data.layout.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
@@ -30,20 +31,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LaunchingApp(Navigator(), this.window) {
-//                Navigation(Navigator())
-            }
+            LaunchingApp(this.window)
         }
     }
 }
 
 @Composable
-fun LaunchingApp(navigator: Navigator, window: Window, content: @Composable () -> Unit) {
+fun LaunchingApp(window: Window, vm: LaunchingViewModel = viewModel()) {
     //todo: https://www.youtube.com/watch?v=GhNwvGePTbY 5min20s to trigger relaunching ?
-    val context = LocalContext.current
-    val density = LocalDensity.current
-    var launch by remember { mutableStateOf(true) }
-    var composer = currentComposer
+    LaunchedEffect(true) {
+        vm.launch()
+    }
 
     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
@@ -53,15 +51,8 @@ fun LaunchingApp(navigator: Navigator, window: Window, content: @Composable () -
         Modifier
             .fillMaxSize()
             .backColor(RobuzzleConfiguration.applicationBackgroundColor)
-            .onGloballyPositioned {
-                if (launch) {
-                    LaunchingViewModel(context).launch(it)
-                    launch = false
-                }
-            }
     ) {
-//        LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-        LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        vm.configData.orientation?.let { LockScreenOrientation(it) }
         Navigation(Navigator())
     }
 }

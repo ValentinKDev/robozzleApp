@@ -20,12 +20,11 @@ class Navigator {
         dest.emit(fullRoute)
     }
 
-    private var _forceReload  = MutableSharedFlow<String>()
-    var forceReload = _forceReload.asSharedFlow()
-
-    fun reload_launcher(setTo: String = "") = runBlocking(Dispatchers.IO) {
-        errorLog("Navigator::reload_launcher", "start")
-        _forceReload.emit(setTo)
-        errorLog("Navigator::reload_launcher", "end forceReload = ${forceReload.equals(true)}")
-    }
+//    private var _forceReload  = MutableSharedFlow<String>()
+//    var forceReload = _forceReload.asSharedFlow()
+//    fun reload_launcher(setTo: String = "") = runBlocking(Dispatchers.IO) {
+//        errorLog("Navigator::reload_launcher", "start")
+//        _forceReload.emit(setTo)
+//        errorLog("Navigator::reload_launcher", "end forceReload = ${forceReload.equals(true)}")
+//    }
 }

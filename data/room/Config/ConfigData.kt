@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.data.room.Config
 
+import android.graphics.drawable.GradientDrawable.Orientation
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,4 +11,5 @@ data class ConfigData(
     @ColumnInfo(name = "lightTheme") val lightTheme: Boolean,
     @ColumnInfo(name = "trashes_in_Game") val trashesInGame: Boolean,
     @ColumnInfo(name = "display_level_win_list") val displayLevelWinInList: Boolean,
+    @ColumnInfo(name = "orientation") val orientation: Int,
 )

@@ -11,7 +11,6 @@ class ConfigRepository(private val configDao: ConfigDao) {
     suspend fun addConfig(config: ConfigData) {
         configDao.addConfig(config)
     }
-
     fun getConfig(): ConfigData {
         return configDao.getConfig()
     }
@@ -19,16 +18,20 @@ class ConfigRepository(private val configDao: ConfigDao) {
     fun getTrashesInGameState(): Boolean {
         return configDao.getTrashesInGameState()
     }
-
     fun getDisplayLevelWinInListState(): Boolean {
         return configDao.getDisplayLevelWinListState()
     }
-
-    fun updateTrashesInGameStateTo(state: Boolean) {
-        return configDao.upDateTrashesInGameStateTo(state)
+    fun getOrientation(): Int {
+        return configDao.getOrientation()
     }
 
+    fun updateTrashesInGameStateTo(state: Boolean) {
+        configDao.upDateTrashesInGameStateTo(state)
+    }
     fun updateDisplayLevelWinInListStateTo(state: Boolean) {
-        return configDao.upDateDisplayLevelWinListTo(state)
+        configDao.upDateDisplayLevelWinListTo(state)
+    }
+    fun updateOrientation(state: Int) {
+        configDao.updateOrientation(state)
     }
 }
