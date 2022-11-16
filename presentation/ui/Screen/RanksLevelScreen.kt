@@ -64,14 +64,13 @@ fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: R
                             .weight(10F)
                             .fillMaxHeight()
                     ) {
-                        itemsIndexed(list) { index, _rowElement ->
+                        itemsIndexed(it) { index, _rowElement ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(0.5F)
                                     .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5),
                             ) {
-
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth(),
@@ -84,8 +83,13 @@ fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: R
                         }
                     }
                 } ?: run {
-                    val ctxt = LocalContext.current
-                    Toast.makeText( ctxt, "Can't access the server for ranks", Toast.LENGTH_SHORT).show()
+                    Row(
+                        modifier = Modifier
+                            .weight(10F)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = "Can't access the server for ranks")
+                    }
                 }
             }
     }

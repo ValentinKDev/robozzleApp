@@ -1,5 +1,9 @@
 package com.mobilegame.robozzle
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.Window
 import androidx.activity.ComponentActivity
@@ -20,6 +24,7 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark5
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigation
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.utils.LockScreenOrientation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,8 +60,8 @@ fun LaunchingApp(navigator: Navigator, window: Window, content: @Composable () -
                 }
             }
     ) {
+//        LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         Navigation(Navigator())
     }
 }
-
-
