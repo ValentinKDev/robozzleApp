@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
+import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
@@ -34,7 +35,7 @@ const val goingTopTiming = 450
 //@Preview
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScreen: Screens, vm: MainScreenViewModel, w: MainScreenWindowsInfos, anim: MainMenuAnimationViewModel = viewModel()) {
+fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScreen: Screens, vm: MainScreenViewModel, w: MainScreenWindowsInfos, enable: Boolean = true, anim: MainMenuAnimationViewModel = viewModel() ) {
     val ctxt = LocalContext.current
     val dens = LocalDensity.current
 
@@ -112,9 +113,22 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
                 elevation = 15.dp,
                 shape = MaterialTheme.shapes.medium,
 //                backgroundColor = info.color,
-                backgroundColor = w.buttonColor,
+                backgroundColor =
+                if (enable)
+                    w.buttonColor
+                else
+                    MyColor.grayDark4Plus
+                ,
             ) {
-                CenterText(text = info.text, color = whiteDark4)
+                CenterText(
+                    text = info.text,
+                    color =
+                    if (enable)
+                        whiteDark4
+//                        w.buttonColor
+                    else
+                        MyColor.whiteDark7
+                )
             }
         }
     }

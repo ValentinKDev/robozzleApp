@@ -60,7 +60,7 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
             backgroundColor = grayDark3,
         ) {
             CenterComposable {
-                Text(text = "difficulty $levelDifficulty", color = whiteDark4)
+                Text(text = "Difficulty $levelDifficulty", color = whiteDark4)
             }
         }
     }

@@ -7,33 +7,33 @@ sealed class MainScreenButtonStyle(val type: NavigationButtonInfo) {
     object UserInfos: MainScreenButtonStyle(
         NavigationButtonInfo(
             button = Screens.UserInfo,
-            text = "profile",
+            text = "Profile",
             enable = true
         )
     )
     object RegisterLogin: MainScreenButtonStyle(
         NavigationButtonInfo(
             button = Screens.RegisterLogin,
-            text = "profile",
+            text = "Profile",
             enable = true
         )
     )
     object Config: MainScreenButtonStyle(
         NavigationButtonInfo(
             button = Screens.Config ,
-            text = "config",
+            text = "Config",
             enable = true)
     )
     object Creator: MainScreenButtonStyle(
         NavigationButtonInfo(
             button = Screens.Creator ,
-            text = "creator",
+            text = "Creator",
             enable = false)
     )
     object Donation: MainScreenButtonStyle(
         NavigationButtonInfo(
             button = Screens.Donation,
-            text = "donation",
+            text = "Donation",
             enable = true
         )
     )
