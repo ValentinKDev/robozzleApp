@@ -11,12 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import backColor
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow0
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.yellow5
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.FunctionCase
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
+import com.mobilegame.robozzle.presentation.ui.utils.PointerShape
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -70,6 +68,7 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                         ) {
                             FunctionCase(color = _color, vm = vm, instructionChar = _instruction, bigger = true)
                         }
+
                         Box(Modifier
                             .offset {
                                 IntOffset(
@@ -77,9 +76,10 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                                     y = vm.dragAndDropCase.pointerOffset.y.toInt(),
                                 )
                             }
-                            .size(5.dp)
-                            .backColor(yellow5)
-                        ) { }
+                            .size(15.dp)
+                        ) {
+                            PointerShape()
+                        }
                     }
                 }
             }
