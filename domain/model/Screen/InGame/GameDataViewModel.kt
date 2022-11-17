@@ -142,12 +142,19 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
             animData.setPlayerAnimationState(PlayerAnimationState.OnPause)
             animationLogicVM.stepByStep(AnimationStream.Forward)
         }
+        else if (animData.isPlaying()) {
+            clickPlayPauseButtonHandler()
+        }
         else { infoLog("GameDataVM::clickNextButton", "else anim is not on pause ${animData.playerAnimationState.value.key}") }
         logClick?.let { errorLog("GameDataVM::clickNextButton", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun clickBackButtonHandler() = runBlocking(Dispatchers.Default) {
         logClick?.let { verbalLog("GameDataVM::clickBackButtonHandler", "start ${animData.getPlayerAnimationState().key}") }
-        animationLogicVM.stepByStep(AnimationStream.Backward)
+        if (animData.isPlaying()) {
+            clickPlayPauseButtonHandler()
+        } else {
+            animationLogicVM.stepByStep(AnimationStream.Backward)
+        }
         logClick?.let { errorLog("GameDataVM::clickBackButtonHandler", "end ${animData.getPlayerAnimationState().key}") }
     }
     fun isInstructionMenuAvailable(): Boolean = animData.playerAnimationState.value.isTheBreadcrumbModifiable()
