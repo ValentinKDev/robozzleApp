@@ -45,7 +45,7 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
     AnimatedVisibility(
         visibleState = animScreen,
         enter = fadeIn(),
-        exit = slideOutHorizontally(targetOffsetX = {300}, tween(150)) + fadeOut(animationSpec = tween(150)),
+        exit = slideOutHorizontally(targetOffsetX = {300}, animationSpec = tween(150)) + fadeOut(animationSpec = tween(150)),
     ) {
         PlayingScreenLayers(vm) {
             DisplayAllParts(vm)

@@ -170,7 +170,12 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
             goToLevelPlayState() ->
                 slideOutHorizontally() + fadeOut()
             goToMainMenuState() ->
-                shrinkVertically( Alignment.Top, animationSpec = tween(200)) + fadeOut(animationSpec = tween(150))
+                shrinkVertically(
+//                    Alignment.Top,
+                    animationSpec = tween(200)
+                ) + fadeOut(
+                    animationSpec = tween(150)
+                )
             goToRanksLevelState() -> {
                 slideOutVertically(
                     targetOffsetY = { +250 },

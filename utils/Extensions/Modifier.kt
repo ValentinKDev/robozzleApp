@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.presentation.ui.utils.Dimensions
 import java.lang.Math.*
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -60,19 +59,19 @@ inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier
     }
 }
 
-@SuppressLint("UnnecessaryComposedModifier")
-fun Modifier.mediaQuery(
-    comparator: Dimensions.DimensionComparator,
-    modifier: Modifier
-): Modifier = composed {
-
-    val screenWidth = LocalContext.current.resources.displayMetrics.widthPixels.dp / LocalDensity.current.density
-    val screenHeight = LocalContext.current.resources.displayMetrics.heightPixels.dp / LocalDensity.current.density
-
-    if (comparator.compare(screenWidth, screenHeight)) {
-        this.then(modifier)
-    } else this
-}
+//@SuppressLint("UnnecessaryComposedModifier")
+//fun Modifier.mediaQuery(
+//    comparator: Dimensions.DimensionComparator,
+//    modifier: Modifier
+//): Modifier = composed {
+//
+//    val screenWidth = LocalContext.current.resources.displayMetrics.widthPixels.dp / LocalDensity.current.density
+//    val screenHeight = LocalContext.current.resources.displayMetrics.heightPixels.dp / LocalDensity.current.density
+//
+//    if (comparator.compare(screenWidth, screenHeight)) {
+//        this.then(modifier)
+//    } else this
+//}
 
 fun Modifier.widthRatioTotalWidth(ratio: Float): Modifier = composed {
     val screenWidthPixel = LocalContext.current.resources.displayMetrics.widthPixels

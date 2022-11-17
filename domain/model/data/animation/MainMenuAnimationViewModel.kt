@@ -71,7 +71,7 @@ class MainMenuAnimationViewModel(): ViewModel() {
                 }
             }
             Screens.Profile.key ->
-                fadeIn(initialAlpha = 0.05F, tween(500))
+                fadeIn(initialAlpha = 0.05F, animationSpec = tween(500))
             in Screens.Difficulty1.key..Screens.Difficulty5.key -> {
                 if (buttonsId.IsPair())
                     slideInHorizontally(initialOffsetX = { +500 }, animationSpec = tween(400)) +

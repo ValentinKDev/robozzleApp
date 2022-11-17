@@ -31,8 +31,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                     AnimatedVisibility(
 //                        visible = itemUnderVisible,
                         visible = itemUnderCornerOffset?.let { true }?: false,
-                        enter = fadeIn(0.7F, animationSpec = tween(100)),
-                        exit = fadeOut(0.7F, animationSpec = tween(100)),
+                        enter = fadeIn(initialAlpha = 0.7F, animationSpec = tween(100)),
+                        exit = fadeOut(targetAlpha = 0.7F, animationSpec = tween(100)),
                     ) {
                         itemUnderCornerOffset?.let {
 //                        vm.dragAndDrop.elements.itemUnderTopLeftOffset?.let {
@@ -55,8 +55,8 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                     AnimatedVisibility(
                         visible = visibleDragDropOverLay,
 //                        enter = scaleIn
-                        enter = fadeIn(0.5F, animationSpec = tween(200)),
-                        exit = fadeOut(0.7F, animationSpec = tween(200)),
+                        enter = fadeIn(initialAlpha = 0.5F, animationSpec = tween(200)),
+                        exit = fadeOut(targetAlpha = 0.7F, animationSpec = tween(200)),
                     ) {
                         Box(Modifier
                             .offset {

@@ -37,8 +37,8 @@ fun ListProgressBar(vm: LevelsScreenByDifficultyViewModel, scrollState: LazyList
     }
     AnimatedVisibility(
         visibleState = visibleProgressBar,
-        enter = fadeIn(0F),
-        exit = fadeOut(0F , tween(durationMillis = 500, delayMillis = 400))
+        enter = fadeIn(initialAlpha = 0F),
+        exit = fadeOut(targetAlpha = 0F , animationSpec = tween(durationMillis = 500, delayMillis = 400))
     ) {
         Box( Modifier
             .fillMaxSize()

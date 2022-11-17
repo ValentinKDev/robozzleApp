@@ -39,7 +39,7 @@ fun MainScreenFirstPart(
         ) {
             AnimatedVisibility(
                 visible = visibleElements,
-                exit = fadeOut(0F, animationSpec = tween(150))
+                exit = fadeOut(targetAlpha = 0F, animationSpec = tween(150))
             ) {
                 Text(
                     text = name,

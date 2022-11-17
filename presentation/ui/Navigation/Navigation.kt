@@ -48,8 +48,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -162,7 +162,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
-            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
 //            PlayingScreen(navigator)
 //            RegisterLoginScreen(navigator = navigator)
 //            LevelsScreenByDifficulty(
@@ -172,14 +172,15 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            )
 //            UserInfoScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
-//            ConfigScreen(navigator = navigator)
+            ConfigScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
         }
     }
 //}
 }
 
-var displayUIData: Int? = 0
+var displayUIData: Int? = null
+//var displayUIData: Int? = 0
 
 val myleveltest = Level(
     name = "zipline",

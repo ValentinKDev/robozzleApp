@@ -67,7 +67,7 @@ fun FoldableScrollingBar(vm: DonationScreenViewModel) {
                     it + (vm.data.listSize!! * 0.5F).toInt()
                 }
                 ,
-                tween(200)
+                animationSpec = tween(200)
             ),
         ) {
             if (unfold) {
