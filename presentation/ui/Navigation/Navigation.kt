@@ -162,14 +162,14 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
 //            PlayingScreen(navigator)
 //            RegisterLoginScreen(navigator = navigator)
-            LevelsScreenByDifficulty(
-                navigator = navigator,
-                levelsDifficulty = 1,
-                fromScreen = Screens.MainMenu,
-            )
+//            LevelsScreenByDifficulty(
+//                navigator = navigator,
+//                levelsDifficulty = 1,
+//                fromScreen = Screens.MainMenu,
+//            )
 //            UserInfoScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
 //            ConfigScreen(navigator = navigator)

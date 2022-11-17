@@ -60,17 +60,20 @@ class AnimationLogicViewModel(
                 infoLog("action to read ${data.getActionToRead()}" , "->")
                 infoLog("actionEnd()" , "${data.actionEnd()}")
                 UpdateMoveLogic(AnimationStream.Forward)
+                if (data.isPlayerOnStopMark()) {
+                    data.setPlayerAnimationState(PlayerAnimationState.OnPause)
+                    data.mapCaseMakeStop(this)
+                }
                 data.actionInBounds()?.let {
                     //todo: potential issue on the breadCrumb calcul time to sync with the animation on longue actionList, might add a status about the calcul to get back in the animation logic
                     checkBreadcrumbRecalculation()
                     data.incrementActionToRead()
                     delay(data.getAnimationDelay())
                 }
-                if (data.isPlayerOnStopMark()) {
-                    data.setPlayerAnimationState(PlayerAnimationState.OnPause)
-                    data.mapCaseMakeStop(this)
-                }
-//                if (data.StarsListIsEmpty() || data.actionLost()) stop = true
+//                if (data.isPlayerOnStopMark()) {
+//                    data.setPlayerAnimationState(PlayerAnimationState.OnPause)
+//                    data.mapCaseMakeStop(this)
+//                }
                 if (data.StarsListIsEmpty()
                     || data.actionLost()
                     || data.noMoreAction() )
