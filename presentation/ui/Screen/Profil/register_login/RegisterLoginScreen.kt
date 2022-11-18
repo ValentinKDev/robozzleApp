@@ -17,6 +17,8 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.TabSelectionViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tabs
+import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login.LoginTab
@@ -25,30 +27,27 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import kotlinx.coroutines.flow.*
 
 @Composable
-fun RegisterLoginScreen(navigator: Navigator, tab: Tab = Tab()) {
-    val tabSelected: Int by tab.selected.collectAsState()
+fun RegisterLoginScreen(navigator: Navigator, tab: TabSelectionViewModel = TabSelectionViewModel()) {
+    val tabSelected: Tabs by tab.selected.collectAsState()
 
     LaunchedEffect(key1 = true) { verbalLog("Launch", "RegisterLoginScreen") }
 
     BackHandler {
-//        NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.Profil.route)
         NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.RegisterLogin.route)
-//        NavViewModel(navigator).navigateTo(destination = Screens.MainMenu, argStr = Screens.RegisterLogin.route)
     }
 
     Column {
-        RegisterLoginTabsHead(tab)
-        if (tabSelected == 1) { RegisterTab(navigator) }
-        else { LoginTab(navigator) }
-
+        RegisterLoginTabsHead(tab, tabSelected)
+        when (tabSelected) {
+            Tabs.Register -> RegisterTab(navigator = navigator)
+            Tabs.Login -> LoginTab(navigator = navigator)
+        }
         Spacer(modifier = Modifier.height(50.dp))
     }
 }
 
 @Composable
-fun RegisterLoginTabsHead(tab: Tab) {
-    val tabRegister: Boolean = tab.selected.value == 1
-    val tabLogin: Boolean = !tabRegister
+fun RegisterLoginTabsHead(tab: TabSelectionViewModel, tabSelected: Tabs) {
 
     //todo: adding animation from registering tab to Login tab and vice versa
     Row(
@@ -59,9 +58,15 @@ fun RegisterLoginTabsHead(tab: Tab) {
         Box(
             modifier = Modifier
                 .weight(1.0f)
-                //todo: could avoid the test on tabselect by using an boolean variable like isRegisterTabSelected
-                .background(if (tabRegister) Color.Transparent else Color.Gray)
-                .clickable { TabSelectionViewModel().setTabToRegister(tab) }
+                .background(
+                    when (tabSelected) {
+                        Tabs.Register -> Color.Transparent
+                        Tabs.Login -> Color.Gray
+                    }
+                )
+                .clickable {
+                    tab.setSelecedTo(Tabs.Register)
+                }
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -73,10 +78,13 @@ fun RegisterLoginTabsHead(tab: Tab) {
         Box(
             modifier = Modifier
                 .weight(1.0f)
-                .background(if (tabLogin) Color.Transparent else Color.Gray)
-                .clickable {
-                    TabSelectionViewModel().setTabToLogin(tab)
-                }
+                .background(
+                    when (tabSelected) {
+                        Tabs.Register -> Color.Gray
+                        Tabs.Login -> Color.Transparent
+                    }
+                )
+                .clickable { tab.setSelecedTo(Tabs.Login) }
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -87,13 +95,3 @@ fun RegisterLoginTabsHead(tab: Tab) {
     }
 }
 //todo: can't register as none cuz its a defaut variable/ or change the variable
-
-class Tab() {
-    private val _selected: MutableStateFlow<Int> = MutableStateFlow(1)
-    val selected : StateFlow<Int> = _selected.asStateFlow()
-
-    fun setSelecedTo(tab: Int) {
-        _selected.value = tab
-        infoLog("_selected", "${_selected.value}")
-    }
-}
