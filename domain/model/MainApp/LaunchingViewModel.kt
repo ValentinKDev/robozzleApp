@@ -1,13 +1,11 @@
 package com.mobilegame.robozzle.domain.model
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
+import com.mobilegame.robozzle.BuildConfig
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.data.layout.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.data.store.AppConfigDataStoreViewModel
@@ -18,16 +16,8 @@ import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import kotlinx.coroutines.*
 
-//class LaunchingViewModel(context: Context): ViewModel() {
 class LaunchingViewModel(application: Application): AndroidViewModel(application) {
 
-//    private val levelRoomVM = LevelRoomViewModel(context)
-//    private val levelServerVM = LevelServerViewModel()
-//    private val appConfigServerVM = AppConfigServerViewModel()
-//    private val screenDataStore = ScreenDataStoreViewModel(context)
-//    private val appConfigDataStoreVM = AppConfigDataStoreViewModel(context)
-//    private val rankVM = RankVM(context)
-//    val configData = ConfigRoomViewModel(context)
     private val levelRoomVM = LevelRoomViewModel(getApplication())
     private val levelServerVM = LevelServerViewModel()
     private val appConfigServerVM = AppConfigServerViewModel()
@@ -40,14 +30,12 @@ class LaunchingViewModel(application: Application): AndroidViewModel(application
 //    fun launch(layoutCoordinates: LayoutCoordinates) {
     fun launch() {
 
-        errorLog("LaunchingApp", "Composable call.........................................................")
+        Log.w("LaunchingVM::launch", "********* START **********")
         viewModelScope.launch {
-            Log.e("init", "LaunchingViewModel::launch")
-//            screenDataStore.configure(layoutCoordinates)
-
             //load and check versions
 
-            errorLog("version name", "???")
+            Log.w("LaunchingVM::launch", "version code ${BuildConfig.VERSION_CODE}")
+            Log.w("LaunchingVM::launch", "version name ${BuildConfig.VERSION_NAME}")
 
             loadAndCheckAppVersion()
 
@@ -111,42 +99,18 @@ class LaunchingViewModel(application: Application): AndroidViewModel(application
     }
 
     fun loadAndCheckAppVersion() = runBlocking(Dispatchers.IO) {
-        infoLog("get version", "local")
-        val localVersion: String = RobuzzleConfiguration.version
-        infoLog("-> local version", "$localVersion")
-        infoLog("get version", "server")
+        val localVersion: String = BuildConfig.VERSION_NAME
+//        val localVersion: String = "0.12"
+        Log.w("LaunchingVM::loadAndCheckAppVersion", "local version ${localVersion}")
         val serverVersion: String? = appConfigServerVM.getVersion()
-        infoLog("-> sever version", "$serverVersion")
+        Log.w("LaunchingVM::loadAndCheckAppVersion", "server version ${serverVersion}")
+
 
         val popupState = serverVersion?.let {
             if (localVersion == serverVersion)
                 PopUpState.None
             else PopUpState.Update
-        } ?: PopUpState.UnreachableServer
+        } ?: PopUpState.ServerIssue
         screenDataStore.storePopUpState(popupState)
-
-        when (popupState) {
-            PopUpState.None -> verbalLog("popupState", "None")
-            PopUpState.UnreachableServer -> verbalLog("popupState", "UnreachableServer")
-            PopUpState.Update -> verbalLog("popupState", "Update")
-        }
     }
 }
-
-//    fun loadAndCheckLevelList(): Boolean = runBlocking(Dispatchers.IO) {
-//        infoLog("get list level Id", "local")
-//        val localListLevelsId: List<Int> = levelRoomVM.getLevelIds()
-//        infoLog("-> local list level Id", "$localListLevelsId")
-//        if (localListLevelsId.isEmpty()) {
-//            //Start all the dl process
-//            infoLog("start", "all dl process")
-//            infoLog("get list of ALL LevelRequest", "server")
-//            val listOfAllLevels = levelServerVM.getAllLevelList()
-//            infoLog("add to level Room", "list of LevelsRequest size ${listOfAllLevels.size}")
-//            levelRoomVM.addLevels(listOfAllLevels)
-//            true
-//        } else {
-//            false
-//        }
-//        }
-//    }

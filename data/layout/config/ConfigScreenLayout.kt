@@ -76,6 +76,10 @@ object ConfigScreenLayout {
         }
     }
 
+    object Popup {
+
+    }
+
     object Colors {
         val textHeader = whiteDark4
     }

@@ -32,7 +32,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreen
 import com.mobilegame.robozzle.utils.Extensions.getNavArguement
 import kotlinx.coroutines.flow.*
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel()) {
     val navController = rememberNavController()
@@ -48,8 +47,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Test.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 

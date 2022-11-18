@@ -19,10 +19,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import backColor
-import com.mobilegame.robozzle.data.layout.RobuzzleConfiguration
 import com.mobilegame.robozzle.domain.model.LaunchingViewModel
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark5
+import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark6
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigation
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.utils.LockScreenOrientation
@@ -50,7 +50,7 @@ fun LaunchingApp(window: Window, vm: LaunchingViewModel = viewModel()) {
     Box(
         Modifier
             .fillMaxSize()
-            .backColor(RobuzzleConfiguration.applicationBackgroundColor)
+            .backColor(grayDark6)
     ) {
         vm.configData.orientation?.let { LockScreenOrientation(it) }
         Navigation(Navigator())

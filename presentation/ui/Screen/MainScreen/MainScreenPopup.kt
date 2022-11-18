@@ -50,7 +50,7 @@ fun MainScreenPopup(vm: MainScreenViewModel) {
                                 Text(
                                     modifier = Modifier,
                                     color = vm.data.color.popupTextColor,
-                                    text = vm.popupState.toString(),
+                                    text = vm.getPopupText(),
                                 )
                             }
                         }

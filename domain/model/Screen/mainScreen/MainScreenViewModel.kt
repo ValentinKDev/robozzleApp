@@ -3,8 +3,6 @@ package com.mobilegame.robozzle.domain.model.Screen.mainScreen
 import android.app.Application
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.AndroidViewModel
-import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
@@ -12,12 +10,9 @@ import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
-import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.ButtonState
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
-import com.mobilegame.robozzle.utils.Extensions.addNavArg
-import io.ktor.util.date.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -71,4 +66,17 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
         changeVisibility()
     }
 
+    fun getPopupText(): String {
+        return when (popupState) {
+            PopUpState.None -> {
+                "Popup"
+            }
+            PopUpState.Update -> {
+                "An update is available"
+            }
+            PopUpState.ServerIssue -> {
+                "There is an issue with our servers"
+            }
+        }
+    }
 }

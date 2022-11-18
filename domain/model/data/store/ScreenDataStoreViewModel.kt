@@ -2,14 +2,10 @@ package com.mobilegame.robozzle.domain.model.data.store
 
 import android.content.Context
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mobilegame.robozzle.analyse.errorLog
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.store.DataStoreService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -105,5 +101,5 @@ private val RectType = object : TypeToken<Rect>() {}.type!!
 private val PopupState = object : TypeToken<PopUpState>() {}.type!!
 
 enum class PopUpState {
-    Update, UnreachableServer, None
+    Update, ServerIssue, None
 }
