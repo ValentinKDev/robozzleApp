@@ -5,11 +5,18 @@ import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.model.data.general.RankVM
+import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevel.RanksLevelLayout
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class RanksLevelScreenViewModel(application: Application): AndroidViewModel(application) {
+    val ui = RanksLevelLayout.create(application)
+
+    var level: Level? = null
+
     private val _rankingList = MutableStateFlow<List<PlayerWin>?>(null)
     val rankingList: StateFlow<List<PlayerWin>?> = _rankingList
 
@@ -24,7 +31,8 @@ class RanksLevelScreenViewModel(application: Application): AndroidViewModel(appl
 
     fun load(levelId: Int) {
         infoLog("RanksLevelScreenVM::load", "start")
-        _rankingList.value = RankVM(getApplication()).getLevelRanking(levelId)
+        _rankingList.value = RankVM(getApplication()).getLevelRanking(levelId)?.sortedBy { it.points }?.reversed()
+        level = LevelRoomViewModel(getApplication()).getLevel(levelId)
         infoLog("RanksLevelScreenVM::load", "rankinglist = ${rankingList.value}")
     }
 

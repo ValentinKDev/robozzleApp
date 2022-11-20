@@ -24,7 +24,7 @@ fun MapView(param: MapViewParam) {
         Modifier
             .height(param.mapHeightDP)
             .width(param.mapWidthDP)
-            .background(grayDark3)
+            .background(param.backgroundColor)
 //            .border(width = 1.dp, color = grayDark7)
 //            .shadow(elevation = 6.dp)
     ) {

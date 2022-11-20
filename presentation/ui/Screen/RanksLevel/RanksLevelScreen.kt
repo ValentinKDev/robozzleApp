@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -10,7 +9,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.infoLog
@@ -20,14 +18,14 @@ import com.mobilegame.robozzle.domain.model.Screen.RanksLevelScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevel.header
+import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevel.list
+import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevel.map
 import com.mobilegame.robozzle.utils.Extensions.IsPair
-import kotlinx.coroutines.InternalCoroutinesApi
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: RanksLevelScreenViewModel = viewModel()) {
     val visibleScreen by remember { vm.visibleScreen }.collectAsState()
-    val list: List<PlayerWin>? by remember(vm) {vm.rankingList}.collectAsState(initial = emptyList())
     val context = LocalContext.current
 
     LaunchedEffect(true) {
@@ -51,45 +49,16 @@ fun RanksLevelScreen(navigator: Navigator,levelId: Int, levelName: String, vm: R
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                Row(
-                    modifier = Modifier
-                        .weight(1F)
-                        .fillMaxWidth()
+                Row( Modifier .weight(vm.ui.header.ratios.height)
                 ) {
-                    Text(text = "Level : ${levelName}")
+                    header(vm)
                 }
-                list?.let {
-                    LazyColumn(
-                        modifier = Modifier
-                            .weight(10F)
-                            .fillMaxHeight()
-                    ) {
-                        itemsIndexed(it) { index, _rowElement ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(0.5F)
-                                    .background(if (index.IsPair()) MyColor.grayDark4 else MyColor.grayDark5),
-                            ) {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                ) {
-                                    Text("player ${_rowElement.playerName}")
-                                    Text("instruction ${_rowElement.winDetails.instructionsNumber}")
-                                    Text("points ${_rowElement.points}")
-                                }
-                            }
-                        }
-                    }
-                } ?: run {
-                    Row(
-                        modifier = Modifier
-                            .weight(10F)
-                            .fillMaxWidth()
-                    ) {
-                        Text(text = "Can't access the server for ranks")
-                    }
+                Row( Modifier .weight(vm.ui.map.ratios.height)
+                ) {
+                    map(vm)
+                }
+                Row(Modifier.weight(vm.ui.list.ratios.height)) {
+                    list(vm)
                 }
             }
     }
