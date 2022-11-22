@@ -1,6 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Navigation
 
-import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
@@ -15,7 +14,6 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
 import com.mobilegame.robozzle.presentation.ui.MainScreen
@@ -46,8 +44,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Test.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -168,15 +166,16 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //                levelsDifficulty = 1,
 //                fromScreen = Screens.MainMenu,
 //            )
+//            CreatorScreen(navigator = navigator)
 //            UserInfoScreen(navigator = navigator)
-//            CreatorScreen(navigator = navigator)
 //            ConfigScreen(navigator = navigator)
-//            CreatorScreen(navigator = navigator)
-            RanksLevelScreen(
-                navigator = navigator,
-                levelId = 1,
-                levelName = "first steps"
-            )
+            CreatorScreen(navigator = navigator)
+//            RanksLevelScreen(
+//                navigator = navigator,
+//                levelId = 1,
+//                levelName = "first steps"
+//            )
+//            DonationScreen(navigator = navigator)
         }
     }
 //}
@@ -185,44 +184,38 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //var displayUIData: Int? = null
 var displayUIData: Int? = 0
 
-val myleveltest = Level(
-    name = "zipline",
-    id = 3,
+val levelTuto = Level(
+    name = "Tuto",
+    id = 0,
     difficulty = 1,
     map = listOf(
         "..........",
         "..........",
-        "..........",
-        "..........",
-        "BRRRRRRRRG",
-        "B........G",
-        "..........",
-        "..........",
+        ".BBggRRBB.",
+        ".BBggRRBB.",
+        ".BBggRRBB.",
+        ".BBggRRBB.",
+        ".BBggRRBB.",
+        ".BBggRRBB.",
         "..........",
         "..........",
     ),
     instructionsMenu = mutableListOf(
-        FunctionInstructions("urlRBGg.0123n", "g"),
-        FunctionInstructions("urlRBGg.0123n", "R"),
-        FunctionInstructions("urlRBGg.0123n", "B"),
-        FunctionInstructions("urlRBGg.0123n", "G"),
+        FunctionInstructions("url01n", "g"),
+        FunctionInstructions("url01n", "R"),
+        FunctionInstructions("url01n", "B"),
+        FunctionInstructions("url01n", "G"),
     ),
     funInstructionsList = mutableListOf(
-        FunctionInstructions("u0r0", "gRgg"),
-//        FunctionInstructions("....", "gggg"),
-//        FunctionInstructions(".....", "ggggg"),
-//        FunctionInstructions("........", "gggggggg"),
-        FunctionInstructions("u...Ru....", "GgggBggggg"),
-//        FunctionInstructions("u...Ru....", "GgggBggggg"),
-//        FunctionInstructions("u...Ru....", "GgggBggggg"),
-//        FunctionInstructions("u...Ru....", "GgggBggggg"),
+        FunctionInstructions("........", "gggggggg"),
+        FunctionInstructions("........", "gggggggg"),
     ),
     playerInitial = listOf(
-        Position(5, 0),
+        Position(6, 2),
         Position(0, 1)
     ),
     starsList = mutableListOf(
-        Position(5, 9),
+        Position(5, 7),
     ),
 )
 

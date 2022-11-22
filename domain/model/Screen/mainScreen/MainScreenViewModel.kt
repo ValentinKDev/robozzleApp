@@ -2,14 +2,17 @@ package com.mobilegame.robozzle.domain.model.Screen.mainScreen
 
 import android.app.Application
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.data.store.UserDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenLayout
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
@@ -20,6 +23,8 @@ import kotlinx.coroutines.flow.asStateFlow
 class MainScreenViewModel(application: Application): AndroidViewModel(application) {
     //todo: protect the user from pressed Back button during the animation
     val data = MainScreenData()
+    val ui = MainScreenLayout.create()
+    val tutoVM = TutoViewModel(application)
     val popupState: PopUpState = ScreenDataStoreViewModel(getApplication<Application>().applicationContext).getPopupState()
     val popup = PopupViewModel(popupState != PopUpState.None)
     val animTriggeredButton = MainMenuAnimationViewModel()
@@ -27,10 +32,11 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
     //todo: make Not registered illegal name
     val noUser = "Not registered"
     val userName = UserDataStoreViewModel(getApplication()).getName() ?: noUser
-    fun getName(): String = if (userName != noUser) userName else noUser
+    fun getName(): String = if (userCreated()) userName else noUser
     fun getNavInfoToUser(): NavigationButtonInfo =
         if (userName == noUser) MainScreenButtonStyle.RegisterLogin.type
         else MainScreenButtonStyle.UserInfos.type
+    fun userCreated(): Boolean = userName != noUser
 
     private val _visibleElements = MutableStateFlow<Boolean>(false)
     val visibleElements: StateFlow<Boolean> = _visibleElements.asStateFlow()
@@ -54,13 +60,13 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
         _offsetMap.value[button] = offset
     }
 
-    var timerEndAnim: Long? = null
     fun changeScreen(navigator: Navigator, info: NavigationButtonInfo) {
         verbalLog("MainScreenViewModel::clickHandler", "info.button = ${info.button.route}")
 
         NavViewModel(navigator).navigateToScreen( screen = info.button, )
     }
-    fun clickHandler(navigator: Navigator, info: NavigationButtonInfo) {
+
+    fun clickHandler(info: NavigationButtonInfo) {
         updateButtonSelected(info.button)
         animTriggeredButton.setAnimationTime(info.button)
         changeVisibility()
@@ -77,6 +83,41 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
             PopUpState.ServerIssue -> {
                 "There is an issue with our servers"
             }
+        }
+    }
+
+    fun getButtonBackgroundColor(button: Screens, enable: Boolean): Color? {
+        return if (tutoVM.isMainScreenTutoActivated()) {
+            if (button.key == Screens.Profile.key)
+                null
+            else
+                ui.button.colors.enableBackground
+        } else {
+            if (enable)
+                ui.button.colors.enableBackground
+            else
+                ui.button.colors.disableBackground
+        }
+    }
+
+    fun getButtonTextColor(button: Screens, enable: Boolean): Color? {
+        return if (tutoVM.isMainScreenTutoActivated()) {
+            if (button.key == Screens.Profile.key)
+                null
+            else
+                ui.button.colors.enableText
+        }
+        else {
+            if (enable)
+                ui.button.colors.enableText
+            else
+                ui.button.colors.disableText
+        }
+    }
+
+    fun upDateTuto() {
+        tutoVM.tuto?.let {
+            if (it.step == 1 && userCreated()) tutoVM.nextStep()
         }
     }
 }

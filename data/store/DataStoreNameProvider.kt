@@ -14,4 +14,5 @@ internal sealed class DataStoreNameProvider(val pref: String) {
     object LazyListState3: DataStoreNameProvider("lazy_list3_data_store")
     object LazyListState4: DataStoreNameProvider("lazy_list4_data_store")
     object LazyListState5: DataStoreNameProvider("lazy_list5_data_store")
+    object TutoDataState: DataStoreNameProvider("tuto_data_store")
 }

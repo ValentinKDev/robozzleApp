@@ -18,7 +18,7 @@ import com.mobilegame.robozzle.data.layout.inGame.InGameColors
 import com.mobilegame.robozzle.data.layout.inGame.layouts.InGameFirstPart
 import com.mobilegame.robozzle.domain.InGame.Direction
 import com.mobilegame.robozzle.presentation.res.*
-import com.mobilegame.robozzle.presentation.ui.Navigation.myleveltest
+import com.mobilegame.robozzle.presentation.ui.Navigation.levelTuto
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
@@ -27,7 +27,7 @@ import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 fun test() {
     val ctxt = LocalContext.current
     val data = InGameFirstPart
-    data.init(ctxt, myleveltest)
+    data.init(ctxt, levelTuto)
 
 //    val color = 'B'
     val color = 'G'

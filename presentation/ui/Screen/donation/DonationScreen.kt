@@ -14,13 +14,11 @@ import noRippleClickable
 
 @Composable
 fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel()) {
+
     BackHandler {
         NavViewModel(navigator).navigateToMainMenu( fromScreen = Screens.Donation.route )
-//        NavViewModel(navigator).navigateTo(
-//            destination = Screens.MainMenu,
-//            argStr = Screens.Donation.route
-//        )
     }
+
     Box( Modifier.fillMaxSize()
         .noRippleClickable { vm.logic.fold() }
     ) {

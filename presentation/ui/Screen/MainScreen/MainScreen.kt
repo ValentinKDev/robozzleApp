@@ -18,14 +18,13 @@ fun MainScreen(
     w: MainScreenWindowsInfos = MainScreenWindowsInfos(),
     vm: MainScreenViewModel = viewModel(),
 ) {
-
-    //todo : use the fromButton to make coherent animations
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
 
     BackHandler { }
 
     LaunchedEffect(key1 = true) {
         vm.changeVisibility()
+        vm.upDateTuto()
         vm.updateButtonSelected(Screens.None)
         verbalLog("MainScreen", "launch / fromRoute: ${fromScreen.route}")
     }
@@ -52,7 +51,9 @@ fun MainScreen(
             )
         }
 
-        if (visiblePopup) {
+        if (vm.tutoVM.isMainScreenTutoActivated()) {
+            tutoOverlay(vm)
+        } else if (visiblePopup) {
             MainScreenPopup(vm)
         }
     }

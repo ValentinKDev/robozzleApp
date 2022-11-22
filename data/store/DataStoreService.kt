@@ -15,6 +15,7 @@ val Context.lazyListState2: DataStore<Preferences> by preferencesDataStore(name 
 val Context.lazyListState3: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState3.pref)
 val Context.lazyListState4: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState4.pref)
 val Context.lazyListState5: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.LazyListState5.pref)
+val Context.tuto: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameProvider.TutoDataState.pref)
 
 interface DataStoreService {
     suspend fun getBoolean(key: String): Boolean?
@@ -62,6 +63,10 @@ interface DataStoreService {
                 4 -> DataStoreImplementation(context.lazyListState4)
                 else -> DataStoreImplementation(context.lazyListState5)
             }
+        }
+
+        fun createTutoStateService(context: Context): DataStoreService {
+            return DataStoreImplementation(context.tuto)
         }
     }
 }

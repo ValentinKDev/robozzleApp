@@ -15,14 +15,14 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import com.mobilegame.robozzle.data.layout.inGame.InGameColors
-import com.mobilegame.robozzle.presentation.ui.Navigation.myleveltest
+import com.mobilegame.robozzle.presentation.ui.Navigation.levelTuto
 
 @Preview
 @Composable
 fun testView() {
     val ctxt = LocalContext.current
     val data = InGameFirstPart
-    data.init(ctxt, myleveltest)
+    data.init(ctxt, levelTuto)
     Canvas(Modifier.size(data.sizes.starBoxDp)) {
         drawRect(
             brush = Brush.linearGradient(

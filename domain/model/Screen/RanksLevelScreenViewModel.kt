@@ -24,11 +24,6 @@ class RanksLevelScreenViewModel(application: Application): AndroidViewModel(appl
     val visibleScreen: StateFlow<Boolean> = _visibleScreen.asStateFlow()
     fun setVisibleScreenTo(state: Boolean) { _visibleScreen.value = state }
 
-
-    var firstColRankingList: List<PlayerWin> = emptyList()
-    var secondColRankingList: List<PlayerWin> = emptyList()
-    var thirdColRankingList: List<PlayerWin> = emptyList()
-
     fun load(levelId: Int) {
         infoLog("RanksLevelScreenVM::load", "start")
         _rankingList.value = RankVM(getApplication()).getLevelRanking(levelId)?.sortedBy { it.points }?.reversed()

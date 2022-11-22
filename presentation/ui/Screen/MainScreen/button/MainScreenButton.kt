@@ -7,23 +7,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
-import com.mobilegame.robozzle.presentation.res.MyColor
-import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -76,6 +74,24 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
         }
     }
 
+    val infiniteTransition = rememberInfiniteTransition()
+    val animBackgroundColor by infiniteTransition.animateColor(
+        initialValue = vm.ui.tuto.colors.enlighteningButtonInitial,
+        targetValue = vm.ui.tuto.colors.enlighteningButtonTarget,
+        animationSpec = infiniteRepeatable(
+            tween(durationMillis = 1000, easing = LinearEasing),
+            RepeatMode.Reverse
+        )
+    )
+    val animTextColor by infiniteTransition.animateColor(
+        initialValue = vm.ui.tuto.colors.enlighteningTextInitial,
+        targetValue = vm.ui.tuto.colors.enlighteningTextTarget,
+        animationSpec = infiniteRepeatable(
+            tween(durationMillis = 1000, easing = LinearEasing),
+            RepeatMode.Reverse
+        )
+    )
+
     if (anim.animationEnd() && buttonState == ButtonState.Selected) {
         vm.changeScreen(navigator, info)
         buttonState = ButtonState.NotSelected
@@ -83,7 +99,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
 
     Box(
         Modifier
-            .wrapContentSize()
+//            .wrapContentSize()
             .background(Color.Transparent)
             .onGloballyPositioned { _layoutCoordinates ->
                 val offset = _layoutCoordinates.boundsInRoot().topLeft
@@ -91,43 +107,35 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
             }
     ) {
         AnimatedVisibility(
-//            visible = visibleElements,
             visibleState = visibleButtonState,
-            //todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
+//            todo : from is not update when use press the back button, MainScreenButton is loaded with the previous from (the one it was originaly launched with)
             enter = anim.enterTransitionByFrom(info.button.key, fromScreen.key, vm.getOffset(info.button)) ,
             exit = anim.exitTransitionByState(vm.buttonSelected.value.key, info.button.key, vm.getOffset(info.button), vm.animTriggeredButton.animationTime.value)
         ) {
-            Card(
+            Box(
                 modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
                     .size(
                         width = if (buttonState == ButtonState.From) xScale.value.times(animSize.width).dp else animSize.width.dp,
                         height = if (buttonState == ButtonState.From) xScale.value.times(animSize.height).dp else animSize.height.dp,
                     )
-                    .clickable(enabled = info.enable) {
+                    .clickable(
+                        enabled = info.enable && vm.tutoVM.isMainScreenButtonClickEnable() || info.button.key == Screens.Profile.key
+                    ) {
                         //todo : make the screen unsensitive to click/tap during the whole animation + navigation process
                         anim.setVisibleButtonTargetSate(false)
                         buttonState = ButtonState.Selected
-                        vm.clickHandler(navigator, info)
+                        vm.clickHandler(info)
                     }
-                ,
-                elevation = 15.dp,
-                shape = MaterialTheme.shapes.medium,
-//                backgroundColor = info.color,
-                backgroundColor =
-                if (enable)
-                    w.buttonColor
-                else
-                    MyColor.grayDark4Plus
+                    .shadow(
+                        elevation = if (vm.tutoVM.isMainScreenTutoActivated() && info.button.key == Screens.Profile.key) 0.dp else 15.dp
+                    )
+                    .background( vm.getButtonBackgroundColor(info.button, enable) ?: animBackgroundColor )
                 ,
             ) {
                 CenterText(
                     text = info.text,
-                    color =
-                    if (enable)
-                        whiteDark4
-//                        w.buttonColor
-                    else
-                        MyColor.whiteDark7
+                    color = vm.getButtonTextColor(info.button, enable) ?: animTextColor
                 )
             }
         }

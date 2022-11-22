@@ -28,6 +28,7 @@ inline class MyColor(val color: Color){
         val whiteDark8 = Color(0xFF777777)
         val whiteDark9 = Color(0xFF666666)
 
+//        val gray00 = Color(0xFFFF)
         val gray0 = Color(0xFF888888)
         val gray1 = Color(0xDF888888)
         val gray2 = Color(0xBF888888)
@@ -38,6 +39,9 @@ inline class MyColor(val color: Color){
         val gray7 = Color(0x1F888888)
         val gray8 = Color(0x0E888888)
         val gray9 = Color(0x0C888888)
+        val black3 = Color(0x5F000000)
+        val black4 = Color(0x4F000000)
+        val black5 = Color(0x3F000000)
         val black6 = Color(0x2F000000)
         val black7 = Color(0x1F000000)
         val black8 = Color(0x0E000000)

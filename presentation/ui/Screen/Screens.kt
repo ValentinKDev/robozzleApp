@@ -39,23 +39,12 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
                 ?: Unknown
         }
         fun identify(routeToIdentify: String): Screens {
-//            infoLog("Screens::identify", "routeToIdentify = $routeToIdentify")
-//            var ret = Screens::class.sealedSubclasses
             return Screens::class.sealedSubclasses
                 .firstOrNull { _it ->
                     _it.objectInstance?.route?.let { _route ->
-//                        infoLog("Screens::identify", "${routeToIdentify.contains(_route)}")
                         routeToIdentify.contains(_route)
                     } == true
                 }?.objectInstance ?: Unknown
-//            infoLog("Screens::identify", "ret ${ret.route}")
-//            infoLog("Screens::identify", "ret ${routeToIdentify.last()}")
-//            infoLog("Screens::identify", "ret ${routeToIdentify.last().isDigit()}")
-//            infoLog("Screens::identify", "ret ${routeToIdentify.last().toString().toInt()}")
-//            if (ret == LevelByDifficulty && routeToIdentify.last().isDigit()) {
-//                ret = findScreen(keyToFind = routeToIdentify.last().toString().toInt())
-//            }
-//            return  ret
         }
     }
 }

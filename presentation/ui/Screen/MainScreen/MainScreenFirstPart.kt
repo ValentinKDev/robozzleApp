@@ -17,7 +17,6 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButton
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreenFirstPart(
     navigator: Navigator,
@@ -25,7 +24,6 @@ fun MainScreenFirstPart(
     w: MainScreenWindowsInfos,
     vm: MainScreenViewModel
 ) {
-//    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     val visibleElements by remember {vm.visibleElements}.collectAsState(false)
     val name = vm.getName()
 

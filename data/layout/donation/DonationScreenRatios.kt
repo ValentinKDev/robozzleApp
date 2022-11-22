@@ -1,5 +1,11 @@
 package com.mobilegame.robozzle.data.layout.donation
 
+import android.content.Context
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayUIData
+import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevel.RanksLevelLayout
+
 object DonationScreenRatios {
 
     const val fistPartWeigth = 6F
