@@ -99,7 +99,6 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
 
     Box(
         Modifier
-//            .wrapContentSize()
             .background(Color.Transparent)
             .onGloballyPositioned { _layoutCoordinates ->
                 val offset = _layoutCoordinates.boundsInRoot().topLeft

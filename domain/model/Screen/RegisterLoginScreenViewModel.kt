@@ -80,28 +80,20 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
     val tokenState: StateFlow<String> = _tokenState.asStateFlow()
 
     fun loginOnClickListner(navigator: Navigator) {
-//        infoLog("RegisterLoginScreenVM::loginOnClickListner", "start")
         filterName()
         viewModelScope.launch {
-//            errorLog ("get a token", "start")
             getAToken(name.value, password.value)
             waitForToken()
-//            errorLog ("setUserCoState", "start")
-//            errorLog ("tokenState.value", "${tokenState.value}")
             setUserConnectionState(
                 stateStr = if (tokenState.value == TokenState.Valid.ret) getUserFromServerAndStore(
                     userName = name.value,
-//                    expectedState = UserConnectionState.Verified,
                     expectedState = UserConnectionState.Connected,
                     errorState = UserConnectionState.IssueWithServer
                 ).str
                 else
                     UserConnectionState.InvalidNameOrPassword.str
             )
-//            errorLog("time", "${getTimeMillis()}")
             delay(500)
-//            errorLog("time", "${getTimeMillis()}")
-//            errorLog("userConnectionState.value", "${userConnectionState.value}")
             if (userConnectionState.value == UserConnectionState.Connected.str) {
                 RankVM(getApplication()).upDateServerLevelWinFromRoom()
                 RankVM(getApplication()).upDateLevelWinRoomFromServer()
@@ -113,11 +105,7 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
 
     fun registerOnClickListner(navigator: Navigator) {
         filterName()
-//        infoLog("register", "onclicklistner()")
-//        infoLog("UserConnectionState 0 ", userConnectionState.value)
-        name
         viewModelScope.launch {
-//            infoLog("createnewsuerandgetState", "start")
             var ret = createANewUserAndGetState()
             serverRet = ret
             var serverRetFromCreation: UserConnectionState = when (ret) {
@@ -125,20 +113,20 @@ class RegisterLoginViewModel(application: Application): AndroidViewModel(applica
                 else -> UserConnectionState.NotCreated
             }
             if (serverRetFromCreation == UserConnectionState.CreatedAndNotVerified) {
-//                infoLog("getAToken", "start")
                 getAToken(name.value, password.value)
                 delay(300)
-//                infoLog("waitfortoken", "start")
                 waitForToken()
-//                infoLog("getUserFromServerAndStore", "start")
-                serverRetFromCreation = getUserFromServerAndStore(
-                    userName = name.value,
-//                    expectedState = UserConnectionState.Verified,
-                    expectedState = UserConnectionState.Connected,
-                    errorState = UserConnectionState.IssueWithServer
+                setUserConnectionState(
+                    stateStr = if (tokenState.value == TokenState.Valid.ret) getUserFromServerAndStore(
+                        userName = name.value,
+                        expectedState = UserConnectionState.Connected,
+                        errorState = UserConnectionState.IssueWithServer
+                    ).str
+                    else
+                        UserConnectionState.InvalidNameOrPassword.str
                 )
+                delay(500)
             }
-            setUserConnectionState(serverRetFromCreation.str)
 
             if (userConnectionState.value == UserConnectionState.Connected.str) {
                 RankVM(getApplication()).upDateServerLevelWinFromRoom()
