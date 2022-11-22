@@ -49,6 +49,8 @@ sealed class Screens(override val route: String, val key: Int): NavigationDestin
     }
 }
 
+fun Screens.matchKey(screen: Screens) = this.key == screen.key
+
 sealed class Arguments(val key: String) {
     object LevelId: Arguments(key = "level_id_argument_key")
     object Button: Arguments(key = "button_screen_key")

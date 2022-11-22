@@ -26,7 +26,7 @@ object MainScreenLayout {
         object ColorsTuto {
             val filter = MyColor.black3
             val enlighteningButtonInitial = MyColor.gray3
-            val enlighteningButtonTarget = MyColor.white3
+            val enlighteningButtonTarget = MyColor.white4
             val enlighteningTextInitial = MyColor.whiteDark2
             val enlighteningTextTarget = MyColor.whiteDark0
             val popupBackground = MyColor.grayDark3

@@ -6,7 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.data.animation.MainMenuAnimationViewModel
 import com.mobilegame.robozzle.domain.model.data.store.PopUpState
 import com.mobilegame.robozzle.domain.model.data.store.ScreenDataStoreViewModel
@@ -15,6 +17,7 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenLayout
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.button.MainScreenButtonStyle
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.Screen.matchKey
 import com.mobilegame.robozzle.presentation.ui.button.NavigationButtonInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -88,10 +91,13 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
 
     fun getButtonBackgroundColor(button: Screens, enable: Boolean): Color? {
         return if (tutoVM.isMainScreenTutoActivated()) {
-            if (button.key == Screens.Profile.key)
-                null
-            else
-                ui.button.colors.enableBackground
+            when {
+                button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> null
+                button.matchKey(Screens.Difficulty1)
+                        && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> null
+//                button.matchKey(Screens.Difficulty1) && tutoVM.tuto.matchStep(Tuto.ClickOnDifficultyOne) -> null
+                else -> ui.button.colors.enableBackground
+            }
         } else {
             if (enable)
                 ui.button.colors.enableBackground
@@ -100,12 +106,15 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
+
     fun getButtonTextColor(button: Screens, enable: Boolean): Color? {
         return if (tutoVM.isMainScreenTutoActivated()) {
-            if (button.key == Screens.Profile.key)
-                null
-            else
-                ui.button.colors.enableText
+            when {
+                button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> null
+                button.matchKey(Screens.Difficulty1)
+                        && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> null
+                else -> ui.button.colors.enableText
+            }
         }
         else {
             if (enable)
@@ -115,9 +124,19 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
+    fun isButtonClickEnable(button: Screens): Boolean {
+       return if (tutoVM.isMainScreenTutoActivated()) {
+           when {
+               button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> true
+               button.matchKey(Screens.Difficulty1)
+                       && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> true
+               else -> false
+           }
+       } else
+           true
+    }
+
     fun upDateTuto() {
-        tutoVM.tuto?.let {
-            if (it.step == 1 && userCreated()) tutoVM.nextStep()
-        }
+        if (tutoVM.tuto.matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
     }
 }

@@ -5,6 +5,8 @@ sealed class Tuto(val step: Int, val description: String) {
     object ClickOnDifficultyOne: Tuto(2, "Please tap on Difficulty 1 button to access the list of levels")
     object ClickOnTutoLevel: Tuto(3, "Please tap on the Tuto level to start playing")
 
+    object End: Tuto(4, "Tutorial finished, good luck !")
+
     companion object {
         fun findTutoByStep(number: Int): Tuto? {
             return Tuto::class.sealedSubclasses
@@ -14,3 +16,5 @@ sealed class Tuto(val step: Int, val description: String) {
         }
     }
 }
+
+fun Tuto.matchStep(tuto: Tuto): Boolean = this.step == tuto.step

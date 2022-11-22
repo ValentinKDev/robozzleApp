@@ -79,7 +79,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
         initialValue = vm.ui.tuto.colors.enlighteningButtonInitial,
         targetValue = vm.ui.tuto.colors.enlighteningButtonTarget,
         animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1000, easing = LinearEasing),
+            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
             RepeatMode.Reverse
         )
     )
@@ -87,7 +87,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
         initialValue = vm.ui.tuto.colors.enlighteningTextInitial,
         targetValue = vm.ui.tuto.colors.enlighteningTextTarget,
         animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1000, easing = LinearEasing),
+            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
             RepeatMode.Reverse
         )
     )
@@ -119,7 +119,8 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
                         height = if (buttonState == ButtonState.From) xScale.value.times(animSize.height).dp else animSize.height.dp,
                     )
                     .clickable(
-                        enabled = info.enable && vm.tutoVM.isMainScreenButtonClickEnable() || info.button.key == Screens.Profile.key
+                        enabled = info.enable && vm.tutoVM.isMainScreenButtonClickEnable()
+                                || (vm.isButtonClickEnable(info.button))
                     ) {
                         //todo : make the screen unsensitive to click/tap during the whole animation + navigation process
                         anim.setVisibleButtonTargetSate(false)
@@ -127,7 +128,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
                         vm.clickHandler(info)
                     }
                     .shadow(
-                        elevation = if (vm.tutoVM.isMainScreenTutoActivated() && info.button.key == Screens.Profile.key) 0.dp else 15.dp
+                        elevation = if (vm.isButtonClickEnable(info.button)) 0.dp else 15.dp
                     )
                     .background( vm.getButtonBackgroundColor(info.button, enable) ?: animBackgroundColor )
                 ,

@@ -10,20 +10,14 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 class TutoViewModel(context: Context): ViewModel() {
     private val dataStoreVM = TutoDataStoreViewModel(context)
 
-    var tuto: Tuto? = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.findTutoByStep(1)
-//    var tuto: Tuto? = Tuto.findTutoByStep(1) ?: Tuto.findTutoByStep(1)
+    var tuto: Tuto = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile
 
     private fun saveToDataStore() {
-        tuto?.let { dataStoreVM.saveTutoStep(it.step + 1) }
+        dataStoreVM.saveTutoStep(tuto.step + 1)
     }
 
     private fun incrementTuto() {
-        tuto?.let {
-            tuto = Tuto.findTutoByStep(it.step + 1) ?: kotlin.run {
-                errorLog("TutoVM:incrementTuto", "ERROR can not finding step ${it.step + 1}")
-                null
-            }
-        }
+        tuto = Tuto.findTutoByStep(tuto.step + 1) ?: Tuto.End
     }
 
     fun nextStep() {
@@ -31,10 +25,7 @@ class TutoViewModel(context: Context): ViewModel() {
         incrementTuto()
     }
 
-    fun isMainScreenTutoActivated(): Boolean {
-        return tuto?.let { it.step == 1} ?: true
-    }
-
+    fun isMainScreenTutoActivated(): Boolean = tuto != Tuto.End
     fun isMainScreenButtonClickEnable(): Boolean = !isMainScreenTutoActivated()
 
 }
