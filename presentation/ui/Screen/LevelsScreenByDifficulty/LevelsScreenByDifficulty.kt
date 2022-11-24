@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.presentation.ui
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 //import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -15,6 +16,7 @@ import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyHeader
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyList
+import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.tutoSpecialOverlay
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import io.ktor.util.date.*
 
@@ -77,6 +79,8 @@ fun LevelsScreenByDifficulty(
                 vm = vm
             )
         }
+        if (vm.tutoVM.isLevelsScreenByDiffTutoActivated()) {
+            tutoSpecialOverlay(vm, fromScreen, navigator)
+        }
     }
-//    }
 }

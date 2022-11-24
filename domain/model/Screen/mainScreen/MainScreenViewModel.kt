@@ -65,7 +65,7 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
 
     fun changeScreen(navigator: Navigator, info: NavigationButtonInfo) {
         verbalLog("MainScreenViewModel::clickHandler", "info.button = ${info.button.route}")
-
+        upDateTuto()
         NavViewModel(navigator).navigateToScreen( screen = info.button, )
     }
 
@@ -106,7 +106,6 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
-
     fun getButtonTextColor(button: Screens, enable: Boolean): Color? {
         return if (tutoVM.isMainScreenTutoActivated()) {
             when {
@@ -138,5 +137,6 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
 
     fun upDateTuto() {
         if (tutoVM.tuto.matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
+        if (tutoVM.tuto.matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextStep()
     }
 }

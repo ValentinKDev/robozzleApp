@@ -10,6 +10,7 @@ import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewMode
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.*
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.presentation.ui.utils.tutoOverlay
 
 @Composable
 fun MainScreen(
@@ -18,6 +19,7 @@ fun MainScreen(
     w: MainScreenWindowsInfos = MainScreenWindowsInfos(),
     vm: MainScreenViewModel = viewModel(),
 ) {
+    val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
 
     BackHandler { }
@@ -52,7 +54,12 @@ fun MainScreen(
         }
 
         if (vm.tutoVM.isMainScreenTutoActivated()) {
-            tutoOverlay(vm)
+            tutoOverlay(
+                info = vm.ui.tuto,
+                text = vm.tutoVM.tuto.description,
+                visibleElements = visibleElements
+            )
+//            tutoOverlay(vm)
         } else if (visiblePopup) {
             MainScreenPopup(vm)
         }

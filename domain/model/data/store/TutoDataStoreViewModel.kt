@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.store.DataStoreService
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -13,7 +14,7 @@ class TutoDataStoreViewModel(context: Context): ViewModel() {
     val service = DataStoreService.createTutoStateService(context)
 
     fun saveTutoStep(step: Int) {
-        verbalLog("TutoDataStoreVM:saveTutoStep","save tuto step $step")
+        verbalLog("TutoDataStoreVM:saveTutoStep","save tuto step $step ${Tuto.findTutoByStep(step)}")
         viewModelScope.launch(Dispatchers.IO) {
             service.putInt(KeyProvider.TutoStep.key, step)
         }

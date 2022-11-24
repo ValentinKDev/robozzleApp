@@ -30,7 +30,6 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterText
 import io.ktor.util.date.*
 
 const val goingTopTiming = 450
-//@Preview
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScreen: Screens, vm: MainScreenViewModel, w: MainScreenWindowsInfos, enable: Boolean = true, anim: MainMenuAnimationViewModel = viewModel() ) {
@@ -93,6 +92,7 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
     )
 
     if (anim.animationEnd() && buttonState == ButtonState.Selected) {
+        vm.upDateTuto()
         vm.changeScreen(navigator, info)
         buttonState = ButtonState.NotSelected
     }

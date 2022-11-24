@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
-import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
@@ -44,9 +43,10 @@ fun LevelsScreenByDifficultyList(
     }
 
     Column() {
-        Spacer(modifier = Modifier.height( MainScreenWindowsInfos().getButtonSizeTarget(Screens.Difficulty1.key, context, density).height.dp))
+        Spacer(modifier = Modifier.height(vm.ui.header.sizes.heightDp))
         Box {
-            if (levelsList.isNotEmpty()) {
+            if (vm.tutoVM.isLevelsScreenByDiffTutoActivated()) { tutoFakeList(vm, navigator) }
+            else if (levelsList.isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier
                     ,

@@ -3,46 +3,28 @@ package com.mobilegame.robozzle.presentation.ui.Screen.Creator
 import android.provider.Settings
 import android.content.Context
 import android.content.Intent
-import android.os.Build.VERSION.SDK_INT
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 //import androidx.compose.material.icons.Icons
 //import androidx.compose.material.icons.outlined.North
 //import androidx.compose.material.icons.outlined.Update
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.ImageLoader
-import coil.compose.rememberAsyncImagePainter
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
-import coil.request.ImageRequest
-import com.mobilegame.robozzle.R
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
-import com.mobilegame.robozzle.domain.model.data.general.RankVM
-import com.mobilegame.robozzle.domain.model.data.room.LevelWins.LevelWinRoomViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenLayout
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
-import com.mobilegame.robozzle.presentation.ui.utils.GifImage
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
-import io.ktor.http.ContentDisposition.Parameters.Size
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -55,8 +37,8 @@ fun CreatorScreen(navigator: Navigator, vm: TestVM = viewModel()) {
 //    val vm = TestVM(ctxt)
     val transition = rememberInfiniteTransition()
     val translateAnim by transition.animateColor(
-        initialValue = MainScreenLayout.Tuto.colors.enlighteningButtonInitial,
-        targetValue = MainScreenLayout.Tuto.colors.enlighteningButtonTarget,
+        initialValue = MyColor.grayDark3,
+        targetValue = MyColor.whiteDark4,
         animationSpec = infiniteRepeatable(
             tween(durationMillis = 1000, easing = LinearEasing),
             RepeatMode.Reverse

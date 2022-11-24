@@ -32,11 +32,6 @@ class LevelRoomViewModel(context: Context): ViewModel() {
         level
     }
 
-//    fun getRobuzzle(id: Int): RobuzzleLevel? = runBlocking(Dispatchers.IO) {
-//        val robuzzleLevel = repo.getALevel(id)?.toRobuzzleLevel()
-//        robuzzleLevel
-//    }
-
     fun getAllLevels(): List<Level> = runBlocking(Dispatchers.IO) {
         val listLevelData: List<LevelData> = repo.getAllLevelsFromRoom()
         val listLevel = listLevelData.toLevelList()

@@ -15,6 +15,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
+import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
 import com.mobilegame.robozzle.presentation.ui.MainScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
@@ -44,8 +45,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -161,15 +162,15 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
 //            PlayingScreen(navigator)
 //            RegisterLoginScreen(navigator = navigator)
-//            LevelsScreenByDifficulty(
-//                navigator = navigator,
-//                levelsDifficulty = 1,
-//                fromScreen = Screens.MainMenu,
-//            )
+            LevelsScreenByDifficulty(
+                navigator = navigator,
+                levelsDifficulty = 1,
+                fromScreen = Screens.MainMenu,
+            )
 //            CreatorScreen(navigator = navigator)
 //            UserInfoScreen(navigator = navigator)
 //            ConfigScreen(navigator = navigator)
-            CreatorScreen(navigator = navigator)
+//            CreatorScreen(navigator = navigator)
 //            RanksLevelScreen(
 //                navigator = navigator,
 //                levelId = 1,
@@ -182,7 +183,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 }
 
 //var displayUIData: Int? = null
-var displayUIData: Int? = 0
+var displayUIData: Int? = 1
 
 val levelTuto = Level(
     name = "Tuto",

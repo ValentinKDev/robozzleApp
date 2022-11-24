@@ -30,37 +30,46 @@ import com.mobilegame.robozzle.presentation.ui.elements.RankingIconBouncing
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Composable
-fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator) { val ctxt = LocalContext.current
+fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewModel, navigator: Navigator, enable: Boolean = true) {
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
-            .padding(
-                bottom = 6.dp,
-                top = 6.dp,
-                start = 6.dp,
-                end = 6.dp,
-            )
             .fillMaxWidth()
-            .height(100.dp)
+            .padding(
+                bottom = vm.ui.levelOverview.padding.bottom,
+                top = vm.ui.levelOverview.padding.top,
+                start = vm.ui.levelOverview.padding.side,
+                end = vm.ui.levelOverview.padding.side,
+            )
+            .height(vm.ui.levelOverview.sizes.heightDp)
             .clickable {
-                vm.startExitAnimationAndPressLevel(level.id)
+                if (enable)
+                    vm.startExitAnimationAndPressLevel(level.id)
             }
         ,
         elevation = 18.dp,
-        backgroundColor = MyColor.grayDark3
+        backgroundColor = vm.ui.levelOverview.colors.backgroundColor
     ) {
         Row( modifier = Modifier.fillMaxSize() )
         {
-            Box(Modifier.weight(1.2f)) { vm.mapViewParamList.find { it.first == level.id } ?.let { DisplayLevelMap(it.second) } }
-            Box(Modifier.weight(1.6f)) { DisplayLevelDescription(level) }
-            Box(Modifier.weight(0.5f)) { DisplayLevelState(level, vm, navigator) }
-            Box(Modifier.weight(0.7f)) { DisplayRankingIcon(vm, navigator, level.id)}
+            Box(Modifier.weight(vm.ui.levelOverview.ratios.mapWeight)) {
+                vm.mapViewParamList.find { it.first == level.id } ?.let { DisplayLevelMap(it.second) }
+            }
+            Box(Modifier.weight(vm.ui.levelOverview.ratios.descriptionWeight)) {
+                DisplayLevelDescription(level)
+            }
+            Box(Modifier.weight(vm.ui.levelOverview.ratios.stateIconWeight)) {
+                DisplayLevelState(level, vm, navigator)
+            }
+            Box(Modifier.weight(vm.ui.levelOverview.ratios.rankIconWeight)) {
+                DisplayRankingIcon(vm, navigator, level.id, enable)
+            }
         }
     }
 }
 
 @Composable
-fun DisplayRankingIcon(vm: LevelsScreenByDifficultyViewModel, navigator: Navigator, id: Int) {
+fun DisplayRankingIcon(vm: LevelsScreenByDifficultyViewModel, navigator: Navigator, id: Int, enable: Boolean) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -69,14 +78,13 @@ fun DisplayRankingIcon(vm: LevelsScreenByDifficultyViewModel, navigator: Navigat
         false -> vm.rankingIconVM.rankingIconIsReleased()
     }
 
-    Box( modifier = Modifier
-        .fillMaxSize()
-        .clickable(
-            interactionSource = interactionSource,
-            indication = rememberRipple(color = Color.Transparent)
-        ) {
-            infoLog("clickable", "ranking icon")
-        }
+    Box(
+        if (enable)
+            Modifier.clickable(
+                interactionSource = interactionSource,
+                indication = rememberRipple(color = Color.Transparent)
+            ) {}
+        else Modifier
     ) {
         CenterComposable {
             RankingIconBouncing(

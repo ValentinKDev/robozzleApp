@@ -7,17 +7,17 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.ui.Alignment
 import androidx.lifecycle.AndroidViewModel
-import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyLayout
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.utils.Extensions.Is
 import io.ktor.util.date.*
@@ -29,6 +29,9 @@ import kotlinx.coroutines.flow.asStateFlow
 class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewModel(application) {
     private var levelSelectedId: Int? = null
 
+
+    val tutoVM = TutoViewModel(getApplication())
+    val ui = LevelsScreenByDifficultyLayout.create(getApplication())
     private val levelVM = LevelVM(getApplication())
     private val configRoom = ConfigRoomViewModel(getApplication())
     private val displayLevelWin = configRoom.getDisplayLevelWinInListState()
@@ -42,6 +45,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     var levelsNumber = 0F
 
     fun init(difficulty: Int) {
+        tutoVM.updateLevelDifficultyTo(difficulty)
         lazyListVM = LazyListStateViewModel(getApplication(), difficulty)
         setVisibilityAndLoadLevelList()
         loadLevelListById(difficulty)
@@ -51,6 +55,10 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun loadLevelListById(levelDifficulty: Int) {
         infoLog("LevelsScreensByDifficultyVM:loadLevelListById", "start")
         _levelOverviewList.value = levelVM.getAllLevelOverViewFromDifficulty(levelDifficulty, displayLevelWin) .toMutableList()
+//        if (tutoVM.isLevelsScreenByDiffTutoActivated()) {
+//            val list = mutableListOf<LevelOverView>()
+//            _levelOverviewList.value =
+//        }
         levelsNumber = _levelOverviewList.value.size.toFloat() - 5F
     }
 
@@ -145,9 +153,9 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         headerAnimationEnd() && listAnimationEnd() && goToLevelPlayState()
     fun goingPlayScreenListener(navigator: Navigator, ctxt: Context) {
         levelSelectedId?.let { _levelId ->
-//            errorLog("alskfdj", "$goinM")
-
-            if (goingPlayScreenAnimationEnd()) navigateToLevel(navigator, _levelId, ctxt)
+            if (goingPlayScreenAnimationEnd()) {
+                navigateToLevel(navigator, _levelId, ctxt)
+            }
         }
     }
     fun navigateToLevel(navigator: Navigator, levelId: Int, ctxt: Context) {

@@ -56,6 +56,18 @@ class LevelVM (
         buildLevelOverViewList(ids = listIdByDifficulty, names = listName, mapsJson = listMapJson, winList = listWin)
     }
 
+//    fun getAllLevelOverViewFromDifficulty(diff: Int, displayLevelWin: Boolean): List<LevelOverView> = runBlocking(Dispatchers.IO) {
+//        var listIdByDifficulty: List<Int> = levelRoomVM.getIdByDifficulty(diff)
+//        val listName: List<String> = levelRoomVM.getNamesByDifficulty(diff)
+//        val listMapJson: List<String> = levelRoomVM.getMapJsonByDifficulty(diff)
+//
+//        var listWin: List<Int> = levelWinRoomVM.getAllWinIdsInList()
+//
+//        listWin = listIdByDifficulty.filter { listWin.contains(it) }
+//        if (!displayLevelWin) listIdByDifficulty = listIdByDifficulty.filterNot { listWin.contains(it) }
+//        buildLevelOverViewList(ids = listIdByDifficulty, names = listName, mapsJson = listMapJson, winList = listWin)
+//    }
+
     fun saveFunctionsInstructions(level: Level, newFunciontInstructionList: List<FunctionInstructions>) {
         levelRoomVM.updateFunctionsInstructions(level, newFunciontInstructionList)
     }
