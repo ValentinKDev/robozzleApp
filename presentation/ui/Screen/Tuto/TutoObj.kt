@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Tuto
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.presentation.res.MyColor
 
@@ -9,8 +10,10 @@ object TutoObj {
 
     object ColorsTuto {
         val filter = MyColor.black3
-//        val enlighteningLightInitial = MyColor.gray5
-//        val enlighteningLightTarget = MyColor.white7
+        val transparent = Color.Transparent
+        val enlightAnyInit = MyColor.gray1
+        val enlightAnyTarget = MyColor.white8
+//        val enlightAnyTarget = MyColor.white4
         val enlighteningButtonInitial = MyColor.gray3
         val enlighteningButtonTarget = MyColor.white4
         val enlighteningTextInitial = MyColor.whiteDark2
@@ -37,6 +40,7 @@ object TutoObj {
         PopupTuto.endPadding = endPadding
         PopupTuto.topPadding = topPadd
         PopupTuto.bottomPadding = bottomPadd
+
         return this
     }
 }

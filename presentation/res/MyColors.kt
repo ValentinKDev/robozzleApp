@@ -193,9 +193,15 @@ inline class MyColor(val color: Color){
         private val g1 = grayDark(2, 1)
         private val g2 = grayDark(4, 1)
         private val g3 = grayDark(6, 3)
-        private val darkgray1 = grayDark(4, 1)
-        private val darkgray2 = grayDark(6, 1)
-        private val darkgray3 = grayDark(10, 3)
+//            private val darkgray1 = grayDark(4, 1)
+//            private val darkgray2 = grayDark(6, 1)
+//            private val darkgray3 = grayDark(10, 3)
+        private val darkgray1 = Color(0xff4c4c4c)
+            val darkgray1Enlight = Color(0xff5c5c5c)
+        private val darkgray2 = Color(0xff626262)
+            val darkgray2Enlight = Color(0xff727272)
+        private val darkgray3 = Color(0xff747474)
+            val darkgray3Enlight = Color(0xff848484)
 
 
         val grayListDark: List<Color> =  listOf(darkgray3, darkgray2, darkgray1)

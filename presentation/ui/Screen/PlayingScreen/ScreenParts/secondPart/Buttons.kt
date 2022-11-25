@@ -74,7 +74,7 @@ fun BackButton(vm: GameDataViewModel, enable: Boolean) {
 }
 
 @Composable
-fun PlayPauseButton(vm: GameDataViewModel) {
+fun PlayPauseButton(vm: GameDataViewModel, enablePlayPause: Boolean) {
     Box(
         modifier = Modifier
             .testTag(TAG_BUTTON_PLAY)
@@ -82,13 +82,8 @@ fun PlayPauseButton(vm: GameDataViewModel) {
             .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
             .background(vm.data.colors.buttonGameBackground)
             .clickable {
-                vm.clickPlayPauseButtonHandler()
-//                        vm.AnimationIsPlayingChangeStatus()
-//                        if (animationRunningInBackground) {
-//                            vm.AnimationIsOnPauseChangeStatus()
-//                        } else if (animationIsPlaying) {
-//                            StartAnimation(lvl, vm)
-//                        }
+                if (enablePlayPause)
+                    vm.clickPlayPauseButtonHandler()
             }
     ) {
         Box(Modifier.align(Alignment.Center)) {
@@ -97,7 +92,7 @@ fun PlayPauseButton(vm: GameDataViewModel) {
     }
 }
 @Composable
-fun ResetButton(vm: GameDataViewModel) {
+fun ResetButton(vm: GameDataViewModel, enableReset: Boolean) {
     Box(
         Modifier
             .testTag(TAG_BUTTON_RESET)
@@ -105,7 +100,8 @@ fun ResetButton(vm: GameDataViewModel) {
             .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
             .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
             .clickable {
-                vm.clickResetButtonHandler()
+                if (enableReset)
+                    vm.clickResetButtonHandler()
             }
     ) {
         //todo : define clearly steps so you can t have 2 different actions in the row while player still is the same position by clicking quickly on the play/pause button

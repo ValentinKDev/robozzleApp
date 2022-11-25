@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.*
@@ -56,11 +58,16 @@ fun MainScreen(
         if (vm.tutoVM.isMainScreenTutoActivated()) {
             tutoOverlay(
                 info = vm.ui.tuto,
-                text = vm.tutoVM.tuto.description,
-                visibleElements = visibleElements
+//                text = vm.tutoVM.tuto.description,
+                visibleElements = visibleElements,
+                text =
+                if (vm.tutoVM.tuto.matchStep(Tuto.ClickOnProfile))
+                    Tuto.ClickOnProfile.description
+                else
+                    Tuto.ClickOnDifficultyOne.description,
             )
-//            tutoOverlay(vm)
         } else if (visiblePopup) {
+//        if (visiblePopup) {
             MainScreenPopup(vm)
         }
     }

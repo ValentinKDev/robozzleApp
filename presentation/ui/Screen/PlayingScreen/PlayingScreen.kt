@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.TrashOverlay
+import com.mobilegame.robozzle.presentation.ui.Screen.Tuto.tutoLevel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -42,18 +43,20 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
 
     if (!animScreen.currentState && !animScreen.targetState && backPress.value) NavViewModel(navigator).navigateToScreenLevelByDiff(vm.level.difficulty.toString())
 
-    AnimatedVisibility(
-        visibleState = animScreen,
-        enter = fadeIn(),
-        exit = slideOutHorizontally(targetOffsetX = {300}, animationSpec = tween(150)) + fadeOut(animationSpec = tween(150)),
-    ) {
-        PlayingScreenLayers(vm) {
-            DisplayAllParts(vm)
+    if (vm.isTutoLevel())
+        tutoLevel(vm)
+    else {
+        AnimatedVisibility(
+            visibleState = animScreen,
+//            enter = slideInHorizontally(initialOffsetX = {200}),
+            enter = fadeIn(),
+            exit = slideOutHorizontally(targetOffsetX = {300}, animationSpec = tween(150)) + fadeOut(animationSpec = tween(150)),
+        ) {
+            PlayingScreenLayers(vm) { DisplayAllParts(vm) }
         }
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) {
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
@@ -70,7 +73,6 @@ fun PlayingScreenLayers(vm: GameDataViewModel, content: @Composable () -> Unit) 
             if (vm.data.layout.trash.displayTrash) TrashOverlay(vm)
 
             DragAndDropOverlay(vm)
-
 
             AnimatedVisibility(
                 visible = visisbleMenu,

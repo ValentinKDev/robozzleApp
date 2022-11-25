@@ -16,10 +16,10 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.utils.PointerShape
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DragAndDropOverlay(vm: GameDataViewModel) {
     val dragRepresentationOffset: Offset by vm.dragAndDropCase.dragRepresentationOffset.collectAsState()
+    val pointerOffeset: Offset by vm.dragAndDropCase.pointerOffset.collectAsState()
     val itemUnderCornerOffset: Offset? by vm.dragAndDropCase.elements.itemUnderCorner.collectAsState()
     val dragStart: Boolean by vm.dragAndDropCase.dragStart.collectAsState()
     val visibleDragDropOverLay by remember(vm) {vm.dragAndDropCase.dragStart}.collectAsState(false)
@@ -72,8 +72,10 @@ fun DragAndDropOverlay(vm: GameDataViewModel) {
                         Box(Modifier
                             .offset {
                                 IntOffset(
-                                    x = vm.dragAndDropCase.pointerOffset.x.toInt(),
-                                    y = vm.dragAndDropCase.pointerOffset.y.toInt(),
+//                                    x = vm.dragAndDropCase.pointerOffset.x.toInt(),
+//                                    y = vm.dragAndDropCase.pointerOffset.y.toInt(),
+                                    x = pointerOffeset.x.toInt(),
+                                    y = pointerOffeset.y.toInt()
                                 )
                             }
                             .size(15.dp)

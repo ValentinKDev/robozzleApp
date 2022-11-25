@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 //import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -58,15 +59,19 @@ fun LevelsScreenByDifficulty(
     Box(modifier = Modifier
         .fillMaxSize()
     ) {
-        AnimatedVisibility(
-            visibleState = visibleListState ,
-            enter = vm.getEnterTransitionForList(fromScreen) ,
-            exit = vm.getExitTransitionForList() ,
-        ) {
-            LevelsScreenByDifficultyList(
-                navigator = navigator,
-                vm = vm
-            )
+        if (vm.tutoVM.isLevelsScreenByDiffTutoActivated() && vm.levelOverviewList.value.isNotEmpty()) {
+            tutoSpecialOverlay(vm, fromScreen, navigator)
+        } else {
+            AnimatedVisibility(
+                visibleState = visibleListState ,
+                enter = vm.getEnterTransitionForList(fromScreen) ,
+                exit = vm.getExitTransitionForList() ,
+            ) {
+                LevelsScreenByDifficultyList(
+                    navigator = navigator,
+                    vm = vm
+                )
+            }
         }
         AnimatedVisibility(
             visibleState = visibleHeaderState,
@@ -78,9 +83,6 @@ fun LevelsScreenByDifficulty(
                 levelDifficulty = levelsDifficulty,
                 vm = vm
             )
-        }
-        if (vm.tutoVM.isLevelsScreenByDiffTutoActivated()) {
-            tutoSpecialOverlay(vm, fromScreen, navigator)
         }
     }
 }

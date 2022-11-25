@@ -34,6 +34,7 @@ fun MapViewInGame(
     stars: List<Position> = emptyList(),
     caseStop: List<Position> = emptyList(),
     filter: Boolean,
+    enableClickStopMark: Boolean = true
 ) {
     //todo : put those calculs in a VM ?
     val map: List<String> by vm.animData.map.collectAsState()
@@ -63,8 +64,10 @@ fun MapViewInGame(
                                 casePos = casePosition,
                                 caseColor = _color,
                                 filter = filter,
-                                vm = vm
+                                vm = vm,
+                                enableClickStopMark = enableClickStopMark
                             )
+
                             if (caseStop.contains(casePosition)) {
                                 WhiteSquare(
                                     sizeDp = vm.data.layout.firstPart.sizes.mapCaseDp,
@@ -88,6 +91,7 @@ fun DrawMapCase(
     caseColor: Char,
     filter: Boolean,
     vm: GameDataViewModel,
+    enableClickStopMark: Boolean = true,
 ) {
     Box(
         Modifier
@@ -102,6 +106,10 @@ fun DrawMapCase(
                 shape = RectangleShape,
                 elevation = 7.dp,
             ) {
+                val clickable = if (enableClickStopMark) Modifier.clickable {
+                    infoLog("click", "on map case $casePos")
+                    vm.animData.mapCaseSelectionHandler(casePos)
+                } else Modifier
                 Box(
                     Modifier
                         .gradientBackground(
@@ -110,11 +118,13 @@ fun DrawMapCase(
                                 filter
                             ), 135f
                         )
-                        .clickable {
-                            infoLog("click", "on map case $casePos")
-                            vm.animData.mapCaseSelectionHandler(casePos)
-                        }
+//                        .clickable {
+//                            infoLog("click", "on map case $casePos")
+//                            if (enableClickStopMark)
+//                                vm.animData.mapCaseSelectionHandler(casePos)
+//                        }
                         .fillMaxSize()
+                        .then(clickable)
                 ) {
                     playerInGame?.let {
                         if (playerInGame.pos == casePos) {

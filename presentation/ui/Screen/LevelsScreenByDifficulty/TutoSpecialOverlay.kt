@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.*
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.MainScreen.MainScreenWindowsInfos
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
@@ -40,7 +42,17 @@ internal fun tutoSpecialOverlay(
         )
     )
 
-    tutoOverlay(vm.ui.tuto, vm.tutoVM.tuto.description, visibleHeaderState.currentState && visibleListState.currentState)
+    AnimatedVisibility(
+        visibleState = visibleListState ,
+        enter = vm.getEnterTransitionForList(fromScreen) ,
+        exit = vm.getExitTransitionForList() ,
+    ) {
+        Column() {
+            Spacer(modifier = Modifier.height(vm.ui.header.sizes.heightDp))
+            tutoFakeList(vm, navigator)
+        }
+    }
+    tutoOverlay( vm.ui.tuto, Tuto.ClickOnTutoLevel.description, visibleHeaderState.currentState && visibleListState.currentState )
     Column() {
         Spacer(modifier = Modifier.height(vm.ui.header.sizes.heightDp))
         AnimatedVisibility(

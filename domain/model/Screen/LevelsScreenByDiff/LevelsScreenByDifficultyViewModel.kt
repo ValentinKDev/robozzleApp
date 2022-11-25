@@ -10,7 +10,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
 import com.mobilegame.robozzle.domain.model.Screen.utils.RankingIconViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
@@ -154,6 +156,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun goingPlayScreenListener(navigator: Navigator, ctxt: Context) {
         levelSelectedId?.let { _levelId ->
             if (goingPlayScreenAnimationEnd()) {
+                if (tutoVM.isMainScreenTutoActivated() && tutoVM.tuto.matchStep(Tuto.ClickOnTutoLevel)) tutoVM.nextStep()
                 navigateToLevel(navigator, _levelId, ctxt)
             }
         }
@@ -168,7 +171,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         when (fromScreen) {
             Screens.Playing -> slideInHorizontally() + fadeIn()
             Screens.MainMenu -> slideInVertically(animationSpec = tween(600))
-//            Screens.RanksLevel -> slid
+//            Screens.MainMenu -> expandIn(animationSpec = tween(600))
             else -> fadeIn()
         }
     }

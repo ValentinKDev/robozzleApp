@@ -16,12 +16,20 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Tuto.TutoObj
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
-internal fun tutoOverlay(info: TutoObj, text: String, visibleElements: Boolean) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(info.colors.filter)
-    )
+internal fun tutoOverlay(
+    info: TutoObj,
+    text: String,
+    visibleElements: Boolean,
+    enableFilter: Boolean = true
+) {
+
+    if (enableFilter) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(info.colors.filter)
+        )
+    }
     PaddingComposable(
         topPaddingRatio = info.popup.topPadding,
         startPaddingRatio = info.popup.startPadding,

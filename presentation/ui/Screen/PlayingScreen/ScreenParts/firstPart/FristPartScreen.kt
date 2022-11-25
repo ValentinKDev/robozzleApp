@@ -21,7 +21,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Composable
-fun MapLayout(vm: GameDataViewModel) {
+fun MapLayout(vm: GameDataViewModel, enableClickSpeed: Boolean = true, enableClickStopMark: Boolean = true) {
     val stars: List<Position> by vm.animData.animatedStarsMaped.collectAsState()
     val caseStop: List<Position> by vm.animData.mapCaseSelection.collectAsState()
     val playerInGame: PlayerInGame by vm.animData.playerAnimated.collectAsState()
@@ -35,13 +35,13 @@ fun MapLayout(vm: GameDataViewModel) {
         false -> vm.mapLayoutIsReleased()
     }
 
-    val clickable = Modifier.clickable (
+    val clickable = if (enableClickSpeed)
+        Modifier.clickable (
         interactionSource = interactionSource,
         indication = rememberRipple(color = Color.Transparent)
     ) {
         logClick?.let { infoLog("click", "map") }
-    }
-//    infoLog("case stop list ", "$caseStop")
+    } else Modifier
 
     Box(
         modifier = Modifier
@@ -57,7 +57,8 @@ fun MapLayout(vm: GameDataViewModel) {
                 playerInGame,
                 stars,
                 caseStop = caseStop,
-                filter = displayInstructionMenu
+                filter = displayInstructionMenu,
+                enableClickStopMark = enableClickStopMark,
             )
         }
     }

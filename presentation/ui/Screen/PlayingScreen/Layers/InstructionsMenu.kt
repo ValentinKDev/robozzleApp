@@ -24,15 +24,14 @@ import gradientBackground
 
 //todo : highlight in background only the instruction you selected ?
 //todo : il manque la touche supprimer l'instruction selectionnée
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayInstuctionMenu(vm: GameDataViewModel) {
     val interactionExtMenu = remember { MutableInteractionSource() }
     Box(
         Modifier
             .fillMaxSize()
-//            .background(gray9)
             .background(black7)
+//            .background(MyColor.black5)
             .clickable(
                 interactionSource = interactionExtMenu,
                 indication = null

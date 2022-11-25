@@ -61,9 +61,9 @@ object LevelsScreenByDifficultyLayout {
         }
     }
 
-    var widthFull = 0
-    var heightFull = 0
-    var density = 0F
+    private var widthFull = 0
+    private var heightFull = 0
+    private var density = 0F
 
     private fun initHeader() {
         header.sizes.heightDp = (header.ratios.height * heightFull).toDp(density)

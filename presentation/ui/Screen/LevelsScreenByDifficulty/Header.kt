@@ -2,10 +2,12 @@ package com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty
 
 import androidx.compose.animation.core.animateSize
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalContext
@@ -44,10 +46,9 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
     }
 
     Column(Modifier.fillMaxWidth()) {
-//        todo: Use MainScreenButton ?
         Card(
             modifier = Modifier
-                .align(androidx.compose.ui.Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally)
                 .height(animSize.height.dp)
                 .width(animSize.width.dp)
                 .fillMaxWidth()
@@ -62,6 +63,17 @@ fun LevelsScreenByDifficultyHeader(navigator: Navigator, levelDifficulty: Int, v
             CenterComposable {
                 Text(text = "Difficulty $levelDifficulty", color = whiteDark4)
             }
+        }
+    }
+    if (vm.tutoVM.isLevelsScreenByDiffTutoActivated()) {
+        Column(Modifier.fillMaxWidth()) {
+            Box(
+                Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .width(animSize.width.dp)
+                    .height(animSize.height.dp)
+                    .background(vm.ui.tuto.colors.filter)
+            )
         }
     }
 }

@@ -45,8 +45,7 @@ fun LevelsScreenByDifficultyList(
     Column() {
         Spacer(modifier = Modifier.height(vm.ui.header.sizes.heightDp))
         Box {
-            if (vm.tutoVM.isLevelsScreenByDiffTutoActivated()) { tutoFakeList(vm, navigator) }
-            else if (levelsList.isNotEmpty()) {
+            if (levelsList.isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier
                     ,

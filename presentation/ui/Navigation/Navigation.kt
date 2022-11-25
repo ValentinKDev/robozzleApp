@@ -14,6 +14,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
@@ -159,14 +160,14 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(4)
-//            PlayingScreen(navigator)
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(0)
+            PlayingScreen(navigator)
 //            RegisterLoginScreen(navigator = navigator)
-            LevelsScreenByDifficulty(
-                navigator = navigator,
-                levelsDifficulty = 1,
-                fromScreen = Screens.MainMenu,
-            )
+//            LevelsScreenByDifficulty(
+//                navigator = navigator,
+//                levelsDifficulty = 1,
+//                fromScreen = Screens.MainMenu,
+//            )
 //            CreatorScreen(navigator = navigator)
 //            UserInfoScreen(navigator = navigator)
 //            ConfigScreen(navigator = navigator)
