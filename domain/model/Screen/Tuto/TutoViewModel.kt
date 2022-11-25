@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.domain.model.Screen.Tuto
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.data.store.TutoDataStoreViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.Tuto.TutoObj
@@ -25,6 +26,7 @@ class TutoViewModel(context: Context): ViewModel() {
     fun nextStep() {
         saveToDataStore()
         incrementTuto()
+        errorLog("TutoViewModel::nextStep", "now Tuto: ${tuto.description}")
     }
 
     fun isMainScreenTutoActivated(): Boolean = tuto != Tuto.End

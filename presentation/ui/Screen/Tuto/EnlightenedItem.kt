@@ -23,7 +23,7 @@ fun enlightItem(modifier: Modifier, ui: TutoObj) {
         initialValue = Color.Transparent,
         targetValue = MyColor.white8,
         animationSpec = infiniteRepeatable(
-            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
+            tween(durationMillis = 1000, easing = FastOutLinearInEasing),
             RepeatMode.Reverse
         )
     )

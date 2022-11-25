@@ -20,16 +20,13 @@ internal fun tutoOverlay(
     info: TutoObj,
     text: String,
     visibleElements: Boolean,
-    enableFilter: Boolean = true
 ) {
 
-    if (enableFilter) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(info.colors.filter)
-        )
-    }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(info.colors.filter)
+    )
     PaddingComposable(
         topPaddingRatio = info.popup.topPadding,
         startPaddingRatio = info.popup.startPadding,

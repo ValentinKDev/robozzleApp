@@ -86,13 +86,10 @@ fun tutoLevel(vm: GameDataViewModel) {
             info = tutoLayout,
             text = vm.tutoVM.tuto.description,
             visibleElements = true,
-//            enableFilter = false
         )
 
-
-
-
-        if (vm.isTutoLevel() && vm.tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase)) {
+//        if (vm.isTutoLevel() && vm.tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase)) {
+        if (vm.isTutoLevel()) {
             Column(modifier = Modifier
                 .fillMaxSize()
             ) {
@@ -172,7 +169,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                         horizontalArrangement = Arrangement.SpaceEvenly
                                                     ) {
                                                         listInstructions1.forEachIndexed { _index, _ ->
-                                                            val enableFirstInstructionClick = vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0
+                                                            val enableFirstInstructionClick = (vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
+                                                                    || (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
 
                                                             val clickable = if (enableFirstInstructionClick) Modifier.clickable {
                                                                 if (vm.dragAndDropCase.dragStart.value Is false
@@ -212,20 +210,20 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                     }
                                                                     enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
                                                                 } else Box(Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) )
-                                                                if ( (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0) ) {
-                                                                Box( Modifier .fillMaxSize()
-                                                                ) {
-                                                                    FunctionCase(
-                                                                        color = caseColor,
-                                                                        instructionChar = instructionChar,
-                                                                        vm = vm,
-                                                                        filter = displayInstructionMenu && !vm.selectedCase.Match(
-                                                                            Position(functionNumber, _index)
-                                                                        ))
-                                                                }
-                                                                enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
+//                                                                if ( (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0) ) {
+//                                                                Box( Modifier .fillMaxSize()
+//                                                                ) {
+//                                                                    FunctionCase(
+//                                                                        color = caseColor,
+//                                                                        instructionChar = instructionChar,
+//                                                                        vm = vm,
+//                                                                        filter = displayInstructionMenu && !vm.selectedCase.Match(
+//                                                                            Position(functionNumber, _index)
+//                                                                        ))
+//                                                                }
+//                                                                enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
 
-                                                            }
+//                                                            }
                                                             }
                                                         }
                                                     }
