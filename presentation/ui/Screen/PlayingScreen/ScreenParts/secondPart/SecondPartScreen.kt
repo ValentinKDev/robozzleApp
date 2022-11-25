@@ -11,11 +11,11 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
-fun SecondScreenPart(vm: GameDataViewModel,enableMenu: Boolean = true,  enableDragAndDrop: Boolean = true) {
+fun SecondScreenPart(vm: GameDataViewModel,enableMenu: Boolean = true,  enableDragAndDrop: Boolean = true, enableActionRowDrag: Boolean = true) {
     Column(Modifier.fillMaxSize()) {
         Column( Modifier.weight(vm.data.layout.secondPart.ratios.actionRowHeight)
         ) {
-            ActionRow(vm)
+            ActionRow(vm, enableActionRowDrag)
         }
         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
         ) {
@@ -25,7 +25,7 @@ fun SecondScreenPart(vm: GameDataViewModel,enableMenu: Boolean = true,  enableDr
 }
 
 @Composable
-fun ActionRow(vm: GameDataViewModel) {
+fun ActionRow(vm: GameDataViewModel, enableActionRowDrag: Boolean) {
     Column {
         Column(Modifier.weight(vm.data.layout.secondPart.ratios.actionRowSurrounderHeight),
             verticalArrangement = Arrangement.Top) {
@@ -39,7 +39,7 @@ fun ActionRow(vm: GameDataViewModel) {
                 endPaddingRatio = vm.data.layout.secondPart.ratios.actionRowEndPadding
             ) {
                 CenterComposableVertically {
-                    DisplayActionsRow(vm)
+                    DisplayActionsRow(vm, enableActionRowDrag)
                 }
             }
         }

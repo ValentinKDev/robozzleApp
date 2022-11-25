@@ -36,7 +36,7 @@ import gradientBackground
 //Todo: delay the disparition of the last action in actionList
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun DisplayActionsRow(vm: GameDataViewModel) {
+fun DisplayActionsRow(vm: GameDataViewModel, enableActionRowDrag: Boolean) {
 
     val actionList: List<FunctionInstruction> by vm.animData.actionRowList.collectAsState()
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
@@ -55,38 +55,40 @@ fun DisplayActionsRow(vm: GameDataViewModel) {
 //    verbalLog("actionList to display size ", "${actionList.size}")
 //    verbalLog("actionList to display size 2", "${actionList.subListIfPossible(1, 8).size}")
 
+    val drag = if (enableActionRowDrag) Modifier.dragActionRow(vm) else Modifier
     if (actionList.isNotEmpty()) {
         Row(Modifier
             .onGloballyPositioned {
                 vm.dragAndDropRow.setDraggableLength(it)
             }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDrag = { change, _ ->
-//                        infoLog( "onDrag", "position ${change.position}" )
-                        vm.dragAndDropRow.onDrag( pointerInputChange = change)
-                        vm.dragAndDropRow.move()?.let {
-                            when (it) {
-                                AnimationStream.Forward -> vm.clickNextButtonHandler()
-                                AnimationStream.Backward -> vm.clickBackButtonHandler()
-                            }
-                        }
-                    },
-                    onDragStart = { _offset ->
-                        infoLog("onDragStart", "started")
-                        vm.dragAndDropRow.onDragStart(_offset)
-                        infoLog( "vm.dragstart", "${vm.dragAndDropRow.dragStart.value}" )
-                    },
-                    onDragEnd = {
-                        vm.dragAndDropRow.onDragReset()
-                        errorLog("onDragEnd", "end")
-                    },
-                    onDragCancel = {
-                        vm.dragAndDropRow.onDragReset()
-                        errorLog("onDragCanceled", "cancel")
-                    }
-                )
-            }
+            .then(drag)
+//            .pointerInput(Unit) {
+//                detectDragGestures(
+//                    onDrag = { change, _ ->
+////                        infoLog( "onDrag", "position ${change.position}" )
+//                        vm.dragAndDropRow.onDrag( pointerInputChange = change)
+//                        vm.dragAndDropRow.move()?.let {
+//                            when (it) {
+//                                AnimationStream.Forward -> vm.clickNextButtonHandler()
+//                                AnimationStream.Backward -> vm.clickBackButtonHandler()
+//                            }
+//                        }
+//                    },
+//                    onDragStart = { _offset ->
+//                        infoLog("onDragStart", "started")
+//                        vm.dragAndDropRow.onDragStart(_offset)
+//                        infoLog( "vm.dragstart", "${vm.dragAndDropRow.dragStart.value}" )
+//                    },
+//                    onDragEnd = {
+//                        vm.dragAndDropRow.onDragReset()
+//                        errorLog("onDragEnd", "end")
+//                    },
+//                    onDragCancel = {
+//                        vm.dragAndDropRow.onDragReset()
+//                        errorLog("onDragCanceled", "cancel")
+//                    }
+//                )
+//            }
         ) {
             Row( Modifier
                 .fillMaxHeight()

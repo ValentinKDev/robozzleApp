@@ -25,7 +25,7 @@ import gradientBackground
 //todo : highlight in background only the instruction you selected ?
 //todo : il manque la touche supprimer l'instruction selectionnée
 @Composable
-fun DisplayInstuctionMenu(vm: GameDataViewModel) {
+fun DisplayInstuctionMenu(vm: GameDataViewModel, enableClickOut: Boolean = true) {
     val interactionExtMenu = remember { MutableInteractionSource() }
     Box(
         Modifier
@@ -35,7 +35,7 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
             .clickable(
                 interactionSource = interactionExtMenu,
                 indication = null
-            ) { vm.ChangeInstructionMenuState() }
+            ) { if (enableClickOut) vm.ChangeInstructionMenuState() }
     )
     PaddingComposable(
         topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
@@ -73,21 +73,24 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel) {
 }
 
 @Composable
-fun InstructionCase(vm: GameDataViewModel, case: FunctionInstruction) {
+fun InstructionCase(
+    vm: GameDataViewModel,
+    case: FunctionInstruction,
+    tuto: Modifier = Modifier.clickable {
+        vm.replaceInstruction(
+            vm.selectedCase,
+            if (case.isDelete()) FunctionInstruction('.', 'g') else case
+        )
+        vm.ChangeInstructionMenuState()
+    }
+) {
     Box(
         modifier = Modifier
-            .gradientBackground(
-                mapCaseColorList(case.color, false),
-                175f
-            )
+            .gradientBackground( mapCaseColorList(case.color, false), 175f )
             .clickable {
-                vm.replaceInstruction(
-                    vm.selectedCase,
-                    if (case.isDelete()) FunctionInstruction('.', 'g') else case
-                )
-                vm.ChangeInstructionMenuState()
             }
             .size(vm.data.layout.menu.sizes.case.dp)
+            .then(tuto)
             .border(
                 width = vm.data.layout.menu.sizes.casePadding.dp,
                 color = vm.data.colors.menuCaseBorder

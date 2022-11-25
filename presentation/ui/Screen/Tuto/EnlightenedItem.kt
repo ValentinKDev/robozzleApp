@@ -18,43 +18,8 @@ import gradientBackground
 fun enlightItem(modifier: Modifier, ui: TutoObj) {
 
     val infiniteTransition = rememberInfiniteTransition()
-//    val animBackgroundColor3 by infiniteTransition.animateColor(
-////        initialValue = ui.colors.enlightAnyInit,
-////        initialValue = ui.colors.transparent,
-//        initialValue = MyColor.darkgray3Enlight,
-////        targetValue = MyColor.white9,
-//        targetValue = MyColor.gray9,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
-//            RepeatMode.Reverse
-//        )
-//    )
-//    val animBackgroundColor2 by infiniteTransition.animateColor(
-////        initialValue = ui.colors.enlightAnyInit,
-//        initialValue = MyColor.darkgray2Enlight,
-////        initialValue = ui.colors.transparent,
-////        targetValue = MyColor.white7,
-//        targetValue = MyColor.gray5,
-////        targetValue = ui.colors.enlightAnyTarget,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
-//            RepeatMode.Reverse
-//        )
-//    )
-//    val animBackgroundColor by infiniteTransition.animateColor(
-////        initialValue = ui.colors.enlightAnyInit,
-//        initialValue = MyColor.darkgray1Enlight,
-////        targetValue = MyColor.white5,
-//        targetValue = MyColor.gray3,
-////        targetValue = ui.colors.enlightAnyTarget,
-//        animationSpec = infiniteRepeatable(
-//            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
-//            RepeatMode.Reverse
-//        )
-//    )
 
     val animWhite by infiniteTransition.animateColor(
-//        initialValue = ui.colors.enlightAnyInit,
         initialValue = Color.Transparent,
         targetValue = MyColor.white8,
         animationSpec = infiniteRepeatable(
@@ -65,18 +30,9 @@ fun enlightItem(modifier: Modifier, ui: TutoObj) {
 
     Box(
         Modifier
-//            .gradientBackground(listOf(animBackgroundColor3, animBackgroundColor2, animBackgroundColor), 175F)
-//            .gradientBackground(listOf(animBackgroundColor, animBackgroundColor2, animBackgroundColor3), 175F)
             .background(animWhite)
             .then(modifier)
     ) { }
-//    var str = ""
-//    mapCaseColorList('g').forEach {
-//        str += it.toHexCode()
-//        str += ", "
-//    }
-//    errorLog("enlightItem", "mapColor = $str")
-//    Color.Blue
 }
 
 private fun Color.toHexCode(): String {

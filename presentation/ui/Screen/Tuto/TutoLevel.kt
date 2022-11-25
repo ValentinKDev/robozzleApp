@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -17,16 +18,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.InstructionCase
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.TrashOverlay
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.thirdPart.GameButtons
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
+import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.tutoOverlay
 import com.mobilegame.robozzle.utils.Extensions.Is
@@ -37,6 +43,7 @@ fun tutoLevel(vm: GameDataViewModel) {
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
     val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -52,7 +59,7 @@ fun tutoLevel(vm: GameDataViewModel) {
             Row(modifier = Modifier
                 .weight(vm.data.layout.secondPart.ratios.height)
             ) {
-                SecondScreenPart(vm, enableMenu = false, enableDragAndDrop = false)
+                SecondScreenPart(vm, enableMenu = false, enableDragAndDrop = false, enableActionRowDrag = false)
             }
             Row(modifier = Modifier
                 .weight(vm.data.layout.thirdPart.ratios.height)
@@ -70,7 +77,7 @@ fun tutoLevel(vm: GameDataViewModel) {
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            DisplayInstuctionMenu(vm)
+            DisplayInstuctionMenu(vm, false)
         }
 
         PlayingScreenPopupWin(vm = vm)
@@ -89,7 +96,10 @@ fun tutoLevel(vm: GameDataViewModel) {
             Column(modifier = Modifier
                 .fillMaxSize()
             ) {
-                Row(Modifier.weight(vm.data.layout.firstPart.ratios.height).fillMaxWidth()){
+                Row(
+                    Modifier
+                        .weight(vm.data.layout.firstPart.ratios.height)
+                        .fillMaxWidth()){
 //                    MapLayout(vm, enableClickSpeed = false, enableClickStopMark = false)
                 }
                 Row(modifier = Modifier
@@ -106,7 +116,6 @@ fun tutoLevel(vm: GameDataViewModel) {
                             val enableDrag = false
                             val draggedStart : Boolean by vm.dragAndDropCase.dragStart.collectAsState()
                             val levelFunctions = vm.instructionsRows
-                            val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
                             val functions =
                                 if ( draggedStart )
@@ -163,9 +172,9 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                         horizontalArrangement = Arrangement.SpaceEvenly
                                                     ) {
                                                         listInstructions1.forEachIndexed { _index, _ ->
-                                                            val enableClick = vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0
+                                                            val enableFirstInstructionClick = vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0
 
-                                                            val clickable = if (enableClick) Modifier.clickable {
+                                                            val clickable = if (enableFirstInstructionClick) Modifier.clickable {
                                                                 if (vm.dragAndDropCase.dragStart.value Is false
                                                                     && vm.isInstructionMenuAvailable()
                                                                 ) {
@@ -187,7 +196,10 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                 .then(clickable)
                                                             ) {
                                                                 val instructionChar = function.instructions[_index]
-                                                                if (vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0) {
+                                                                if (
+                                                                    (vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
+                                                                    || (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
+                                                                ) {
                                                                     Box( Modifier .fillMaxSize()
                                                                     ) {
                                                                         FunctionCase(
@@ -199,7 +211,21 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                             ))
                                                                     }
                                                                     enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
+                                                                } else Box(Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) )
+                                                                if ( (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0) ) {
+                                                                Box( Modifier .fillMaxSize()
+                                                                ) {
+                                                                    FunctionCase(
+                                                                        color = caseColor,
+                                                                        instructionChar = instructionChar,
+                                                                        vm = vm,
+                                                                        filter = displayInstructionMenu && !vm.selectedCase.Match(
+                                                                            Position(functionNumber, _index)
+                                                                        ))
                                                                 }
+                                                                enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
+
+                                                            }
                                                             }
                                                         }
                                                     }
@@ -219,6 +245,92 @@ fun tutoLevel(vm: GameDataViewModel) {
                     .weight(vm.data.layout.thirdPart.ratios.height)
                 ) {
 //                    GameButtons(vm, enablePlayPause = false, enableReset = false, enableBack = false, enableNext = false)
+                }
+            }
+        }
+
+        AnimatedVisibility(
+            visible = visisbleMenu,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            val interactionExtMenu = remember { MutableInteractionSource() }
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(MyColor.black7)
+                    .clickable(
+                        interactionSource = interactionExtMenu,
+                        indication = null
+                    ) {
+//                        vm.ChangeInstructionMenuState()
+                    }
+            )
+            PaddingComposable(
+                topPaddingRatio = vm.data.layout.menu.ratios.topPadding,
+                bottomPaddingRatio = vm.data.layout.menu.ratios.bottomPadding,
+            ) {
+                CenterComposableHorizontally {
+                    Box{
+                        Column(
+                            Modifier
+                                .width(vm.data.layout.menu.sizes.windowWidth.dp)
+                                .background(Color.Transparent)
+                        ) {
+                            vm.level.instructionsMenu.forEachIndexed { instructionLine, instructions ->
+                                Row( Modifier .background(Color.Transparent) ,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    instructions.instructions.toList().forEachIndexed { index, c ->
+                                        if (
+                                            (vm.isTutoClickOnFirstInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'B')
+                                        ) {
+                                            Box( Modifier.clickable {
+                                                    vm.ChangeInstructionMenuState()
+                                                    vm.tutoVM.nextStep()
+                                                }
+                                            ) {
+                                                InstructionCase(
+                                                    vm,
+                                                    FunctionInstruction(
+                                                        c,
+                                                        instructions.colors.first()
+                                                    ),
+                                                    Modifier.clickable {
+                                                        vm.replaceInstruction(
+                                                            vm.selectedCase,
+                                                            if (FunctionInstruction(
+                                                                    c,
+                                                                    instructions.colors.first()
+                                                                ).isDelete()
+                                                            ) FunctionInstruction(
+                                                                '.',
+                                                                'g'
+                                                            ) else FunctionInstruction(
+                                                                c,
+                                                                instructions.colors.first()
+                                                            )
+                                                        )
+                                                        vm.ChangeInstructionMenuState()
+                                                        vm.tutoVM.nextStep()
+                                                    }
+                                                )
+                                            }
+                                        }
+                                        else
+                                            Box(
+                                                Modifier
+                                                    .size(vm.data.layout.menu.sizes.case.dp)
+                                                    .background(Color.Transparent) ) { }
+                                    }
+                                }
+                            }
+//                            CenterComposableHorizontally {
+//                                InstructionCase(vm = vm, case = FunctionInstruction(instruction = 'x', color = 'g'))
+//                            }
+                        }
+                    }
                 }
             }
         }
