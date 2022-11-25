@@ -49,6 +49,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     fun isTutoClickOnFirstInstruction(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase)
     fun isTutoClickOnFirstInstructionFromMenu(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionFromMenu)
     fun isTutoClickOnSecondInstruction(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnSecondInstructionCase)
+    fun isTutoClickOnSecondInstructionFromMenu(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnSecondInstructionFromMenu)
 
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {

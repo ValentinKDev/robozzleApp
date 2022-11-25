@@ -283,6 +283,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                     instructions.instructions.toList().forEachIndexed { index, c ->
                                         if (
                                             (vm.isTutoClickOnFirstInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'B')
+                                            || (vm.isTutoClickOnSecondInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'g')
                                         ) {
                                             Box( Modifier.clickable {
                                                     vm.ChangeInstructionMenuState()
