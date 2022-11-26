@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.TrashOverlay
@@ -24,6 +26,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Tuto.tutoLevel
 fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
     val backPress = remember { mutableStateOf(false) }
     val animScreen = remember { MutableTransitionState(false) }
+    val tuto by remember { vm.tutoVM.tuto }.collectAsState()
 
     LaunchedEffect(key1 = true) {
         Log.i("", "_");
@@ -43,8 +46,9 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
 
     if (!animScreen.currentState && !animScreen.targetState && backPress.value) NavViewModel(navigator).navigateToScreenLevelByDiff(vm.level.difficulty.toString())
 
-    if (vm.isTutoLevel())
+    if (vm.isTutoLevel() && !tuto.matchStep(Tuto.End)) {
         tutoLevel(vm)
+    }
     else {
         AnimatedVisibility(
             visibleState = animScreen,

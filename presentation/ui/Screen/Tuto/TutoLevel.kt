@@ -83,7 +83,6 @@ fun tutoLevel(vm: GameDataViewModel) {
             }
         }
 
-        if (vm.data.layout.trash.displayTrash) TrashOverlay(vm)
 
 
         AnimatedVisibility(
@@ -274,6 +273,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                     || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
                                                                     || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
                                                                     || (vm.tutoVM.isTutoClickOnFirstCaseSecondLine() && _index == 0 && functionNumber == 1)
+                                                                    || (vm.tutoVM.isTutoClickOnFirstInstructionSecondLineAgain() && _index == 0 && functionNumber == 1 )
+                                                                    || (vm.tutoVM.isTutoClickOnSecondInstructionSecondLine() && _index == 1 && functionNumber == 1 )
 
                                                             val clickable = if (enableFirstInstructionClick) Modifier.clickable {
                                                                 if (vm.dragAndDropCase.dragStart.value Is false
@@ -303,6 +304,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                         || (vm.tutoVM.isTutoDragAndDropInstruction() && (_index == 2 && functionNumber == 0 || _index == 6 && functionNumber == 0))
                                                                         || (vm.tutoVM.isTutoClickOnFirstCaseSecondLine() && (_index == 0 && functionNumber == 1))
                                                                         || (vm.tutoVM.isTutoDragInstructionToTrash() && _index == 0 && functionNumber == 1)
+                                                                        || (vm.tutoVM.isTutoClickOnFirstInstructionSecondLineAgain() && _index == 0 && functionNumber == 1 )
+                                                                        || (vm.tutoVM.isTutoClickOnSecondInstructionSecondLine() && _index == 1 && functionNumber == 1 )
 
                                                                 if ( enableVisible ) {
                                                                     Box( Modifier .fillMaxSize()
@@ -446,6 +449,7 @@ fun tutoLevel(vm: GameDataViewModel) {
             }
         }
 
+        if (vm.data.layout.trash.displayTrash) TrashOverlay(vm)
         DragAndDropOverlay(vm)
 
         AnimatedVisibility(
@@ -489,6 +493,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                                             || (vm.tutoVM.isTutoClickOnRepeatingFirstLineGray() && c == '0' && instructions.colors.first() == 'g')
                                             || (vm.tutoVM.isTutoClickTurnRighFRomMenu() && c == 'r' && instructions.colors.first() == 'g')
                                             || (vm.tutoVM.isTutoCallSecondLine() && c == '1' && instructions.colors.first() == 'R')
+                                            || (vm.tutoVM.isTutoSelectMovingForward() && c == 'u' && instructions.colors.first() == 'g')
+                                            || (vm.tutoVM.isTutoSelectTurnLeft() && c == 'l' && instructions.colors.first() == 'g')
                                         ) {
                                             Box( Modifier.clickable {
                                                     vm.ChangeInstructionMenuState()

@@ -146,7 +146,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     }
     fun goingRankingLevelListener(navigator: Navigator, levelId: Int) {
         if (rankingIconVM.isAnimationFinished() && _goToRanksLevelState.Is(false)) startExitAnimationAndPressRankingLevel(levelId)
-
+        if (tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon)) tutoVM.nextTuto()
         if (_goToRanksLevelState && headerAndListAnimationEnd())
             NavViewModel(navigator).navigateToRanksLevel(rankingIconVM.levelSelected.value.toString())
     }

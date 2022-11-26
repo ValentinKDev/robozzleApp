@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.MapViewParam
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
@@ -62,7 +64,8 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
                 DisplayLevelState(level, vm, navigator)
             }
             Box(Modifier.weight(vm.ui.levelOverview.ratios.rankIconWeight)) {
-                DisplayRankingIcon(vm, navigator, level.id, enable)
+                if (level.id == 0 && !vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon))
+                    DisplayRankingIcon(vm, navigator, level.id, enable)
             }
         }
     }

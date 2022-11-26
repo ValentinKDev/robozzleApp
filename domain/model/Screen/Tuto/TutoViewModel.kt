@@ -16,11 +16,12 @@ class TutoViewModel(context: Context): ViewModel() {
     private val dataStoreVM = TutoDataStoreViewModel(context)
 
 
-//    private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
+    private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 //    private val _tuto = MutableStateFlow(Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 
-    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnFirstInstructionCase)
-//    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnThirdInstructionCaseAgain)
+//    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnFirstInstructionCase)
+//private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnResetThirdTime)
+//    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnRankingIcon)
 //    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
     val tuto: StateFlow<Tuto> = _tuto.asStateFlow()
     fun getTuto(): Tuto = tuto.value
@@ -80,14 +81,14 @@ class TutoViewModel(context: Context): ViewModel() {
     fun isMainScreenButtonClickEnable(): Boolean = !isMainScreenTutoActivated()
 
     private var levelDifficulty = -42
-    fun isLevelsScreenByDiffTutoActivated(): Boolean = levelDifficulty == 1 && ( getTuto().step in Tuto.ClickOnTutoLevel.step until Tuto.End.step )
+    fun isLevelsScreenByDiffTutoActivated(): Boolean = levelDifficulty == 1 && ( getTuto().step in Tuto.ClickOnRankingIcon.step until Tuto.End.step )
     fun updateLevelDifficultyTo(diff: Int) { levelDifficulty = diff }
 
     fun isTutoClickOnFirstInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnFirstInstructionCase)
     fun isTutoClickOnFirstInstructionFromMenu(): Boolean = getTuto().matchStep(Tuto.ClickOnFirstInstructionFromMenu)
     fun isTutoClickOnSecondInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnSecondInstructionCase)
     fun isTutoClickOnSecondInstructionFromMenu(): Boolean = getTuto().matchStep(Tuto.ClickOnSecondInstructionFromMenu)
-    fun isTutoClickOnPlayButton(): Boolean = getTuto().matchStep(Tuto.ClickOnPlayFirstTime) || getTuto().matchStep(Tuto.ClickOnPlaySecondTime) || getTuto().matchStep(Tuto.ClickOnPlayThirdTime) || getTuto().matchStep(Tuto.ClickOnPlayFourthTime)
+    fun isTutoClickOnPlayButton(): Boolean = getTuto().matchStep(Tuto.ClickOnPlayFirstTime) || getTuto().matchStep(Tuto.ClickOnPlaySecondTime) || getTuto().matchStep(Tuto.ClickOnPlayThirdTime) || getTuto().matchStep(Tuto.ClickOnPlayFourthTime) || getTuto().matchStep(Tuto.LetsGo)
     fun isTutoClickOnResetButton(): Boolean = getTuto().matchStep(Tuto.ClickOnRestFirstTime) || getTuto().matchStep(Tuto.ClickOnResetSecondTime) || getTuto().matchStep(Tuto.ClickOnResetThirdTime)
 //    fun isTutoClickOnResetButton(): Boolean = getTuto().matchStep(Tuto.ClickOnRestFirstTime)
     fun isTutoClickOnThirdInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnThirdInstructionCase) || getTuto().matchStep(Tuto.ClickOnThirdInstructionCaseAgain)
@@ -99,6 +100,11 @@ class TutoViewModel(context: Context): ViewModel() {
     fun isTutoClickTurnRighFRomMenu(): Boolean = getTuto().matchStep(Tuto.ClickOnTurnRight)
     fun isTutoCallSecondLine(): Boolean = getTuto().matchStep(Tuto.ClickOnCallSecondLine)
     fun isTutoDragInstructionToTrash(): Boolean = getTuto().matchStep(Tuto.DragInstructionToTrash)
+    fun isTutoClickOnFirstInstructionSecondLineAgain(): Boolean = getTuto().matchStep(Tuto.ClickOnFirstInstructionCaseSecondLineAgain)
+    fun isTutoSelectTurnLeft(): Boolean = getTuto().matchStep(Tuto.SelectTurnLeft)
+    fun isTutoSelectMovingForward(): Boolean = getTuto().matchStep(Tuto.SelectMovingForward)
+    fun isTutoClickOnSecondInstructionSecondLine(): Boolean = getTuto().matchStep(Tuto.ClickOnSecondInstructionCaseSecondLine)
+//    fun isOneLastPlay(): Boolean = getTuto().matchStep(Tuto.OneLastPlay)
 
 //    fun isTutoClickOnTheThirdInstructionAgain()
 //    fun isTutoClickOnForwardButton(): Boolean = getTuto().matchStep(Tuto.ClickOnMovingForward1)
@@ -128,8 +134,12 @@ class TutoViewModel(context: Context): ViewModel() {
             getTuto().matchStep(Tuto.ClickOnCallSecondLine) -> getTutoLayoutTopScreen()
             getTuto().matchStep(Tuto.ClickOnPlayFourthTime) -> getTutoLayoutBetweenLine2AndButtons()
             getTuto().matchStep(Tuto.DragInstructionToTrash) -> TutoObj.create()
-
             getTuto().matchStep(Tuto.ClickOnResetThirdTime) -> getTutoLayoutBetweenLine2AndButtons()
+            getTuto().matchStep(Tuto.ClickOnFirstInstructionCaseSecondLineAgain) -> getTutoLayoutTopScreen()
+            getTuto().matchStep(Tuto.SelectMovingForward) -> getTutoLayoutTopScreen()
+            getTuto().matchStep(Tuto.SelectTurnLeft) -> getTutoLayoutTopScreen()
+            getTuto().matchStep(Tuto.LetsGo) -> getTutoLayoutBetweenLine2AndButtons()
+            getTuto().matchStep(Tuto.ClickOnSecondInstructionCaseSecondLine) -> getTutoLayoutBetweenLine2AndButtons()
 
 //            isTutoClickOnPlayButton() -> getTutoButtonLayout()
 
