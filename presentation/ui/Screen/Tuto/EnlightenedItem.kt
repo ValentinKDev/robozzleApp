@@ -15,12 +15,12 @@ import com.mobilegame.robozzle.presentation.res.mapCaseColorList
 import gradientBackground
 
 @Composable
-fun enlightItem(modifier: Modifier) {
+fun enlightItem(modifier: Modifier, initialColor: Color = Color.Transparent) {
 
     val infiniteTransition = rememberInfiniteTransition()
 
     val animWhite by infiniteTransition.animateColor(
-        initialValue = Color.Transparent,
+        initialValue = initialColor,
         targetValue = MyColor.white8,
         animationSpec = infiniteRepeatable(
             tween(durationMillis = 1000, easing = FastOutLinearInEasing),
@@ -30,8 +30,8 @@ fun enlightItem(modifier: Modifier) {
 
     Box(
         Modifier
-            .background(animWhite)
             .then(modifier)
+            .background(animWhite)
     ) { }
 }
 

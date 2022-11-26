@@ -144,7 +144,7 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
     fun upDateTuto() {
 //        if (tutoVM.tuto.matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
 //        if (tutoVM.tuto.matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextStep()
-        if (tutoVM.getTuto().matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
-        if (tutoVM.getTuto().matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextStep()
+        if (tutoVM.getTuto().matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextTuto()
+        if (tutoVM.getTuto().matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextTuto()
     }
 }

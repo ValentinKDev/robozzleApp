@@ -5,25 +5,28 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.logAnimMap
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.InGame.PlayerInGame
 import com.mobilegame.robozzle.domain.InGame.runningInBackgroundIs
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
+import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
@@ -50,11 +53,12 @@ import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
 @Composable
 fun tutoLevel(vm: GameDataViewModel) {
-    val tutoLayout by remember { vm.tutoLayout }.collectAsState()
+    val tutoLayout by remember { vm.tutoVM.tutoLayout }.collectAsState()
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
 
     val visisbleMenu: Boolean by remember (vm) {vm.displayInstructionsMenu}.collectAsState()
 
+    val tuto by remember { vm.tutoVM.tuto }.collectAsState()
     Box(
         Modifier
             .fillMaxSize()
@@ -70,7 +74,7 @@ fun tutoLevel(vm: GameDataViewModel) {
             Row(modifier = Modifier
                 .weight(vm.data.layout.secondPart.ratios.height)
             ) {
-                SecondScreenPart(vm, enableMenu = false, enableDragAndDrop = false, enableActionRowDrag = false)
+                SecondScreenPart(vm, enableMenu = false, enableDragAndDrop = false, enableActionRowDrag = false, enableWhiteSquare = !tuto.matchStep(Tuto.ClickDragAndDropThirdCase))
             }
             Row(modifier = Modifier
                 .weight(vm.data.layout.thirdPart.ratios.height)
@@ -81,7 +85,6 @@ fun tutoLevel(vm: GameDataViewModel) {
 
         if (vm.data.layout.trash.displayTrash) TrashOverlay(vm)
 
-        DragAndDropOverlay(vm)
 
         AnimatedVisibility(
             visible = visisbleMenu,
@@ -93,7 +96,6 @@ fun tutoLevel(vm: GameDataViewModel) {
 
         PlayingScreenPopupWin(vm = vm)
 
-        val tuto by remember { vm.tutoVM.tuto }.collectAsState()
         tutoOverlay(
             info = tutoLayout,
 //            text = vm.tutoVM.tuto.description,
@@ -134,30 +136,53 @@ fun tutoLevel(vm: GameDataViewModel) {
                                     rowString.forEachIndexed { _columnIndex, _color ->
                                         casePosition = Position(_rowIndex, _columnIndex)
                                         Box(Modifier.size(vm.data.layout.firstPart.sizes.mapCaseDp)) {
-//                                            DrawMapCase(
-//                                                playerInGame = playerInGame,
-//                                                stars = stars,
-//                                                casePos = casePosition,
-//                                                caseColor = _color,
-//                                                filter = false,
-//                                                vm = vm,
-//                                                enableClickStopMark = enableClickStopMark
-//                                            )
                                             if ( playerInGame.pos.Match(Position(_rowIndex, _columnIndex))
                                                 && ( vm.tutoVM.isTutoClickOnPlayButton()
-                                                        || vm.tutoVM.isTutoClickOnResetButton() )
+                                                        || vm.tutoVM.isTutoClickOnResetButton()
+                                                        || vm.tutoVM.isTutoDragActionBar()
+                                                        )
                                             ) {
                                                 CenterComposable {
                                                     PlayerIcon(direction = playerInGame.direction, data = vm.data.layout.firstPart, colors = vm.data.colors, _color.toCaseColor())
                                                 }
                                             }
+                                            if (
+                                                (vm.tutoVM.isTutoClickOnStopMark() && _rowIndex == 4 && _columnIndex == 6)
+                                            ) {
+                                                DrawMapCase(
+                                                    playerInGame = playerInGame,
+                                                    stars = stars,
+                                                    casePos = casePosition,
+                                                    caseColor = _color,
+                                                    filter = false,
+                                                    vm = vm,
+                                                )
+                                                val position = Position( _rowIndex, _columnIndex )
+                                                if (vm.animData.mapCaseSelection.value.contains(position)) {
+                                                    vm.animData.deleteMapCaseStop(position)
+                                                }
+                                                    vm.animData.deleteMapCaseStop(position)
+                                                enlightItem(modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .clickable {
+                                                        vm.animData.mapCaseSelectionHandler(
+                                                            Position(
+                                                                _rowIndex,
+                                                                _columnIndex
+                                                            )
+                                                        )
+                                                        vm.tutoVM.nextTuto()
+                                                    })
+                                            }
 
                                             if (caseStop.contains(casePosition) && enableClickStopMark) {
-                                                WhiteSquare(
-                                                    sizeDp = vm.data.layout.firstPart.sizes.mapCaseDp,
-                                                    stroke = vm.data.layout.firstPart.sizes.mapCaseStroke,
-                                                    vm = vm
-                                                )
+                                                Box() {
+                                                    WhiteSquare(
+                                                        sizeDp = vm.data.layout.firstPart.sizes.mapCaseDp,
+                                                        stroke = vm.data.layout.firstPart.sizes.mapCaseStroke,
+                                                        vm = vm
+                                                    )
+                                                }
                                             }
                                         }
                                     }
@@ -174,12 +199,18 @@ fun tutoLevel(vm: GameDataViewModel) {
                     Column(Modifier.fillMaxSize()) {
                         Column( Modifier.weight(vm.data.layout.secondPart.ratios.actionRowHeight)
                         ) {
+                            /** Action Row **/
 //                            ActionRow(vm)
+                            if (vm.tutoVM.isTutoDragActionBar()){
+                                Box {
+                                    ActionRow(vm = vm, enableActionRowDrag = false)
+                                    enlightItem(modifier = Modifier.dragActionRow(vm, vm.tutoVM).fillMaxSize())
+                                }
+                            }
                         }
                         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
                         ) {
                             /** Function Row **/
-                            val enableDrag = false
                             val draggedStart : Boolean by vm.dragAndDropCase.dragStart.collectAsState()
                             val levelFunctions = vm.instructionsRows
 
@@ -189,7 +220,11 @@ fun tutoLevel(vm: GameDataViewModel) {
                                 else
                                     levelFunctions
 
-                            val dragAndDrop = if (enableDrag) Modifier.dragAndDropCase(vm, levelFunctions) else Modifier
+                            val dragAndDrop = if (vm.tutoVM.isTutoDragAndDropInstruction()) Modifier.dragAndDropCaseTuto(
+                                vm,
+                                levelFunctions,
+//                                vm.tutoVM
+                            ) else Modifier
                             Column(
                                 Modifier
                                     .then(dragAndDrop)
@@ -202,8 +237,10 @@ fun tutoLevel(vm: GameDataViewModel) {
                                     VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
                                     Box{
 //                                        DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu, enableMenu)
+//                                        val dragAndDrop = if (vm.tutoVM.isTutoDragAndDropInstruction()) Modifier.dragAndDropCase(vm, levelFunctions, vm.tutoVM) else Modifier
                                         Row(modifier = Modifier
                                             .fillMaxWidth()
+//                                            .then(dragAndDrop)
 //                                            .onGloballyPositioned {
 //                                                vm.dragAndDropCase.elements.addDroppableRow(functionNumber, it)
 //                                            }
@@ -241,7 +278,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                     vm.ChangeInstructionMenuState()
                                                                     vm.setSelectedFunctionCase(functionNumber, _index)
                                                                 }
-                                                                vm.nextTuto()
+                                                                vm.tutoVM.nextTuto()
                                                             } else Modifier
                                                             val caseColor = function.colors[_index]
                                                             Box(Modifier
@@ -260,6 +297,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                     (vm.tutoVM.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
                                                                     || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
                                                                     || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
+                                                                    || (vm.tutoVM.isTutoDragAndDropInstruction() && (_index == 2 && functionNumber == 0 || _index == 6 && functionNumber == 0))
                                                                 ) {
                                                                     Box( Modifier .fillMaxSize()
                                                                     ) {
@@ -271,7 +309,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                                 Position(functionNumber, _index)
                                                                             ))
                                                                     }
-                                                                    enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ))
+                                                                    enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp))
                                                                 } else Box(Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) )
 //                                                                if ( (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0) ) {
 //                                                                Box( Modifier .fillMaxSize()
@@ -285,7 +323,6 @@ fun tutoLevel(vm: GameDataViewModel) {
 //                                                                        ))
 //                                                                }
 //                                                                enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
-
 //                                                            }
                                                             }
                                                         }
@@ -301,6 +338,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                         }
                     }
                 }
+
+
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .weight(vm.data.layout.thirdPart.ratios.height)
@@ -327,7 +366,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                             .clickable {
                                                 if (vm.tutoVM.isTutoClickOnPlayButton()) {
                                                     vm.clickPlayPauseButtonHandler()
-                                                    vm.nextTuto()
+                                                    vm.tutoVM.nextTuto()
                                                 }
                                             }
                                     )
@@ -350,7 +389,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                             .clickable {
                                                 if (vm.tutoVM.isTutoClickOnResetButton()) {
                                                     vm.clickResetButtonHandler()
-                                                    vm.nextTuto()
+                                                    vm.tutoVM.nextTuto()
                                                 }
                                             }
                                     )
@@ -383,7 +422,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                             .clickable {
                                                 if (vm.tutoVM.isTutoClickOnResetButton()) {
                                                     vm.clickResetButtonHandler()
-                                                    vm.nextTuto()
+                                                    vm.tutoVM.nextTuto()
                                                 }
                                             }
                                     )
@@ -400,6 +439,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                 }
             }
         }
+
+        DragAndDropOverlay(vm)
 
         AnimatedVisibility(
             visible = visisbleMenu,
@@ -443,7 +484,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                         ) {
                                             Box( Modifier.clickable {
                                                     vm.ChangeInstructionMenuState()
-                                                    vm.tutoVM.nextStep()
+                                                    vm.tutoVM.nextTuto()
                                                 }
                                             ) {
                                                 InstructionCase(
@@ -472,7 +513,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                 )
                                                             )
                                                             vm.ChangeInstructionMenuState()
-                                                            vm.nextTuto()
+                                                            vm.tutoVM.nextTuto()
                                                         }
                                                         .size(vm.data.layout.menu.sizes.case.dp)
                                                 )
@@ -495,4 +536,31 @@ fun tutoLevel(vm: GameDataViewModel) {
             }
         }
     }
+}
+
+private fun Modifier.dragAndDropCaseTuto(
+    vm: GameDataViewModel,
+    levelFunctions: List<FunctionInstructions>,
+): Modifier = Modifier.pointerInput(Unit) {
+    detectDragGestures(
+        onDrag = { change, _ ->
+            vm.dragAndDropCase.onDrag(
+                pointerInputChange = change,
+                list = vm.instructionsRows
+            )
+        },
+        onDragStart = { _offset ->
+            infoLog("onDragStart", "started")
+            if (vm.isDragAndDropAvailable()) {
+                vm.clickResetButtonHandler()
+                vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
+            }
+        },
+        onDragEnd = {
+            vm.dragAndDropCase.onDragEnd(vm, vm.tutoVM)
+            errorLog("onDragEnd", "end")
+        },
+        onDragCancel = {
+        }
+    )
 }

@@ -114,6 +114,10 @@ class AnimationData(
         else addMapCaseStop(position)
 //        infoLog("mapCaseSelectionHandler", "${_mapCaseSelection.value}")
     }
+    fun updateMapCaseSelection(newList: List<Position>) {
+        _mapCaseSelection.value = newList
+    }
+
     private suspend fun addMapCaseStop(position: Position) {
         val newList: MutableList<Position> = _mapCaseSelection.value.toMutableList()
         newList.add(position)
@@ -121,12 +125,13 @@ class AnimationData(
             newList.toList()
         )
     }
-    private suspend fun deleteMapCaseStop(position: Position) {
+    fun deleteMapCaseStop(position: Position) {
         val newList: MutableList<Position> = _mapCaseSelection.value.toMutableList()
         newList.remove(position)
-        _mapCaseSelection.emit(
-            newList.toList()
-        )
+        updateMapCaseSelection(newList.toList())
+//        _mapCaseSelection.emit(
+//            newList.toList()
+//        )
     }
     fun isPlayerOnStopMark(): Boolean = runBlocking(Dispatchers.Default) {
         mapCaseSelection.value.contains(getPlayerPosition()) && listOfStopsPassed.containsNot(getPlayerPosition())

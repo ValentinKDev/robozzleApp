@@ -10,15 +10,12 @@ import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
-import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
-import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropRow.DragAndDropRowState
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.presentation.ui.Screen.Tuto.TutoObj
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,14 +38,6 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
     private var animationJob: Job? = null
 
     val tutoVM = TutoViewModel(getApplication())
-//    val tutoData = tutoVM.getTutoObj()
-    private val _tutoLayout = MutableStateFlow<TutoObj>(tutoVM.getTutoObj())
-    val tutoLayout: StateFlow<TutoObj> = _tutoLayout.asStateFlow()
-    fun nextTuto() {
-        tutoVM.nextStep()
-        updateTutoLayout()
-    }
-    private fun updateTutoLayout() { _tutoLayout.value = tutoVM.getTutoObj() }
     fun isTutoLevel(): Boolean = level.id == 0
 
     var selectedCase = Position.Zero
@@ -61,6 +50,10 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         instructionsRows[line] = newFunction
     }
 
+    fun switchInstruction(pos1: Position, instrucion1: FunctionInstruction, pos2: Position, instrucion2: FunctionInstruction) {
+        replaceInstruction(pos1, instrucion2)
+        replaceInstruction(pos2, instrucion1)
+    }
     fun replaceInstruction(pos: Position, case: FunctionInstruction) = runBlocking() {
         infoLog("GameDataVM::replaceInstruction", "replacing $case $pos ")
 

@@ -3,12 +3,15 @@ package com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerInputChange
 import com.mobilegame.robozzle.analyse.errorLog
+import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.layout.inGame.elements.Trash
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -24,7 +27,7 @@ class DragAndDropCaseState(val trash: Trash) {
         _dragStart.value = value
     }
 
-    private var touchOffSetStart: Offset? = null
+    var touchOffSetStart: Offset? = null
     fun setTouchOffSetStart(localOffset: Offset) {
         touchOffSetStart ?: run {
             if (elements.parentOffset == Offset.Zero) errorLog("ERROR", "calcul touch offset start")
@@ -91,6 +94,7 @@ class DragAndDropCaseState(val trash: Trash) {
     }
 
     fun onDrag(pointerInputChange: PointerInputChange, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
+//        infoLog("DragAndDropCaseState::onDrag", "position ${pointerInputChange.position}")
         setOffsets(pointerInputChange.position)
         if (trash.displayTrash) upDateTrashState()
 //        elements.findItemUnderItem(pointerOffset, list)
@@ -98,6 +102,7 @@ class DragAndDropCaseState(val trash: Trash) {
     }
 
     fun onDragStart(offset: Offset, list: List<FunctionInstructions>) = runBlocking(Dispatchers.IO) {
+//        infoLog("vm.dragstrt", "${vm.dragAndDropCase.dragStart.value}")
         verbalLog("DragAndDropVM::onDragStart", "start")
         setTouchOffSetStart(offset)
         touchOffSetStart ?: setTouchOffSetStart(offset)
@@ -115,8 +120,8 @@ class DragAndDropCaseState(val trash: Trash) {
     }
 
 
-    fun onDragEnd(vm: GameDataViewModel) = runBlocking {
-        switch(vm)
+    fun onDragEnd(vm: GameDataViewModel, tutoVM: TutoViewModel? = null) = runBlocking {
+        switch(vm, tutoVM)
 
         setDragStart(false)
         elements.itemSelectedPosition = null
@@ -124,11 +129,11 @@ class DragAndDropCaseState(val trash: Trash) {
         touchOffSetStart = null
     }
 
-    private fun switch(vm: GameDataViewModel) {
-//        if (trash.displayTrash && trash.contains(pointerOffset)) {
+    fun switch(vm: GameDataViewModel, tutoVM: TutoViewModel?) {
         if (trash.displayTrash && trash.contains(pointerOffset.value)) {
             elements.itemSelectedPosition?.let { _selectedP ->
                 vm.replaceInstruction(_selectedP, FunctionInstruction.empty)
+                tutoVM?.let { tutoVM.setTutoTo(Tuto.ClickOnThirdInstructionCase) }
             }
         }
         else {
@@ -136,8 +141,12 @@ class DragAndDropCaseState(val trash: Trash) {
                 elements.itemUnder?.let { _underD ->
                     elements.itemUnderPosition?.let { _underP ->
                         elements.itemSelected?.let { _selectedD ->
-                            vm.replaceInstruction(_selectedP, _underD)
-                            vm.replaceInstruction(_underP, _selectedD)
+                            tutoVM?.let {
+                                if (_underP.Match(Position(0,6)) || _underP.Match(Position(0,2))) {
+                                    vm.switchInstruction(_underP, _underD, _selectedP, _selectedD)
+                                    tutoVM.nextTuto()
+                                }
+                            } ?: vm.switchInstruction(_underP, _underD, _selectedP, _selectedD)
                         } ?: errorLog("ERROR", "dragAndDropState.elements.itemSelected == null")
                     } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnderPosition == null")
                 } ?: errorLog("ERROR", "dragAndDropState.elements.itemUnder == null")

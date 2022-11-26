@@ -15,12 +15,18 @@ sealed class Tuto(val step: Int, val description: String) {
     object ClickOnPlaySecondTime: Tuto(12, "The first line now repeat itself as you will see when tapping the play button")
     object ClickOnResetSecondTime: Tuto(13, "Please tap on Reset button to get back to your initial place")
     object ClickOnMapCaseFirst: Tuto(14, "Please tap on the map to place a stop mark")
+    object ClickOnPlayThirdTime: Tuto(15, "Your player will stop on the mark so you will see why you going out of map. Please tap the play button")
+    object ClickAndDragActionBar: Tuto(16, "You will see in the actions bar which instructions your character will execute. Please slide the bar, to go forward and backward")
+    object ClickDragAndDropThirdCase: Tuto(17, "Please drag the third instruction to the end of the line")
+    object ClickOnThirdInstructionCaseAgain: Tuto(18, "Please tap on the third case of the first line to select an instruction")
+//    object ClickOnFourthInstructionCase: Tuto(17, "Please tap on the fourth case of the first line to select an instruction")
+//    object ClickOnRepeatingFirstLineGray: Tuto(11, "To repeat the first line please tap on the one instruction")
 
 //    object ClickOnMovingForward1: Tuto(15, "Please tap on the button Next and look at your character")
 //    object ClickOnMovingForward2: Tuto(16, "Please tap again on the button Next and look at your character")
 //    object ClickOnMovingForward3: Tuto(17, "Please tap one last time on the button Next and look at your character")
 
-    object End: Tuto(20, "Tutorial finished, good luck !")
+    object End: Tuto(23, "Tutorial finished, good luck !")
 
     companion object {
         fun findTutoByStep(number: Int): Tuto? {

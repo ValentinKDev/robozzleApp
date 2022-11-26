@@ -16,15 +16,12 @@ import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
-import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
-import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
-import com.mobilegame.robozzle.presentation.ui.Screen.Tuto.enlightItem
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.utils.Extensions.getSafe
 
 @Composable
-fun DisplayFunctionsPart(vm: GameDataViewModel, enableMenu: Boolean = true, enableDrag: Boolean = true) {
+fun DisplayFunctionsPart(vm: GameDataViewModel, enableMenu: Boolean = true, enableDrag: Boolean = true, enableWhiteSquare: Boolean = true) {
     val draggedStart : Boolean by vm.dragAndDropCase.dragStart.collectAsState()
     val levelFunctions = vm.instructionsRows
     val displayInstructionMenu: Boolean by vm.displayInstructionsMenu.collectAsState()
@@ -48,7 +45,7 @@ fun DisplayFunctionsPart(vm: GameDataViewModel, enableMenu: Boolean = true, enab
             VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
             Box{
                 DisplayFunctionRow(functionNumber, function, vm, displayInstructionMenu, enableMenu)
-                DisplayCurrentInstructionHighlighted(functionNumber, function, vm, displayInstructionMenu)
+                DisplayCurrentInstructionHighlighted(functionNumber, function, vm, displayInstructionMenu, enableWhiteSquare)
             }
         }
         VerticalSpace(heightDp = vm.data.layout.secondPart.sizes.functionRowPaddingHeightDp)
@@ -182,7 +179,8 @@ fun DisplayCurrentInstructionHighlighted(
     functionNumber: Int,
     function: FunctionInstructions,
     vm: GameDataViewModel,
-    displayInstructionMenu: Boolean
+    displayInstructionMenu: Boolean,
+    enableWhiteSquare: Boolean = true
 ) {
     val currentAction: Int by vm.animData.actionToRead.collectAsState()
 
@@ -219,14 +217,14 @@ fun DisplayCurrentInstructionHighlighted(
                     listInstructions1.forEachIndexed { _index, _ ->
                         Box( Modifier.size(vm.data.layout.secondPart.sizes.functionCaseDp)
                         ) {
-                            if (( vm.breadcrumb.currentInstructionList.isNotEmpty()
-                                && ( (currentAction == 0 && functionNumber == 0 && _index == 0) ||
-                                                vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)) )
-                                && playerAnimationState.runningInBackground() )
-                                || (vm.selectedCase.Match(Position(line = functionNumber, column = _index))
+                            if ( ( ( vm.breadcrumb.currentInstructionList.isNotEmpty()
+                                        && ( (currentAction == 0 && functionNumber == 0 && _index == 0) ||
+                                        vm.breadcrumb.currentInstructionList.getSafe(currentAction).Match(Position(functionNumber, _index)) )
+                                        && playerAnimationState.runningInBackground() )
+                                        || (vm.selectedCase.Match(Position(line = functionNumber, column = _index))
                                         && vm.animData.getPlayerAnimationState().isTheBreadcrumbModifiable()
                                         && displayInstructionMenu )
-                            )
+                                        ) && enableWhiteSquare )
                             {
                                 WhiteSquare(
                                     sizeDp =  vm.data.layout.secondPart.sizes.functionCaseDp,
