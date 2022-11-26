@@ -140,6 +140,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                 && ( vm.tutoVM.isTutoClickOnPlayButton()
                                                         || vm.tutoVM.isTutoClickOnResetButton()
                                                         || vm.tutoVM.isTutoDragActionBar()
+                                                        || vm.tutoVM.isTutoDragInstructionToTrash()
                                                         )
                                             ) {
                                                 CenterComposable {
@@ -220,7 +221,9 @@ fun tutoLevel(vm: GameDataViewModel) {
                                 else
                                     levelFunctions
 
-                            val dragAndDrop = if (vm.tutoVM.isTutoDragAndDropInstruction()) Modifier.dragAndDropCaseTuto(
+                            val dragAndDrop = if (vm.tutoVM.isTutoDragAndDropInstruction() || vm.tutoVM.isTutoDragInstructionToTrash())
+                                Modifier.dragAndDropCaseTuto(
+//                                Modifier.dragAndDropCase(
                                 vm,
                                 levelFunctions,
 //                                vm.tutoVM
@@ -270,6 +273,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                             val enableFirstInstructionClick = (vm.tutoVM.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
                                                                     || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
                                                                     || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
+                                                                    || (vm.tutoVM.isTutoClickOnFirstCaseSecondLine() && _index == 0 && functionNumber == 1)
 
                                                             val clickable = if (enableFirstInstructionClick) Modifier.clickable {
                                                                 if (vm.dragAndDropCase.dragStart.value Is false
@@ -293,12 +297,14 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                 .then(clickable)
                                                             ) {
                                                                 val instructionChar = function.instructions[_index]
-                                                                if (
-                                                                    (vm.tutoVM.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
-                                                                    || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
-                                                                    || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
-                                                                    || (vm.tutoVM.isTutoDragAndDropInstruction() && (_index == 2 && functionNumber == 0 || _index == 6 && functionNumber == 0))
-                                                                ) {
+                                                                val enableVisible = (vm.tutoVM.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
+                                                                        || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
+                                                                        || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
+                                                                        || (vm.tutoVM.isTutoDragAndDropInstruction() && (_index == 2 && functionNumber == 0 || _index == 6 && functionNumber == 0))
+                                                                        || (vm.tutoVM.isTutoClickOnFirstCaseSecondLine() && (_index == 0 && functionNumber == 1))
+                                                                        || (vm.tutoVM.isTutoDragInstructionToTrash() && _index == 0 && functionNumber == 1)
+
+                                                                if ( enableVisible ) {
                                                                     Box( Modifier .fillMaxSize()
                                                                     ) {
                                                                         FunctionCase(
@@ -481,6 +487,8 @@ fun tutoLevel(vm: GameDataViewModel) {
                                             (vm.tutoVM.isTutoClickOnFirstInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'B')
                                             || (vm.tutoVM.isTutoClickOnSecondInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'g')
                                             || (vm.tutoVM.isTutoClickOnRepeatingFirstLineGray() && c == '0' && instructions.colors.first() == 'g')
+                                            || (vm.tutoVM.isTutoClickTurnRighFRomMenu() && c == 'r' && instructions.colors.first() == 'g')
+                                            || (vm.tutoVM.isTutoCallSecondLine() && c == '1' && instructions.colors.first() == 'R')
                                         ) {
                                             Box( Modifier.clickable {
                                                     vm.ChangeInstructionMenuState()
@@ -553,7 +561,50 @@ private fun Modifier.dragAndDropCaseTuto(
             infoLog("onDragStart", "started")
             if (vm.isDragAndDropAvailable()) {
                 vm.clickResetButtonHandler()
-                vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
+//                vm.dragAndDropCase.onDragStart(_offset, levelFunctions)
+                verbalLog("DragAndDropVM::onDragStart", "start")
+                vm.dragAndDropCase.setTouchOffSetStart(_offset)
+                vm.dragAndDropCase.touchOffSetStart ?: vm.dragAndDropCase.setTouchOffSetStart(_offset)
+                vm.dragAndDropCase.setOffsets(_offset)
+                val selectedItemFound = run {
+                    val offSet = vm.dragAndDropCase.touchOffSetStart ?: Offset.Zero
+                    var found = false
+                    vm.dragAndDropCase.elements.rowsList.forEachIndexed { rowIndex, row ->
+                        if (row.first.contains(offSet)) {
+                            row.second.forEachIndexed { columnIndex, case ->
+                                if (case.contains(offSet)) {
+                                    if (
+                                        (vm.tutoVM.isTutoDragAndDropInstruction() && rowIndex == 0 && columnIndex == 2)
+                                        || (vm.tutoVM.isTutoDragInstructionToTrash() && rowIndex == 1 && columnIndex == 0)
+                                    ) {
+                                        vm.dragAndDropCase.elements.itemSelectedPosition = Position(rowIndex, columnIndex)
+                                        vm.dragAndDropCase.elements.itemSelectedPosition?.let {
+                                            vm.dragAndDropCase.elements.itemSelected = FunctionInstruction(
+                                                instruction = levelFunctions[it.line].instructions[it.column],
+                                                color = levelFunctions[it.line].colors[it.column]
+                                            )
+                                            vm.dragAndDropCase.elements.itemSelectedSize = case.size
+                                            vm.dragAndDropCase.elements.itemSelectedHalfHeight = case.height / 2F
+                                            vm.dragAndDropCase.elements.itemSelectedOneThirdHeight = case.height / 3F
+                                            vm.dragAndDropCase.elements.itemSelectedTwoThirdHeight = (2F * case.height) / 3F
+                                        }
+                                        verbalLog("Modifier.dragAndDropCaseTuto","itemSelected Postion ${vm.dragAndDropCase.elements.itemSelectedPosition}")
+                                        verbalLog("Modifier.dragAndDropCaseTuto","itemSelected ${vm.dragAndDropCase.elements.itemSelected}")
+                                        verbalLog("Modifier.dragAndDropCaseTuto","itemSelected Size ${vm.dragAndDropCase.elements.itemSelectedSize}")
+                                        found = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (found) verbalLog("DragAndDropCaseElement::findSelectedItem", "founded offSet $offSet")
+                    else  errorLog("DragAndDropCaseElement::findSelectedItem", "not found, offSet $offSet")
+                    found
+                }
+                if (selectedItemFound) {
+                    vm.dragAndDropCase.setDragStart(true)
+                }
             }
         },
         onDragEnd = {

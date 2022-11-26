@@ -133,7 +133,13 @@ class DragAndDropCaseState(val trash: Trash) {
         if (trash.displayTrash && trash.contains(pointerOffset.value)) {
             elements.itemSelectedPosition?.let { _selectedP ->
                 vm.replaceInstruction(_selectedP, FunctionInstruction.empty)
-                tutoVM?.let { tutoVM.setTutoTo(Tuto.ClickOnThirdInstructionCase) }
+                tutoVM?.let {
+                    if (tutoVM.isTutoDragAndDropInstruction())
+                        tutoVM.setTutoTo(Tuto.ClickOnThirdInstructionCase)
+                    else if (tutoVM.isTutoDragInstructionToTrash()) {
+                        tutoVM.nextTuto()
+                    }
+                }
             }
         }
         else {
@@ -142,7 +148,7 @@ class DragAndDropCaseState(val trash: Trash) {
                     elements.itemUnderPosition?.let { _underP ->
                         elements.itemSelected?.let { _selectedD ->
                             tutoVM?.let {
-                                if (_underP.Match(Position(0,6)) || _underP.Match(Position(0,2))) {
+                                if (tutoVM.isTutoDragAndDropInstruction() && (_underP.Match(Position(0,6)) || _underP.Match(Position(0,2)))) {
                                     vm.switchInstruction(_underP, _underD, _selectedP, _selectedD)
                                     tutoVM.nextTuto()
                                 }

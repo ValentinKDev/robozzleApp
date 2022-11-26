@@ -18,7 +18,13 @@ sealed class Tuto(val step: Int, val description: String) {
     object ClickOnPlayThirdTime: Tuto(15, "Your player will stop on the mark so you will see why you going out of map. Please tap the play button")
     object ClickAndDragActionBar: Tuto(16, "You will see in the actions bar which instructions your character will execute. Please slide the bar, to go forward and backward")
     object ClickDragAndDropThirdCase: Tuto(17, "Please drag the third instruction to the end of the line")
-    object ClickOnThirdInstructionCaseAgain: Tuto(18, "Please tap on the third case of the first line to select an instruction")
+    object ClickOnFirstInstructionCaseSecondLine: Tuto(18, "Please tap on the first case of the second line to select an instruction")
+    object ClickOnTurnRight: Tuto(19, "Please select the turning right instruction")
+    object ClickOnThirdInstructionCaseAgain: Tuto(20, "Please tap on the third case of the first line to select an instruction")
+    object ClickOnCallSecondLine: Tuto(21, "Please call the second line on red cases only")
+    object ClickOnPlayFourthTime: Tuto(22, "The first line will call the second line on the red cases. Please press the play button")
+    object ClickOnResetThirdTime: Tuto(23, "Please tap on Reset button to get back to your initial place")
+    object DragInstructionToTrash: Tuto(24, "Please Drag the turning right instruction and place it in the red trash")
 //    object ClickOnFourthInstructionCase: Tuto(17, "Please tap on the fourth case of the first line to select an instruction")
 //    object ClickOnRepeatingFirstLineGray: Tuto(11, "To repeat the first line please tap on the one instruction")
 
@@ -26,7 +32,7 @@ sealed class Tuto(val step: Int, val description: String) {
 //    object ClickOnMovingForward2: Tuto(16, "Please tap again on the button Next and look at your character")
 //    object ClickOnMovingForward3: Tuto(17, "Please tap one last time on the button Next and look at your character")
 
-    object End: Tuto(23, "Tutorial finished, good luck !")
+    object End: Tuto(27, "Tutorial finished, good luck !")
 
     companion object {
         fun findTutoByStep(number: Int): Tuto? {
