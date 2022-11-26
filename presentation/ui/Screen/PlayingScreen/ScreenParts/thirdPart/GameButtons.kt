@@ -26,7 +26,6 @@ fun GameButtons(vm: GameDataViewModel, enablePlayPause: Boolean = true, enableRe
         ) {
 
             Box(Modifier.weight(1F))
-//            Box(Modifier.weigt())
             PlayPauseButton(vm = vm, enablePlayPause)
 
             Box(Modifier.weight(1F))

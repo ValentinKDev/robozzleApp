@@ -92,9 +92,11 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
     fun getButtonBackgroundColor(button: Screens, enable: Boolean): Color? {
         return if (tutoVM.isMainScreenTutoActivated()) {
             when {
-                button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> null
+//                button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> null
+                button.matchKey(Screens.Profile) && tutoVM.getTuto().matchStep(Tuto.ClickOnProfile) -> null
                 button.matchKey(Screens.Difficulty1)
-                        && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> null
+//                        && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> null
+                        && ( tutoVM.getTuto() != Tuto.ClickOnProfile && tutoVM.getTuto() != Tuto.End ) -> null
 //                button.matchKey(Screens.Difficulty1) && tutoVM.tuto.matchStep(Tuto.ClickOnDifficultyOne) -> null
                 else -> ui.button.colors.enableBackground
             }
@@ -109,9 +111,11 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
     fun getButtonTextColor(button: Screens, enable: Boolean): Color? {
         return if (tutoVM.isMainScreenTutoActivated()) {
             when {
-                button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> null
+//                button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> null
+                button.matchKey(Screens.Profile) && tutoVM.getTuto().matchStep(Tuto.ClickOnProfile) -> null
                 button.matchKey(Screens.Difficulty1)
-                        && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> null
+//                        && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> null
+                        && ( tutoVM.getTuto() != Tuto.ClickOnProfile && tutoVM.getTuto() != Tuto.End ) -> null
                 else -> ui.button.colors.enableText
             }
         }
@@ -126,9 +130,11 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
     fun isButtonClickEnable(button: Screens): Boolean {
        return if (tutoVM.isMainScreenTutoActivated()) {
            when {
-               button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> true
+//               button.matchKey(Screens.Profile) && tutoVM.tuto.matchStep(Tuto.ClickOnProfile) -> true
+               button.matchKey(Screens.Profile) && tutoVM.getTuto().matchStep(Tuto.ClickOnProfile) -> true
                button.matchKey(Screens.Difficulty1)
-                       && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> true
+//                       && ( tutoVM.tuto != Tuto.ClickOnProfile && tutoVM.tuto != Tuto.End ) -> true
+                       && ( tutoVM.getTuto() != Tuto.ClickOnProfile && tutoVM.getTuto() != Tuto.End ) -> true
                else -> false
            }
        } else
@@ -136,7 +142,9 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
     }
 
     fun upDateTuto() {
-        if (tutoVM.tuto.matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
-        if (tutoVM.tuto.matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextStep()
+//        if (tutoVM.tuto.matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
+//        if (tutoVM.tuto.matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextStep()
+        if (tutoVM.getTuto().matchStep(Tuto.ClickOnProfile) && userCreated()) tutoVM.nextStep()
+        if (tutoVM.getTuto().matchStep(Tuto.ClickOnDifficultyOne) && buttonSelected.value == Screens.Difficulty1) tutoVM.nextStep()
     }
 }

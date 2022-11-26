@@ -18,6 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.logAnimMap
+import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
+import com.mobilegame.robozzle.domain.InGame.PlayerInGame
+import com.mobilegame.robozzle.domain.InGame.runningInBackgroundIs
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
@@ -29,13 +34,19 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.DisplayInstuctionMenu
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.InstructionCase
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.Layers.TrashOverlay
+import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.firstPart.DrawMapCase
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.secondPart.*
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.thirdPart.GameButtons
+import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
+import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
+import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.tutoOverlay
 import com.mobilegame.robozzle.utils.Extensions.Is
+import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
 @Composable
 fun tutoLevel(vm: GameDataViewModel) {
@@ -82,9 +93,12 @@ fun tutoLevel(vm: GameDataViewModel) {
 
         PlayingScreenPopupWin(vm = vm)
 
+        val tuto by remember { vm.tutoVM.tuto }.collectAsState()
         tutoOverlay(
             info = tutoLayout,
-            text = vm.tutoVM.tuto.description,
+//            text = vm.tutoVM.tuto.description,
+//            text = vm.tutoVM.getTuto().description,
+            text = tuto.description,
             visibleElements = true,
         )
 
@@ -97,7 +111,61 @@ fun tutoLevel(vm: GameDataViewModel) {
                     Modifier
                         .weight(vm.data.layout.firstPart.ratios.height)
                         .fillMaxWidth()){
+                    /** Map Layout **/
 //                    MapLayout(vm, enableClickSpeed = false, enableClickStopMark = false)
+                    val map: List<String> by vm.animData.map.collectAsState()
+                    var casePosition = Position.Error
+                    val playerInGame: PlayerInGame by remember { vm.animData.playerAnimated }.collectAsState()
+                    val stars: List<Position> by remember { vm.animData.animatedStarsMaped }.collectAsState()
+                    val caseStop: List<Position> by remember { vm.animData.mapCaseSelection }.collectAsState()
+                    val enableClickStopMark = false
+
+                    CenterComposable {
+                    Box(
+                        Modifier
+                            .height(vm.data.layout.firstPart.sizes.mapHeightDp)
+                            .width(vm.data.layout.firstPart.sizes.mapWidthDp)
+                    ) {
+                        Column( Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            map.forEachIndexed { _rowIndex, rowString ->
+                                Row {
+                                    rowString.forEachIndexed { _columnIndex, _color ->
+                                        casePosition = Position(_rowIndex, _columnIndex)
+                                        Box(Modifier.size(vm.data.layout.firstPart.sizes.mapCaseDp)) {
+//                                            DrawMapCase(
+//                                                playerInGame = playerInGame,
+//                                                stars = stars,
+//                                                casePos = casePosition,
+//                                                caseColor = _color,
+//                                                filter = false,
+//                                                vm = vm,
+//                                                enableClickStopMark = enableClickStopMark
+//                                            )
+                                            if ( playerInGame.pos.Match(Position(_rowIndex, _columnIndex))
+                                                && ( vm.tutoVM.isTutoClickOnPlayButton()
+                                                        || vm.tutoVM.isTutoClickOnResetButton() )
+                                            ) {
+                                                CenterComposable {
+                                                    PlayerIcon(direction = playerInGame.direction, data = vm.data.layout.firstPart, colors = vm.data.colors, _color.toCaseColor())
+                                                }
+                                            }
+
+                                            if (caseStop.contains(casePosition) && enableClickStopMark) {
+                                                WhiteSquare(
+                                                    sizeDp = vm.data.layout.firstPart.sizes.mapCaseDp,
+                                                    stroke = vm.data.layout.firstPart.sizes.mapCaseStroke,
+                                                    vm = vm
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    }
                 }
                 Row(modifier = Modifier
                     .weight(vm.data.layout.secondPart.ratios.height)
@@ -110,6 +178,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                         }
                         Row( Modifier.weight(vm.data.layout.secondPart.ratios.functionsRowPartHeight )
                         ) {
+                            /** Function Row **/
                             val enableDrag = false
                             val draggedStart : Boolean by vm.dragAndDropCase.dragStart.collectAsState()
                             val levelFunctions = vm.instructionsRows
@@ -142,19 +211,11 @@ fun tutoLevel(vm: GameDataViewModel) {
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.Center,
                                         ) {
-                                            Card(
-                                                backgroundColor = Color.Transparent,
-                                                elevation = 10.dp,
-                                                modifier = Modifier.wrapContentSize()
-                                            ) {
-                                                Icon(
-                                                    imageVector = iconByInt(functionNumber),
-                                                    tint = if (displayInstructionMenu) vm.data.colors.functionTextDark else vm.data.colors.functionText,
-                                                    contentDescription = "function $functionNumber",
-                                                    modifier = Modifier
-                                                        .size(vm.data.layout.secondPart.sizes.twoThirdFunctionCaseDp)
-                                                )
-                                            }
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(vm.data.layout.secondPart.sizes.twoThirdFunctionCaseDp)
+                                                    .background(Color.Transparent)
+                                            ) { }
                                             Box(Modifier.size(5.dp)) { }
                                             Column {
                                                 val listInstructions1 =  function.instructions
@@ -169,8 +230,9 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                         horizontalArrangement = Arrangement.SpaceEvenly
                                                     ) {
                                                         listInstructions1.forEachIndexed { _index, _ ->
-                                                            val enableFirstInstructionClick = (vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
-                                                                    || (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
+                                                            val enableFirstInstructionClick = (vm.tutoVM.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
+                                                                    || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
+                                                                    || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
 
                                                             val clickable = if (enableFirstInstructionClick) Modifier.clickable {
                                                                 if (vm.dragAndDropCase.dragStart.value Is false
@@ -179,7 +241,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                     vm.ChangeInstructionMenuState()
                                                                     vm.setSelectedFunctionCase(functionNumber, _index)
                                                                 }
-                                                                vm.tutoVM.nextStep()
+                                                                vm.nextTuto()
                                                             } else Modifier
                                                             val caseColor = function.colors[_index]
                                                             Box(Modifier
@@ -195,8 +257,9 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                             ) {
                                                                 val instructionChar = function.instructions[_index]
                                                                 if (
-                                                                    (vm.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
-                                                                    || (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
+                                                                    (vm.tutoVM.isTutoClickOnFirstInstruction() && _index == 0 && functionNumber == 0)
+                                                                    || (vm.tutoVM.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0)
+                                                                    || (vm.tutoVM.isTutoClickOnThirdInstruction() && _index == 2 && functionNumber == 0)
                                                                 ) {
                                                                     Box( Modifier .fillMaxSize()
                                                                     ) {
@@ -208,7 +271,7 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                                                 Position(functionNumber, _index)
                                                                             ))
                                                                     }
-                                                                    enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
+                                                                    enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ))
                                                                 } else Box(Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) )
 //                                                                if ( (vm.isTutoClickOnSecondInstruction() && _index == 1 && functionNumber == 0) ) {
 //                                                                Box( Modifier .fillMaxSize()
@@ -242,7 +305,98 @@ fun tutoLevel(vm: GameDataViewModel) {
                     .fillMaxWidth()
                     .weight(vm.data.layout.thirdPart.ratios.height)
                 ) {
+                    /** Game buttons **/
 //                    GameButtons(vm, enablePlayPause = false, enableReset = false, enableBack = false, enableNext = false)
+                    val playerAnimationState: PlayerAnimationState by vm.animData.playerAnimationState.collectAsState()
+
+                    CenterComposableVertically {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            val enable = false
+
+                            Box(Modifier.weight(1F))
+                            if (vm.tutoVM.isTutoClickOnPlayButton()) {
+                                Box {
+                                    PlayPauseButton(vm = vm, false)
+                                    enlightItem(
+                                        Modifier
+                                            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
+                                            .clickable {
+                                                if (vm.tutoVM.isTutoClickOnPlayButton()) {
+                                                    vm.clickPlayPauseButtonHandler()
+                                                    vm.nextTuto()
+                                                }
+                                            }
+                                    )
+                                }
+                            }
+                            else
+                                Box(
+                                    Modifier
+                                        .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                        .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp) )
+
+                            Box(Modifier.weight(1F))
+                            if (vm.tutoVM.isTutoClickOnResetButton()) {
+                                Box {
+                                    ResetButton(vm, false)
+                                    enlightItem(
+                                        Modifier
+                                            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
+                                            .clickable {
+                                                if (vm.tutoVM.isTutoClickOnResetButton()) {
+                                                    vm.clickResetButtonHandler()
+                                                    vm.nextTuto()
+                                                }
+                                            }
+                                    )
+                                }
+                            }
+                            else
+                                Box(
+                                    Modifier
+                                        .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                        .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
+                                )
+
+                            Box(Modifier.weight(1F))
+//                            if (vm.tutoVM.isTutoClickOnForwardButton())
+//                                BackButton(vm, enable = playerAnimationState runningInBackgroundIs true && false)
+//                            else
+                                Box(
+                                    Modifier
+                                        .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                        .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp) )
+
+                            Box(Modifier.weight(1F))
+                            if (enable) {
+                                Box {
+                                    NextButton(vm, enable = playerAnimationState runningInBackgroundIs true && false)
+                                    enlightItem(
+                                        Modifier
+                                            .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                            .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp)
+                                            .clickable {
+                                                if (vm.tutoVM.isTutoClickOnResetButton()) {
+                                                    vm.clickResetButtonHandler()
+                                                    vm.nextTuto()
+                                                }
+                                            }
+                                    )
+                                }
+                            }
+                            else
+                                Box(
+                                    Modifier
+                                        .height(vm.data.layout.thirdPart.sizes.buttonHeight.dp)
+                                        .width(vm.data.layout.thirdPart.sizes.buttonWidth.dp) )
+                            Box(Modifier.weight(1F))
+                        }
+                    }
                 }
             }
         }
@@ -252,6 +406,7 @@ fun tutoLevel(vm: GameDataViewModel) {
             enter = fadeIn(),
             exit = fadeOut()
         ) {
+            /** Instruction Menu **/
             val interactionExtMenu = remember { MutableInteractionSource() }
             Box(
                 Modifier
@@ -282,8 +437,9 @@ fun tutoLevel(vm: GameDataViewModel) {
                                 ) {
                                     instructions.instructions.toList().forEachIndexed { index, c ->
                                         if (
-                                            (vm.isTutoClickOnFirstInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'B')
-                                            || (vm.isTutoClickOnSecondInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'g')
+                                            (vm.tutoVM.isTutoClickOnFirstInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'B')
+                                            || (vm.tutoVM.isTutoClickOnSecondInstructionFromMenu() && c == 'u' && instructions.colors.first() == 'g')
+                                            || (vm.tutoVM.isTutoClickOnRepeatingFirstLineGray() && c == '0' && instructions.colors.first() == 'g')
                                         ) {
                                             Box( Modifier.clickable {
                                                     vm.ChangeInstructionMenuState()
@@ -296,24 +452,29 @@ fun tutoLevel(vm: GameDataViewModel) {
                                                         c,
                                                         instructions.colors.first()
                                                     ),
-                                                    Modifier.clickable {
-                                                        vm.replaceInstruction(
-                                                            vm.selectedCase,
-                                                            if (FunctionInstruction(
+                                                    Modifier
+                                                )
+                                                enlightItem(
+                                                    modifier = Modifier
+                                                        .clickable {
+                                                            vm.replaceInstruction(
+                                                                vm.selectedCase,
+                                                                if (FunctionInstruction(
+                                                                        c,
+                                                                        instructions.colors.first()
+                                                                    ).isDelete()
+                                                                ) FunctionInstruction(
+                                                                    '.',
+                                                                    'g'
+                                                                ) else FunctionInstruction(
                                                                     c,
                                                                     instructions.colors.first()
-                                                                ).isDelete()
-                                                            ) FunctionInstruction(
-                                                                '.',
-                                                                'g'
-                                                            ) else FunctionInstruction(
-                                                                c,
-                                                                instructions.colors.first()
+                                                                )
                                                             )
-                                                        )
-                                                        vm.ChangeInstructionMenuState()
-                                                        vm.tutoVM.nextStep()
-                                                    }
+                                                            vm.ChangeInstructionMenuState()
+                                                            vm.nextTuto()
+                                                        }
+                                                        .size(vm.data.layout.menu.sizes.case.dp)
                                                 )
                                             }
                                         }

@@ -61,7 +61,8 @@ fun MainScreen(
 //                text = vm.tutoVM.tuto.description,
                 visibleElements = visibleElements,
                 text =
-                if (vm.tutoVM.tuto.matchStep(Tuto.ClickOnProfile))
+//                if (vm.tutoVM.tuto.matchStep(Tuto.ClickOnProfile))
+                if (vm.tutoVM.getTuto().matchStep(Tuto.ClickOnProfile))
                     Tuto.ClickOnProfile.description
                 else
                     Tuto.ClickOnDifficultyOne.description,

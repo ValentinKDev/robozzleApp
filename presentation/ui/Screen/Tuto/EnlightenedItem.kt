@@ -15,7 +15,7 @@ import com.mobilegame.robozzle.presentation.res.mapCaseColorList
 import gradientBackground
 
 @Composable
-fun enlightItem(modifier: Modifier, ui: TutoObj) {
+fun enlightItem(modifier: Modifier) {
 
     val infiniteTransition = rememberInfiniteTransition()
 

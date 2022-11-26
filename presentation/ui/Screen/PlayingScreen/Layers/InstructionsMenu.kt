@@ -76,7 +76,7 @@ fun DisplayInstuctionMenu(vm: GameDataViewModel, enableClickOut: Boolean = true)
 fun InstructionCase(
     vm: GameDataViewModel,
     case: FunctionInstruction,
-    tuto: Modifier = Modifier.clickable {
+    clickable: Modifier = Modifier.clickable {
         vm.replaceInstruction(
             vm.selectedCase,
             if (case.isDelete()) FunctionInstruction('.', 'g') else case
@@ -87,10 +87,8 @@ fun InstructionCase(
     Box(
         modifier = Modifier
             .gradientBackground( mapCaseColorList(case.color, false), 175f )
-            .clickable {
-            }
             .size(vm.data.layout.menu.sizes.case.dp)
-            .then(tuto)
+            .then(clickable)
             .border(
                 width = vm.data.layout.menu.sizes.casePadding.dp,
                 color = vm.data.colors.menuCaseBorder

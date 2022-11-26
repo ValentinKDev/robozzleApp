@@ -156,7 +156,8 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     fun goingPlayScreenListener(navigator: Navigator, ctxt: Context) {
         levelSelectedId?.let { _levelId ->
             if (goingPlayScreenAnimationEnd()) {
-                if (tutoVM.isMainScreenTutoActivated() && tutoVM.tuto.matchStep(Tuto.ClickOnTutoLevel)) tutoVM.nextStep()
+//                if (tutoVM.isMainScreenTutoActivated() && tutoVM.tuto.matchStep(Tuto.ClickOnTutoLevel)) tutoVM.nextStep()
+                if (tutoVM.isMainScreenTutoActivated() && tutoVM.getTuto().matchStep(Tuto.ClickOnTutoLevel)) tutoVM.nextStep()
                 navigateToLevel(navigator, _levelId, ctxt)
             }
         }

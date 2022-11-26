@@ -44,12 +44,12 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 //    val tutoData = tutoVM.getTutoObj()
     private val _tutoLayout = MutableStateFlow<TutoObj>(tutoVM.getTutoObj())
     val tutoLayout: StateFlow<TutoObj> = _tutoLayout.asStateFlow()
-    fun updateTutoLayout() { _tutoLayout.value = tutoVM.getTutoObj() }
+    fun nextTuto() {
+        tutoVM.nextStep()
+        updateTutoLayout()
+    }
+    private fun updateTutoLayout() { _tutoLayout.value = tutoVM.getTutoObj() }
     fun isTutoLevel(): Boolean = level.id == 0
-    fun isTutoClickOnFirstInstruction(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase)
-    fun isTutoClickOnFirstInstructionFromMenu(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionFromMenu)
-    fun isTutoClickOnSecondInstruction(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnSecondInstructionCase)
-    fun isTutoClickOnSecondInstructionFromMenu(): Boolean = isTutoLevel() && tutoVM.tuto.matchStep(Tuto.ClickOnSecondInstructionFromMenu)
 
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {
