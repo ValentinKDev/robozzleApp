@@ -35,7 +35,6 @@ internal fun tutoOverlay(
         endPaddingRatio = info.popup.endPadding,
         bottomPaddingRatio = info.popup.bottomPadding
     ) {
-//        visibleElements?.let {
             AnimatedVisibility(
                 visible = visibleElements,
                 enter = fadeIn(animationSpec = tween(700)),
@@ -54,19 +53,5 @@ internal fun tutoOverlay(
                     )
                 }
             }
-//        } ?: run {
-//            Box(
-//                Modifier
-//                    .shadow(info.popup.shadow)
-//                    .clip(RoundedCornerShape(8.dp))
-//                    .background(color = info.colors.popupBackground)
-//                    .fillMaxSize()
-//            ) {
-//                CenterText(
-//                    text = text,
-//                    color = info.colors.popupText
-//                )
-//            }
-//        }
     }
 }

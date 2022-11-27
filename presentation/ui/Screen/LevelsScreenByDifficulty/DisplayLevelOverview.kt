@@ -23,6 +23,7 @@ import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.MapViewParam
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto.Companion.isMainScreenTutoOn
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.level.LevelOverView
 import com.mobilegame.robozzle.presentation.res.MyColor
@@ -64,7 +65,8 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
                 DisplayLevelState(level, vm, navigator)
             }
             Box(Modifier.weight(vm.ui.levelOverview.ratios.rankIconWeight)) {
-                if (!(level.id == 0 && vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon)))
+//                if (!(level.id == 0 && vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon)))
+                if (!(level.id == 0 && vm.tutoVM.tuto.value.isMainScreenTutoOn()))
                     DisplayRankingIcon(vm, navigator, level.id, enable)
             }
         }
