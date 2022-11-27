@@ -32,17 +32,16 @@ class TutoViewModel(context: Context): ViewModel() {
         updateTutoLayout()
         verbalLog("TutoViewModel::setTutoTo", "now Tuto: ${getTuto().description}")
     }
+
     init {
         infoLog("TutoViewModel::init", "Tuto -> ${getTuto().step} : ${getTuto().description}")
     }
 
     private fun saveToDataStore() {
-//        dataStoreVM.saveTutoStep(tuto.step + 1)
         dataStoreVM.saveTutoStep(getTuto().step + 1)
     }
 
     private fun incrementTuto() {
-//        tuto = Tuto.findTutoByStep(tuto.step + 1) ?: Tuto.End
         _tuto.value = Tuto.findTutoByStep(getTuto().step + 1) ?: Tuto.End
     }
 
@@ -53,7 +52,6 @@ class TutoViewModel(context: Context): ViewModel() {
         resetTimer()
         updateTutoLayout()
 
-//        errorLog("TutoViewModel::nextStep", "now Tuto: ${tuto.description}")
         errorLog("TutoViewModel::nextStep", "now Tuto: ${getTuto().description}")
     }
 
@@ -81,18 +79,12 @@ class TutoViewModel(context: Context): ViewModel() {
     }
 
 
-//    fun Tuto.isMainScreenTutoActivated(): Boolean {
-//        verbalLog("TutoViewModel::isMainScreenTutoActivated", "Tuto = ${tuto.value.step}")
-//        return this != Tuto.End
-//    }
     fun isMainScreenTutoActivated(): Boolean {
-//        verbalLog("TutoViewModel::isMainScreenTutoActivated", "Tuto = ${tuto.value.step}")
         return getTuto() != Tuto.End
     }
     fun isMainScreenButtonClickEnable(): Boolean = !isMainScreenTutoActivated()
 
     private var levelDifficulty = -42
-    fun isLevelsScreenByDiffTutoActivated(): Boolean = levelDifficulty == 1 && ( getTuto().step in Tuto.ClickOnRankingIconFirst.step until Tuto.End.step )
     fun updateLevelDifficultyTo(diff: Int) { levelDifficulty = diff }
 
     fun isTutoClickOnFirstInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnFirstInstructionCase)
@@ -101,7 +93,6 @@ class TutoViewModel(context: Context): ViewModel() {
     fun isTutoClickOnSecondInstructionFromMenu(): Boolean = getTuto().matchStep(Tuto.ClickOnSecondInstructionFromMenu)
     fun isTutoClickOnPlayButton(): Boolean = getTuto().matchStep(Tuto.ClickOnPlayFirstTime) || getTuto().matchStep(Tuto.ClickOnPlaySecondTime) || getTuto().matchStep(Tuto.ClickOnPlayThirdTime) || getTuto().matchStep(Tuto.ClickOnPlayFourthTime) || getTuto().matchStep(Tuto.LetsGo) || getTuto().matchStep(Tuto.OneLastTime)
     fun isTutoClickOnResetButton(): Boolean = getTuto().matchStep(Tuto.ClickOnRestFirstTime) || getTuto().matchStep(Tuto.ClickOnResetSecondTime) || getTuto().matchStep(Tuto.ClickOnResetThirdTime)
-//    fun isTutoClickOnResetButton(): Boolean = getTuto().matchStep(Tuto.ClickOnRestFirstTime)
     fun isTutoClickOnThirdInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnThirdInstructionCase) || getTuto().matchStep(Tuto.ClickOnThirdInstructionCaseAgain)
     fun isTutoClickOnRepeatingFirstLineGray(): Boolean = getTuto().matchStep(Tuto.ClickOnRepeatingFirstLineGray)
     fun isTutoClickOnStopMark(): Boolean = getTuto().matchStep(Tuto.ClickOnMapCaseFirst)
@@ -115,10 +106,6 @@ class TutoViewModel(context: Context): ViewModel() {
     fun isTutoSelectTurnLeft(): Boolean = getTuto().matchStep(Tuto.SelectTurnLeft)
     fun isTutoSelectMovingForward(): Boolean = getTuto().matchStep(Tuto.SelectMovingForward)
     fun isTutoClickOnSecondInstructionSecondLine(): Boolean = getTuto().matchStep(Tuto.ClickOnSecondInstructionCaseSecondLine)
-//    fun isOneLastPlay(): Boolean = getTuto().matchStep(Tuto.OneLastPlay)
-
-//    fun isTutoClickOnTheThirdInstructionAgain()
-//    fun isTutoClickOnForwardButton(): Boolean = getTuto().matchStep(Tuto.ClickOnMovingForward1)
 
     private val _tutoLayout = MutableStateFlow(TutoObj.create())
     val tutoLayout: StateFlow<TutoObj> = _tutoLayout.asStateFlow()
@@ -134,7 +121,6 @@ class TutoViewModel(context: Context): ViewModel() {
             getTuto().matchStep(Tuto.ClickOnRestFirstTime) -> getTutoOnTopButtonLayout()
             getTuto().matchStep(Tuto.ClickOnThirdInstructionCase) -> getTutoLayoutTopScreen()
             getTuto().matchStep(Tuto.ClickOnRepeatingFirstLineGray) -> getTutoLayoutTopScreen()
-//            getTuto().matchStep(Tuto.ClickOnMovingForward1) -> getTutoButtonLayout()
             getTuto().matchStep(Tuto.ClickOnPlaySecondTime) -> getTutoOnTopButtonLayout()
             getTuto().matchStep(Tuto.ClickOnResetSecondTime) -> getTutoOnTopButtonLayout()
             getTuto().matchStep(Tuto.ClickOnMapCaseFirst) -> getTutoOnTopButtonLayout()
@@ -151,23 +137,12 @@ class TutoViewModel(context: Context): ViewModel() {
             getTuto().matchStep(Tuto.SelectTurnLeft) -> getTutoLayoutTopScreen()
             getTuto().matchStep(Tuto.LetsGo) -> getTutoLayoutBetweenLine2AndButtons()
             getTuto().matchStep(Tuto.ClickOnSecondInstructionCaseSecondLine) -> getTutoLayoutBetweenLine2AndButtons()
-
-//            isTutoClickOnPlayButton() -> getTutoButtonLayout()
-
             getTuto().matchStep(Tuto.ClickOnThirdInstructionCaseAgain) -> getTutoLayoutTopScreen()
             getTuto().matchStep(Tuto.OneLastTime) -> getTutoLayoutBetweenLine2AndButtons()
 
             else -> TutoObj.create()
         }
     }
-//    private fun getTutoMapLayout(): TutoObj {
-//        return TutoObj.create(
-//            topPadd = 0.1F,
-//            startPadd = 0.1F,
-//            endPadding = 0.1F,
-//            bottomPadd = 0.75F,
-//        )
-//    }
 
     private fun getTutoLayoutBetweenLine2AndButtons(): TutoObj {
         return TutoObj.create(

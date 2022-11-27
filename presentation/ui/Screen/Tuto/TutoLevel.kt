@@ -1,19 +1,21 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Tuto
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -42,15 +44,14 @@ import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.ScreenParts.thirdPart.GameButtons
 import com.mobilegame.robozzle.presentation.ui.elements.PlayerIcon
 import com.mobilegame.robozzle.presentation.ui.elements.WhiteSquare
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableHorizontally
-import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
+import com.mobilegame.robozzle.presentation.ui.utils.*
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.tutoOverlay
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun tutoLevel(vm: GameDataViewModel) {
     val tutoLayout by remember { vm.tutoVM.tutoLayout }.collectAsState()
@@ -93,13 +94,37 @@ fun tutoLevel(vm: GameDataViewModel) {
 
         PlayingScreenPopupWin(vm = vm)
 
-        tutoOverlay(
-            info = tutoLayout,
-//            text = vm.tutoVM.tuto.description,
-//            text = vm.tutoVM.getTuto().description,
-            text = tuto.description,
-            visibleElements = true,
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(tutoLayout.colors.filter)
         )
+        PaddingComposable(
+            topPaddingRatio = tutoLayout.popup.topPadding,
+            startPaddingRatio = tutoLayout.popup.startPadding,
+            endPaddingRatio = tutoLayout.popup.endPadding,
+            bottomPaddingRatio = tutoLayout.popup.bottomPadding
+        ) {
+            AnimatedContent(
+                targetState = tutoLayout,
+                transitionSpec = {
+                    fadeIn() with fadeOut()
+                }
+            ) {
+                Box(
+                    Modifier
+                        .shadow(tutoLayout.popup.shadow)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(color = tutoLayout.colors.popupBackground)
+                        .fillMaxSize()
+                ) {
+                    CenterText(
+                        text = tuto.description,
+                        color = tutoLayout.colors.popupText
+                    )
+                }
+            }
+        }
 
 //        if (vm.isTutoLevel() && vm.tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase)) {
         if (vm.isTutoLevel()) {
