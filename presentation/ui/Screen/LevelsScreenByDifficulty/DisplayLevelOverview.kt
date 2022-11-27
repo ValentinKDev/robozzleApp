@@ -64,7 +64,7 @@ fun DisplayLevelOverView(level: LevelOverView, vm: LevelsScreenByDifficultyViewM
                 DisplayLevelState(level, vm, navigator)
             }
             Box(Modifier.weight(vm.ui.levelOverview.ratios.rankIconWeight)) {
-                if (level.id == 0 && !vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon))
+                if (!(level.id == 0 && vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon)))
                     DisplayRankingIcon(vm, navigator, level.id, enable)
             }
         }

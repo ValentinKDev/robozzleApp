@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.utils
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -35,8 +36,8 @@ internal fun tutoOverlay(
     ) {
         AnimatedVisibility(
             visible = visibleElements,
-            enter = fadeIn(),
-            exit = fadeOut(),
+            enter = fadeIn(animationSpec = tween(700)),
+            exit = fadeOut(animationSpec = tween(300)),
         ) {
             Box(
                 Modifier

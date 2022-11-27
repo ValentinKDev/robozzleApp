@@ -1,5 +1,7 @@
 package com.mobilegame.robozzle.domain.model.Screen.Tuto
 
+import com.mobilegame.robozzle.analyse.verbalLog
+
 sealed class Tuto(val step: Int, val description: String) {
     object ClickOnProfile: Tuto(1, "Please tap on Profile button to create an account")
     object ClickOnDifficultyOne: Tuto(2, "Please tap on Difficulty 1 button to access the list of levels")
@@ -33,7 +35,7 @@ sealed class Tuto(val step: Int, val description: String) {
     object ClickOnSecondInstructionCaseSecondLine: Tuto(28, "Please tap on the second case of the second line to select an instruction")
     object SelectTurnLeft: Tuto(29, "Please select the gray left turn instruction")
     object LetsGo: Tuto(30, "Now got get the star")
-    object End: Tuto(33, "Tutorial finished, good luck !")
+    object End: Tuto(31, "Tutorial finished, good luck !")
 
     companion object {
         fun findTutoByStep(number: Int): Tuto? {
@@ -41,6 +43,11 @@ sealed class Tuto(val step: Int, val description: String) {
                 .firstOrNull {
                     it.objectInstance?.step == number
                 }?.objectInstance
+        }
+
+        fun Tuto.isMainScreenTutoOn(): Boolean {
+            verbalLog("Tuto::isMainScreenTutoOn", "Tuto = ${this.step}")
+            return this != Tuto.End
         }
     }
 }

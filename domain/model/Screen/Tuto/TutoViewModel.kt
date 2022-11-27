@@ -77,7 +77,14 @@ class TutoViewModel(context: Context): ViewModel() {
     }
 
 
-    fun isMainScreenTutoActivated(): Boolean = getTuto() != Tuto.End
+//    fun Tuto.isMainScreenTutoActivated(): Boolean {
+//        verbalLog("TutoViewModel::isMainScreenTutoActivated", "Tuto = ${tuto.value.step}")
+//        return this != Tuto.End
+//    }
+    fun isMainScreenTutoActivated(): Boolean {
+//        verbalLog("TutoViewModel::isMainScreenTutoActivated", "Tuto = ${tuto.value.step}")
+        return getTuto() != Tuto.End
+    }
     fun isMainScreenButtonClickEnable(): Boolean = !isMainScreenTutoActivated()
 
     private var levelDifficulty = -42

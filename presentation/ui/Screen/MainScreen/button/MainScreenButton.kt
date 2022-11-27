@@ -82,6 +82,25 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
             RepeatMode.Reverse
         )
     )
+//    val infiniteTransition = rememberInfiniteTransition()
+    val animBackgroundColorForEndAnimation by transition.animateColor( label = "", transitionSpec = { tween(450) }) { state ->
+        when (state) {
+            ButtonState.Selected -> vm.ui.button.colors.disableBackground
+//            ButtonState.Selected -> Color.Transparent
+//            ButtonState.NotSelected -> animBackgroundColor
+//            else -> Color.Red
+            else -> animBackgroundColor
+        }
+    }
+//    val animBackgroundColorForEndAnimation by transition.animateColor(
+//        initialValue = vm.ui.tuto.colors.enlighteningButtonInitial,
+//        targetValue = vm.ui.tuto.colors.enlighteningButtonTarget,
+//        animationSpec = infiniteRepeatable(
+//            tween(durationMillis = 1400, easing = FastOutLinearInEasing),
+//            RepeatMode.Reverse
+//        ), label = ""
+//    )
+
     val animTextColor by infiniteTransition.animateColor(
         initialValue = vm.ui.tuto.colors.enlighteningTextInitial,
         targetValue = vm.ui.tuto.colors.enlighteningTextTarget,
@@ -130,7 +149,8 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
                     .shadow(
                         elevation = if (vm.isButtonClickEnable(info.button)) 0.dp else 15.dp
                     )
-                    .background( vm.getButtonBackgroundColor(info.button, enable) ?: animBackgroundColor )
+//                    .background( vm.getButtonBackgroundColor(info.button, enable) ?: animBackgroundColor )
+                    .background( vm.getButtonBackgroundColor(info.button, enable) ?: animBackgroundColorForEndAnimation )
                 ,
             ) {
                 CenterText(

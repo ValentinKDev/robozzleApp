@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto.Companion.isMainScreenTutoOn
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.MainScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
@@ -23,6 +24,7 @@ fun MainScreen(
 ) {
     val visibleElements by remember(vm) {vm.visibleElements}.collectAsState(false)
     val visiblePopup by vm.popup.visiblePopup.collectAsState()
+    val tuto by remember { vm.tutoVM.tuto }.collectAsState()
 
     BackHandler { }
 
@@ -55,20 +57,16 @@ fun MainScreen(
             )
         }
 
-        if (vm.tutoVM.isMainScreenTutoActivated()) {
+        if (tuto.isMainScreenTutoOn()) {
             tutoOverlay(
                 info = vm.ui.tuto,
-//                text = vm.tutoVM.tuto.description,
                 visibleElements = visibleElements,
-                text =
-//                if (vm.tutoVM.tuto.matchStep(Tuto.ClickOnProfile))
-                if (vm.tutoVM.getTuto().matchStep(Tuto.ClickOnProfile))
+                text = if (vm.tutoVM.getTuto().matchStep(Tuto.ClickOnProfile))
                     Tuto.ClickOnProfile.description
                 else
                     Tuto.ClickOnDifficultyOne.description,
             )
         } else if (visiblePopup) {
-//        if (visiblePopup) {
             MainScreenPopup(vm)
         }
     }
