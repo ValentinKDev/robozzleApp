@@ -12,7 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.LevelsScreenByDifficultyViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto.Companion.isLevelsScreenByDifficultyOn
 import com.mobilegame.robozzle.presentation.res.*
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyHeader
@@ -32,7 +34,7 @@ fun LevelsScreenByDifficulty(
     val visibleHeaderState by remember {vm.visibleHeaderState}.collectAsState()
     val visibleListState by remember {vm.visibleListState}.collectAsState()
     val rankingLevelIdSelected by remember {vm.rankingIconVM.levelSelected}.collectAsState()
-
+    val tuto by remember { vm.tutoVM.tuto }.collectAsState()
     //todo: get rid of this ctxt
     val ctxt = LocalContext.current
 //    val headerScale = remember{ Animatable(2F) }
@@ -59,7 +61,9 @@ fun LevelsScreenByDifficulty(
     Box(modifier = Modifier
         .fillMaxSize()
     ) {
-        if (vm.tutoVM.isLevelsScreenByDiffTutoActivated() && vm.levelOverviewList.value.isNotEmpty()) {
+//        if (vm.tutoVM.isLevelsScreenByDiffTutoActivated() && vm.levelOverviewList.value.isNotEmpty()) {
+//        errorLog("LevelScreenByDifficulty", "TutoOn ${tuto.isLevelsScreenByDifficultyOn(levelsDifficulty)}")
+        if (tuto.isLevelsScreenByDifficultyOn(levelsDifficulty) && vm.levelOverviewList.value.isNotEmpty()) {
             tutoSpecialOverlay(vm, fromScreen, navigator)
         } else {
             AnimatedVisibility(
@@ -79,7 +83,6 @@ fun LevelsScreenByDifficulty(
             exit = vm.getExitTransitionForHeader()
         ) {
             LevelsScreenByDifficultyHeader(
-                navigator = navigator,
                 levelDifficulty = levelsDifficulty,
                 vm = vm
             )

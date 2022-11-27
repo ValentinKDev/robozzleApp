@@ -77,15 +77,9 @@ class MainScreenViewModel(application: Application): AndroidViewModel(applicatio
 
     fun getPopupText(): String {
         return when (popupState) {
-            PopUpState.None -> {
-                "Popup"
-            }
-            PopUpState.Update -> {
-                "An update is available"
-            }
-            PopUpState.ServerIssue -> {
-                "There is an issue with our servers"
-            }
+            PopUpState.None -> { "Popup" }
+            PopUpState.Update -> { "An update is available" }
+            PopUpState.ServerIssue -> { "There is an issue with our servers" }
         }
     }
 

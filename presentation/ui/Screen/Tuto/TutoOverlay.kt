@@ -20,6 +20,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 internal fun tutoOverlay(
     info: TutoObj,
     text: String,
+//    visibleElements: Boolean?,
     visibleElements: Boolean,
 ) {
 
@@ -34,23 +35,38 @@ internal fun tutoOverlay(
         endPaddingRatio = info.popup.endPadding,
         bottomPaddingRatio = info.popup.bottomPadding
     ) {
-        AnimatedVisibility(
-            visible = visibleElements,
-            enter = fadeIn(animationSpec = tween(700)),
-            exit = fadeOut(animationSpec = tween(300)),
-        ) {
-            Box(
-                Modifier
-                    .shadow(info.popup.shadow)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(color = info.colors.popupBackground)
-                    .fillMaxSize()
+//        visibleElements?.let {
+            AnimatedVisibility(
+                visible = visibleElements,
+                enter = fadeIn(animationSpec = tween(700)),
+                exit = fadeOut(animationSpec = tween(300)),
             ) {
-                CenterText(
-                    text = text,
-                    color = info.colors.popupText
-                )
+                Box(
+                    Modifier
+                        .shadow(info.popup.shadow)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(color = info.colors.popupBackground)
+                        .fillMaxSize()
+                ) {
+                    CenterText(
+                        text = text,
+                        color = info.colors.popupText
+                    )
+                }
             }
-        }
+//        } ?: run {
+//            Box(
+//                Modifier
+//                    .shadow(info.popup.shadow)
+//                    .clip(RoundedCornerShape(8.dp))
+//                    .background(color = info.colors.popupBackground)
+//                    .fillMaxSize()
+//            ) {
+//                CenterText(
+//                    text = text,
+//                    color = info.colors.popupText
+//                )
+//            }
+//        }
     }
 }

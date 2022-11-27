@@ -24,8 +24,6 @@ fun LevelsScreenByDifficultyList(
     navigator: Navigator,
     vm: LevelsScreenByDifficultyViewModel,
 ) {
-    val context = LocalContext.current
-    val density = LocalDensity.current
     val levelsList: List<LevelOverView> by remember {vm.levelOverviewList}.collectAsState()
     val scrollState = rememberSaveable(saver = LazyListState.Saver) { vm.lazyListVM.getState() }
 

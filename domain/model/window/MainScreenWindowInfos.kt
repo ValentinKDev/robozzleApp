@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Density
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import com.mobilegame.robozzle.utils.Extensions.toDp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -43,7 +44,8 @@ class MainScreenWindowsInfos(): ViewModel() {
 
         when (buttonId) {
             Screens.Profile.key-> Size(width = (profileButtonWidthRatioTarget * screenWidth), height = (profileButtonHeightRatioTarget * screenHeight))
-            in Screens.Difficulty1.key..Screens.Difficulty5.key -> Size(width = levelDifficultyButtonWidthRatioTarget * screenWidth, height =  levelDifficultyButtonHeightRatioTarget * screenHeight )
+//            in Screens.Difficulty1.key..Screens.Difficulty5.key -> Size(width = levelDifficultyButtonWidthRatioTarget * screenWidth, height =  levelDifficultyButtonHeightRatioTarget * screenHeight )
+            in Screens.Difficulty1.key..Screens.Difficulty5.key -> Size(width = context.resources.displayMetrics.widthPixels.toFloat(), height =  levelDifficultyButtonHeightRatioTarget * context.resources.displayMetrics.heightPixels )
             Screens.Creator.key, Screens.Config.key -> Size(width = creatorButtonWidthRatioTarget * screenWidth, height =  creatorButtonHeightRatioTarget * screenHeight )
             Screens.Donation.key -> Size(width = donationButtonWidthRatioTarget * screenWidth, height =  donationButtonHeightRatioTarget * screenHeight )
             else -> Size(width = 0f, height = 0f)

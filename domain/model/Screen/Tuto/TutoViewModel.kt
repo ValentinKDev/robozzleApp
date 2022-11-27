@@ -16,13 +16,12 @@ class TutoViewModel(context: Context): ViewModel() {
     private val dataStoreVM = TutoDataStoreViewModel(context)
 
 
+//        private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
     private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 //    private val _tuto = MutableStateFlow(Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 
 //    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnFirstInstructionCase)
-//private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnResetThirdTime)
 //    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnRankingIcon)
-//    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
     val tuto: StateFlow<Tuto> = _tuto.asStateFlow()
     fun getTuto(): Tuto = tuto.value
     fun setTutoTo(tuto: Tuto) {

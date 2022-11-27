@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 //import androidx.compose.material.icons.Icons
 //import androidx.compose.material.icons.outlined.North
 //import androidx.compose.material.icons.outlined.Update
@@ -45,12 +46,41 @@ fun CreatorScreen(navigator: Navigator, vm: TestVM = viewModel()) {
         )
     )
 
-    Box (Modifier.fillMaxSize()) {
-        LevelsScreenByDifficulty(
-            navigator = navigator,
-            levelsDifficulty = 1,
-            fromScreen = Screens.MainMenu,
-        )
+    Box (Modifier.fillMaxSize().background(MyColor.white0)) {
+        Column() {
+            Box(modifier = Modifier.size(50.dp)) {
+                Box(modifier = Modifier.size(50.dp).background(Color.Red)) {
+
+                }
+                Box(modifier = Modifier.size(50.dp).background(MyColor.black5)) {
+
+                }
+            }
+            Box(modifier = Modifier.size(50.dp)) {
+                Box(modifier = Modifier.size(50.dp).background(MyColor.redDark3)) {
+
+                }
+            }
+            Box(modifier = Modifier.size(50.dp)) {
+                Box(modifier = Modifier.size(50.dp).background(MyColor.grayDark3)) {
+
+                }
+                Box(modifier = Modifier.size(50.dp).background(MyColor.black3)) {
+
+                }
+            }
+            Box(modifier = Modifier.size(50.dp).background(MyColor.grayDark5)) {
+            }
+            Box(modifier = Modifier.size(50.dp).background(MyColor.grayDark3)) {
+            }
+            Box(modifier = Modifier.size(50.dp).background(Color.Blue)) {
+            }
+        }
+//        LevelsScreenByDifficulty(
+//            navigator = navigator,
+//            levelsDifficulty = 1,
+//            fromScreen = Screens.MainMenu,
+//        )
         PaddingComposable(
             topPaddingRatio = 0.31F,
             bottomPaddingRatio = 0.3F,

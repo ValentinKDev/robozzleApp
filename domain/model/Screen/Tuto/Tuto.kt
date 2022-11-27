@@ -49,6 +49,7 @@ sealed class Tuto(val step: Int, val description: String) {
             verbalLog("Tuto::isMainScreenTutoOn", "Tuto = ${this.step}")
             return this != Tuto.End
         }
+        fun Tuto.isLevelsScreenByDifficultyOn(levelDifficulty: Int): Boolean = levelDifficulty == 1 && ( this.step in Tuto.ClickOnRankingIcon.step until Tuto.End.step )
     }
 }
 
