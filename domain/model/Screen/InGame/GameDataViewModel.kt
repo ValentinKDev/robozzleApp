@@ -10,7 +10,9 @@ import com.mobilegame.robozzle.domain.InGame.animation.AnimationData
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstruction
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.Screen.mainScreen.PopupViewModel
 import com.mobilegame.robozzle.domain.model.data.general.LevelVM
 import com.mobilegame.robozzle.domain.model.gesture.dragAndDropCase.DragAndDropCaseState
@@ -105,8 +107,13 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     fun backNavHandler() {
         clickResetButtonHandler()
+//        if (level.id == 0 && !tutoVM.getTuto().matchStep(Tuto.End)) {
+//            tutoVM.setTutoTo(Tuto.ClickOnFirstInstructionCase)
+//        }
+//        else {
         prettyPrint("GameDataVM::backNavHandler","instructions saved", instructionsRows)
         levelVM.saveFunctionsInstructions(level = level, newFunciontInstructionList = instructionsRows)
+//        }
     }
 
     fun clickResetButtonHandler() {

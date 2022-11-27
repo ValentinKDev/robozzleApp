@@ -32,13 +32,14 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
         Log.i("", "_");
         Log.e("LAUNCH LEVEL", "${vm.level.id} - ${vm.level.name}"); Log.i("", "_")
         animScreen.targetState = true
+        if (!tuto.matchStep(Tuto.End)) vm.tutoVM.setTutoTo(Tuto.ClickOnFirstInstructionCase)
+//        if (!tuto.matchStep(Tuto.End)) vm.tutoVM.setTutoTo(Tuto.Mar)
     }
 
     BackHandler {
         //reset Game
         //create a level
         //replace level in room
-
         vm.backNavHandler()
         animScreen.targetState = false
         backPress.value = true

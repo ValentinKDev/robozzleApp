@@ -83,8 +83,6 @@ fun tutoLevel(vm: GameDataViewModel) {
             }
         }
 
-
-
         AnimatedVisibility(
             visible = visisbleMenu,
             enter = fadeIn(),
@@ -204,7 +202,9 @@ fun tutoLevel(vm: GameDataViewModel) {
                             if (vm.tutoVM.isTutoDragActionBar()){
                                 Box {
                                     ActionRow(vm = vm, enableActionRowDrag = false)
-                                    enlightItem(modifier = Modifier.dragActionRow(vm, vm.tutoVM).fillMaxSize())
+                                    enlightItem(modifier = Modifier
+                                        .dragActionRow(vm, vm.tutoVM)
+                                        .fillMaxSize())
                                 }
                             }
                         }

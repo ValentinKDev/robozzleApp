@@ -49,7 +49,7 @@ internal fun tutoSpecialOverlay(
 
         tutoOverlay(
             info = vm.ui.tuto,
-            text = if (vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon)) vm.tutoVM.tuto.value.description else Tuto.ClickOnTutoLevel.description,
+            text = if (vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIconFirst)) vm.tutoVM.tuto.value.description else Tuto.ClickOnTutoLevel.description,
             visibleElements = visibleHeaderState.currentState && visibleListState.currentState
         )
 
@@ -61,7 +61,8 @@ internal fun tutoSpecialOverlay(
                 exit = vm.getExitTransitionForList() ,
             ) {
                 Box(Modifier) {
-                    if (vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnTutoLevel)) {
+//                    if (vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnTutoLevel)) {
+                    if (vm.tutoVM.tuto.value.step in Tuto.ClickOnTutoLevel.step.. Tuto.End.step) {
                         DisplayLevelOverView(vm.levelOverviewList.value[0], vm, navigator)
                     }
                     Box(
@@ -81,19 +82,21 @@ internal fun tutoSpecialOverlay(
                             Box(Modifier
                                 .weight(vm.ui.levelOverview.ratios.rankIconWeight)
                                 .drawBehind {
-                                    drawRect(
-                                        brush = Brush.radialGradient(
-                                            colors = listOf(
-                                                animBackgroundColor,
-                                                animBackgroundColor,
-                                                Color.Transparent
+                                    if (vm.tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIconFirst)) {
+                                        drawRect(
+                                            brush = Brush.radialGradient(
+                                                colors = listOf(
+                                                    animBackgroundColor,
+                                                    animBackgroundColor,
+                                                    Color.Transparent
+                                                ),
                                             ),
-                                        ),
-                                        size = size
-                                    )
+                                            size = size
+                                        )
+                                    }
                                 }
                                 .clickable {
-                                    vm.tutoVM.nextTuto()
+//                                    vm.tutoVM.nextTuto()
                                 }
                             ) {
                                 DisplayRankingIcon(vm, navigator, 0, true)

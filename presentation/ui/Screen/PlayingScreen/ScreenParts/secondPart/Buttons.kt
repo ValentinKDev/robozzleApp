@@ -13,12 +13,16 @@ import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_PLAY
 import com.mobilegame.robozzle.presentation.res.TAG_BUTTON_PREV
@@ -75,6 +79,7 @@ fun BackButton(vm: GameDataViewModel, enable: Boolean) {
 
 @Composable
 fun PlayPauseButton(vm: GameDataViewModel, enablePlayPause: Boolean) {
+    val playerAnimationState by remember { vm.animData.playerAnimationState }.collectAsState()
     Box(
         modifier = Modifier
             .testTag(TAG_BUTTON_PLAY)
@@ -87,7 +92,8 @@ fun PlayPauseButton(vm: GameDataViewModel, enablePlayPause: Boolean) {
             }
     ) {
         Box(Modifier.align(Alignment.Center)) {
-            PlayPauseIcon(isPlaying = vm.animData.isPlaying())
+//            PlayPauseIcon(isPlaying = vm.animData.isPlaying())
+            PlayPauseIcon(isPlaying = playerAnimationState == PlayerAnimationState.IsPlaying)
         }
     }
 }

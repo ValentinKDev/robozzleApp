@@ -229,6 +229,7 @@ class AnimationLogicViewModel(
     }
 
     fun AddWin( context: Context ) {
+        errorLog("AnimationLogic::AddWin", "start")
         val rankVM = RankVM(context)
         val winDetails = WinDetails(
             instructionsNumber = breadcrumb.funInstructionsList.countInstructions(),

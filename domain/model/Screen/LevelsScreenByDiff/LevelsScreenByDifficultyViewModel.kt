@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto.Companion.isLevelsScreenByDifficultyOn
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.Screen.utils.LazyListStateViewModel
@@ -22,7 +23,6 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.LevelsScreenByDifficultyLayout
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.utils.Extensions.Is
-import io.ktor.util.date.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,6 +52,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         setVisibilityAndLoadLevelList()
         loadLevelListById(difficulty)
         loadMapViewParams()
+        if (tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIconSecond)) tutoVM.nextTuto()
     }
 
     fun loadLevelListById(levelDifficulty: Int) {
@@ -146,7 +147,7 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
     }
     fun goingRankingLevelListener(navigator: Navigator, levelId: Int) {
         if (rankingIconVM.isAnimationFinished() && _goToRanksLevelState.Is(false)) startExitAnimationAndPressRankingLevel(levelId)
-        if (tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIcon)) tutoVM.nextTuto()
+        if (tutoVM.tuto.value.matchStep(Tuto.ClickOnRankingIconFirst)) tutoVM.nextTuto()
         if (_goToRanksLevelState && headerAndListAnimationEnd())
             NavViewModel(navigator).navigateToRanksLevel(rankingIconVM.levelSelected.value.toString())
     }
@@ -167,7 +168,6 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         NavViewModel(navigator).navigateToScreenPlay(levelId = levelId, context = ctxt)
     }
 
-    @OptIn(ExperimentalAnimationApi::class)
     fun getEnterTransitionForList(fromScreen: Screens): EnterTransition = runBlocking {
         when (fromScreen) {
             Screens.Playing -> slideInHorizontally() + fadeIn()
@@ -176,7 +176,6 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
             else -> fadeIn()
         }
     }
-    @OptIn(ExperimentalAnimationApi::class)
     fun getExitTransitionForList(): ExitTransition = runBlocking {
         when  {
             goToLevelPlayState() ->
@@ -201,7 +200,6 @@ class LevelsScreenByDifficultyViewModel(application: Application): AndroidViewMo
         }
     }
 
-    @OptIn(ExperimentalAnimationApi::class)
     fun getExitTransitionForHeader(): ExitTransition = runBlocking {
 //        errorLog("LevelsScreenByDiffVM::getExitTransitionForHeader", "Screens -> LevelPlay ${goToLevelPlayState()} MainMenu ${goToMainMenuState()} RankingLevel ${goToRanksLevelState()}")
         when {

@@ -11,7 +11,9 @@ import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import coil.size.Dimension
 import coil.size.Size
+import com.mobilegame.robozzle.analyse.errorLog
 
 @Composable
 fun GifImage(
