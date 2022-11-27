@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.presentation.ui.Screen.Config
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.Config.ConfigScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.ButtonOption
 import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.ConfigOption
 import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.SwitchOption
 import com.mobilegame.robozzle.presentation.ui.Screen.SwitchLightTheme
@@ -17,7 +19,6 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposable
 
 @Composable
 fun ConfigScreen(navigator: Navigator, vm: ConfigScreenViewModel = viewModel()) {
-
     LaunchedEffect(true) {
         vm.animVM.setVisible()
         errorLog("ConfigScreen", "Start")
@@ -25,7 +26,6 @@ fun ConfigScreen(navigator: Navigator, vm: ConfigScreenViewModel = viewModel()) 
 
     val visibleHeaderState by remember {vm.animVM.visibleHeaderState}.collectAsState()
     val visibleListState by remember {vm.animVM.visibleListState}.collectAsState()
-
 
     BackHandler {
         vm.startExitAnimationAndPressBack()
@@ -82,7 +82,12 @@ fun ConfigScreen(navigator: Navigator, vm: ConfigScreenViewModel = viewModel()) 
                             optionType = ConfigOption.Orientation,
                             configVM = vm,
                             startState = vm.switchOrientation,
-                            text = vm.layout.list.texts.displayLevelWin
+                            text = vm.layout.list.texts.orientation
+                        )
+                        ButtonOption(
+                            configVM = vm,
+                            text = vm.layout.list.texts.tutorial,
+                            clickable = Modifier.clickable { vm.switchTutoOn() }
                         )
                     }
                 }

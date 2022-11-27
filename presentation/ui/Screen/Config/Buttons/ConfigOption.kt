@@ -1,5 +1,5 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons
 
 enum class ConfigOption {
-    ToTrash, DisplayWinLevel, Orientation
+    ToTrash, DisplayWinLevel, Orientation, Tuto
 }

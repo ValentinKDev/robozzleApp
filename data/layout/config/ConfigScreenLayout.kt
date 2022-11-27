@@ -1,10 +1,13 @@
 package com.mobilegame.robozzle.data.layout.config
 
 import android.content.Context
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
 import com.mobilegame.robozzle.presentation.ui.Navigation.displayUIData
 import com.mobilegame.robozzle.utils.Extensions.toDp
@@ -13,7 +16,33 @@ import com.mobilegame.robozzle.utils.Extensions.toSp
 object ConfigScreenLayout {
     val header = Header
     val list = List
-    val color = Colors
+    val button = Button
+
+    object Button {
+        val ratios = RatiosButton
+        val sizes = SizesButton
+        val colors = ColorsButton
+        val padding = PaddingButton
+
+        object RatiosButton {
+            const val height = 0.03F
+            const val width = 0.09F
+        }
+        object SizesButton {
+            var heightDp = Dp.Unspecified
+            var widthDp = Dp.Unspecified
+        }
+        object ColorsButton {
+            var shadow = MyColor.black7
+            var light = MyColor.white9
+        }
+        object PaddingButton {
+            const val topLight = 0.1F
+            const val bottomLight = 0.1F
+            const val startLight = 0.08F
+            const val endLight = 0.08F
+        }
+    }
 
     object Header {
         val sizes = Sizes
@@ -70,24 +99,22 @@ object ConfigScreenLayout {
             const val dragAndDropToTrash = "Switch to remove or put back trash in Game"
             const val displayLevelWin = "Switch to display levels you won in the list"
             const val orientation = "Switch off to use the app in landscape orientation"
+            const val tutorial = "Switch off to use the app in landscape orientation"
+//            const val tutorialButton = ""
         }
         object Colors {
             val optionText = whiteDark4
         }
     }
 
-    object Popup {
-
-    }
-
-    object Colors {
-        val textHeader = whiteDark4
-    }
+    private var widthFull = 0
+    private var heightFull = 0
+    private var density = 0F
 
     fun init(context: Context): ConfigScreenLayout {
-        val widthFull = context.resources.displayMetrics.widthPixels
-        val heightFull = context.resources.displayMetrics.heightPixels
-        val density = context.resources.displayMetrics.density
+        widthFull = context.resources.displayMetrics.widthPixels
+        heightFull = context.resources.displayMetrics.heightPixels
+        density = context.resources.displayMetrics.density
 
         header.sizes.height = heightFull * (header.ratios.height / (header.ratios.height + list.ratios.height))
         header.sizes.text = header.sizes.height * header.ratios.text
@@ -102,6 +129,9 @@ object ConfigScreenLayout {
         list.sizes.rowWidthPaddingDp = list.sizes.rowWidthPadding.toDp(density)
         list.sizes.optionText = list.sizes.rowHeight * list.ratios.optionText
         list.sizes.optionTextSp = list.sizes.optionText.toSp(density)
+
+        button.sizes.heightDp = (heightFull * button.ratios.height).toDp(density)
+        button.sizes.widthDp = (widthFull * button.ratios.width).toDp(density)
 
         displayUIData?.let {
             verbalLog("ConfigScreenLayout::init", "Start")
@@ -118,6 +148,9 @@ object ConfigScreenLayout {
             infoLog("list.sizes.rowPaddingDp", "${list.sizes.rowWidthPaddingDp}")
             infoLog("list.sizes.optionText", "${list.sizes.optionText}")
             infoLog("list.sizes.optionTextSp", "${list.sizes.optionTextSp}")
+
+            infoLog("button.sizes.height", "${button.sizes.heightDp}")
+            infoLog("button.sizes.width", "${button.sizes.widthDp}")
         }
         return this
     }

@@ -46,8 +46,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -169,9 +169,9 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //                levelsDifficulty = 1,
 //                fromScreen = Screens.MainMenu,
 //            )
-            CreatorScreen(navigator = navigator)
+//            CreatorScreen(navigator = navigator)
 //            UserInfoScreen(navigator = navigator)
-//            ConfigScreen(navigator = navigator)
+            ConfigScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
 //            RanksLevelScreen(
 //                navigator = navigator,

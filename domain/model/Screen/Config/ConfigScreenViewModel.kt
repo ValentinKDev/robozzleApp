@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.data.layout.config.ConfigScreenLayout
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.TutoViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.domain.model.data.room.Config.ConfigRoomViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Config.Buttons.ConfigOption
@@ -22,6 +25,7 @@ import kotlinx.coroutines.runBlocking
 
 class ConfigScreenViewModel(application: Application): AndroidViewModel(application) {
     val dataVM = ConfigRoomViewModel(getApplication())
+    val tutoVM = TutoViewModel(getApplication())
     val animVM = AnimateHeaderAndListViewModel()
     val configData = dataVM.getConfigData()
     val layout = ConfigScreenLayout.init(getApplication())
@@ -120,9 +124,12 @@ class ConfigScreenViewModel(application: Application): AndroidViewModel(applicat
         return if (switchOrientation) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 
+    fun switchTutoOn() {
+        tutoVM.setTutoTo(Tuto.ClickOnDifficultyOne)
+    }
+
     fun startExitAnimationAndPressBack() = runBlocking(Dispatchers.IO) {
         animVM.setVisibleListTargetStateAs(false)
-//        setRetToMainMenuState(true)
     }
 
     fun goingMainMenuListener(navigator: Navigator) {
