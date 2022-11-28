@@ -87,7 +87,7 @@ fun DisplayRankingIcon(vm: LevelsScreenByDifficultyViewModel, navigator: Navigat
         if (enable)
             Modifier.clickable(
                 interactionSource = interactionSource,
-                indication = rememberRipple(color = Color.Transparent)
+                indication = null
             ) {}
         else Modifier
     ) {
@@ -97,7 +97,6 @@ fun DisplayRankingIcon(vm: LevelsScreenByDifficultyViewModel, navigator: Navigat
                 enableShadow = true,
                 navigator = navigator,
                 levelId = id,
-//                exit = LevelsScreenByDifficultyViewModel::startExitAnimationAndPressRankingLevel
             )
         }
     }

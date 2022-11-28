@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Center
@@ -18,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.domain.Player.LevelWin
 import com.mobilegame.robozzle.domain.model.Screen.LevelsScreenByDiff.MapViewParam
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.domain.model.Screen.utils.PressAnimationState
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.grayDark3
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark4
@@ -32,6 +35,9 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<String>, vm: UserInfosScreenViewModel) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
+
+    val animRankingIcon by remember { vm.logic.rankingIconVM.animationState }.collectAsState()
+    if (animRankingIcon == PressAnimationState.Finished) { NavViewModel(navigator).navigateToRanksLevel(levelWin.lvl_id.toString()) }
 
     when (isPressed) {
         true -> vm.logic.rankingIconVM.rankingIconIsPressed()
@@ -51,7 +57,7 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
             )
             .clickable(
                 interactionSource = interactionSource,
-                indication = rememberRipple(color = Color.Transparent)
+                indication = null
             ) { infoLog("clickable", "ranking icon") }
         ,
         elevation = 8.dp,
@@ -113,19 +119,19 @@ fun DisplayWinOverView(levelWin: LevelWin, navigator: Navigator, levelMap: List<
                             .weight(1F)
                             .clickable(
                                 interactionSource = interactionSource,
-                                indication = rememberRipple(color = Color.Transparent)
+                                indication = null
                             ) {
                                 infoLog("clickable", "ranking icon")
                             }
                             ,
                             horizontalArrangement = Arrangement.End
                         ) {
-//                            RankingIconBouncing(
-//                                vm = vm.logic.rankingIconVM,
-//                                enableShadow = false,
-//                                navigator = navigator,
-//                                levelId = levelWin.lvl_id
-//                            )
+                            RankingIconBouncing(
+                                vm = vm.logic.rankingIconVM,
+                                enableShadow = false,
+                                navigator = navigator,
+                                levelId = levelWin.lvl_id
+                            )
                         }
                     }
                 }

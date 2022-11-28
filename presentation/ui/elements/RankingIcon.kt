@@ -19,8 +19,6 @@ fun RankingIconBouncing(
     enableShadow: Boolean,
     navigator: Navigator,
     levelId: Int,
-//    exit: KFunction2<LevelsScreenByDifficultyViewModel, Int, Unit>
-//    exit: (Unit) -> Unit
 ) {
     Box(
          Modifier

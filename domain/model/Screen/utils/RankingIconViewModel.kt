@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
-import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.redDark8
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
@@ -25,11 +24,14 @@ class RankingIconViewModel(): ViewModel() {
         return this
     }
 
-    private val _animationState = MutableStateFlow<Boolean>(false)
-    private fun isAnimated(): Boolean = _animationState.value
-    fun changeAnimationStateTo(state: Boolean) { _animationState.value = state }
+    private val _animationState = MutableStateFlow<PressAnimationState>(PressAnimationState.Unknown)
+    val animationState: StateFlow<PressAnimationState> = _animationState.asStateFlow()
+//    private val _animationState = MutableStateFlow<Boolean>(false)
+//private fun isAnimated(): Boolean = _animationState.value
+    private fun isReleased(): Boolean = _animationState.value == PressAnimationState.Released
+//    fun changeAnimationStateTo(state: Boolean) { _animationState.value = state }
+    fun changeAnimationStateTo(state: PressAnimationState) { _animationState.value = state }
 
-//    var levelSelected: Int? = null
     private val _levelSelected = MutableStateFlow<Int?>(null)
     val levelSelected: StateFlow<Int?> = _levelSelected.asStateFlow()
     private fun setLevelSelcted(id : Int) {
@@ -39,14 +41,17 @@ class RankingIconViewModel(): ViewModel() {
         }
     }
 
+
     private val finisherRed = mutableStateOf(false)
     private val finisherBlue = mutableStateOf(false)
     private val finisherGreen = mutableStateOf(false)
     fun isAnimationFinished(): Boolean = finisherBlue.value && finisherRed.value && finisherGreen.value
 
-    fun rankingIconIsReleased() { changeAnimationStateTo(false) }
+//    fun rankingIconIsReleased() { changeAnimationStateTo(false) }
+    fun rankingIconIsReleased() { changeAnimationStateTo(PressAnimationState.OnPress) }
     fun rankingIconIsPressed() {
-        changeAnimationStateTo(true)
+//        changeAnimationStateTo(true)
+        changeAnimationStateTo(PressAnimationState.Released)
     }
 
     fun finisherAction(type: ColumColor, navigator: Navigator, levelId: Int): (Dp) -> Unit {
@@ -67,6 +72,7 @@ class RankingIconViewModel(): ViewModel() {
             }
         }
         if ( isAnimationFinished()) {
+            changeAnimationStateTo(PressAnimationState.Finished)
             verbalLog("RankingViewModel::finisherAction", "AnimationFinished")
 //            NavViewModel(navigator).navigateToRanksLevel(levelId.toString())
         }
@@ -75,15 +81,15 @@ class RankingIconViewModel(): ViewModel() {
     fun getTargetHeightByColor(type: ColumColor): Dp {
         return when (type) {
             ColumColor.Red -> { when {
-                isAnimated() -> gui.redTargetHeight
+                isReleased() -> gui.redTargetHeight
                 else -> gui.redHeight
             } }
             ColumColor.Blue -> { when {
-                isAnimated() -> gui.blueTargetHeight
+                isReleased() -> gui.blueTargetHeight
                 else -> gui.blueHeight
             } }
             ColumColor.Green -> { when {
-                isAnimated() -> gui.greenTargetHeight
+                isReleased() -> gui.greenTargetHeight
                 else -> gui.greenHeight
             } }
         }
@@ -91,17 +97,17 @@ class RankingIconViewModel(): ViewModel() {
     fun getAnimSpecByColor (type: ColumColor): AnimationSpec<Dp> {
         return when (type) {
             ColumColor.Red -> when {
-                isAnimated() -> { spring(dampingRatio = Spring.DampingRatioLowBouncy) }
+                isReleased() -> { spring(dampingRatio = Spring.DampingRatioLowBouncy) }
                 else -> { spring(dampingRatio = 0.18F, stiffness = Spring.StiffnessMedium) }
             }
             ColumColor.Blue -> when {
 //                isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessHigh)
 //                else -> { spring(dampingRatio = 0.25F, stiffness = Spring.StiffnessLow) }
-                isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
+                isReleased() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
                 else -> { spring(dampingRatio = 0.5F, stiffness = Spring.StiffnessHigh) }
             }
             ColumColor.Green -> when {
-                isAnimated() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessVeryLow)
+                isReleased() -> spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessVeryLow)
                 else -> spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = (Spring.StiffnessLow + Spring.StiffnessMedium) / 2.0F)
             }
         }
@@ -137,4 +143,8 @@ data class RankingIconPresentationData(
 //    val greenTargetHeight: Dp = (0.75 * (3.0F/5.0F) * height).dp
     val greenTargetHeight: Dp = (0.65 * (3.0F/5.0F) * height).dp
     val greenHeight: Dp =  ((3.0F/5.0F) * height).dp
+}
+
+enum class PressAnimationState {
+    Unknown, OnPress, Released, Finished
 }
