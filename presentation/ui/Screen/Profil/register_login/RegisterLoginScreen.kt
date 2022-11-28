@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +34,7 @@ fun RegisterLoginScreen(navigator: Navigator, tab: TabSelectionViewModel = TabSe
     }
 
     Column {
-        RegisterLoginTabsHead(tab, tabSelected)
+        RegisterLoginTabsHead(tab)
         when (tabSelected) {
             Tabs.Register -> RegisterTab(navigator = navigator)
             Tabs.Login -> LoginTab(navigator = navigator)
@@ -47,7 +44,8 @@ fun RegisterLoginScreen(navigator: Navigator, tab: TabSelectionViewModel = TabSe
 }
 
 @Composable
-fun RegisterLoginTabsHead(tab: TabSelectionViewModel, tabSelected: Tabs) {
+fun RegisterLoginTabsHead(tab: TabSelectionViewModel) {
+    val tabSelected: Tabs by remember { tab.selected }.collectAsState()
 
     //todo: adding animation from registering tab to Login tab and vice versa
     Row(

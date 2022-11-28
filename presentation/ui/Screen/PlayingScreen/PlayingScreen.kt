@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
@@ -35,6 +36,13 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
         if (!tuto.matchStep(Tuto.End)) vm.tutoVM.setTutoTo(Tuto.ClickOnFirstInstructionCase)
 //        if (!tuto.matchStep(Tuto.End)) vm.tutoVM.setTutoTo(Tuto.Mar)
     }
+
+//    DisposableEffect(true) {
+//        onDispose {
+//            errorLog("PlayingScreen", "On Dispose")
+//            vm.disposeHandler()
+//        }
+//    }
 
     BackHandler {
         //reset Game

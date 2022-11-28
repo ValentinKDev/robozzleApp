@@ -115,6 +115,10 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
         levelVM.saveFunctionsInstructions(level = level, newFunciontInstructionList = instructionsRows)
 //        }
     }
+//    fun disposeHandler() {
+//        prettyPrint("GameDataVM::disposeHandler","instructions saved", instructionsRows)
+//        levelVM.saveFunctionsInstructions(level = level, newFunciontInstructionList = instructionsRows)
+//    }
 
     fun clickResetButtonHandler() {
         viewModelScope.launch(Dispatchers.IO) {

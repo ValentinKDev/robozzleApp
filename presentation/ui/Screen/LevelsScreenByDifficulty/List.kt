@@ -58,7 +58,9 @@ fun LevelsScreenByDifficultyList(
                     }
                 }
             } else { Text(text = "Can't access the server and no level in the phone internal storage") }
-            ListProgressBar(vm, scrollState)
+
+            if (levelsList.size > 5)
+                ListProgressBar(vm, scrollState)
         }
     }
 

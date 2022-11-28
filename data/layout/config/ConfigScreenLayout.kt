@@ -99,7 +99,7 @@ object ConfigScreenLayout {
             const val dragAndDropToTrash = "Switch to remove or put back trash in Game"
             const val displayLevelWin = "Switch to display levels you won in the list"
             const val orientation = "Switch off to use the app in landscape orientation"
-            const val tutorial = "Switch off to use the app in landscape orientation"
+            const val tutorial = "Press the button to restart the tutorial"
 //            const val tutorialButton = ""
         }
         object Colors {

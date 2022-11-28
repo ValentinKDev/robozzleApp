@@ -23,7 +23,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.LevelsScreenByDifficulty.t
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import io.ktor.util.date.*
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LevelsScreenByDifficulty(
     navigator: Navigator,
@@ -37,7 +36,6 @@ fun LevelsScreenByDifficulty(
     val tuto by remember { vm.tutoVM.tuto }.collectAsState()
     //todo: get rid of this ctxt
     val ctxt = LocalContext.current
-//    val headerScale = remember{ Animatable(2F) }
 
     LaunchedEffect(key1 = true) {
         Log.e("LevelsScreen", "Start")
@@ -61,8 +59,6 @@ fun LevelsScreenByDifficulty(
     Box(modifier = Modifier
         .fillMaxSize()
     ) {
-//        if (vm.tutoVM.isLevelsScreenByDiffTutoActivated() && vm.levelOverviewList.value.isNotEmpty()) {
-//        errorLog("LevelScreenByDifficulty", "TutoOn ${tuto.isLevelsScreenByDifficultyOn(levelsDifficulty)}")
         if (tuto.isLevelsScreenByDifficultyOn(levelsDifficulty) && vm.levelOverviewList.value.isNotEmpty()) {
             tutoSpecialOverlay(vm, fromScreen, navigator)
         } else {
