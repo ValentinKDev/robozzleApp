@@ -18,7 +18,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.User
 import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.UserInfoScreenThirdPart
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
 

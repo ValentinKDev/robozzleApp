@@ -1,8 +1,13 @@
 package com.mobilegame.robozzle.domain.model.data.room.level
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.mobilegame.robozzle.analyse.infoLog
+import com.mobilegame.robozzle.analyse.prettyPrint
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import com.mobilegame.robozzle.data.room.Level.LevelDataBase
@@ -77,6 +82,36 @@ class LevelRoomViewModel(context: Context): ViewModel() {
 
     fun updateFunctionsInstructions(level: Level, newFunctionInstructionsList: List<FunctionInstructions>) = viewModelScope.launch(Dispatchers.IO) {
         repo.addLevel(level.updateFunctionInstructionListWith(newFunctionInstructionsList))
+    }
+
+    fun clearAllSolutionsSaved() {
+        infoLog("LevelRoomVM::clearAllSolutionSaved", "start")
+        viewModelScope.launch(Dispatchers.IO) {
+            val list: List<LevelData> = repo.getAllLevelsFromRoom()
+            val gson = Gson()
+            list.forEach { levelData ->
+                verbalLog("LevelRoomVM::clearAllSolutionSaved", "level ${levelData.id}")
+                val solutionJson = levelData.funInstructionsListJson
+                val solution: List<FunctionInstructions> = gson.fromJson(solutionJson, ListFunctionInstructionType)
+                prettyPrint("LevelRoomVM::clearAllSolutionSaved", "solutionRoom", solution, Log.INFO)
+                val cleanSolution = mutableListOf<FunctionInstructions>()
+                solution.forEach { cleanSolution.add(it.reset()) }
+                prettyPrint("LevelRoomVM::clearAllSolutionSaved", "cleanSolution", cleanSolution, Log.INFO)
+                val cleanSolutionJson = gson.toJson(cleanSolution)
+                repo.addLevel(
+                    LevelData(
+                        id = levelData.id,
+                        name = levelData.name,
+                        difficulty = levelData.difficulty,
+                        mapJson = levelData.mapJson,
+                        instructionsMenuJson = levelData.funInstructionsListJson,
+                        funInstructionsListJson = cleanSolutionJson,
+                        playerInitalJson = levelData.playerInitalJson,
+                        starsListJson = levelData.starsListJson
+                    )
+                )
+            }
+        }
     }
 }
 

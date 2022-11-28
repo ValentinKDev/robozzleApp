@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 @Composable
 fun UserInfoScreenFirstPart(vm: UserInfosScreenViewModel, navigator: Navigator) {
     Column(Modifier.fillMaxSize()) {
+        /** Logout Button **/
         PaddingComposable(
             startPaddingRatio = vm.uiData.firstPart.buttonLogOut.padding.start,
         ) {
@@ -30,7 +31,7 @@ fun UserInfoScreenFirstPart(vm: UserInfosScreenViewModel, navigator: Navigator) 
                         .height(vm.uiData.firstPart.buttonLogOut.sizes.heightDp)
                         .width(vm.uiData.firstPart.buttonLogOut.sizes.widthDp)
                         .clickable {
-                            vm.logic.logingOut(navigator)
+                            vm.logic.loggingOut(navigator)
                         }
                 ) {
                     CenterComposable {
@@ -44,6 +45,7 @@ fun UserInfoScreenFirstPart(vm: UserInfosScreenViewModel, navigator: Navigator) 
             }
         }
     }
+    /** User name header **/
     CenterComposable {
         Card(
             shape = MaterialTheme.shapes.medium,

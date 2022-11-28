@@ -50,7 +50,8 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
         //update server if needed
     }
 
-    fun logingOut(navigator: Navigator) {
+    fun loggingOut(navigator: Navigator) {
+        LevelRoomViewModel(application).clearAllSolutionsSaved()
         TokenVM(application).deleteToken()
         UserDataStoreViewModel(application).clearUser()
         LevelWinRoomViewModel(application).deleteAllLevelWinRoom()
