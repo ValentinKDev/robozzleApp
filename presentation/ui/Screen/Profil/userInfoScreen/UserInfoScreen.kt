@@ -20,7 +20,7 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Profil.userInfoScreen.User
 
 
 @Composable
-fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel(), rankingIconVM: RankingIconViewModel = viewModel()) {
+fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewModel()) {
 
     val listVisible by remember(vm){ vm.logic.gridVisible}.collectAsState()
 

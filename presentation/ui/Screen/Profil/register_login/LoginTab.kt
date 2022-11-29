@@ -1,5 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -10,7 +12,10 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -20,6 +25,7 @@ import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 
@@ -28,16 +34,12 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val isValidName: Boolean = vm.nameIsValid.value
     val isValidPassword: Boolean = vm.passwordIsValid.value
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val showErrorMessage by vm.showToast.collectAsState()
+    val ctxt = LocalContext.current
 
     Column( )
     {
-        //todo: check if the inputs are resistant to application switching
-//        if (!isValidName)
-//            Text(
-//                color = whiteDark2,
-//                modifier = Modifier.align(Alignment.CenterHorizontally),
-//                text = "Player name \'$name\' ",
-//            )
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
             value = name,
@@ -79,6 +81,19 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        ButtonLogin(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navigator)
+
+        val enableButton = isValidName && isValidPassword
+        ButtonRegisterLogin(
+            enable = enableButton,
+            text = "Login",
+            clickable = Modifier.clickable {
+                if (enableButton) {
+                    keyboardController?.hide()
+                    vm.loginOnClickListner(navigator)
+                }
+            }
+        )
+        if (showErrorMessage != 0)
+            Toast.makeText(ctxt, "Nope", Toast.LENGTH_SHORT).show()
     }
 }

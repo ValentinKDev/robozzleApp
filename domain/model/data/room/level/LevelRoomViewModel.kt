@@ -90,13 +90,10 @@ class LevelRoomViewModel(context: Context): ViewModel() {
             val list: List<LevelData> = repo.getAllLevelsFromRoom()
             val gson = Gson()
             list.forEach { levelData ->
-                verbalLog("LevelRoomVM::clearAllSolutionSaved", "level ${levelData.id}")
                 val solutionJson = levelData.funInstructionsListJson
                 val solution: List<FunctionInstructions> = gson.fromJson(solutionJson, ListFunctionInstructionType)
-                prettyPrint("LevelRoomVM::clearAllSolutionSaved", "solutionRoom", solution, Log.INFO)
                 val cleanSolution = mutableListOf<FunctionInstructions>()
                 solution.forEach { cleanSolution.add(it.reset()) }
-                prettyPrint("LevelRoomVM::clearAllSolutionSaved", "cleanSolution", cleanSolution, Log.INFO)
                 val cleanSolutionJson = gson.toJson(cleanSolution)
                 repo.addLevel(
                     LevelData(

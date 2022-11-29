@@ -1,5 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil.register_login
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -10,7 +12,10 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -20,6 +25,7 @@ import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
     val name by remember(vm) {vm.name}.collectAsState( initial = "" )
@@ -27,9 +33,11 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val isValidName: Boolean = vm.nameIsValid.value
     val isValidPassword: Boolean = vm.passwordIsValid.value
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val showErrorMessage by vm.showToast.collectAsState()
+    val ctxt = LocalContext.current
 
-    Column( )
-    {
+    Column {
         //todo: check if the inputs are resistant to application switching
         TextField(
             modifier = Modifier .align(Alignment.CenterHorizontally) ,
@@ -73,59 +81,19 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        ButtonRegister(enable = isValidName && isValidPassword, name = name, password = password, vm = vm, navigator)
+        val enableButton = isValidName && isValidPassword
+        ButtonRegisterLogin(
+            enable = enableButton,
+            text = "Register",
+            clickable = Modifier.clickable {
+                if (enableButton) {
+                    keyboardController?.hide()
+                    vm.registerOnClickListner(navigator)
+                }
+            }
+        )
+
+        if (showErrorMessage > 0)
+            Toast.makeText( ctxt, vm.getConnectionErrorMessage(), Toast.LENGTH_SHORT).show()
     }
 }
-
-//@Composable
-//fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
-//    RegisteringElements(vm, navigator)
-//}
-
-
-//@Composable
-//fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
-//    val connectionState by vm.userConnectionState.collectAsState(UserConnectionState.NotConnected)
-//
-//    infoLog("RegisterTab", "connectionState $connectionState")
-//    when (connectionState) {
-//        UserConnectionState.NoUser.str ->  {
-//            RegisteringElements(vm, navigator)
-//        }
-//        UserConnectionState.NotCreated.str ->  {
-//            Toast.makeText(LocalContext.current, "${vm.name.value} already exist", Toast.LENGTH_LONG).show()
-//            RegisteringElements(vm, navigator)
-//            vm.setUserConnectionState(UserConnectionState.NoUser.str)
-//        }
-//        //todo : personalize ret from server for weird error or just an already exsiting name
-//        UserConnectionState.CreatedAndNotVerified.str -> {
-//            Toast.makeText(LocalContext.current, "Can't connect to the server", Toast.LENGTH_LONG).show()
-//            RegisteringElements(vm, navigator)
-//        }
-//        UserConnectionState.NotConnected.str ->  {
-//            Toast.makeText(LocalContext.current, "Server facing some issue with your profil", Toast.LENGTH_LONG).show()
-//            RegisteringElements(vm, navigator)
-//        }
-//        UserConnectionState.CreatedAndVerified.str -> {
-//            vm.setUserConnectionState(UserConnectionState.Connected.str)
-////            NavigationVM().goTo(destination = Screens.Profil, navigator = navigator)
-////            NavViewModel(navigator).navigateTo(Screens.Profil)
-//
-//            NavViewModel(navigator).navigateTo(
-//                if (UserDataStoreViewModel(LocalContext.current).getName().isNullOrBlank())
-//                    Screens.RegisterLogin
-//                else
-//                    Screens.UserInfo
-//            )
-////                NavViewModel(navigator).navigateTo(Screens.RegisterLogin)
-////                RegisterLoginScreen(navigator, Tab())
-////            else
-////                UserInfoScreen(navigator)
-////            vm.navigation(Screens.Profil, navigator)
-////            navigator.navigate(Screens.Profil)
-//        }
-//        UserConnectionState.Connected.str -> {
-//        }
-//        else -> errorLog("Register Tab", "Error from the connectionState / value $connectionState")
-//    }
-//}
