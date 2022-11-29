@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.Profil
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
@@ -28,15 +29,27 @@ fun UserInfoScreen(navigator: Navigator, vm: UserInfosScreenViewModel = viewMode
         errorLog("Launch", "UserInfoScreen()")
     }
 
+    BackHandler {
+        vm.logic.backHandler(navigator)
+    }
 
     Column() {
-        Box( Modifier.fillMaxWidth().weight(vm.uiData.secondPart.dimensions.heightWeight) ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(vm.uiData.secondPart.dimensions.heightWeight) ) {
             UserInfoScreenFirstPart( vm = vm, navigator = navigator )
         }
-        Box(Modifier.fillMaxWidth() .weight(vm.uiData.secondPart.dimensions.heightWeight) ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(vm.uiData.secondPart.dimensions.heightWeight) ) {
             UserInfoScreenSecondPart(vm = vm)
         }
-        Column( Modifier.fillMaxWidth().weight(vm.uiData.thirdPart.dimensions.heightWeight) ) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .weight(vm.uiData.thirdPart.dimensions.heightWeight) ) {
             AnimatedVisibility(
                 visible = listVisible,
                 enter = slideInVertically(),

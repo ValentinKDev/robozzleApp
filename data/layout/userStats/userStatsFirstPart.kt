@@ -8,6 +8,7 @@ import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.presentation.res.MyColor
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayUIData
 import com.mobilegame.robozzle.utils.Extensions.toDp
 import com.mobilegame.robozzle.utils.Extensions.toSp
 
@@ -126,8 +127,10 @@ object userStatsFirstPart {
         dimensions.height = heightFull * (dimensions.heightWeight1 /
                 (dimensions.heightWeight1 + userStatsSecondPart.dimensions.heightWeight + userStatsThirdPart.dimensions.heightWeight) )
         dimensions.heightDp = dimensions.height.toDp(density)
-        verbalLog("init", "dimensions")
-        infoLog("height", "${dimensions.height}")
-        infoLog("heightDp", "${dimensions.heightDp}")
+        displayUIData?.let {
+            verbalLog("init", "dimensions")
+            infoLog("height", "${dimensions.height}")
+            infoLog("heightDp", "${dimensions.heightDp}")
+        }
     }
 }

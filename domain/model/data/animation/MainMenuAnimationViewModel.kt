@@ -28,14 +28,6 @@ class MainMenuAnimationViewModel(): ViewModel() {
 
     private val _animationTime = MutableStateFlow<Long>(500)
     val animationTime: StateFlow<Long> = _animationTime
-
-    fun getAState(button: Screens, fromScreens: Screens): ButtonState {
-        return when  {
-            button == fromScreens -> ButtonState.From
-            else -> ButtonState.NotSelected
-        }
-    }
-
     fun setAnimationTime(button: Screens) {
         _animationTime.value = when (button) {
             Screens.Difficulty1 -> 450
@@ -56,6 +48,14 @@ class MainMenuAnimationViewModel(): ViewModel() {
             else -> 500
         }
     }
+
+    fun getAState(button: Screens, fromScreens: Screens): ButtonState {
+        return when  {
+            button == fromScreens -> ButtonState.From
+            else -> ButtonState.NotSelected
+        }
+    }
+
 
     @ExperimentalAnimationApi
     fun enterTransitionByFrom(buttonsId: Int, fromScreenId: Int, offset: Offset): EnterTransition = runBlocking {

@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 import com.mobilegame.robozzle.analyse.errorLog
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayUIData
 import com.mobilegame.robozzle.utils.Extensions.toDp
 
 object userStatsThirdPart {
@@ -78,20 +79,22 @@ object userStatsThirdPart {
         winOverView.mapWidth = 0.3F * winOverView.width
         winOverView.mapWidthInt = (winOverView.mapWidth / density).toInt()
 
-        verbalLog("init", "initWinOverview")
-        infoLog("topPadding", "${winOverView.topPadding}")
-        infoLog("bottomPadding", "${winOverView.bottomPadding}")
-        infoLog("startPadding", "${winOverView.startPadding}")
-        infoLog("endPadding", "${winOverView.endPadding}")
-        infoLog("topPaddingDp", "${winOverView.topPaddingDp}")
-        infoLog("bottomPaddingDp", "${winOverView.bottomPaddingDp}")
-        infoLog("startPaddingDp", "${winOverView.startPaddingDp}")
-        infoLog("endPaddingDp", "${winOverView.endPaddingDp}")
-        infoLog("winOvView height", "${winOverView.height}")
-        infoLog("winOvView width", "${winOverView.width}")
-        infoLog("winOvView heightDp", "${winOverView.heightDp}")
-        infoLog("winOvView widthDp", "${winOverView.widthDp}")
-        infoLog("map widthInt", "${winOverView.mapWidthInt}")
+        displayUIData?.let {
+            verbalLog("init", "initWinOverview")
+            infoLog("topPadding", "${winOverView.topPadding}")
+            infoLog("bottomPadding", "${winOverView.bottomPadding}")
+            infoLog("startPadding", "${winOverView.startPadding}")
+            infoLog("endPadding", "${winOverView.endPadding}")
+            infoLog("topPaddingDp", "${winOverView.topPaddingDp}")
+            infoLog("bottomPaddingDp", "${winOverView.bottomPaddingDp}")
+            infoLog("startPaddingDp", "${winOverView.startPaddingDp}")
+            infoLog("endPaddingDp", "${winOverView.endPaddingDp}")
+            infoLog("winOvView height", "${winOverView.height}")
+            infoLog("winOvView width", "${winOverView.width}")
+            infoLog("winOvView heightDp", "${winOverView.heightDp}")
+            infoLog("winOvView widthDp", "${winOverView.widthDp}")
+            infoLog("map widthInt", "${winOverView.mapWidthInt}")
+        }
     }
 
     private fun initGrid(context: Context) {
@@ -103,9 +106,11 @@ object userStatsThirdPart {
         grid.cardPlaceWidth = dimensions.width / grid.numberOfColumn
         grid.cardPlaceWidthDp = grid.cardPlaceWidth.toDp(density)
 
-        verbalLog("init", "initGrid")
-        infoLog("card Place Height", "${grid.cardPlaceHeight}")
-        infoLog("card Place Width", "${grid.cardPlaceWidth}")
+        displayUIData?.let {
+            verbalLog("init", "initGrid")
+            infoLog("card Place Height", "${grid.cardPlaceHeight}")
+            infoLog("card Place Width", "${grid.cardPlaceWidth}")
+        }
     }
 
     private fun initDimensions(context: Context) {
@@ -119,13 +124,15 @@ object userStatsThirdPart {
         dimensions.width = widthFull.toFloat()
         dimensions.widthDp = dimensions.width.toDp(density)
 
-        verbalLog("init", "initDimensions")
-        infoLog("height", "${dimensions.height}")
-        infoLog("width", "${dimensions.width}")
+        displayUIData?.let {
+            verbalLog("init", "initDimensions")
+            infoLog("height", "${dimensions.height}")
+            infoLog("width", "${dimensions.width}")
+        }
     }
 
     fun create(context: Context): userStatsThirdPart {
-        errorLog("create", "userThirdPart UI data")
+        infoLog("create", "userThirdPart UI data")
         initDimensions(context)
         initGrid(context)
         initWinOverview(context)

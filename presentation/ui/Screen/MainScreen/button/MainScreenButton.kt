@@ -63,8 +63,8 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
         transitionSpec = {
             when (buttonState) {
                 ButtonState.Selected -> tween(goingTopTiming)
-//                else -> tween(200)
-                else -> tween(100)
+                else -> tween(200)
+//                else -> tween(100)
             }
         }
     ) { state ->

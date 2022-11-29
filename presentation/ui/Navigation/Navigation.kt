@@ -14,9 +14,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
-import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
-import com.mobilegame.robozzle.domain.res.TRUE
 import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
 import com.mobilegame.robozzle.presentation.ui.MainScreen
 import com.mobilegame.robozzle.presentation.ui.Screen.Arguments
@@ -130,11 +128,15 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
         ) { entry ->
             entry.arguments?.getInt(Arguments.LevelId.key)?.let { _levelId ->
                 LevelRoomViewModel(context).getLevel(_levelId)?.let { _level ->
-                    RanksLevelScreen(
-                        navigator = navigator,
-                        levelId = _levelId,
-                        levelName = _level.name
-                    )
+                    navController.previousBackStackEntry?.destination?.route?.let { _previousRoute ->
+                        infoLog("Navigation", "previousRoute $_previousRoute")
+                        val fromScreen = Screens.identify(_previousRoute)
+                        RanksLevelScreen(
+                            navigator = navigator,
+                            levelId = _levelId,
+                            fromScreen = fromScreen
+                        )
+                    }
                 }
             }
         }
@@ -184,8 +186,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //}
 }
 
-//var displayUIData: Int? = null
-var displayUIData: Int? = 1
+var displayUIData: Int? = null
+//var displayUIData: Int? = 1
 
 val levelTuto = Level(
     name = "Tuto",

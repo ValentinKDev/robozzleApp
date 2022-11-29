@@ -82,4 +82,8 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
             upDateLevelWinListTo( allLevelWinList.filter { levelByDiff.contains(it.lvl_id) } )
         }
     }
+
+    fun backHandler(navigator: Navigator) {
+        NavViewModel(navigator).navigateToMainMenu(fromScreen = Screens.UserInfo.route)
+    }
 }
