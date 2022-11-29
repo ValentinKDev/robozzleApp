@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
+import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
@@ -47,7 +48,13 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             label = { Text(text = vm.getNameInputFieldLabel()) },
             isError = !isValidName,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = whiteDark2,
+                errorLeadingIconColor = MaterialTheme.colors.error,
+                leadingIconColor = MyColor.greenSecondVariant,
+                focusedIndicatorColor = MyColor.greenSecondVariant,
+                disabledLeadingIconColor = MyColor.grayDark3,
+            ),
         )
 
 
@@ -63,7 +70,13 @@ fun LoginTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) {
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             isError = !isValidPassword,
             enabled = isValidName,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = whiteDark2,
+                errorLeadingIconColor = MaterialTheme.colors.error,
+                leadingIconColor = MyColor.greenSecondVariant,
+                focusedIndicatorColor = MyColor.greenSecondVariant,
+                disabledLeadingIconColor = MyColor.grayDark3,
+            ),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {

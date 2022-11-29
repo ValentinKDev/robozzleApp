@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilegame.robozzle.domain.model.Screen.RegisterLoginViewModel
+import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.whiteDark2
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
@@ -37,6 +39,7 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
     val showErrorMessage by vm.showToast.collectAsState()
     val ctxt = LocalContext.current
 
+
     Column {
         //todo: check if the inputs are resistant to application switching
         TextField(
@@ -46,7 +49,13 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             label = { Text(text = vm.getNameInputFieldLabel()) },
             isError = !isValidName,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = whiteDark2,
+                errorLeadingIconColor = MaterialTheme.colors.error,
+                leadingIconColor = MyColor.greenSecondVariant,
+                focusedIndicatorColor = MyColor.greenSecondVariant,
+                disabledLeadingIconColor = MyColor.grayDark3,
+            ),
         )
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -61,7 +70,13 @@ fun RegisterTab(navigator: Navigator, vm: RegisterLoginViewModel = viewModel()) 
             leadingIcon = { Icon(imageVector = Icons.Filled.Android, contentDescription = "pen") },
             isError = !isValidPassword,
             enabled = isValidName,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = whiteDark2),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = whiteDark2,
+                errorLeadingIconColor = MaterialTheme.colors.error,
+                leadingIconColor = MyColor.greenSecondVariant,
+                focusedIndicatorColor = MyColor.greenSecondVariant,
+                disabledLeadingIconColor = MyColor.grayDark3,
+            ),
 //            value = if (passwordVisible) password else vm.getPasswordProtected(password),
             value = password,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
