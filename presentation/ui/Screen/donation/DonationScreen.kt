@@ -12,6 +12,8 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import noRippleClickable
 
+//import noRippleClickable
+
 @Composable
 fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel()) {
 

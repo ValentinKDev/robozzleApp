@@ -44,8 +44,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -157,14 +157,9 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             route = Screens.Test.route,
         ) {
             errorLog("Navigation", "Screen.Test.route")
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(28)
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(48)
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(17)
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(6)
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(8)
 //            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(0)
 //            PlayingScreen(navigator)
-//            RegisterLoginScreen(navigator = navigator)
+            RegisterLoginScreen(navigator = navigator)
 
 //            LevelsScreenByDifficulty(
 //                navigator = navigator,
@@ -173,7 +168,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //            )
 //            CreatorScreen(navigator = navigator)
 //            UserInfoScreen(navigator = navigator)
-            ConfigScreen(navigator = navigator)
+//            ConfigScreen(navigator = navigator)
 //            CreatorScreen(navigator = navigator)
 //            RanksLevelScreen(
 //                navigator = navigator,

@@ -30,6 +30,8 @@ import com.mobilegame.robozzle.presentation.ui.utils.CenterComposableVertically
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import noRippleClickable
 
+//import noRippleClickable
+
 @ExperimentalComposeUiApi
 @Composable
 fun NetworkAndNameInput(vm: DonationScreenViewModel) {
