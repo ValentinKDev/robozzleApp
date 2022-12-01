@@ -37,7 +37,14 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
         _levelWinList.value = list
     }
 
-    val maps =  LevelRoomViewModel(application).getLevelOverViewInList(allLevelWinList).map { it.map }
+    val allLevelOverViewList =  LevelRoomViewModel(application).getLevelOverViewInList(allLevelWinList)
+    val allMaps =  LevelRoomViewModel(application).getLevelOverViewInList(allLevelWinList).map { it.map }
+    private val _mapList = MutableStateFlow<List<List<String>>>(allMaps)
+    val mapList: StateFlow<List<List<String>>> = _mapList.asStateFlow()
+    fun updateMapListTo(list: List<List<String>>) {
+        _mapList.value = list
+    }
+
 
     private val _gridVisible = MutableStateFlow<Boolean>(false)
     val gridVisible: StateFlow<Boolean> = _gridVisible.asStateFlow()
@@ -79,7 +86,11 @@ class UserInfoScreenLogic(val application: Application): ViewModel() {
     fun sortByDiff(difficulty: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val levelByDiff = levelRoomVM.getIdByDifficulty(difficulty)
-            upDateLevelWinListTo( allLevelWinList.filter { levelByDiff.contains(it.lvl_id) } )
+            val newList = allLevelWinList.filter { levelByDiff.contains(it.lvl_id) }
+            upDateLevelWinListTo(newList)
+//            upDateLevelWinListTo( allLevelWinList.filter { levelByDiff.contains(it.lvl_id) } )
+            val newMaps = allLevelOverViewList.filter { levelByDiff.contains(it.id) }.map { it.map }
+            updateMapListTo(newMaps)
         }
     }
 

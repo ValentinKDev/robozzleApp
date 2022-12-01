@@ -9,8 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
-import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
-import com.mobilegame.robozzle.domain.model.Screen.utils.PressAnimationState
 import com.mobilegame.robozzle.domain.model.User.UserInfosScreenViewModel
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 
@@ -18,6 +16,7 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 @Composable
 fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) {
     val levelWinList by remember { vm.logic.levelWinList }.collectAsState()
+    val levelMapList by remember { vm.logic.mapList }.collectAsState()
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
@@ -32,7 +31,8 @@ fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) 
                 DisplayWinOverView(
                     levelWin = levelWinList[_index],
                     navigator = navigator,
-                    levelMap = vm.logic.maps[_index],
+//                    levelMap = vm.logic.allMaps[_index],
+                    levelMap = levelMapList[_index],
                     vm = vm
                 )
             }
