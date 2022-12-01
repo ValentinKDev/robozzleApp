@@ -115,7 +115,7 @@ fun DrawMapCase(
                         .gradientBackground(
                             mapCaseColorList(
                                 caseColor,
-                                filter
+//                                filter
                             ), 135f
                         )
 //                        .clickable {

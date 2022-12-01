@@ -187,7 +187,7 @@ fun ActionRowCase(vm: GameDataViewModel, case: FunctionInstruction, filter: Bool
         Box( Modifier.gradientBackground(
             colors = mapCaseColorList(
                 case.color,
-                filter
+//                filter
             ),
             angle = 175F
         )

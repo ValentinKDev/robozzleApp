@@ -28,7 +28,7 @@ fun FunctionCase(color: Char, vm: GameDataViewModel, instructionChar: Char, bigg
     ) {
 //        Box( Modifier.gradientBackground(mapCaseColorList(color, filter), 175f) ) {
 //        Box( Modifier.gradientBackground(mapCaseColorList(color, if (vm.isTutoLevel()) false else filter), 175f) ) {
-        Box( Modifier.gradientBackground(mapCaseColorList(color, if (vm.isTutoLevel()) false else filter), 175f) ) {
+        Box( Modifier.gradientBackground(mapCaseColorList(color), 175f) ) {
             if (instructionChar != '.'){
                 CenterComposable {
                     InstructionsIconsFunction(instructionChar, vm, filter)
