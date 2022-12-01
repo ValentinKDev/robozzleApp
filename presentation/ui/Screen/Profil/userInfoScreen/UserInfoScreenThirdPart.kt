@@ -17,6 +17,7 @@ import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) {
     val levelWinList by remember { vm.logic.levelWinList }.collectAsState()
     val levelMapList by remember { vm.logic.mapList }.collectAsState()
+    val scrollState = remember { LazyListState(0, 0) }
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
@@ -26,6 +27,7 @@ fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) 
             end = 1.dp,
             bottom = 1.dp
         ),
+        state = scrollState,
         content = {
             items(levelWinList.size) {_index ->
                 DisplayWinOverView(
@@ -38,5 +40,8 @@ fun UserInfoScreenThirdPart(vm: UserInfosScreenViewModel, navigator: Navigator) 
             }
         }
     )
+    if (levelWinList.size > 10) {
+        ProgressBar(vm, scrollState)
+    }
 }
 

@@ -25,7 +25,7 @@ fun UserInfoScreenSecondPart(vm: UserInfosScreenViewModel) {
         CenterComposableVertically {
             listSorter(
                 vm = vm,
-                text = "${vm.logic.allLevelWinSize} level resolved",
+                text = "${vm.logic.allLevelsNumber} level resolved",
                 type = ListSorterType.All
             )
         }
