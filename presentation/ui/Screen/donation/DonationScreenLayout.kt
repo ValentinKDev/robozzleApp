@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 import android.content.Context
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.sp
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.presentation.res.MyColor
@@ -11,6 +12,30 @@ import com.mobilegame.robozzle.presentation.ui.Screen.RanksLevel.RanksLevelLayou
 object DonationScreenLayout {
     val header = Header
 
+//    object Header {
+//        val sizes = SizesHeader
+//        val ratios = RatiosHeader
+//        val colors = ColorsHeader
+//        val text = TextHeader
+//
+//        object RatiosHeader {
+//            var height = 1F
+//            var text = 0.35F
+//        }
+//        object SizesHeader {
+//            var height = 0F
+//            var text = 0F
+//            var textDp = Dp.Unspecified
+//            var textSp = 0.sp
+//        }
+//        object ColorsHeader {
+//            val text = MyColor.whiteDark4
+//        }
+//        object TextHeader {
+//            const val line = "Config"
+//        }
+//    }
+
     object Header {
         val ratios = RatiosHeader
         val sizes = SizesHeader
@@ -19,7 +44,6 @@ object DonationScreenLayout {
 
         object RatiosHeader {
             const val heightWeight = 6F
-//            const val width = F
         }
         object SizesHeader {
             var height = 0F

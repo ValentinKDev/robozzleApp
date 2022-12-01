@@ -12,8 +12,6 @@ import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 import noRippleClickable
 
-//import noRippleClickable
-
 @Composable
 fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel()) {
 
@@ -21,9 +19,17 @@ fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel
         NavViewModel(navigator).navigateToMainMenu( fromScreen = Screens.Donation.route )
     }
 
-    Box( Modifier.fillMaxSize()
-        .noRippleClickable { vm.logic.fold() }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .noRippleClickable { vm.logic.fold() }
     ) {
+//        Column {
+//            Row(modifier = Modifier
+//                .weight(vm.ui.header.ratios.height)
+//                .fillMaxWidth()) {
+//            }
+//        }
         Column(Modifier.fillMaxSize()) {
             PaddingComposable(
                 bottomPaddingRatio = vm.data.ratios.firstPartBottomPadding

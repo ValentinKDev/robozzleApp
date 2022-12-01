@@ -35,7 +35,8 @@ fun GameButtons(vm: GameDataViewModel, enablePlayPause: Boolean = true, enableRe
             BackButton(vm, enable = playerAnimationState runningInBackgroundIs true && enableBack)
 
             Box(Modifier.weight(1F))
-            NextButton(vm, enable = playerAnimationState runningInBackgroundIs true && enableNext)
+            NextButton(vm, enable = enableNext)
+//            NextButton(vm, enable = playerAnimationState runningInBackgroundIs true && enableNext)
             Box(Modifier.weight(1F))
         }
     }

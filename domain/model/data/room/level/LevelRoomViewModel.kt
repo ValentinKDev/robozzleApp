@@ -101,7 +101,7 @@ class LevelRoomViewModel(context: Context): ViewModel() {
                         name = levelData.name,
                         difficulty = levelData.difficulty,
                         mapJson = levelData.mapJson,
-                        instructionsMenuJson = levelData.funInstructionsListJson,
+                        instructionsMenuJson = levelData.instructionsMenuJson,
                         funInstructionsListJson = cleanSolutionJson,
                         playerInitalJson = levelData.playerInitalJson,
                         starsListJson = levelData.starsListJson

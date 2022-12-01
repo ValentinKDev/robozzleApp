@@ -1,4 +1,4 @@
-package com.mobilegame.robozzle.data.layout.donation
+package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 object DonationScreenText {
 

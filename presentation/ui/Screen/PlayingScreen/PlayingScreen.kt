@@ -34,20 +34,10 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
         Log.e("LAUNCH LEVEL", "${vm.level.id} - ${vm.level.name}"); Log.i("", "_")
         animScreen.targetState = true
         if (!tuto.matchStep(Tuto.End)) vm.tutoVM.setTutoTo(Tuto.ClickOnFirstInstructionCase)
-//        if (!tuto.matchStep(Tuto.End)) vm.tutoVM.setTutoTo(Tuto.Mar)
     }
 
-//    DisposableEffect(true) {
-//        onDispose {
-//            errorLog("PlayingScreen", "On Dispose")
-//            vm.disposeHandler()
-//        }
-//    }
 
     BackHandler {
-        //reset Game
-        //create a level
-        //replace level in room
         vm.backNavHandler()
         animScreen.targetState = false
         backPress.value = true
@@ -61,7 +51,6 @@ fun PlayingScreen( navigator: Navigator, vm: GameDataViewModel = viewModel()) {
     else {
         AnimatedVisibility(
             visibleState = animScreen,
-//            enter = slideInHorizontally(initialOffsetX = {200}),
             enter = fadeIn(),
             exit = slideOutHorizontally(targetOffsetX = {300}, animationSpec = tween(150)) + fadeOut(animationSpec = tween(150)),
         ) {

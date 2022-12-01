@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.mobilegame.robozzle.analyse.infoLog
 import com.mobilegame.robozzle.data.layout.donation.DonationScreenColors
 import com.mobilegame.robozzle.data.layout.donation.DonationScreenRatios
-import com.mobilegame.robozzle.data.layout.donation.DonationScreenText
+import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreenText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
