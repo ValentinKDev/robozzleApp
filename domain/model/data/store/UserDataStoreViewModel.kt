@@ -20,14 +20,12 @@ class UserDataStoreViewModel (
     private val service = DataStoreService.createUserService(context)
 
     fun getUser(): User {
-        infoLog("get user in Datastore from UserDataStoreViewModel", "start")
+        infoLog("UserDataStoreVM::getUser","get user in Datastore from UserDataStoreViewModel")
         val id = getId() ?: ID_NO_VALUE
         val name = getName() ?: NAME_NO_VALUE
         val password = getPassword() ?: PASSWORD_NO_VALUE
 
-        infoLog(id.toString(), "from datastore")
-        infoLog("name from datastore", name)
-        infoLog("password from datastore", password)
+        infoLog("UserDataStoreVM::getUser","${id} $name $password")
         return User(id, name, password)
     }
 
@@ -55,11 +53,6 @@ class UserDataStoreViewModel (
         viewModelScope.launch {
             service.putString(KeyProvider.Name.key, value)
         }
-    }
-
-    fun getUserConnectionState(): String? = runBlocking {
-        infoLog("get", "user connection state")
-        service.getString(KeyProvider.ConnectionState.key)
     }
 
     fun getName(): String? = runBlocking {

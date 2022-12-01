@@ -38,6 +38,12 @@ interface LevelDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLevel(lvl: LevelData)
 
+//    @Insert(""onConflict = OnConflictStrategy.REPLACE)
+//@Query("SELECT * FROM level_table UPDATE level_table  WHERE id = :id")
+@Query("UPDATE level_table SET fun_instruction_json = :newSolutionJson WHERE id = :id")
+    suspend fun updateSolution(id: Int, newSolutionJson: String)
+//    @Query("UPDATE level_table SET fun_instruction_json = :newSolutionJson WHERE id IN :ids")
+//    suspend fun updateSolutions(ids: List<Int>, newSolutionJson: String)
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)
 //    suspend fun addLevel(lvl: LevelData)
 

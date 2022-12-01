@@ -3,6 +3,7 @@ package com.mobilegame.robozzle.data.server.JwtToken
 import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
 import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayHttpClientInfo
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -66,7 +67,9 @@ interface JWTTokenService {
                     install(Logging) {
                         logger = object : Logger {
                             override fun log(message: String) {
-                                Log.v("Logger Ktor =>", message)
+                                displayHttpClientInfo?.let {
+                                    Log.v("Logger Ktor =>", message)
+                                }
                             }
 
                         }

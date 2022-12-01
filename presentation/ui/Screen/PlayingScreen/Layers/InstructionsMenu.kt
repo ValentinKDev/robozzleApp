@@ -86,7 +86,8 @@ fun InstructionCase(
 ) {
     Box(
         modifier = Modifier
-            .gradientBackground( mapCaseColorList(case.color, false), 175f )
+//            .gradientBackground( mapCaseColorList(case.color, false), 175f )
+            .gradientBackground( mapCaseColorList(case.color), 175f )
             .size(vm.data.layout.menu.sizes.case.dp)
             .then(clickable)
             .border(

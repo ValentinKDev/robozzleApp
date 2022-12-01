@@ -1,13 +1,10 @@
 package com.mobilegame.robozzle.domain.model.data.room.level
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.mobilegame.robozzle.analyse.infoLog
-import com.mobilegame.robozzle.analyse.prettyPrint
-import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.data.room.Level.LevelData
 import com.mobilegame.robozzle.data.room.Level.LevelDao
 import com.mobilegame.robozzle.data.room.Level.LevelDataBase
@@ -107,6 +104,17 @@ class LevelRoomViewModel(context: Context): ViewModel() {
                         starsListJson = levelData.starsListJson
                     )
                 )
+            }
+        }
+    }
+
+    fun addLevelSolutions(listToAdd: List<LevelWin>) {
+        infoLog("LevelRoomVM::addLevelSolutions", "list level : ${listToAdd.map { it.lvl_id }}")
+        val gson = Gson()
+        viewModelScope.launch(Dispatchers.IO) {
+            listToAdd.forEach {
+                val solutionJson = gson.toJson(it.details.solutionFound, ListFunctionInstructionType)
+                repo.updateSolution(it.lvl_id, solutionJson)
             }
         }
     }

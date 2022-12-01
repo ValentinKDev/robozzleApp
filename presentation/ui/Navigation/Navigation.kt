@@ -184,6 +184,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
 var displayUIData: Int? = null
 //var displayUIData: Int? = 1
+//var displayHttpClientInfo: Int? = null
+var displayHttpClientInfo: Int? = 1
 
 val levelTuto = Level(
     name = "Tuto",

@@ -63,4 +63,8 @@ class LevelRepository(private val levelDao: LevelDao) {
         levelData.forEach { levelDao.addLevel(it)
         }
     }
+
+    suspend fun updateSolution(id: Int, solutionJson: String) {
+        levelDao.updateSolution(id, solutionJson)
+    }
 }
