@@ -135,7 +135,7 @@ fun DrawMapCase(
                         else if (stars contain casePos) {
                             if (stars contain casePos) {
                                 CenterComposable {
-                                    StarIcon(vm.data.layout.firstPart, vm.data.colors)
+                                    StarIcon(vm.data.layout.firstPart, vm.data.colors, enableGlow = !filter)
                                 }
                             }
                         }

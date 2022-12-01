@@ -37,8 +37,9 @@ fun testView() {
 }
 
 @Composable
-fun StarIcon(data: InGameFirstPart, colors: InGameColors) {
-    DrawBackGlowingEffect( data = data, colors = colors)
+fun StarIcon(data: InGameFirstPart, colors: InGameColors, enableGlow: Boolean = true) {
+    if (enableGlow)
+        DrawBackGlowingEffect( data = data)
     DrawStarPart( data = data, colors = colors)
     DrawFrontNeonEffect(data = data, colors = colors)
 }
@@ -73,7 +74,6 @@ fun DrawFrontNeonEffect(data: InGameFirstPart, colors: InGameColors) {
 @Composable
 private fun DrawBackGlowingEffect(
     data: InGameFirstPart,
-    colors: InGameColors
 ) {
     val transition = rememberInfiniteTransition()
     val ratioAnim by transition.animateFloat(
@@ -141,11 +141,6 @@ private fun DrawBackGlowingEffect(
                         list
                     ),
                 )
-//                drawCircle(
-//                    brush = Brush.radialGradient( colors.star.backGlowingEffect ),
-//                    radius = center.x,
-//                    center = center
-//                )
             }
         }
     }
@@ -186,83 +181,3 @@ private fun DrawStarPart(
         }
     }
 }
-
-//@Composable
-//private fun DrawStarPart(
-//    data: InGameFirstPart,
-//    colorLeftSide: List<Color>,
-//    colorRightSide: List<Color>,
-//    colorBack: Color,
-//    colorLines: List<Color>,
-//) {
-//    val sizeDp = data.size.starBoxDp
-//    Box(modifier = Modifier
-//        .size(sizeDp)
-//    ){
-//        CenterComposable {
-//            Canvas(modifier = Modifier
-//                .size(data.size.starCanvasDp)
-//            ){
-////                val stroke = sizeDp / 50F
-//                val partRight = Path().apply {
-//                    moveTo(data.star.pTop.x, data.star.pTop.y)
-//                    lineTo(data.star.pRight.x, data.star.pRight.y)
-//                    lineTo(data.star.center.x, data.star.center.y)
-//                }
-//                val partRight2 = Path().apply {
-//                    moveTo(data.star.pTop.x, data.star.pTop.y)
-//                    lineTo(data.star.pRight.x, data.star.pRight.y)
-//                    lineTo(data.star.decenter.x, data.star.decenter.y)
-//                }
-//                val partLeft2 = Path().apply {
-//                    moveTo(data.star.pTop.x, data.star.pTop.y)
-//                    lineTo(data.star.pLeft.x, data.star.pLeft.y)
-//                    lineTo(data.star.decenter.x, data.star.decenter.y)
-//                }
-//                val partLeft = Path().apply {
-//                    moveTo(data.star.pTop.x, data.star.pTop.y)
-//                    lineTo(data.star.pLeft.x, data.star.pLeft.y)
-//                    lineTo(data.star.center.x, data.star.center.y)
-//                }
-//
-//                for (angle in listOf(0F, 72F, 144F, 216F, 288F)) {
-//                    rotate(degrees = angle) {
-//                        drawPath(partRight2, colorBack)
-//                        drawPath(partLeft2, colorBack)
-//                        drawPath(partRight, brush = Brush.linearGradient(colorRightSide))
-//                        drawPath(partLeft, brush = Brush.linearGradient(colorLeftSide))
-//                        drawLine(
-//                            brush = Brush.verticalGradient(colorLines),
-//                            start = data.star.pRight,
-//                            end = data.star.center,
-//                            strokeWidth = data.star.stroke
-//                        )
-//                        drawLine(
-//                            brush = Brush.verticalGradient(colorLines),
-//                            start = data.star.pLeft,
-//                            end = data.star.center,
-//                            strokeWidth = data.star.stroke
-//                        )
-//                    }
-//
-//                }
-//
-//                for (angle in listOf(0F, 72F, 144F, 216F, 288F)) {
-//                        drawLine(
-//                            brush = Brush.verticalGradient(colorLines),
-//                            start = data.star.pRight,
-//                            end = data.star.center,
-//                            strokeWidth = data.star.stroke
-//                        )
-//                        drawLine(
-//                            brush = Brush.verticalGradient(colorLines),
-//                            start = data.star.pLeft,
-//                            end = data.star.center,
-//                            strokeWidth = data.star.stroke
-//                        )
-//                    }
-//
-//            }
-//        }
-//    }
-//}
