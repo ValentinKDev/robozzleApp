@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.domain.InGame.PlayerAnimationState
 import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
@@ -100,6 +101,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                 vm.setSelectedFunctionCase(functionNumber, _index)
                             }
                         } else Modifier
+
                         val caseColor = function.colors[_index]
                         Box(Modifier
                             .size(vm.data.layout.secondPart.sizes.functionCaseDp)
@@ -120,11 +122,7 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                                     instructionChar = instructionChar,
                                     vm = vm,
                                     filter = (displayInstructionMenu && !vm.selectedCase.Match(Position(functionNumber, _index))))
-//                                            || !(vm.isTutoLevel() && vm.tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase) && _index == 0 && functionNumber == 0)
                             }
-//                            if (vm.isTutoLevel() && vm.tutoVM.tuto.matchStep(Tuto.ClickOnFirstInstructionCase) && _index == 0 && functionNumber == 0) {
-//                                enlightItem(modifier = Modifier.size( vm.data.layout.secondPart.sizes.functionCaseDp ) , ui = vm.tutoLayout.value)
-//                            }
                         }
                     }
                 }
@@ -134,16 +132,17 @@ fun DisplayFunctionRow(functionNumber: Int, function: FunctionInstructions, vm: 
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                     function.instructions.substring(5..9).forEachIndexed { _index, _ ->
-                        val clickable2 = if (enableClick) Modifier.clickable {
+                        val index = _index + 5
+                        val caseColor = function.colors[index]
+                        val clickable2 =
+                            if (enableClick) Modifier.clickable {
                             if (vm.dragAndDropCase.dragStart.value Is false
                                 && vm.isInstructionMenuAvailable()
                             ) {
                                 vm.ChangeInstructionMenuState()
-                                vm.setSelectedFunctionCase(functionNumber, _index)
+                                vm.setSelectedFunctionCase(functionNumber, index)
                             }
                         } else Modifier
-                        val index = _index + 5
-                        val caseColor = function.colors[index]
                         Box(Modifier
                             .size(vm.data.layout.secondPart.sizes.functionCaseDp)
                             .onGloballyPositioned {

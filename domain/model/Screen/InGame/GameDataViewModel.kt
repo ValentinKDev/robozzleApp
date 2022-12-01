@@ -44,6 +44,7 @@ class GameDataViewModel(application: Application): AndroidViewModel(application)
 
     var selectedCase = Position.Zero
     fun setSelectedFunctionCase(row: Int, column: Int) {
+        verbalLog("GameDataVM:setSelectedFunctionCase", "row $row column $column")
         selectedCase = Position(row, column)
     }
 
