@@ -14,6 +14,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.FunctionInstructions
 import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.model.Screen.Navigation.AnimateNavViewModel
 import com.mobilegame.robozzle.domain.model.data.room.level.LevelRoomViewModel
+import com.mobilegame.robozzle.domain.model.data.store.ArgumentsDataStoreViewModel
 import com.mobilegame.robozzle.domain.model.level.Level
 import com.mobilegame.robozzle.presentation.ui.LevelsScreenByDifficulty
 import com.mobilegame.robozzle.presentation.ui.MainScreen
@@ -44,8 +45,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-        startDestination = Screens.MainMenu.route
-//        startDestination = Screens.Test.route
+//        startDestination = Screens.MainMenu.route
+        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 
@@ -157,8 +158,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
             route = Screens.Test.route,
         ) {
             errorLog("Navigation", "Screen.Test.route")
-//            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(0)
-//            PlayingScreen(navigator)
+            ArgumentsDataStoreViewModel(context).storeLevelNumberArg(0)
+            PlayingScreen(navigator)
 //            RegisterLoginScreen(navigator = navigator)
 
 //            LevelsScreenByDifficulty(
@@ -175,7 +176,7 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 //                levelId = 1,
 //                levelName = "first steps"
 //            )
-            DonationScreen(navigator = navigator)
+//            DonationScreen(navigator = navigator)
         }
     }
 //}

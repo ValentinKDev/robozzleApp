@@ -33,6 +33,7 @@ import com.mobilegame.robozzle.domain.RobuzzleLevel.Position
 import com.mobilegame.robozzle.domain.RobuzzleLevel.isDelete
 import com.mobilegame.robozzle.domain.model.Screen.InGame.GameDataViewModel
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto
+import com.mobilegame.robozzle.domain.model.Screen.Tuto.Tuto.Companion.isTutoPresentation
 import com.mobilegame.robozzle.domain.model.Screen.Tuto.matchStep
 import com.mobilegame.robozzle.presentation.res.MyColor
 import com.mobilegame.robozzle.presentation.ui.Screen.PlayingScreen.*
@@ -50,6 +51,7 @@ import com.mobilegame.robozzle.presentation.ui.utils.spacer.VerticalSpace
 import com.mobilegame.robozzle.presentation.ui.utils.tutoOverlay
 import com.mobilegame.robozzle.utils.Extensions.Is
 import com.mobilegame.robozzle.utils.Extensions.toCaseColor
+import noRippleClickable
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -98,6 +100,11 @@ fun tutoLevel(vm: GameDataViewModel) {
             Modifier
                 .fillMaxSize()
                 .background(tutoLayout.colors.filter)
+                .noRippleClickable {
+                    if (tuto.isTutoPresentation()) {
+                        vm.tutoVM.nextTuto()
+                    }
+                }
         )
         PaddingComposable(
             topPaddingRatio = tutoLayout.popup.topPadding,
@@ -566,9 +573,6 @@ fun tutoLevel(vm: GameDataViewModel) {
                                     }
                                 }
                             }
-//                            CenterComposableHorizontally {
-//                                InstructionCase(vm = vm, case = FunctionInstruction(instruction = 'x', color = 'g'))
-//                            }
                         }
                     }
                 }

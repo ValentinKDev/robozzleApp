@@ -16,8 +16,9 @@ class TutoViewModel(context: Context): ViewModel() {
     private val dataStoreVM = TutoDataStoreViewModel(context)
 
 
-    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
-//private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
+//    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
+//    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnTutoLevel)
+private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 
     val tuto: StateFlow<Tuto> = _tuto.asStateFlow()
     fun getTuto(): Tuto = tuto.value
@@ -82,6 +83,7 @@ class TutoViewModel(context: Context): ViewModel() {
     private var levelDifficulty = -42
     fun updateLevelDifficultyTo(diff: Int) { levelDifficulty = diff }
 
+    fun isTutoClickOnPresentation(): Boolean = getTuto().matchStep(Tuto.QuickPresentation)
     fun isTutoClickOnFirstInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnFirstInstructionCase)
     fun isTutoClickOnFirstInstructionFromMenu(): Boolean = getTuto().matchStep(Tuto.ClickOnFirstInstructionFromMenu)
     fun isTutoClickOnSecondInstruction(): Boolean = getTuto().matchStep(Tuto.ClickOnSecondInstructionCase)
