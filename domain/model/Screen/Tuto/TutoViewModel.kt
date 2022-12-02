@@ -16,9 +16,9 @@ class TutoViewModel(context: Context): ViewModel() {
     private val dataStoreVM = TutoDataStoreViewModel(context)
 
 
-//    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
 //    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnTutoLevel)
-private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
+    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
+//private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 
     val tuto: StateFlow<Tuto> = _tuto.asStateFlow()
     fun getTuto(): Tuto = tuto.value
@@ -51,7 +51,7 @@ private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.ge
         errorLog("TutoViewModel::nextStep", "now Tuto: ${getTuto().description}")
     }
 
-    val dragTime = 2000
+    val dragTime = 1800
     fun dragTimeIsOver(): Boolean = timer > dragTime
     var timerStart: Long = 0
     var timer: Long = 0

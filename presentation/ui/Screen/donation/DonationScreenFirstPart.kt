@@ -16,14 +16,15 @@ fun DonationScreenFirstPart(vm: DonationScreenViewModel) {
     ) {
         Column( Modifier .fillMaxWidth()
         ) {
-            Box(Modifier.weight(vm.ui.header.ratios.heightWeight)) {
-                CenterComposable {
-                    Text(
-                        text = vm.ui.header.text.str,
-                        modifier = Modifier.align(Alignment.Center),
-                        color = vm.ui.header.colors.text,
-                    )
-                }
+//            Box(Modifier.weight(vm.ui.header.ratios.heightWeight)) {
+            Box(Modifier.weight(1F)) {
+//                CenterComposable {
+//                    Text(
+//                        text = vm.ui.header.text.str,
+//                        modifier = Modifier.align(Alignment.Center),
+//                        color = vm.ui.header.colors.text,
+//                    )
+//                }
             }
             Box(Modifier.weight(vm.data.ratios.introWeight)) {
                 PaddingComposable(
