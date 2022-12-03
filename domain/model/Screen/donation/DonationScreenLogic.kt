@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.ScrollState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,16 +25,6 @@ class DonationScreenLogic(): ViewModel() {
     val input: StateFlow<String> = _input.asStateFlow()
     fun handleInput(input: String) {
         viewModelScope.launch(Dispatchers.Default) {
-//            if (input.contains(ref1) || input.contains(ref2)) {
-//                input.forEachIndexed { index, c ->
-//                    infoLog(index.toString(), c.toString())
-//                    if (c != ref[index]) {
-//                        _input.value = c.toString()
-//                        return@forEachIndexed
-//                    }
-//                }
-//            }
-//            else
                 _input.value = input.trim()
         }
     }
@@ -69,8 +60,19 @@ class DonationScreenLogic(): ViewModel() {
         Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
     }
 
-    private val _unfold = MutableStateFlow<Boolean>(false)
-    val unfold: StateFlow<Boolean> = _unfold
+//    private val _visibleListState = MutableStateFlow(MutableTransitionState(false))
+//    val visibleListState = _visibleListState.asStateFlow()
+//    fun setVisibleListTargetStateAs(state: Boolean) {_visibleListState.value.targetState = state}
+//    fun listAnimationEnd(): Boolean = !_visibleListState.value.targetState && !_visibleListState.value.currentState
+//private val _unfoldState = MutableStateFlow(MutableTransitionState(false))
+//    val unfoldState = _unfoldState.asStateFlow()
+    private val _unfold = MutableStateFlow(false)
+    val unfold = _unfold.asStateFlow()
+
+//    fun foldAnimationEnd(): Boolean = !_unfold.value.targetState && !_unfold.value.currentState
+//    fun unfoldAnimationEnd(): Boolean = _unfold.value.targetState && _unfold.value.currentState
+//    fun foldUnfold() { _unfold.value.targetState = !_unfold.value.targetState}
+//    fun fold() {_unfold.value.targetState = false}
     fun foldUnfold() { _unfold.value = !_unfold.value}
     fun fold() {_unfold.value = false}
 

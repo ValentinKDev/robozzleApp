@@ -22,7 +22,6 @@ class DonationScreenData(): ViewModel() {
     var listSize: Float? = null
     fun setListSize(layoutCoordinates: LayoutCoordinates, context: Context) = runBlocking(Dispatchers.IO) {
         listSize ?: run {
-//        if (listSize == null) run {
             listSize = layoutCoordinates.boundsInRoot().height / context.resources.displayMetrics.density
         }
         infoLog("listSize", "$listSize")
