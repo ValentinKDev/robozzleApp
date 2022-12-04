@@ -184,6 +184,8 @@ inline class MyColor(val color: Color){
             val applicationBackground = grayDark6
             val applicationSurface = grayDark2
             val applicationSurfaceDark = grayDark3
+            val applicationSurfaceDarkDark = grayDark4
+            val applicationText = whiteDark4
 
 //            val redListDark: List<Color> = listOf(Color(0xff110000), Color(0xff650000), Color(0xff990000))
             val redListLight = listOf(Color(0xff750000), Color(0xff920000), Color(0xffad0000))

@@ -23,7 +23,7 @@ object DonationScreenText {
         "Raptoreum (RTM)" to "RXhfn5yVtsGnTdaejwq4TX3FyhEQxzvZgu",
         "Dogecoin (DOGE)" to "DTZaEq2rbTNVvdQ41MqVuksf6ZW7gXsrdP",
         "Horizen (ZEN)" to "znoWPgzipwcypzjUz865SGJjbNvgVmdSyo5",
-        "Ethereum Classic (ETC)" to "0x768fbca7f7c6045725d8fe2c44999223a970fbc0",
+        "Ethereum Classic (ETC) ERC20" to "0x768fbca7f7c6045725d8fe2c44999223a970fbc0",
         "Toncoin (TON)" to "EQAJJyKHQrO0CYrdcI7ul-oj_f_-0MqIWH1bLgpBP6mXwunS",
 
         "Polygon (MATIC) POLY" to "0x768fbca7f7c6045725d8fe2c44999223a970fbc0",

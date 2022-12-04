@@ -1,5 +1,6 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,16 +11,16 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun presentation(vm: DonationScreenViewModel) {
-    PaddingComposable(
-        startPaddingRatio = vm.ui.presentation.ratios.startPadding,
-        endPaddingRatio = vm.ui.presentation.ratios.endPadding
-//        horizontalPadding = vm.ui.presentation.paddings.horizontalPadding,
-    ) {
-        Text (
-            modifier = Modifier.verticalScroll(vm.logic.scroll),
-            text = vm.data.text.intro,
-//            textAlign = TextAlign.Center,
-            color = vm.data.color.textColor
-        )
-    }
+    Text (
+        modifier = Modifier
+            .verticalScroll(vm.logic.scroll)
+            .padding(
+                start = vm.ui.presentation.padding.startPadding,
+                end = vm.ui.presentation.padding.endPadding,
+                bottom = vm.ui.presentation.padding.bottomPadding
+            )
+        ,
+        text = vm.ui.presentation.text.intro,
+        color = vm.ui.presentation.colors.text
+    )
 }

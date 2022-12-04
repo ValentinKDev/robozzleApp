@@ -19,6 +19,42 @@ import androidx.compose.ui.unit.TextUnit
 import backColor
 
 @Composable
+fun EndComposable(content: @Composable () -> Unit) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.align(Alignment.End)) {
+            content.invoke()
+        }
+    }
+}
+
+@Composable
+fun StartComposable(content: @Composable () -> Unit) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.align(Alignment.Start)) {
+            content.invoke()
+        }
+    }
+}
+
+@Composable
+fun TopComposable(content: @Composable () -> Unit) {
+    Row(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.align(Alignment.Top)) {
+            content.invoke()
+        }
+    }
+}
+
+@Composable
+fun BottomComposable(content: @Composable () -> Unit) {
+    Row(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.align(Alignment.Bottom)) {
+            content.invoke()
+        }
+    }
+}
+
+@Composable
 fun CenterComposable(content: @Composable () -> Unit) {
     Box( modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) { content.invoke() }

@@ -25,15 +25,15 @@ import noRippleClickable
 @Composable
 fun NetworkAndNameInput(vm: DonationScreenViewModel) {
     val ctxt = LocalContext.current
-    val input by remember(vm) {vm.logic.input}.collectAsState( initial = "" )
+    val input by remember(vm) {vm.logic.output}.collectAsState( initial = "" )
     val unfold by vm.logic.unfold.collectAsState()
 
+//    TextField(value = , onValueChange = )
     Box(Modifier
         .clickable { vm.logic.foldUnfold() }
         .fillMaxSize()
     ) {
         if (unfold) {
-//        if (vm.logic.unfoldAnimationEnd()) {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxHeight()

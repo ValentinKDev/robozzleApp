@@ -35,3 +35,33 @@ fun String.replaceAt(index: Int, char: Char): String {
 
 fun String.getNavArguement(keyStr: String): String = this.plus("/{$keyStr}")
 fun String.addNavArg(arg: String): String = this.plus("/$arg")
+
+fun String.getDiffChar(str: String): Char {
+    if (this.isEmpty())
+        return '0'
+    if (str.isEmpty())
+        return '0'
+    return when {
+        this.length >= str.length -> {
+            var ret = '0'
+            for (i in 0 .. str.lastIndex) {
+                if (str[i] != this[i]) {
+                    ret = this[i]
+                    break
+                }
+            }
+            ret
+        }
+        this.length <= str.length -> {
+            var ret = '0'
+            for (i in 0 .. this.lastIndex) {
+                if (str[i] != this[i]) {
+                    ret = str[i]
+                    break
+                }
+            }
+            ret
+        }
+        else -> '0'
+    }
+}
