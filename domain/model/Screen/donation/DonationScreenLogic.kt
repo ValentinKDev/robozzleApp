@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ScrollState
+import androidx.compose.ui.focus.FocusManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.verbalLog
@@ -30,9 +31,7 @@ class DonationScreenLogic(): ViewModel() {
                 setSelectionTo(false)
                 unfold()
             }
-            else
-                setInputTo(input.trim())
-//                _input.value = input.trim()
+            else setInputTo(input.trim())
             updateList()
             verbalLog("DonationScreenVMlogic::handleInput", "input -$input-")
         }
@@ -52,43 +51,12 @@ class DonationScreenLogic(): ViewModel() {
         }
     }
 
-    fun showList(): List<String> {
-        return if (_output.value.isEmpty()) {
-            DonationScreenText.listNetworkCoin
-        } else {
-            DonationScreenText.listNetworkCoin.filter { it.contains(_output.value, ignoreCase = true) }
-        }
-    }
-
-    private val _snackShared = MutableSharedFlow<Int>()
-    val snackShared = _snackShared.asSharedFlow()
-
-    fun triggerSnackBar() {
-        viewModelScope.launch {
-            _snackShared.emit(1)
-        }
-    }
-
     private val _selection = MutableStateFlow<Boolean>(false)
     val selection: StateFlow<Boolean> = _selection.asStateFlow()
     private fun setSelectionTo(state: Boolean) {_selection.value = state}
     private fun isSelectionActive(): Boolean = _selection.value
-    private var selectedItem: Pair<String, String> = Pair("", "")
-    private fun String.cutString(): String = this.filterIndexed {index, c -> index < 25 } + "..."
-
-    private val _textSelected = MutableStateFlow<String>(DonationScreenText.textSelection)
-    val textSelected: StateFlow<String> = _textSelected.asStateFlow()
-    fun setTextSelectedTo(text: String) {
-        _textSelected.value = text
-    }
-
-    fun clipAndToast(context: Context) {
-        val clip = ClipData.newPlainText("address", textSelected.value)
-        val myClipboard : ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager //as ClipboardManager
-
-        myClipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show()
-    }
+    var selectedItem: Pair<String, String> = Pair("", "")
+    private fun String.cutString(): String = this.filterIndexed {index, c -> index < 30 } + "..."
 
     private val _unfold = MutableStateFlow<Boolean>(false)
     val unfold: StateFlow<Boolean> = _unfold.asStateFlow()
@@ -97,14 +65,15 @@ class DonationScreenLogic(): ViewModel() {
     fun fold() {_unfold.value = false}
     fun unfold() {_unfold.value = true}
 
-    fun handleSelectorFocus() {
-        unfold()
-    }
-    fun handleSelectorUnfocus() {
-        fold()
-    }
-    fun handleCopy() {
-        verbalLog("DonationScreenVMlogic::handleCopy", "Start")
+    fun handleSelectorFocus() { unfold() }
+    fun handleSelectorUnfocus() { fold() }
+
+    fun handleCopy(context: Context, focusManager: FocusManager) {
+        val clip = ClipData.newPlainText("address", selectedItem.second)
+        val myClipboard : ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        focusManager.clearFocus()
+        myClipboard.setPrimaryClip(clip)
+        Toast.makeText(context, "Full address copied", Toast.LENGTH_SHORT).show()
     }
 
     fun handleItemClick(element: String) {

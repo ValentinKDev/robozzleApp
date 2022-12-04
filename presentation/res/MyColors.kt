@@ -75,8 +75,7 @@ inline class MyColor(val color: Color){
                     return Color(grayTint)
             }
 
-            val greenVariant = Color(0xFF03DAC6)
-            val greenSecondVariant = Color (0XFF018786)
+//            val bestGreen = Color (0XFF119796)
 
             val green0 = Color(0xFF00FF00)
             val green1 = Color(0xDF00FF00)
@@ -181,11 +180,26 @@ inline class MyColor(val color: Color){
             val redDark11= Color(0xFF4F0000)
             val redDark12= Color(0xFF3F0000)
 
+            val greenVariant = Color(0xFF03DAC6)
+            val greenSecondVariant = Color (0XFF018786)
+            val greenSecondVariant1 = Color (0XEE018786)
+            val greenSecondVariant2 = Color (0XDD018786)
+            val greenSecondVariant3 = Color (0XCC018786)
+            val greenSecondVariant4 = Color (0XBC018786)
+            val greenSecondVariant5 = Color (0XAC018786)
+            val greenSecondVariant6 = Color (0X9C018786)
+            val greenSecondVariant7 = Color (0X8C018786)
+            val greenSecondVariant8 = Color (0X7C018786)
+//            val greenSecondVariant9 = Color (0X6E018786)
+//            val greenSecondVariant = Color (0XFF008685)
+
             val applicationBackground = grayDark6
             val applicationSurface = grayDark2
             val applicationSurfaceDark = grayDark3
             val applicationSurfaceDarkDark = grayDark4
             val applicationText = whiteDark4
+            val applicationTextDark = whiteDark5
+            val applicationNiceGreen = greenSecondVariant
 
 //            val redListDark: List<Color> = listOf(Color(0xff110000), Color(0xff650000), Color(0xff990000))
             val redListLight = listOf(Color(0xff750000), Color(0xff920000), Color(0xffad0000))
@@ -217,3 +231,10 @@ inline class MyColor(val color: Color){
     }
 }
 
+private fun Color.toHexCode(): String {
+        val alpha = this.alpha * 255
+        val red = this.red * 255
+        val green = this.green * 255
+        val blue = this.blue * 255
+        return String.format("#%02x#%02x%02x%02x", alpha.toInt() ,red.toInt(), green.toInt(), blue.toInt())
+}

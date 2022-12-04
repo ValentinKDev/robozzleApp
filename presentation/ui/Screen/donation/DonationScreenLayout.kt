@@ -1,6 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 import android.content.Context
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.unit.Dp
@@ -82,18 +83,22 @@ object DonationScreenLayout {
             var heightDp = Dp.Unspecified
         }
         object ShapeSelector {
-            val corner = 5.dp
+//            val corner = 10.dp
+            val corner = 20.dp
             val elevation = 20.dp
         }
         object ColorsSelector {
+            val text: Color = MyColor.applicationTextDark
             val background = MyColor.applicationSurfaceDarkDark
+            val focusIndicator = MyColor.greenSecondVariant
+            val cursor = MyColor.greenSecondVariant
         }
     }
 
     object List {
         val ratios = RatiosList
         val sizes = SizesList
-        val colors = ColotsList
+        val colors = ColorsList
 
         object RatiosList {
             var heightWeight = 0F
@@ -110,8 +115,11 @@ object DonationScreenLayout {
             var elementHeightDp = Dp.Unspecified
             val elementDelimiter = 2.dp
         }
-        object ColotsList {
+        object ColorsList {
+//            val elementDelimiter: Color = MyColor.greenSecondVariant3
+            val elementDelimiter: Color = MyColor.greenSecondVariant7
             var background = MyColor.applicationSurfaceDark
+            var elementText = MyColor.applicationText
         }
     }
 

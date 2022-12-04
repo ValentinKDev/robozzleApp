@@ -35,11 +35,4 @@ fun enlightItem(modifier: Modifier, initialColor: Color = Color.Transparent) {
     ) { }
 }
 
-private fun Color.toHexCode(): String {
-    val alpha = this.alpha * 255
-    val red = this.red * 255
-    val green = this.green * 255
-    val blue = this.blue * 255
-    return String.format("#%02x#%02x%02x%02x", alpha.toInt() ,red.toInt(), green.toInt(), blue.toInt())
-}
 
