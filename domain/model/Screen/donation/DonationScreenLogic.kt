@@ -43,14 +43,6 @@ class DonationScreenLogic(): ViewModel() {
         _list.value = text.listNetworkCoin.filter { it.contains(_output.value, ignoreCase = true) }
     }
 
-    private val _errorInput = MutableStateFlow<Boolean>(false)
-    val errorInput: StateFlow<Boolean> = _errorInput.asStateFlow()
-    fun isInputError() {
-        viewModelScope.launch(Dispatchers.IO) {
-            //find input in list
-        }
-    }
-
     private val _selection = MutableStateFlow<Boolean>(false)
     val selection: StateFlow<Boolean> = _selection.asStateFlow()
     private fun setSelectionTo(state: Boolean) {_selection.value = state}

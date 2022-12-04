@@ -74,10 +74,12 @@ object DonationScreenLayout {
         val sizes = SizeSelector
         val colors = ColorsSelector
         val shape = ShapeSelector
+        val padding = PaddingSelector
 
         object RatiosSelector {
             const val heightWeight = 0.8F
             var heightPercentage = 0F
+            const val sidePadding = 0.085F
         }
         object SizeSelector {
             var heightDp = Dp.Unspecified
@@ -92,6 +94,9 @@ object DonationScreenLayout {
             val background = MyColor.applicationSurfaceDarkDark
             val focusIndicator = MyColor.greenSecondVariant
             val cursor = MyColor.greenSecondVariant
+        }
+        object  PaddingSelector {
+            var sidePadding = Dp.Unspecified
         }
     }
 
@@ -133,6 +138,7 @@ object DonationScreenLayout {
         }
         object SizesKeyboardSpace {
             var heightDp = Dp.Unspecified
+            var maskDp = Dp.Unspecified
         }
     }
 
@@ -159,6 +165,7 @@ object DonationScreenLayout {
     fun initKeyboardSpace() {
         keyboardSpace.ratios.heightPercentage = keyboardSpace.ratios.heightWeight / allWeights
         keyboardSpace.sizes.heightDp = (keyboardSpace.ratios.heightPercentage * heightFull).toDp( density)
+        keyboardSpace.sizes.maskDp = keyboardSpace.sizes.heightDp + (selector.sizes.heightDp / 2)
 
         displayUIData?.let {
             infoLog("DonationScreenLayout::iniKeyboardSpace", "Start")
@@ -170,11 +177,13 @@ object DonationScreenLayout {
     private fun initSelector() {
         selector.ratios.heightPercentage = selector.ratios.heightWeight / allWeights
         selector.sizes.heightDp = (heightFull * selector.ratios.heightPercentage).toDp(density)
+        selector.padding.sidePadding = (selector.ratios.sidePadding * widthFull).toDp(density)
 
         displayUIData?.let {
             infoLog("DonationScreenLayout::initSelector", "Start")
             verbalLog("DonationScreenLayout::initSelector", "height% ${selector.ratios.heightPercentage}")
             verbalLog("DonationScreenLayout::initSelector", "heightDp ${selector.sizes.heightDp}")
+            verbalLog("DonationScreenLayout::initSelector", "sidePaddingDp ${selector.padding.sidePadding}")
         }
     }
 

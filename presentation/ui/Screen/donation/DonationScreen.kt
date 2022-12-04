@@ -17,8 +17,6 @@ import noRippleClickable
 
 @Composable
 fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel()) {
-
-    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
     BackHandler {

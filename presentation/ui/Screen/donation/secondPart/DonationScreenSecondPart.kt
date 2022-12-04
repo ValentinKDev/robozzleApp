@@ -12,36 +12,43 @@ import com.mobilegame.robozzle.presentation.ui.utils.padding.PaddingComposable
 
 @Composable
 fun DonationScreenSecondPart(vm: DonationScreenViewModel) {
-    PaddingComposable(
-        topPaddingRatio = vm.ui.header.ratios.heightPercentage,
-        startPaddingRatio = vm.ui.list.ratios.sidePadding,
-        endPaddingRatio = vm.ui.list.ratios.sidePadding,
-        bottomPaddingRatio = vm.ui.keyboardSpace.ratios.heightPercentage,
-//        enableColor = true
-    ) {
-        Column {
-            Box(
-                Modifier
-                    .weight(vm.ui.presentation.ratios.heightWeight)
-                    .onGloballyPositioned { _layoutCoordinates ->
-                        vm.ui.setListSize(_layoutCoordinates)
-                    }
-            ) {
-                BottomComposable {
-                    FoldableScrollingList(vm = vm)
+    Column {
+        Box(Modifier.weight(vm.ui.header.ratios.heightWeight))
+        Box(
+            Modifier
+                .padding( start = vm.ui.selector.padding.sidePadding,
+                    end = vm.ui.selector.padding.sidePadding, )
+                .weight(vm.ui.presentation.ratios.heightWeight)
+                .onGloballyPositioned { _layoutCoordinates ->
+                    vm.ui.setListSize(_layoutCoordinates)
                 }
-            }
-            Row( Modifier.weight(vm.ui.selector.ratios.heightWeight) ) {
-                centralBar(vm)
-            }
+        ) {
+            BottomComposable { FoldableScrollingList(vm = vm) }
         }
+        Box(Modifier.weight(vm.ui.selector.ratios.heightWeight))
+        Box(Modifier.weight(vm.ui.keyboardSpace.ratios.heightWeight))
     }
+
     BottomComposable {
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(vm.ui.keyboardSpace.sizes.heightDp)
+                .height(vm.ui.keyboardSpace.sizes.maskDp)
                 .background(MyColor.applicationBackground)
         )
+    }
+
+    Column {
+        Box(Modifier.weight(vm.ui.header.ratios.heightWeight))
+        Box(Modifier.weight(vm.ui.presentation.ratios.heightWeight))
+        Row(
+            Modifier
+                .weight(vm.ui.selector.ratios.heightWeight)
+                .padding( start = vm.ui.selector.padding.sidePadding,
+                    end = vm.ui.selector.padding.sidePadding, )
+        ) {
+            centralBar(vm)
+        }
+        Box(Modifier.weight(vm.ui.keyboardSpace.ratios.heightWeight))
     }
 }
