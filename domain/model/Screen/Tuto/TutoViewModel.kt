@@ -17,8 +17,8 @@ class TutoViewModel(context: Context): ViewModel() {
 
 
 //    private val _tuto = MutableStateFlow<Tuto>(Tuto.ClickOnTutoLevel)
-    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
-//private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
+//    private val _tuto = MutableStateFlow<Tuto>(Tuto.End)
+    private val _tuto = MutableStateFlow( value = Tuto.findTutoByStep(dataStoreVM.getTutoStep()) ?: Tuto.ClickOnProfile )
 
     val tuto: StateFlow<Tuto> = _tuto.asStateFlow()
     fun getTuto(): Tuto = tuto.value

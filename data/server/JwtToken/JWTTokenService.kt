@@ -38,7 +38,9 @@ interface JWTTokenService {
                         })
                         install(ResponseObserver) {
                             onResponse { response ->
-                                Log.d("HTTP status:", "${response.status.value}")
+                                displayHttpClientInfo?.let {
+                                    Log.d("HTTP status:", "${response.status.value}")
+                                }
                             }
                         }
                         install(DefaultRequest) {

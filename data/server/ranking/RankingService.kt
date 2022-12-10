@@ -5,6 +5,7 @@ import com.mobilegame.robozzle.data.server.HttpRoutes
 import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
 import com.mobilegame.robozzle.domain.Player.PlayerWin
 import com.mobilegame.robozzle.domain.User
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayHttpClientInfo
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -47,7 +48,9 @@ interface RankingService {
                         })
                         install(ResponseObserver) {
                             onResponse { response ->
-                                Log.d("HTTP status:", "${response.status.value}")
+                                displayHttpClientInfo?.let {
+                                    Log.d("HTTP status:", "${response.status.value}")
+                                }
                             }
                         }
                         install(DefaultRequest) {

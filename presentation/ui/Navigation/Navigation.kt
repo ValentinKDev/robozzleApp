@@ -45,8 +45,8 @@ fun Navigation(navigator: Navigator, animNav: AnimateNavViewModel = viewModel())
 
     NavHost(
         navController = navController,
-//        startDestination = Screens.MainMenu.route
-        startDestination = Screens.Test.route
+        startDestination = Screens.MainMenu.route
+//        startDestination = Screens.Test.route
     ) {
         composable(route = Screens.Creator.route) { CreatorScreen(navigator) }
 

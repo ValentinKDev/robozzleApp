@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class MainScreenViewModel(application: Application): AndroidViewModel(application) {
     //todo: protect the user from pressed Back button during the animation
-    val data = MainScreenData()
     val ui = MainScreenLayout.create()
     val tutoVM = TutoViewModel(application)
     val popupState: PopUpState = ScreenDataStoreViewModel(getApplication<Application>().applicationContext).getPopupState()

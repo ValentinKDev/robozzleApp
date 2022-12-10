@@ -37,19 +37,18 @@ fun MainScreenPopup(vm: MainScreenViewModel) {
             ,
             content = {
                 PaddingComposable(
-                    topPaddingRatio = vm.data.ratios.popup_topPaddingRatio,
-                    bottomPaddingRatio = vm.data.ratios.popup_bottomPaddingRatio,
-                    startPaddingRatio = vm.data.ratios.popup_startPaddingRatio,
-                    endPaddingRatio = vm.data.ratios.popup_endPaddingRatio,
+                    topPaddingRatio = vm.ui.popup.ratios.topPaddingRatio,
+                    bottomPaddingRatio = vm.ui.popup.ratios.bottomPaddingRatio,
+                    startPaddingRatio = vm.ui.popup.ratios.startPaddingRatio,
+                    endPaddingRatio = vm.ui.popup.ratios.endPaddingRatio,
                 ) {
                     Card(
-                        backgroundColor = vm.data.color.popupMainColor,
-                        elevation = vm.data.color.popupElevation,
+                        backgroundColor = vm.ui.popup.color.background,
+                        elevation = vm.ui.popup.color.elevation,
                         content = {
                             CenterComposable {
                                 Text(
-                                    modifier = Modifier,
-                                    color = vm.data.color.popupTextColor,
+                                    color = vm.ui.popup.color.text,
                                     text = vm.getPopupText(),
                                 )
                             }

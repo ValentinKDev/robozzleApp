@@ -4,6 +4,7 @@ import android.util.Log
 import com.mobilegame.robozzle.data.server.HttpRoutes
 import com.mobilegame.robozzle.data.server.HttpRoutes.REQUEST_TIME
 import com.mobilegame.robozzle.data.server.dto.AppConfigRequest
+import com.mobilegame.robozzle.presentation.ui.Navigation.displayHttpClientInfo
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
@@ -50,12 +51,14 @@ interface AppConfigService {
                         })
                         install(ResponseObserver) {
                             onResponse { response ->
-                                Log.d("AppConfigService::ResponseObserver", "content : ${response.content}")
-                                Log.d("AppConfigService::ResponseObserver", "call : ${response.call}")
-                                Log.d("AppConfigService::ResponseObserver", "status : ${response.status}")
-                                Log.d("AppConfigService::ResponseObserver", "status value : ${response.status.value}")
-                                Log.d("AppConfigService::ResponseObserver", "status description : ${response.status.description}")
-                                Log.d("AppConfigService::ResponseObserver", "request : ${response.request}")
+                                displayHttpClientInfo?.let {
+                                    Log.d("AppConfigService::ResponseObserver", "content : ${response.content}")
+                                    Log.d("AppConfigService::ResponseObserver", "call : ${response.call}")
+                                    Log.d("AppConfigService::ResponseObserver", "status : ${response.status}")
+                                    Log.d("AppConfigService::ResponseObserver", "status value : ${response.status.value}")
+                                    Log.d("AppConfigService::ResponseObserver", "status description : ${response.status.description}")
+                                    Log.d("AppConfigService::ResponseObserver", "request : ${response.request}")
+                                }
                             }
                         }
                         install(DefaultRequest) {

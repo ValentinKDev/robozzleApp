@@ -18,13 +18,10 @@ class MainMenuAnimationViewModel(): ViewModel() {
 
     private val _visibleButton = MutableStateFlow(MutableTransitionState(false))
     val visibleButton= _visibleButton.asStateFlow()
-    fun setVisibleButtonTargetSate(state: Boolean) {_visibleButton.value.targetState = state
-        time1 = getTimeMillis()
+    fun setVisibleButtonTargetSate(state: Boolean) {
+        _visibleButton.value.targetState = state
     }
     fun animationEnd() = !visibleButton.value.currentState && !visibleButton.value.targetState
-
-    var time1 = 0L
-    var time2 = 0L
 
     private val _animationTime = MutableStateFlow<Long>(500)
     val animationTime: StateFlow<Long> = _animationTime
