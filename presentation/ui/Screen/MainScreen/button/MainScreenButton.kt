@@ -137,8 +137,9 @@ fun MainScreenButton(navigator: Navigator, info: NavigationButtonInfo, fromScree
                         height = if (buttonState == ButtonState.From) xScale.value.times(animSize.height).dp else animSize.height.dp,
                     )
                     .clickable(
-                        enabled = info.enable && vm.tutoVM.isMainScreenButtonClickEnable()
-                                || (vm.isButtonClickEnable(info.button))
+                        enabled = info.enable && (vm.tutoVM.isMainScreenButtonClickEnable() || vm.isButtonClickEnable(info.button))
+//                        info.enable && vm.tutoVM.isMainScreenButtonClickEnable()
+//                                || (infovm.isButtonClickEnable(info.button) )
                     ) {
                         //todo : make the screen unsensitive to click/tap during the whole animation + navigation process
                         anim.setVisibleButtonTargetSate(false)
