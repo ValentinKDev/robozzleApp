@@ -23,7 +23,9 @@ fun DonationScreenSecondPart(vm: DonationScreenViewModel) {
                     vm.ui.setListSize(_layoutCoordinates)
                 }
         ) {
-            BottomComposable { FoldableScrollingList(vm = vm) }
+            BottomComposable {
+                FoldableScrollingList(vm = vm)
+            }
         }
         Box(Modifier.weight(vm.ui.selector.ratios.heightWeight))
         Box(Modifier.weight(vm.ui.keyboardSpace.ratios.heightWeight))

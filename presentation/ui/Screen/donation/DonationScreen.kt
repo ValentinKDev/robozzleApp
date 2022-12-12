@@ -1,9 +1,7 @@
 package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -23,6 +21,7 @@ import noRippleClickable
 fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
     val visibleHeaderState by remember {vm.logic.animHeaderListVM.visibleHeaderState}.collectAsState()
+    val visibleListState by remember {vm.logic.animHeaderListVM.visibleListState}.collectAsState()
 
     LaunchedEffect(true) {
         vm.logic.animHeaderListVM.setVisible()
@@ -50,14 +49,27 @@ fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel
                     header(vm)
                 }
             }
-            Box(Modifier.weight(vm.ui.presentation.ratios.heightWeight) ) {
-                presentation(vm)
+            Column(Modifier.weight(vm.ui.presentation.ratios.heightWeight) ) {
+                AnimatedVisibility(
+                    visibleState = visibleListState,
+                    enter = expandVertically(),
+                    exit = shrinkVertically()
+                ) {
+                    presentation(vm)
+                }
             }
             Box(Modifier.weight(vm.ui.selector.ratios.heightWeight) ) { }
             Box(Modifier.weight(vm.ui.keyboardSpace.ratios.heightWeight) ) { }
         }
-        Box( modifier = Modifier.fillMaxWidth() ) {
-            DonationScreenSecondPart(vm)
+
+        AnimatedVisibility(
+            visibleState = visibleListState,
+            enter = expandVertically(),
+            exit = shrinkVertically()
+        ) {
+            Box( modifier = Modifier.fillMaxWidth() ) {
+                DonationScreenSecondPart(vm)
+            }
         }
     }
 }
