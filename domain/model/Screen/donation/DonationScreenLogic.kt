@@ -11,15 +11,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.verbalLog
 import com.mobilegame.robozzle.domain.model.Screen.Config.AnimateHeaderAndListViewModel
+import com.mobilegame.robozzle.domain.model.Screen.Navigation.NavViewModel
+import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
+import com.mobilegame.robozzle.presentation.ui.Screen.Screens
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreenText
 import com.mobilegame.robozzle.utils.Extensions.getDiffChar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class DonationScreenLogic(): ViewModel() {
 
     val animHeaderListVM = AnimateHeaderAndListViewModel()
+    fun startExitAnimationAndPressBack() {
+        animHeaderListVM.setVisibleListTargetStateAs(false)
+    }
+
     val scroll: ScrollState = ScrollState(0)
     val text = DonationScreenText
 
@@ -78,5 +86,12 @@ class DonationScreenLogic(): ViewModel() {
         setInputTo(selectedItem.second.cutString())
         foldUnfold()
 //        setTextSelectedTo(element)
+    }
+
+    fun backButtonListner(navigator: Navigator) {
+        if (animHeaderListVM.headerAnimationEnd() && animHeaderListVM.listAnimationEnd())
+            NavViewModel(navigator).navigateToMainMenu(Screens.Donation.route)
+        if (animHeaderListVM.listAnimationEnd())
+            animHeaderListVM.setVisibleHeaderTargetStateAs(false)
     }
 }

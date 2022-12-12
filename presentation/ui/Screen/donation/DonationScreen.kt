@@ -2,6 +2,7 @@ package com.mobilegame.robozzle.presentation.ui.Screen.donation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -15,6 +16,8 @@ import com.mobilegame.robozzle.domain.model.Screen.donation.DonationScreenViewMo
 import com.mobilegame.robozzle.presentation.res.MyColor.Companion.red7
 import com.mobilegame.robozzle.presentation.ui.Navigation.Navigator
 import com.mobilegame.robozzle.presentation.ui.Screen.Screens
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import noRippleClickable
 
 @Composable
@@ -28,9 +31,9 @@ fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel
         errorLog("DonationScreen", "Start")
     }
 
-    BackHandler {
-        NavViewModel(navigator).navigateToMainMenu( fromScreen = Screens.Donation.route )
-    }
+    BackHandler { vm.logic.startExitAnimationAndPressBack() }
+
+    vm.logic.backButtonListner(navigator)
 
     Box(
         Modifier
@@ -40,15 +43,7 @@ fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel
             }
     ) {
         Column {
-            Column(Modifier.weight(vm.ui.header.ratios.heightWeight)) {
-                AnimatedVisibility(
-                    visibleState = visibleHeaderState ,
-                    enter =  fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    header(vm)
-                }
-            }
+            Column(Modifier.weight(vm.ui.header.ratios.heightWeight)) { }
             Column(Modifier.weight(vm.ui.presentation.ratios.heightWeight) ) {
                 AnimatedVisibility(
                     visibleState = visibleListState,
@@ -65,11 +60,26 @@ fun DonationScreen(navigator: Navigator, vm: DonationScreenViewModel = viewModel
         AnimatedVisibility(
             visibleState = visibleListState,
             enter = expandVertically(),
-            exit = shrinkVertically()
+            exit = fadeOut(tween(250))
         ) {
             Box( modifier = Modifier.fillMaxWidth() ) {
                 DonationScreenSecondPart(vm)
             }
+        }
+
+        Column {
+            Column(Modifier.weight(vm.ui.header.ratios.heightWeight)) {
+                AnimatedVisibility(
+                    visibleState = visibleHeaderState ,
+                    enter =  fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    header(vm)
+                }
+            }
+            Column(Modifier.weight(vm.ui.presentation.ratios.heightWeight) ) { }
+            Box(Modifier.weight(vm.ui.selector.ratios.heightWeight) ) { }
+            Box(Modifier.weight(vm.ui.keyboardSpace.ratios.heightWeight) ) { }
         }
     }
 }
