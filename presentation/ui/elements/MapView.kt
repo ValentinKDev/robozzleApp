@@ -25,8 +25,6 @@ fun MapView(param: MapViewParam) {
             .height(param.mapHeightDP)
             .width(param.mapWidthDP)
             .background(param.backgroundColor)
-//            .border(width = 1.dp, color = grayDark7)
-//            .shadow(elevation = 6.dp)
     ) {
         Column(
             Modifier.fillMaxWidth()
@@ -45,18 +43,11 @@ fun MapView(param: MapViewParam) {
                         ) {
 //                           todo : might add clarity to augement the range of luminosity in the gradient so the difference between each case is clear and it compensate the fact that there is no padding
                             if (caseColor != '.') {
-//                                Surface( elevation = if (caseColor != '.') 7.dp else 0.dp ) {
                                     Box(
                                         Modifier
                                             .fillMaxSize()
                                             .gradientBackground(mapCaseColorList(caseColor), 135f)
-//                                            .shadow(elevation = if (caseColor != '.') 7.dp else 0.dp )
-//                                            .graphicsLayer {
-//                                                shadowElevation =
-//                                                    if (caseColor != '.') 7.dp.toPx() else 0.dp.toPx()
-//                                            }
                                     ) { }
-//                                }
                             }
                         }
                     }

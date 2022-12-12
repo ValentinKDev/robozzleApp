@@ -4,11 +4,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.ScrollState
 import androidx.compose.ui.focus.FocusManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilegame.robozzle.analyse.verbalLog
+import com.mobilegame.robozzle.domain.model.Screen.Config.AnimateHeaderAndListViewModel
 import com.mobilegame.robozzle.presentation.ui.Screen.donation.DonationScreenText
 import com.mobilegame.robozzle.utils.Extensions.getDiffChar
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class DonationScreenLogic(): ViewModel() {
 
+    val animHeaderListVM = AnimateHeaderAndListViewModel()
     val scroll: ScrollState = ScrollState(0)
     val text = DonationScreenText
 

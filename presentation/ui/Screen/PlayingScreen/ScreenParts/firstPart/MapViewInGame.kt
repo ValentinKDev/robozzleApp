@@ -36,21 +36,15 @@ fun MapViewInGame(
     filter: Boolean,
     enableClickStopMark: Boolean = true
 ) {
-    //todo : put those calculs in a VM ?
     val map: List<String> by vm.animData.map.collectAsState()
-    logAnimMap?.let {
-        infoLog("stars", "$stars")
-        infoLog("Map View In Game", "player pos ${playerInGame?.pos}")
-        infoLog("action", "${vm.animData.getActionToRead()}")
-    }
-
     var casePosition = Position.Error
     Box(
         Modifier
             .height(vm.data.layout.firstPart.sizes.mapHeightDp)
             .width(vm.data.layout.firstPart.sizes.mapWidthDp)
     ) {
-        Column( Modifier.fillMaxWidth(),
+        Column(
+            Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             map.forEachIndexed { _rowIndex, rowString ->
